@@ -1,0 +1,14 @@
+.service-categories-section{
+    .content{
+        margin: 150px 0 50px 0;
+        @media screen and (max-width:1200px){
+            margin-top: 100px;
+        }
+        .serivce-content{
+            padding: 50px 100px;
+            @media screen and (max-width:768px){
+                padding: 30px;
+            }
+        }
+    }
+}

@@ -1,0 +1,126 @@
+.vendor-settings{
+    margin: 120px 0 0 0;
+    @media screen and (max-width:1200px){
+        margin-top: 100px;
+    }
+    .content-wrap{
+        @media screen and (max-width:1200px){
+            display: block;
+        }
+        display: flex;
+        .side-section{
+            min-width: 200px;
+            position: relative;
+            height: 100%;
+            .content{
+                ul{
+                    display: block;
+                    @media screen and (max-width:1200px){
+                        display: none;
+                    }
+                    padding: 0;
+                    margin: 0;
+                    list-style: none;
+                    li{
+                        color: #555555;
+                        padding: 8px 0;
+                        font-size: 16px;
+                        cursor: pointer;
+                        &:hover{
+                            color: #07b107;
+                        }
+                        &.active{
+                            color: #07b107;
+                            font-weight: bold;
+                        }
+                    }
+                }
+                .select-menu{
+                    display: none;
+                    @media screen and (max-width:1200px){
+                        display: block;
+                        padding: 50px 0 30px 0;
+                    }
+                    @media screen and (max-width:1000px){
+                        display: block;
+                        padding: 20px 0 30px 0;
+                    }
+                    @media screen and (max-width:768px){
+                        display: block;
+                        padding: 0px 0 30px 0;
+                    }
+                }
+            }
+        }
+        .detail-section{
+            flex-grow: 1;
+            min-height: 500px;
+            .ant-select-search__field{
+                width: 100%;
+            }
+        }
+    }
+}
+
+.vendor-myaccount{
+    .avatar-uploader {
+        display: inline-block;
+        & > .ant-upload {
+            width: 128px;
+            height: 128px;
+            max-width: 128px;
+            max-height: 128px;
+        }
+    }
+    .ant-input-number{
+        width: 100%;
+    }
+    .button-primary{
+        height: 45px;
+        line-height: 45px;
+        width: 150px;
+        min-width: 150px;
+        flex-grow: 0;
+    }
+}
+
+.vendor-security, .vendor-notification, .vendor-billingmethod, .vendor-companyinfo, .vendor-team{
+    .button-primary{
+        margin: 0 !important;
+        height: 45px;
+        line-height: 45px;
+        width: 150px;
+        min-width: 150px;
+        flex-grow: 0;
+    }
+    .ant-checkbox-group{
+        label{
+            display: block;
+        }
+    }
+}
+
+.vendor-billingmethod{
+    .paypal-content{
+        .button-white{
+            height: 45px;
+            line-height: 45px;
+            width: 200px;
+            min-width: 200px;
+            flex-grow: 0;
+        }
+    }
+}
+
+.add-teams{
+    .add-btn{
+        button{
+            margin: 0;
+            margin-top: 50px !important;
+            width: 100%;
+            @media screen and (max-width: 768px){
+                margin: 10px 0 !important;
+            }
+        }
+    }
+}

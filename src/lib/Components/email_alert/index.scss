@@ -1,0 +1,19 @@
+.emailconfirmrequire-section{
+    .content{
+        margin: 150px 0 50px 0;
+        @media screen and (max-width:1200px){
+            margin-top: 100px;
+        }
+        .alert-content{
+            padding: 100px;
+            line-height: 50px;
+            font-size: 16px;
+            @media screen and (max-width:768px){
+                padding: 30px;
+            }
+            .icon{
+                font-size: 60px;
+            }
+        }
+    }
+}

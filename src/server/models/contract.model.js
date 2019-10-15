@@ -1,0 +1,82 @@
+import mongoose from "mongoose";
+import { constants } from "@Config/index";
+
+const JobSchema = new mongoose.Schema(
+  {
+    job: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "job",
+      required: true,
+    },
+    client: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
+    proposal: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "proposal",
+      required: true,
+    },
+    vendor: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "user",
+    },
+    budget: {
+      type: Number,
+      required: true,
+    },
+    paidPrice: {
+      type: Number,
+      default: 0,
+    },
+    escrowPrice: {
+      type: Number,
+      default: 0,
+    },
+    limitTime: {
+      type: Number,
+    },
+    stDateTime: {
+      type: String,
+      required: true,
+    },
+    endDateTime: {
+      type: String,
+      required: true,
+    },
+    completedDateTime: {
+      type: String,
+    },
+    reviews: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "review",
+      },
+    ],
+    completedPercent: {
+      type: Number,
+      default: 0,
+    },
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    status: {
+      type: Number,
+      required: true,
+      default: constants.CONTRACT_STATUS.CREATED,
+    },
+  },
+  {
+    versionKey: false,
+    timestamps: true,
+  },
+);
+
+JobSchema.post("init", function(doc) {
+  // console.log("init hook", doc)
+});
+
+export default mongoose.model("contract", JobSchema);
