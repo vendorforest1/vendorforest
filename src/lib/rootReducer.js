@@ -5,17 +5,18 @@ import storage from "redux-persist/lib/storage";
 
 import loginReducer from "@Components/login/essential";
 import registerReducer from "@Components/register/essential";
-import vendorSettingsReducer from "./Components/logged_vendor/settings/essential";
-import vendorProfileReducer from "./Components/logged_vendor/profile/essential";
+import vendorSettingsReducer from "@Components/logged_vendor/settings/essential";
+import vendorProfileReducer from "@Components/logged_vendor/profile/essential";
 
-import clientDashboardReducer from "./Components/logged_client/dashboard/essential";
-import clientSettingsReducer from "./Components/logged_client/settings/essential";
-import postjobReducer from "./Components/logged_client/postjob/essential";
-import findJobReducer from "./Components/logged_vendor/findJob/essential";
-import vendorJobDetailsReducer from "./Components/logged_vendor/jobDetails/essential";
-import vendorPlaceBidReducer from "./Components/logged_vendor/placebid/essential";
-import vendorViewTeamReducer from "./Components/logged_vendor/viewTeam/essential";
-import clientJobDetailsReducer from "./Components/logged_client/jobDetails/essential";
+import clientDashboardReducer from "@Components/logged_client/dashboard/essential";
+import clientSettingsReducer from "@Components/logged_client/settings/essential";
+import postjobReducer from "@Components/logged_client/postjob/essential";
+import findJobReducer from "@Components/logged_vendor/findJob/essential";
+import vendorJobDetailsReducer from "@Components/logged_vendor/jobDetails/essential";
+import vendorPlaceBidReducer from "@Components/logged_vendor/placebid/essential";
+import vendorViewTeamReducer from "@Components/logged_vendor/viewTeam/essential";
+import clientJobDetailsReducer from "@Components/logged_client/jobDetails/essential";
+import vendorDashboardReducer from "@Components/logged_vendor/dashboard/essential";
 
 import messagesReducer from "@Components/messages/essential";
 
@@ -42,6 +43,8 @@ const reducers = combineReducers({
   clientSettingsReducer,
   vendorProfileReducer,
   vendorSettingsReducer,
+  //vendorFindJobdReducer --> missing?
+  vendorDashboardReducer,
   findJobReducer,
   vendorJobDetailsReducer,
   vendorPlaceBidReducer,

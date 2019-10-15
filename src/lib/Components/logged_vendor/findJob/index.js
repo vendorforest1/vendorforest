@@ -386,8 +386,9 @@ class VendorFindJob extends React.Component {
   }
 }
 
-const mapStateToProps = ({ vendorFindJobReducer, loginReducer }) => {
-  const { error, success, jobs, pending } = vendorFindJobReducer;
+//vendorFindJobReducer
+const mapStateToProps = ({ findJobReducer, loginReducer }) => {
+  const { error, success, jobs, pending } = findJobReducer;
   const { user } = loginReducer;
   return {
     error,

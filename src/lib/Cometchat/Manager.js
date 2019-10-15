@@ -1,9 +1,29 @@
 // @ts-nocheck
-// import { CometChat } from "@cometchat-pro/chat";
+let CometChat;
+if (typeof window === "undefined") {
+  //SSR
+  // eslint-disable-next-line global-require
+  const window = require("browser-env")(["window", "document", "navigator"]);
+  // ({
+  //   url: "http://www.runtestcases.com",
+  //   contentType: "text/html",
+  //   includeNodeLocations: true,
+  //   storageQuota: 10000000,
+  // });
+  // eslint-disable-next-line global-require
+  const fetch = require("node-fetch");
 
-import { CometChat } from "@cometchat-pro/chat";
-//
-export default class CCManager {
+  window.fetch = fetch;
+  global.fetch = fetch;
+
+  // eslint-disable-next-line global-require
+  CometChat = require("@cometchat-pro/chat").CometChat;
+} else {
+  // eslint-disable-next-line global-require
+  CometChat = require("@cometchat-pro/chat").CometChat;
+}
+
+export class CCManager {
   static cometchat = null;
 
   static APPID = "90516102bd170d";
@@ -24,23 +44,14 @@ export default class CCManager {
 
   static init(dispatcher) {
     //initialize cometchat manager
-    // CometChat.init(this.APPID);
-    CometChat.init(this.APPID).then(
-      () => {
-        console.log("Initialization completed successfully");
-        //You can now call login function.
-      },
-      (error) => {
-        console.log("Initialization failed with error:", error);
-        //Check the reason for error and take apppropriate action.
-      },
-    );
+    CometChat.init(this.appId);
   }
 
   static getInstance() {
-    if (CCManager.cometchat == null) {
-      CCManager.cometchat = CometChat.init(this.APPID);
+    if (CCManager.cometchat === null) {
+      CCManager.cometchat = CometChat.init(this.appId);
     }
+
     return CCManager.cometchat;
   }
 
@@ -56,7 +67,7 @@ export default class CCManager {
   }
 
   static getTextMessage(uid, text, msgType) {
-    if (msgType == "user") {
+    if (msgType === "user") {
       return new CometChat.TextMessage(
         uid,
         text,
@@ -74,7 +85,7 @@ export default class CCManager {
   }
 
   static getMediaMessage(uid, file, msgType, mediaType) {
-    if (msgType == "user") {
+    if (msgType === "user") {
       return new CometChat.MediaMessage(uid, file, mediaType, CometChat.RECEIVER_TYPE.USER);
     } else {
       return new CometChat.MediaMessage(uid, file, mediaType, CometChat.RECEIVER_TYPE.GROUP);
@@ -82,7 +93,7 @@ export default class CCManager {
   }
 
   static getCall(uid, callType, userType) {
-    if (userType == "user") {
+    if (userType === "user") {
       return new CometChat.Call(uid, callType, CometChat.RECEIVER_TYPE.USER);
     } else {
       return new CometChat.Call(uid, callType, CometChat.RECEIVER_TYPE.GROUP);
@@ -276,7 +287,7 @@ export default class CCManager {
 
   static messageRequestBuilder(uType, uid, limit) {
     var messagesRequest = "";
-    if (uType == "user") {
+    if (uType === "user") {
       messagesRequest = new CometChat.MessagesRequestBuilder()
         .setUID(uid)
         .setLimit(limit)

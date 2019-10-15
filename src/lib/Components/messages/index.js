@@ -21,16 +21,6 @@ class Messages extends React.Component {
     };
   }
 
-  componentWillMount() {
-    setInterval(() => {
-      if (window) {
-        console.log("yes");
-      } else {
-        console.log("no");
-      }
-    }, 1000);
-  }
-
   render() {
     return (
       <div className="chat-section">
