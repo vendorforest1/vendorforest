@@ -21,7 +21,8 @@ const path = require("path");
 const chalk = require("react-dev-utils/chalk");
 const fs = require("fs-extra");
 const webpack = require("webpack");
-const configFactory = require("../config/webpack.config");
+const configFrontend = require("../config/webpack.config");
+const configBackend = require("../config/webpack.config");
 const paths = require("../config/paths");
 // const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const formatWebpackMessages = require("react-dev-utils/formatWebpackMessages");
@@ -53,7 +54,14 @@ const { checkBrowsers } = require("react-dev-utils/browsersHelper");
 // }
 
 // Generate configuration
-const config = configFactory(mode);
+const frontend = configFrontend(mode);
+const backend = configBackend(mode);
+
+const config = [];
+
+config.push(backend);
+config.push(frontend);
+
 // const config = configFactory("development");
 
 checkBrowsers(paths.appPath, isInteractive)

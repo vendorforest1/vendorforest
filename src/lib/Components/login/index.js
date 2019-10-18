@@ -34,7 +34,7 @@ class MainLogin extends React.Component {
 
   // @ts-ignore
   handleSubmit = async (e) => {
-    console.log("handleSubmit!!!");
+    console.log("handleSubxmits!!!");
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       // if (!err && !this.props.user && !this.props.pending) {

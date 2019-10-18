@@ -240,7 +240,7 @@ module.exports = (webpackEnv) => {
       : isEnvDevelopment && "cheap-module-source-map",
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
-    //target: "web", //BY DEFAULT
+    target: "web", //BY DEFAULT
     name: "frontend",
     entry: [
       // Include an alternative client for WebpackDevServer. A client's job is to
@@ -253,7 +253,7 @@ module.exports = (webpackEnv) => {
       // the line below with these two lines if you prefer the stock client:
       // require.resolve("webpack-dev-server/client") + "?/",
       // require.resolve("webpack/hot/dev-server"),
-      // isEnvDevelopment && require.resolve("react-dev-utils/webpackHotDevClient"),
+      isEnvDevelopment && require.resolve("react-dev-utils/webpackHotDevClient"),
       // Finally, this is your app's code:
       paths.appFrontendEntry,
       // We include the app code last so that if there is a runtime error during
@@ -420,14 +420,14 @@ module.exports = (webpackEnv) => {
         // "url" loader works like "file" loader except that it embeds assets
         // smaller than specified limit in bytes as data URLs to avoid requests.
         // A missing `test` is equivalent to a match.
-        {
-          test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
-          loader: require.resolve("url-loader"),
-          options: {
-            limit: imageInlineSizeLimit,
-            name: "static/media/[name].[hash:8].[ext]",
-          },
-        },
+        // {
+        //   test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+        //   loader: require.resolve("url-loader"),
+        //   options: {
+        //     limit: imageInlineSizeLimit,
+        //     name: "static/media/[name].[hash:8].[ext]",
+        //   },
+        // },
         // First, run the linter.
         // It's important to do this before Babel processes the JS.
         {
@@ -635,18 +635,12 @@ module.exports = (webpackEnv) => {
     // our own hints via the FileSizeReporter
     performance: {},
   };
-
-  // console.log("paths.appLibrary ", paths.appLibrary);
   const serverConfig = {
     mode: isEnvProduction ? "production" : isEnvDevelopment && "development",
     target: "node",
     externals: [nodeExternals()],
     name: "backend",
-    entry: [
-      // require.resolve("webpack-dev-server/client") + "?/", //"?http://0.0.0.0:3000", // WebpackDevServer host and port
-      // require.resolve("webpack/hot/only-dev-server"),
-      paths.appBackendEntry,
-    ].filter(Boolean),
+    entry: [paths.appBackendEntry].filter(Boolean),
     devServer: {
       hot: isEnvDevelopment && true,
       port: 4444,
@@ -794,34 +788,6 @@ module.exports = (webpackEnv) => {
       filename: "index.js",
     },
     plugins: [
-      // Generates an `index.html` file with the <script> injected.
-      // new HtmlWebpackPlugin(
-      //   Object.assign(
-      //     {},
-      //     {
-      //       inject: true,
-      //       // template: paths.appHtml,
-      //       filename: "static/index.ejs",
-      //       template: "!!raw-loader!" + path.resolve(paths.appTemplate),
-      //     },
-      //     isEnvProduction
-      //       ? {
-      //           minify: {
-      //             removeComments: true,
-      //             collapseWhitespace: true,
-      //             removeRedundantAttributes: true,
-      //             useShortDoctype: true,
-      //             removeEmptyAttributes: true,
-      //             removeStyleLinkTypeAttributes: true,
-      //             keepClosingSlash: true,
-      //             minifyJS: true,
-      //             minifyCSS: true,
-      //             minifyURLs: true,
-      //           },
-      //         }
-      //       : undefined,
-      //   ),
-      // ),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       isEnvProduction &&
@@ -902,20 +868,6 @@ module.exports = (webpackEnv) => {
             new RegExp("/[^/?]+\\.[^/]+$"),
           ],
         }),
-      // new webpack.ProgressPlugin({
-      //   entries: false,
-      //   modules: true,
-      //   modulesCount: 100,
-      //   profile: true,
-      //   handler: (percentage, message, ...args) => {
-      //     // custom logic
-      //     Math.round(percentage * 100) > 0 &&
-      //       console.warn(message, args[0], args[1], " ", Math.round(percentage * 100), "%");
-      //   },
-      // }),
-      // new webpack.ProvidePlugin({
-      //   _: "underscore",
-      // }),
       //  new PreloadWebpackPlugin(),
     ].filter(Boolean),
     // Some libraries import Node modules but don't use them in the browser.

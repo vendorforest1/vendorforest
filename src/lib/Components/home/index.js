@@ -11,32 +11,18 @@ import VendorForestFooter from "@Components/inc/footer";
 // import "./index.scss";
 import styles from "./index.scss";
 
-// @ts-ignore
 import postBig from "@Components/bigsvgs/post_big.svg";
-// @ts-ignore
 import iteractivePost from "@Components/smallsvgs/interactive/post.svg";
-// @ts-ignore
 import interactiveBid from "@Components/smallsvgs/interactive/bid.svg";
-// @ts-ignore
 import bidBig from "@Components/bigsvgs/bid_big.svg";
-// @ts-ignore
 import workBig from "@Components/bigsvgs/work_big.svg";
-// @ts-ignore
 import interactiveWork from "@Components/smallsvgs/interactive/work.svg";
-// @ts-ignore
 import getPaid from "@Components/smallsvgs/static/getpaid.svg";
-// @ts-ignore
 import getPaidBig from "@Components/bigsvgs/getpaid_big.svg";
-
-// @ts-ignore
 import homeIcon from "@Components/NewIcons/icons_Home.png";
-// @ts-ignore
 import eventsIcon from "@Components/NewIcons/icons_Events.png";
-// @ts-ignore
 import weddingsIcon from "@Components/NewIcons/icons_Weddings.png";
-// @ts-ignore
 import wellnessIcon from "@Components/NewIcons/icons_Wellness.png";
-// @ts-ignore
 import venueIcon from "@Components/NewIcons/icons_Venue.png";
 
 class Home extends React.Component {
@@ -244,7 +230,10 @@ export class ServicesCategory extends React.Component {
                     <div className="content-item">
                       <div className="category-icon">
                         <i className="icon-bargraph" aria-hidden="true">
-                          <img src="https://img.icons8.com/ios-glyphs/50/07b107/fridge.png" />
+                          <img
+                            src="https://img.icons8.com/ios-glyphs/50/07b107/fridge.png"
+                            alt=""
+                          />
                         </i>
                         <i className="icon-bargraph abs-icon" aria-hidden="true"></i>
                       </div>
