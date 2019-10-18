@@ -1,7 +1,6 @@
 "use strict";
 
-const mode = "development";
-// const mode = "production";
+const mode = "production";
 
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = mode;
@@ -21,8 +20,7 @@ const path = require("path");
 const chalk = require("react-dev-utils/chalk");
 const fs = require("fs-extra");
 const webpack = require("webpack");
-const configFrontend = require("../config/webpack.config");
-const configBackend = require("../config/webpack.config");
+const configBuilder = require("../config/webpack.config");
 const paths = require("../config/paths");
 // const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
 const formatWebpackMessages = require("react-dev-utils/formatWebpackMessages");
@@ -54,15 +52,7 @@ const { checkBrowsers } = require("react-dev-utils/browsersHelper");
 // }
 
 // Generate configuration
-const frontend = configFrontend(mode);
-const backend = configBackend(mode);
-
-const config = [];
-
-config.push(backend);
-config.push(frontend);
-
-// const config = configFactory("development");
+const config = configBuilder(mode);
 
 checkBrowsers(paths.appPath, isInteractive)
   .then(() => {
