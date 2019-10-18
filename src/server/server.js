@@ -23,6 +23,8 @@ import routes from "./routes";
 
 import appRoutes from "@Shared/routes";
 
+const reload = require("reload");
+
 const app = express();
 const env = config();
 const MongoStore = connectMongo(session);
@@ -48,7 +50,8 @@ app.use(
   }),
 );
 app.use("/static", express.static("dist/static"));
-// app.use(express.static(path.resolve("./dist/static")));
+// app.use("/static", express.static("./public"));
+// app.set("views", path.resolve("public"));
 app.set("views", path.resolve("dist/static"));
 app.set("view engine", "ejs");
 
@@ -134,30 +137,39 @@ app.get("*", (req, res, next) => {
   });
 });
 
-// Why don't I need http createServer
-app
-  .listen(PORT, () => {
-    console.log(`App listening on port ${PORT}!`);
-  })
-  .on("error", (error) => {
-    if (error.syscall !== "listen") {
-      throw error;
-    }
-    let bind = typeof PORT === "string" ? "Pipe " + PORT : "Port " + PORT;
+//dev experience
+reload(app)
+  .then((reloadReturned) => {
+    // reloadReturned object see returns documentation below for what is returned
+    // Reload started
+    app
+      .listen(PORT, () => {
+        console.log(`App listening on port ${PORT}!`);
+      })
+      .on("error", (error) => {
+        if (error.syscall !== "listen") {
+          throw error;
+        }
+        let bind = typeof PORT === "string" ? "Pipe " + PORT : "Port " + PORT;
 
-    // handle specific listen errors with friendly messages
-    switch (error.code) {
-      case "EACCES":
-        console.error(bind + " requires elevated privileges");
-        env.exit(1);
-        break;
-      case "EADDRINUSE":
-        console.error(bind + " is already in use");
-        env.exit(1);
-        break;
-      default:
-        throw error;
-    }
+        // handle specific listen errors with friendly messages
+        switch (error.code) {
+          case "EACCES":
+            console.error(bind + " requires elevated privileges");
+            env.exit(1);
+            break;
+          case "EADDRINUSE":
+            console.error(bind + " is already in use");
+            env.exit(1);
+            break;
+          default:
+            throw error;
+        }
+      });
+  })
+  .catch(function(err) {
+    // Reload did not start correctly, handle error
+    console.log("Reload error!");
   });
 
 export default app;

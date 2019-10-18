@@ -38,7 +38,6 @@ const getPublicUrl = (appPackageJson) => envPublicUrl || require(appPackageJson)
 function getServedPath(appPackageJson) {
   const publicUrl = getPublicUrl(appPackageJson);
   const servedUrl = envPublicUrl || (publicUrl ? url.parse(publicUrl).pathname : "/");
-  console.log("servedUrl ", servedUrl);
   return ensureSlash(servedUrl, true);
 }
 

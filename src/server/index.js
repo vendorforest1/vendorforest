@@ -10,10 +10,4 @@ import "isomorphic-fetch";
 
 import * as Server from "./server";
 
-// const self = Server;
-
-// if (module["hot"]) {
-//   module["hot"].accept();
-// }
-
 export default Server;
