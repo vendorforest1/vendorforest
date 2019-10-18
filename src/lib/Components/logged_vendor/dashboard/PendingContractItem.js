@@ -2,6 +2,7 @@ import React from "react";
 import { Tag, Icon, Avatar, Progress } from "antd";
 import moment from "moment";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
+import defaultProfileImage from '@Components/images/profileplace.png'
 
 class PendingContractItem extends React.Component {
   constructor(props) {
@@ -51,7 +52,7 @@ class PendingContractItem extends React.Component {
           <div className="col-lg-6 d-md-flex justify-content-between d-block">
             <div className="user">
               <Avatar
-                src={this.props.contract.client.profileImage || constants.DEFAULT_PROFILEIMG}
+                src={this.props.contract.client.profileImage || defaultProfileImage}
                 className="photo"
               />
               <div className="info ml-2">

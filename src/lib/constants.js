@@ -14,7 +14,6 @@ export const constants = {
   },
   PROD_COMMONERROR_MSG:
     "Sorry. We have found some error while processing your request. Please try again later.",
-  DEFAULT_PROFILEIMG: "/img/profileplace.png",
   JOB_VISIBILITY: {
     ANYONE: 0,
     ONLY_VENDOR: 1,

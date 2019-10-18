@@ -1,13 +1,16 @@
+// @ts-nocheck
 import Milestone from "@Models/milestone.model";
+import Contract from "@Models/contract.model"
 import getEnv, { constants } from "@Config/index";
+const env = getEnv();
 
 export default () => {
+  
   const controllers = {};
 
   controllers.create = async (req, res, next) => {
     const newMilestone = new Milestone({ ...req.body });
-    await newMilestone
-      .save()
+    await newMilestone.save()
       .then(async (milestone) => {
         return res.status(200).json({
           status: 200,
@@ -18,8 +21,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -39,7 +41,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              process.env.NODE_ENV === "development"
+             env.NODE_ENV === "development"
                 ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -54,7 +56,7 @@ export default () => {
         return res.status(500).json({
           status: 500,
           message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+           env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -76,7 +78,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              process.env.NODE_ENV === "development"
+             env.NODE_ENV === "development"
                 ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -95,7 +97,7 @@ export default () => {
             return res.status(401).json({
               status: 401,
               message:
-                process.env.NODE_ENV === "development"
+               env.NODE_ENV === "development"
                   ? `Contract ${constants.DEV_EMPTYDOC_MSG}`
                   : constants.PROD_COMMONERROR_MSG,
             });
@@ -111,7 +113,7 @@ export default () => {
         return res.status(500).json({
           status: 500,
           message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+           env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -133,7 +135,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              process.env.NODE_ENV === "development"
+             env.NODE_ENV === "development"
                 ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -148,7 +150,7 @@ export default () => {
         return res.status(500).json({
           status: 500,
           message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+           env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -162,7 +164,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              process.env.NODE_ENV === "development"
+             env.NODE_ENV === "development"
                 ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -177,7 +179,7 @@ export default () => {
         return res.status(500).json({
           status: 500,
           message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+           env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -193,7 +195,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              process.env.NODE_ENV === "development"
+             env.NODE_ENV === "development"
                 ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -207,7 +209,7 @@ export default () => {
         return res.status(500).json({
           status: 500,
           message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+           env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -224,7 +226,7 @@ export default () => {
         return res.status(500).json({
           status: 500,
           message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+           env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };

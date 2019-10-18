@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Tag, Icon, Avatar, Rate } from "antd";
 import moment from "moment";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
+import defaultProfileImage from '@Components/images/profileplace.png'
 
 class PastContractItem extends React.Component {
   constructor(props) {
@@ -70,7 +71,7 @@ class PastContractItem extends React.Component {
           <div className="col-lg-6 d-md-flex justify-content-between d-block">
             <div className="user">
               <Avatar
-                src={this.props.contract.client.profileImage || constants.DEFAULT_PROFILEIMG}
+                src={this.props.contract.client.profileImage || defaultProfileImage}
                 className="photo"
               />
               <div className="info ml-2">

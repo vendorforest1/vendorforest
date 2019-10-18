@@ -16,9 +16,7 @@ export default function reducer(
     jobs: undefined,
     services: undefined,
     pending: false,
-  },
-  action,
-) {
+  }, action) {
   switch (action.type) {
     case FETCH_REQUEST:
       return {
@@ -147,45 +145,3 @@ export const fetchServiceData = () => async (dispatch, getState) => {
       dispatch(fetchError(err.message));
     });
 };
-
-// export const fetchFindUser = async (payload) => {
-//     let urlStr = ''
-//     Object.keys(payload).forEach((key, index) => {
-//         urlStr += `${index === 0 ? '?' : '&'}${key}=${payload[key]}`
-//     })
-//     console.log(urlStr)
-//     return await fetch(`${apiUrl.VENDOR_FIND}${urlStr}`, {
-//             method: 'GET',
-//             headers: {
-//                 'Accept': 'application/json',
-//                 'Content-Type': 'application/json'
-//             }
-//         })
-//         .then(response => response.json())
-//         .then(result => {
-//             if (result.status >= 400) {
-//                 throw new Error(result.message);
-//             }
-//             return result;
-//         })
-//         .catch(err => {throw err.message});
-// };
-
-// export const fetchCreateTeam = async (payload) => {
-//     return await fetch(apiUrl.CREATE_TEAM, {
-//             method: 'POST',
-//             headers: {
-//                 'Accept': 'application/json',
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(payload)
-//         })
-//         .then(response => response.json())
-//         .then(result => {
-//             if (result.status >= 400) {
-//                 throw new Error(result.message);
-//             }
-//             return result;
-//         })
-//         .catch(err => {throw err.message});
-// };

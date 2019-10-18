@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Button, Icon, Avatar, Rate, Divider, Progress, message } from "antd";
 import { constants } from "@Shared/constants";
 import { fetchInviteAccept, fetchInviteDecline, updateTeam } from "./essential";
+import defaultProfileImage from '@Components/images/profileplace.png'
 
 class InvitedVendorItem extends React.Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class InvitedVendorItem extends React.Component {
           <div className="col-md-5">
             <div className="member-info d-flex align-items-center">
               <img
-                src={this.props.member.profileImage || constants.DEFAULT_PROFILEIMG}
+                src={this.props.member.profileImage || defaultProfileImage}
                 alt="vendorprofileimage"
                 style={{ height: "50px", width: "50px" }}
               />
@@ -65,8 +66,7 @@ class InvitedVendorItem extends React.Component {
                 </h6>
                 {this.props.member.vendor.service && this.props.member.vendor.category && (
                   <p>
-                    {this.props.member.vendor.service.name} /{" "}
-                    {this.props.member.vendor.category.name}
+                    {this.props.member.vendor.service ? `${this.props.member.vendor.service.name} / ${this.props.member.vendor.category.name}` : 'NONE'}
                   </p>
                 )}
                 {this.props.member.bsLocation && (

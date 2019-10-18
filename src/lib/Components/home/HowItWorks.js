@@ -1,12 +1,12 @@
 import React from 'react'
-import postBig from "@Components/bigsvgs/post_big.svg";
-import iteractivePost from "@Components/smallsvgs/interactive/post.svg";
-import interactiveBid from "@Components/smallsvgs/interactive/bid.svg";
-import bidBig from "@Components/bigsvgs/bid_big.svg";
-import workBig from "@Components/bigsvgs/work_big.svg";
-import interactiveWork from "@Components/smallsvgs/interactive/work.svg";
-import getPaid from "@Components/smallsvgs/static/getpaid.svg";
-import getPaidBig from "@Components/bigsvgs/getpaid_big.svg";
+import postBig from "@Components/images/bigsvgs/post_big.svg";
+import iteractivePost from "@Components/images/smallsvgs/interactive/post.svg";
+import interactiveBid from "@Components/images/smallsvgs/interactive/bid.svg";
+import bidBig from "@Components/images/bigsvgs/bid_big.svg";
+import workBig from "@Components/images/bigsvgs/work_big.svg";
+import interactiveWork from "@Components/images/smallsvgs/interactive/work.svg";
+import getPaid from "@Components/images/smallsvgs/static/getpaid.svg";
+import getPaidBig from "@Components/images/bigsvgs/getpaid_big.svg";
 
 
 

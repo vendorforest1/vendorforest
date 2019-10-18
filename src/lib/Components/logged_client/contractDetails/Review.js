@@ -42,7 +42,8 @@ class Review extends React.Component {
             <div className="reviews-content p-md-5 p-2">
               <div className="mb-md-5 mb-4">
                 <h6 className="mb-3" style={{ flexGrow: 1 }}>
-                  Your Feedback to {this.getMyReview().to.username}
+                  Your Feedback to {this.props.contract.vendor.firstName && this.props.contract.vendor.lastName ? 
+                  `${this.props.contract.vendor.firstName} ${this.props.contract.vendor.lastName}` : this.props.contract.vendor.username}
                 </h6>
                 {this.getMyReview() ? (
                   <div className="feedback pl-md-3 pl-0">
@@ -77,14 +78,24 @@ class Review extends React.Component {
 }
 
 const mapStateToProps = ({ clientContractDetailsReducer, loginReducer }) => {
-  const { error, contract, success, pending } = clientContractDetailsReducer;
+  const { 
+    error, 
+    contract, 
+    success, 
+    pending 
+  } = clientContractDetailsReducer;
 
   const { user } = loginReducer;
 
-  return { error, contract, success, pending, user };
+  return { 
+    error, 
+    contract, 
+    success, 
+    pending, 
+    user 
+  };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(Review);
+export default connect( mapStateToProps,{
+  
+})(Review);

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Button, Icon, Avatar, Rate, Divider, Progress } from "antd";
 import { constants } from "@Shared/constants";
+import defaultProfileImage from '@Components/images/profileplace.png'
 
 class VendorMemberItem extends React.Component {
   render() {
@@ -11,7 +12,7 @@ class VendorMemberItem extends React.Component {
           <div className="col-md-5">
             <div className="member-info d-flex align-items-center">
               <img
-                src={this.props.member.profileImage || constants.DEFAULT_PROFILEIMG}
+                src={this.props.member.profileImage || defaultProfileImage}
                 alt="vendorprofileimage"
                 style={{ height: "50px", width: "50px" }}
               />
@@ -26,8 +27,7 @@ class VendorMemberItem extends React.Component {
                 </h6>
                 {this.props.member.vendor.service && this.props.member.vendor.category && (
                   <p>
-                    {this.props.member.vendor.service.name} /{" "}
-                    {this.props.member.vendor.category.name}
+                    {this.props.member.vendor.service ? `${this.props.member.vendor.service.name} / ${this.props.member.vendor.category.name}` : 'NONE'}
                   </p>
                 )}
                 {this.props.member.bsLocation && (
@@ -58,7 +58,9 @@ class VendorMemberItem extends React.Component {
           {this.props.team.admin._id === this.props.user.userObj._id &&
             this.props.member._id !== this.props.user.userObj._id && (
               <div className="col-md-3 d-flex justify-content-end align-items-center">
-                <a className="text-color pointer" onClick={() => {}}>
+                <a className="text-color pointer" onClick={() => {
+                  window.location.href = "/messages/v"
+                }}>
                   <Icon type="wechat" className="mr-1" />
                   Chat
                 </a>
@@ -72,7 +74,9 @@ class VendorMemberItem extends React.Component {
           {this.props.team.admin._id !== this.props.user.userObj._id &&
             this.props.member._id !== this.props.user.userObj._id && (
               <div className="col-md-3 d-flex justify-content-end align-items-center">
-                <a className="text-color pointer" onClick={() => {}}>
+                <a className="text-color pointer" onClick={() => {
+                  window.location.href = "/messages/v"
+                }}>
                   <Icon type="wechat" className="mr-1" />
                   Chat
                 </a>

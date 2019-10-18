@@ -1,14 +1,16 @@
+// @ts-nocheck
 import express from "express";
 import expressValidation from "express-joi-validation";
-
 import getProposalCtr from "@Controllers/proposalController";
-import { isAuthenticatedForApi } from "@Utils/middleware";
 
+import { isAuthenticatedForApi } from "@Utils/middleware";
 import { create, getProposales, _delete, get, update } from "./validation";
 
 const router = express.Router();
 const proposalCtr = getProposalCtr();
-const validator = expressValidation.createValidator({ passError: true });
+const validator = expressValidation.createValidator({ 
+    passError: true 
+});
 
 router.use(isAuthenticatedForApi);
 router.post("/create", validator.body(create.body), proposalCtr.create);

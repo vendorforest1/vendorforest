@@ -381,15 +381,29 @@ class PostJobStepTwo extends React.Component {
   }
 }
 
-const mapStateToProps = ({ postjobReducer }) => {
-  const { error, job, user, pending } = postjobReducer;
+const mapStateToProps = ({ clientPostjobReducer }) => {
+  const { 
+    error,
+    success,
+    currentStep,
+    user,
+    services,
+    vendors,
+    job,
+    pending,
+  } = clientPostjobReducer;
   return {
     error,
-    job,
+    success,
+    currentStep,
     user,
+    services,
+    vendors,
+    job,
     pending,
   };
 };
+
 const ClientPostJobStepTwoForm = Form.create({ name: "client_postjob_steptwo" })(PostJobStepTwo);
 
 export default connect(

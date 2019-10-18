@@ -638,7 +638,9 @@ module.exports = (webpackEnv) => {
   const serverConfig = {
     mode: isEnvProduction ? "production" : isEnvDevelopment && "development",
     target: "node",
-    externals: [nodeExternals()],
+    externals: [nodeExternals({
+      whitelist: ["jquery"]
+    })],
     name: "backend",
     entry: [paths.appBackendEntry].filter(Boolean),
     devServer: {

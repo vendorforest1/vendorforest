@@ -12,6 +12,7 @@ import AttachFiles from "./AttachFiles";
 import Review from "./Review";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
 import { fetchGetContractData, fetchUpdateContractData, updateContract } from "./essential";
+import defaultProfileImage from '@Components/images/profileplace.png'
 const { TabPane } = Tabs;
 
 class VendorContractDetails extends React.Component {
@@ -63,20 +64,20 @@ class VendorContractDetails extends React.Component {
             <div className="row">
               <div className="col-12">
                 <div className="content-details shadow">
-                  {!this.props.contract && this.props.pending && (
-                    <div className="text-center loading-small py-5">
-                      <Icon type="sync" spin />
-                    </div>
-                  )}
-                  {this.props.contract && (
+                  {
+                    !this.props.contract && this.props.pending && (
+                      <div className="text-center loading-small py-5">
+                        <Icon type="sync" spin />
+                      </div>
+                    )
+                  }
+                  {
+                    this.props.contract && (
                     <div>
                       <div className="head d-md-flex d-block justify-content-between align-items-center">
                         <div className="user mb-3 mb-md-0">
                           <Avatar
-                            src={
-                              this.props.contract.client.profileImage ||
-                              constants.DEFAULT_PROFILEIMG
-                            }
+                            src={this.props.contract.client.profileImage || defaultProfileImage}
                             className="photo"
                           />
                           <div className="info ml-2">
@@ -85,18 +86,21 @@ class VendorContractDetails extends React.Component {
                                 {this.props.contract.client.username}
                               </a>
                             </h6>
-                            {this.props.contract.client.bsLocation && (
+                            {
+                              this.props.contract.client.bsLocation && 
                               <p className="text-grey">
-                                {this.props.contract.client.bsLocation.city} /{" "}
-                                {this.props.contract.client.bsLocation.country}
+                                {this.props.contract.client.bsLocation.city}/{this.props.contract.client.bsLocation.country}
                               </p>
-                            )}
-                            <p className="text-grey">
-                              {getTimeFromTimezone(this.props.contract.client.timeZone)}
-                            </p>
-                            <h5 className="text-color pointer">
+                            }
+                            {
+                              this.props.contract.client.timeZone && 
+                              <p className="text-grey">{getTimeFromTimezone(this.props.contract.client.timeZone)}</p>
+                            }
+                            <div className="text-color pointer h5" onClick={()=>{
+                              window.location.href = "/messages/v"
+                            }}>
                               <Icon type="message" />
-                            </h5>
+                            </div>
                           </div>
                         </div>
                         <div className="text-center mb-3 mb-md-0">

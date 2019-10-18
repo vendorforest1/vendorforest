@@ -4,6 +4,7 @@ import moment from "moment";
 import { Input, Card, Divider, Icon, Avatar, Modal, Button, Table, Form } from "antd";
 import { fetchOffersData, fetchOfferDecline, fetchOfferAccept } from "./essential";
 import { constants } from "@Shared/constants";
+import defaultProfileImage from '@Components/images/profileplace.png'
 const { TextArea } = Input;
 
 class VendorOffers extends React.Component {
@@ -109,7 +110,7 @@ class VendorOffers extends React.Component {
         render: (text, record, index) => (
           <div className="d-flex align-items-center" key={index}>
             <Avatar
-              src={record.proposal.job.client.profileImage || constants.DEFAULT_PROFILEIMG}
+              src={record.proposal.job.client.profileImage || defaultProfileImage}
               size={50}
               className="mb-2 inline-block"
             />

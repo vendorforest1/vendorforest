@@ -1,9 +1,9 @@
 import React from 'react'
-import homeIcon from "@Components/NewIcons/icons_Home.png";
-import eventsIcon from "@Components/NewIcons/icons_Events.png";
-import weddingsIcon from "@Components/NewIcons/icons_Weddings.png";
-import wellnessIcon from "@Components/NewIcons/icons_Wellness.png";
-import venueIcon from "@Components/NewIcons/icons_Venue.png";
+import homeIcon from "@Components/images/NewIcons/icons_Home.png";
+import eventsIcon from "@Components/images/NewIcons/icons_Events.png";
+import weddingsIcon from "@Components/images/NewIcons/icons_Weddings.png";
+import wellnessIcon from "@Components/images/NewIcons/icons_Wellness.png";
+import venueIcon from "@Components/images/NewIcons/icons_Venue.png";
 
 class HomeCategories extends React.Component {
   constructor(props){
@@ -56,7 +56,7 @@ class HomeCategories extends React.Component {
                 {/* <div className="category">
                   <a href="/categories/venue">
                     <div className="link_icon">
-                      <img src={require('../NewIcons/icons_Venue.png')} alt=""/>
+                      <img src={require('../images/NewIcons/icons_Venue.png')} alt=""/>
                     </div>
                     <div className="link_content">Venue</div>
                   </a>

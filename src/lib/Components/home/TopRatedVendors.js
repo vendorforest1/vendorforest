@@ -15,11 +15,11 @@ class TopRatedVendors extends React.Component {
   }
 
   componentDidMount(){
-    $(document).ready(()=>{
-      $('#toprated-carousel').carousel({
-        interval: 5000
-      });
-    })
+    // $(document).ready(()=>{
+    //   $('#toprated-carousel').carousel({
+    //     interval: 5000
+    //   });
+    // })
     let vendorGroup = []
     for(let i = 0; i < this.props.vendors.length; i+=3){
       vendorGroup.push(this.props.vendors.slice(i, 3))
@@ -68,12 +68,12 @@ class TopRatedVendors extends React.Component {
                 {generateVendors()}
               </div>
               <div className="prev" onClick={()=>{
-                $('.carousel').carousel('next');
+                // $('.carousel').carousel('next');
               }} data-slide="prev">
                 <Icon type="left" className="text-color h3"/>
               </div>
               <div className="next" onClick={()=>{
-                $('.carousel').carousel('prev');
+                // $('.carousel').carousel('prev');
               }} data-slide="next">
                 <Icon type="right" className="text-color h3"/>
               </div>

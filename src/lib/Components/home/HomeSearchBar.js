@@ -8,6 +8,7 @@ class HomeSearchBar extends React.Component {
       zipCode: ''
     }
   }
+  
   render() {
     return (
       <div className="home-searchbar">
@@ -23,7 +24,7 @@ class HomeSearchBar extends React.Component {
         }}/>
         <button className="button-primary" onClick={()=>{
           window.location.href = `/findvendors?vendor=${this.state.vendorName !== "" ? this.state.vendorName : 'a'}&&zip=${this.state.zipCode !== "" ? this.state.zipCode : 'a'}`
-        }}>Get Started</button>
+        }}>Get</button>
       </div>
     );
   }
