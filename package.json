@@ -7,7 +7,7 @@
     "start": "node dist",
     "hot": "rm -rf dist && concurrently \"yarn hot:start\" \"yarn hot:build\"",
     "hot:start": "mkdir dist && touch dist/index.js && nodemon dist",
-    "hot:build": "NODE_ENV=development webpack --watch --hot --progress --colors  --env development --mode development --config config/webpack.config.js ",
+    "hot:build": "NODE_ENV=development webpack-cli --watch --hot --progress --colors  --env development --mode development --config config/webpack.config.js ",
     "build": "npm run lint:src:fix && node scripts/build.js",
     "clean:install": "rm -rf node_modules dist && yarn install",
     "lint:all:fix": "eslint -c .eslintrc.json './**/*.{js,jsx,ts,tsx}' --fix",
