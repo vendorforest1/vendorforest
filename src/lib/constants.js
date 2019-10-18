@@ -90,6 +90,7 @@ export const apiUrl = {
   CODEEMAIL_SEND: "/apis/codeemail_send",
   UPDATE_ACCOUNT: "/apis/account",
   RESETPASS: "/apis/resetpass",
+  GET_HOMEDATA: "/apis/home",
 
   GET_SERVICE: "/apis/service/get_services",
 

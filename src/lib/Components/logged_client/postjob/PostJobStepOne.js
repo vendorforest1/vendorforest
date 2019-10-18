@@ -23,7 +23,7 @@ class PostJobStepOne extends React.Component {
     this.addQuestion = this.addQuestion.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       stDateTime: this.props.job.stDateTime ? moment(this.props.job.stDateTime) : moment(),
       endDateTime: this.props.job.endDateTime

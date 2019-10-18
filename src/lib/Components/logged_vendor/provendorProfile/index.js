@@ -51,7 +51,7 @@ class VendorProfile extends React.Component {
     this.selectMenu = this.selectMenu.bind(this);
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.fetchGetUserData();
   }
 

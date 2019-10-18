@@ -3,7 +3,7 @@ import client from "./client"; //;
 import vendor from "./vendor"; //;
 import review from "./review"; //;
 import portfolio from "./portfolio"; //.default;
-
+import home from "./home"
 import job from "./job"; //;
 import proposal from "./proposal"; //.default;
 import offer from "./offer"; //;
@@ -11,6 +11,7 @@ import contract from "./contract"; //.default;
 import service from "./service"; //.default;
 import team from "./team"; //;
 import user from "./user"; //;
+
 import { paymentRouter } from "@Routes/apis/PaymentSystem";
 
 export default function(app, passport) {
@@ -27,6 +28,7 @@ export default function(app, passport) {
   router.use("/service", service);
   router.use("/team", team);
   router.use("/payment", paymentRouter);
+  router.use("/home", home);
   router.use("/", user(app, passport));
   router.use((err, req, res, next) => {
     console.log("router Error", err);

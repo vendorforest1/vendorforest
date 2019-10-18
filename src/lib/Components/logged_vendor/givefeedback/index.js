@@ -18,8 +18,6 @@ class VendorGiveFeedBack extends React.Component {
     this.giveFeedbck = this.giveFeedbck.bind(this);
   }
 
-  componentWillMount() {}
-
   componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       message.success(newProps.success);

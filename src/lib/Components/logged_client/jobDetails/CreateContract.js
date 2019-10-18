@@ -24,8 +24,8 @@ class CreateContract extends React.Component {
     super(props);
 
     this.state = {
-      contractStDateTime: moment(this.props.job.stDateTime),
-      contractEndDateTime: moment(this.props.job.endDateTime),
+      contractStDateTime: moment().add(1, 'hours').toDate().getTime() > moment(this.props.job.stDateTime).toDate().getTime() ? moment().add(1, 'hours') : moment(this.props.job.stDateTime),
+      contractEndDateTime: moment().add(1, 'days').toDate().getTime() > moment(this.props.job.endDateTime).toDate().getTime() ? moment().add(1, 'days') : moment(this.props.job.endDateTime),
       contractBudget: this.props.job.budget,
       contractBudgetType: this.props.job.budgetType,
       limitTime: 1,

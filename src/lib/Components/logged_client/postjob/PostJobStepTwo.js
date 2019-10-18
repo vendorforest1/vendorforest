@@ -32,7 +32,7 @@ class PostJobStepTwo extends React.Component {
     this.next = this.next.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       visibility: this.props.job.visibility || 0,
       postRadius: this.props.job.postRadius || 100.0,

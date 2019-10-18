@@ -19,7 +19,7 @@ class VendorPortfolios extends React.Component {
     this.toggle = this.toggle.bind(this);
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.fetchPortfoliosData();
   }
 

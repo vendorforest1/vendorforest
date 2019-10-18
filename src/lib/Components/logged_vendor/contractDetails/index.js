@@ -115,7 +115,7 @@ class VendorContractDetails extends React.Component {
                                 completedPercent: value,
                               });
                             }}
-                            disabled={this.props.pending}
+                            disabled={this.props.pending || this.props.contract.status === constants.CONTRACT_STATUS.END}
                           />
                           <p className="mt-2">
                             <a

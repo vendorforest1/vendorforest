@@ -24,8 +24,7 @@ class VendorDashboard extends React.Component {
     console.log(key);
   }
 
-  componentWillMount() {}
-
+  
   render() {
     return (
       <div className="vendor-dashboard">

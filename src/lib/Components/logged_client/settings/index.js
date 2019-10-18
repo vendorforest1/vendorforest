@@ -40,7 +40,7 @@ class ClientSettings extends React.Component {
     this.selectMenu = this.selectMenu.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchGetSettings();
   }
 

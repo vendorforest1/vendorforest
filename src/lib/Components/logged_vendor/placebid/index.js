@@ -145,9 +145,12 @@ class PlaceBid extends React.Component {
               };
             }),
           };
-          console.log("params", params);
           this.props.fetchProposalUpdate(params);
         } else {
+          if (!this.props.user.userObj.bsLocation || !this.props.user.userObj.timeZone){
+            message.warning('Please complete your profile and setting.')
+            return;
+          }
           const params = {
             job: this.props.job._id,
             vendor: this.props.user.userObj._id,

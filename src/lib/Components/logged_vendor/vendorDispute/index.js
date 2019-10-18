@@ -25,8 +25,6 @@ class VendorDispute extends React.Component {
     };
   }
 
-  UNSAFE_componentWillMount() {}
-
   render() {
     const generateJobOptions = () => {
       return jobs.map((job, index) => {

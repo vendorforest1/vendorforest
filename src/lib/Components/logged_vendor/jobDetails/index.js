@@ -236,7 +236,7 @@ class VendorJobDetails extends React.Component {
                                 {this.props.job.client.bsLocation
                                   ? this.props.job.client.bsLocation.city
                                   : this.props.job.location.city}{" "}
-                                {getTimeFromTimezone(this.props.job.client.timeZone)}
+                                {this.props.job.client.timeZone ? getTimeFromTimezone(this.props.job.client.timeZone) : 'Unknown'}
                               </p>
                             </div>
                           </div>

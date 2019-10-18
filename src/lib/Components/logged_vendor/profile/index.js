@@ -44,7 +44,7 @@ class VendorProfile extends React.Component {
     this.selectMenu = this.selectMenu.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchGetUserData();
   }
 

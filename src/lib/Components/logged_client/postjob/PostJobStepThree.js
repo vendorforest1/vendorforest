@@ -75,7 +75,7 @@ class PostJobStepThree extends React.Component {
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       budgetType: this.props.job.budgetType,
       budget: this.props.job.budget || 5.0,
