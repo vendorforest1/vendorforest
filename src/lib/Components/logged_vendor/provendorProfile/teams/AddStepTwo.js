@@ -1,7 +1,9 @@
 import React from "react";
 import { Input, Form, Avatar, Select, Button } from "antd";
+import defaultProfileImage from '@Components/images/profileplace.png'
 const { Option } = Select;
 const permissions = ["Photographer", "Event Planner", "Manager"];
+
 
 class AddStepTwo extends React.Component {
   constructor(props) {
@@ -61,7 +63,7 @@ class AddStepTwo extends React.Component {
         return (
           <div className="row border-bottom" key={index}>
             <div className="col-md-9 d-flex py-2 align-items-center">
-              <Avatar src="https://semantic-ui.com/images/avatar2/large/kristy.png" />
+              <Avatar src={member.profileImage || defaultProfileImage} />
               <div className="ml-3">
                 <h6>{member.email}</h6>
                 <a href="">Details</a>

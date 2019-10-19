@@ -23,7 +23,7 @@ class PostJobStepOne extends React.Component {
     this.addQuestion = this.addQuestion.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       stDateTime: this.props.job.stDateTime ? moment(this.props.job.stDateTime) : moment(),
       endDateTime: this.props.job.endDateTime
@@ -257,12 +257,25 @@ class PostJobStepOne extends React.Component {
   }
 }
 
-const mapStateToProps = ({ postjobReducer }) => {
-  const { error, job, user, pending } = postjobReducer;
+const mapStateToProps = ({ clientPostjobReducer }) => {
+  const { 
+    error,
+    success,
+    currentStep,
+    user,
+    services,
+    vendors,
+    job,
+    pending,
+  } = clientPostjobReducer;
   return {
     error,
-    job,
+    success,
+    currentStep,
     user,
+    services,
+    vendors,
+    job,
     pending,
   };
 };

@@ -133,7 +133,13 @@ class PostJob extends React.Component {
   }
 
   render() {
+
+  console.log(this.props.services)
+
     const generateServiceList = () => {
+      if (!this.props.services){
+        return ''
+      }
       return this.props.services.map((service, index) => {
         return (
           <div key={index} className="col-md-2 col-sm-12 mb-2">
@@ -246,12 +252,24 @@ class PostJob extends React.Component {
 }
 
 const mapStateToProps = ({ clientPostjobReducer }) => {
-  const { error, job, user, currentStep, pending } = clientPostjobReducer;
+  const { 
+    error,
+    success,
+    currentStep,
+    user,
+    services,
+    vendors,
+    job,
+    pending,
+  } = clientPostjobReducer;
   return {
     error,
-    job,
-    user,
+    success,
     currentStep,
+    user,
+    services,
+    vendors,
+    job,
     pending,
   };
 };

@@ -5,6 +5,7 @@ import moment from "moment";
 import { constants } from "@Shared/constants";
 import { fetchReviewsData } from "../essential";
 import ReviewItem from "./ReviewItem";
+import defaultProfileImage from '@Components/images/profileplace.png'
 
 class VendorAbout extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class VendorAbout extends React.Component {
     this.state = {};
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchReviewsData();
   }
 
@@ -40,7 +41,7 @@ class VendorAbout extends React.Component {
                 <div className="account-info d-flex mb-3">
                   <div className="photo-wrap">
                     <img
-                      src={this.props.user.profileImage || constants.DEFAULT_PROFILEIMG}
+                      src={this.props.user.profileImage || defaultProfileImage}
                       alt="profile image"
                     />
                   </div>

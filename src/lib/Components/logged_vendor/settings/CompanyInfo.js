@@ -40,7 +40,7 @@ class VendorCompanyInfo extends React.Component {
     this.afterChangeRange = this.afterChangeRange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.props.user && this.props.user.vendor && this.props.user.vendor.company) {
       this.setState({
         name: this.props.user.vendor.company.name,

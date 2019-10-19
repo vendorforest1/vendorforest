@@ -115,7 +115,7 @@ app.get("*", (req, res, next) => {
   const promises = prefetchData(req.url, store.dispatch);
 
   promises.then((_initialData) => {
-    console.log("initial State: ", _initialData);
+    // console.log("initial State: ", _initialData);
 
     const context = {
       state: "ok",
@@ -129,7 +129,7 @@ app.get("*", (req, res, next) => {
     // const initialData = store.getState();
     context.state = store.getState();
 
-    // console.log("STATE--***MIKEISAWESOME-: ", store.getState());
+    // console.log("STATE: ", store.getState());
     const markup = ReactDOMServer.renderToString(createApp(req.url, store, context, insertCss));
 
     // console.log("context: ", context);

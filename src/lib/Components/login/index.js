@@ -15,13 +15,14 @@ import globalStyle from "@Components/sass/index.scss";
 import localStyle from "./index.scss";
 
 class MainLogin extends React.Component {
+  _isButton = false;
   constructor(props) {
     super(props);
     this.state = {};
   }
   // @ts-ignore
-  UNSAFE_componentWillUpdate(nextProps, nextState) {
-    if (nextProps.user && nextProps.user.userObj) {
+  componentWillReceiveProps(nextProps, nextState) {
+    if (nextProps.user && nextProps.user.userObj && this._isButton) {
       if (nextProps.user.userObj.accountType === constants.ACCOUNT_TYPE.VENDOR) {
         this.props.history.push(
           `/${constants.ACCOUNTTYPES[nextProps.user.userObj.accountType]}/findjob`,
@@ -34,12 +35,11 @@ class MainLogin extends React.Component {
 
   // @ts-ignore
   handleSubmit = async (e) => {
-    console.log("handleSubxmits!!!");
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       // if (!err && !this.props.user && !this.props.pending) {
       if (!err && !this.props.pending) {
-        console.log("debug 2");
+        this._isButton = true;
         this.props.fetchLogin(values);
       }
     });

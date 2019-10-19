@@ -32,7 +32,7 @@ class PostJobStepTwo extends React.Component {
     this.next = this.next.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.setState({
       visibility: this.props.job.visibility || 0,
       postRadius: this.props.job.postRadius || 100.0,
@@ -381,15 +381,29 @@ class PostJobStepTwo extends React.Component {
   }
 }
 
-const mapStateToProps = ({ postjobReducer }) => {
-  const { error, job, user, pending } = postjobReducer;
+const mapStateToProps = ({ clientPostjobReducer }) => {
+  const { 
+    error,
+    success,
+    currentStep,
+    user,
+    services,
+    vendors,
+    job,
+    pending,
+  } = clientPostjobReducer;
   return {
     error,
-    job,
+    success,
+    currentStep,
     user,
+    services,
+    vendors,
+    job,
     pending,
   };
 };
+
 const ClientPostJobStepTwoForm = Form.create({ name: "client_postjob_steptwo" })(PostJobStepTwo);
 
 export default connect(

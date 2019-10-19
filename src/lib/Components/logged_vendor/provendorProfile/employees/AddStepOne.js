@@ -26,7 +26,7 @@ class AddStepOne extends React.Component {
   }
 
   beforeUpload(file) {
-    const isJPG = file.type === "image/jpeg";
+    const isJPG = (file.type === "image/jpeg" || file.type === "image/png");
     if (!isJPG) {
       message.error("You can only upload JPG file!");
     }

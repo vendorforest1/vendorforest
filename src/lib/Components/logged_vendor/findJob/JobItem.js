@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Button, Icon, Tag, Rate } from "antd";
 import moment from "moment";
 import { constants } from "@Shared/constants";
+import defaultProfileImage from '@Components/images/profileplace.png'
 
 class JobItem extends React.Component {
   displaySkills() {
@@ -97,7 +98,7 @@ class JobItem extends React.Component {
         <div className="w-100 mb-3">{this.displaySkills()}</div>
         <div className="client d-flex">
           <img
-            src={this.props.job.client.profileImage || constants.DEFAULT_PROFILEIMG}
+            src={this.props.job.client.profileImage || defaultProfileImage}
             style={{ height: "35px", width: "35px" }}
           ></img>
           <div className="ml-2">

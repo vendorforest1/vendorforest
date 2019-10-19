@@ -41,7 +41,7 @@ class AddPortfolio extends React.Component {
     this.vidUpload = this.vidUpload.bind(this);
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     if (this.props.portfolio) {
       this.setState({
         portfolioId: this.props.portfolio._id,

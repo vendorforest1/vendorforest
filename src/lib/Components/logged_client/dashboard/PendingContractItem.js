@@ -3,7 +3,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Tag, Icon, Avatar, Progress, message } from "antd";
 import moment from "moment";
-import { constants, getTimeFromTimezone } from "../../../constants";
+import { constants, getTimeFromTimezone } from "@Shared/constants";
+import defaultProfileImage from '@Components/images/profileplace.png'
 import {
   updatePendingContracts,
   updatePastContracts,
@@ -128,7 +129,7 @@ class PendingContractItem extends React.Component {
           <div className="col-lg-6 d-md-flex justify-content-between d-block">
             <div className="user">
               <Avatar
-                src={this.props.contract.vendor.profileImage || constants.DEFAULT_PROFILEIMG}
+                src={this.props.contract.vendor.profileImage || defaultProfileImage}
                 className="photo"
               />
               <div className="info ml-2">

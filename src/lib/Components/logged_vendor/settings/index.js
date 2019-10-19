@@ -159,7 +159,16 @@ class VendorSettings extends React.Component {
 }
 
 const mapStateToProps = ({ vendorSettingsReducer }) => {
-  return ({ error, user, pending } = vendorSettingsReducer);
+  const  { 
+    error, 
+    user, 
+    pending 
+  } = vendorSettingsReducer;
+  return { 
+    error, 
+    user, 
+    pending 
+  }
 };
 
 export default connect(

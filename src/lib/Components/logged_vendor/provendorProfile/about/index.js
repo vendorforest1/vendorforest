@@ -11,7 +11,7 @@ class VendorAbout extends React.Component {
     this.state = {};
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.props.fetchReviewsData();
   }
 

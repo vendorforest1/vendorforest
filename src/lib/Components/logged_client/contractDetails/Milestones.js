@@ -21,7 +21,7 @@ class Milestones extends React.Component {
   }
 
   componentDidMount() {
-    if (!this.props.mileStones) {
+    if (!this.props.milestones) {
       this.props.fetchGetMilestonesData({
         contract: this.props.contract._id,
       });
@@ -64,6 +64,7 @@ class Milestones extends React.Component {
   }
 
   render() {
+
     const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
 
     const generateMilestone = () => {
@@ -86,10 +87,7 @@ class Milestones extends React.Component {
           );
         } else {
           return (
-            <div
-              key={index}
-              className="d-md-flex d-block justify-content-between align-items-end border-bottom mb-3 pb-3"
-            >
+            <div key={index} className="d-md-flex d-block justify-content-between align-items-end border-bottom mb-3 pb-3">
               <h6 className="mb-2">
                 {index + 1}. {milestone.description}
               </h6>
@@ -99,27 +97,15 @@ class Milestones extends React.Component {
                   {this.props.pending && this._button === index + 1 && (
                     <Icon type="sync" spin className="mr-2 text-success" />
                   )}
-                  <a
-                    className={`pointer ${
-                      milestone.status === constants.MILESTONE_STATUS.REQ_RELEASED
-                        ? "text-warning"
-                        : "text-success"
-                    }`}
-                    onClick={() => {
+                  <a className={`pointer ${milestone.status === constants.MILESTONE_STATUS.REQ_RELEASED ? "text-warning" : "text-success"}`} onClick={() => {
                       this.releaseMilestone(index);
-                    }}
-                  >
-                    Release
-                  </a>
+                  }}>Release</a>
                   <Divider type="vertical" />
-                  <a
-                    className="pointer text-danger"
+                  <a className="pointer text-danger"
                     onClick={() => {
                       this.cancelMilestone(index);
                     }}
-                  >
-                    Cancel
-                  </a>
+                  > Cancel </a>
                 </div>
               </div>
             </div>
@@ -169,12 +155,14 @@ class Milestones extends React.Component {
               </div>
             </div>
             <hr />
-            {!this.props.milestones && this.props.pending && (
+            {
+              !this.props.milestones && this.props.pending && 
               <div className="text-center loading-small py-5">
                 <Icon type="sync" spin />
               </div>
-            )}
-            {this.props.milestones && (
+            }
+            {
+              this.props.milestones && 
               <div className="milestone-list-content">
                 <h5 className="mb-2">Milestones</h5>
                 <Form>
@@ -228,7 +216,7 @@ class Milestones extends React.Component {
                 </Form>
                 <div className="milestone-list">{generateMilestone()}</div>
               </div>
-            )}
+            }
           </div>
         </div>
       </div>
@@ -239,19 +227,29 @@ class Milestones extends React.Component {
 const MilestonesForm = Form.create({ name: "client_add_milestoneform" })(Milestones);
 
 const mapStateToProps = ({ clientContractDetailsReducer, loginReducer }) => {
-  const { error, contract, milestones, success, pending } = clientContractDetailsReducer;
+  const { 
+    error, 
+    contract,
+    milestones,
+    success, 
+    pending 
+  } = clientContractDetailsReducer;
 
   const { user } = loginReducer;
 
-  return { error, contract, milestones, success, pending, user };
+  return { 
+    error, 
+    contract,
+    milestones,
+    success, 
+    pending, 
+    user 
+  };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetMilestonesData,
-    fetchCreateMilestoneData,
-    fetchRleaseMilestoneData,
-    fetchCancelMilestoneData,
-  },
-)(MilestonesForm);
+export default connect( mapStateToProps, {
+  fetchGetMilestonesData,
+  fetchCreateMilestoneData,
+  fetchRleaseMilestoneData,
+  fetchCancelMilestoneData,
+})(MilestonesForm);

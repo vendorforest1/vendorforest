@@ -1,3 +1,4 @@
+// @ts-nocheck
 import mongoose from "mongoose";
 import bcrypt from "mongoose-bcrypt";
 //import mongooseStringQuery from 'mongoose-string-query';

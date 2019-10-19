@@ -61,8 +61,6 @@ class EmailConfirmRequire extends React.Component {
     }
   }
 
-  UNSAFE_componentWillMount() {}
-
   render() {
     return (
       <div className="emailconfirmrequire-section">

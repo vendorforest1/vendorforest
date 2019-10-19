@@ -17,8 +17,6 @@ class ResetPass extends React.Component {
     };
   }
 
-  componentWillMount() {}
-
   render() {
     const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
 
