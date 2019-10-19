@@ -1,5 +1,5 @@
 import React from "react";
-// import * as $ from "jquery";
+import $ from "jquery";
 import { Icon } from "antd";
 // @ts-ignore
 import withStyles from "isomorphic-style-loader/withStyles";
@@ -28,6 +28,7 @@ import venueIcon from "@Components/NewIcons/icons_Venue.png";
 class Home extends React.Component {
   state = {};
   render() {
+    console.log("context: ", this.props);
     return (
       <div>
         <VendorForestHeader />
@@ -447,39 +448,54 @@ export class HeaderForm extends React.Component {
 }
 
 export class TopRatedVendors extends React.Component {
-  // @ts-ignore
   constructor(props) {
     super(props);
-
     this.state = {
       visible: false,
     };
+    this.carouselRef = React.createRef();
+    this.prev = this.prev.bind(this);
+    this.next = this.next.bind(this);
   }
 
   componentDidMount() {
-    // (function($) {
-    //   // Auto-scroll
-    //   $("#toprated-carousel").carousel({
-    //     interval: 5000,
-    //   });
-    //   // Control buttons
-    //   $(".next").click(function() {
-    //     $(".carousel").carousel("next");
-    //     return false;
-    //   });
-    //   $(".prev").click(function() {
-    //     $(".carousel").carousel("prev");
-    //     return false;
-    //   });
-    // })($);
+    const carouselNode = this.carouselRef.current;
+    // Auto-scroll
+    // $(carouselNode).carousel({
+    //   interval: 5000,
+    // });
+    // // Control buttons
+    // $(".next").click(function() {
+    //   $(carouselNode).carousel("next");
+    //   return false;
+    // });
+    // $(".prev").click(function() {
+    //   $(carouselNode).carousel("prev");
+    //   return false;
+    // });
+    $(carouselNode).on("slide.bs.carousel", function() {
+      // do something…
+      console.log("slide");
+    });
   }
+  prev() {
+    console.log("prev");
+  }
+  next() {
+    console.log("next");
+  }
+
   render() {
     return (
       <div className="container toprate-vendor">
         <div className="row">
           <div className="col-12">
             <h1 className="mb-5">Top Rated Vendors</h1>
-            <div className="carousel slide position-relative" data-ride="carousel">
+            <div
+              className="carousel slide position-relative"
+              ref={this.carouselRef}
+              data-ride="carousel"
+            >
               <ul className="carousel-indicators">
                 <li data-target="#toprated-carousel" data-slide-to="0" className="active"></li>
                 <li data-target="#toprated-carousel" data-slide-to="1"></li>
@@ -526,10 +542,20 @@ export class TopRatedVendors extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className="prev" href="javascript:void(0)" data-slide="prev">
+              <div
+                className="prev carousel-control-prev"
+                // onClick={this.prev}
+                role="button"
+                data-slide="prev"
+              >
                 <Icon type="left" className="text-color h3" />
               </div>
-              <div className="next" href="javascript:void(0)" data-slide="next">
+              <div
+                className="next carousel-control-next"
+                // onClick={this.next}
+                role="button"
+                data-slide="next"
+              >
                 <Icon type="right" className="text-color h3" />
               </div>
             </div>
