@@ -60,9 +60,11 @@ class VendorJobDetails extends React.Component {
   }
 
   getProposal() {
-    const index = this.props.job.proposales.findIndex(
-      (proposal) => proposal.vendor._id === this.props.user.userObj._id,
-    );
+    const index =
+      this.props.user &&
+      this.props.job.proposales.findIndex(
+        (proposal) => proposal.vendor._id === this.props.user.userObj._id,
+      );
     return index > -1 ? this.props.job.proposales[index] : null;
   }
 

@@ -52,7 +52,7 @@ class Home extends React.Component {
             <ServicesCategory services={homedata.services} />
             <TopRatedVendors vendors={homedata.vendors} />
             <HowItWorks />
-            <NewPostedJobs />
+            <NewPostedJobs jobs={this.props.homedata.jobs} />
             <BuildTeamsBox />
             <VendorForestFooter />
           </div>

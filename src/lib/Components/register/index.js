@@ -73,7 +73,7 @@ class MainRegister extends React.Component {
     if (value && this.state.confirmDirty) {
       form.validateFields(["confirm"], { force: true });
     }
-    callback();
+    return callback();
   };
 
   render() {

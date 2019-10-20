@@ -42,6 +42,16 @@ export default () => {
       const jobs = await Job.find({
         status: constants.JOB_STATUS.POSTED,
       })
+        .populate("service")
+        .populate("category")
+        .populate({
+          path: "client",
+          model: "user",
+          populate: {
+            path: "client",
+            model: "client",
+          },
+        })
         .lean()
         .sort({
           createdAt: -1,

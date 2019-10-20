@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Select, Rate, Radio, Input, Form, message } from "antd";
+import { Icon, Select, Rate, Radio, Input, Form, message, Avatar } from "antd";
 import { connect } from "react-redux";
 import withStyles from "isomorphic-style-loader/withStyles";
 import VF_ClientHeader from "@Components/inc/client_header";
@@ -7,6 +7,12 @@ import VF_Footer from "@Components/inc/footer";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import { fetchCreateReviewData } from "./essential";
+import feedBackIconOnTime from "@Components/images/NewIcons/feedbackicon_1.png";
+import feedBackIconSkillful from "@Components/images/NewIcons/feedbackicon_2.png";
+import feedBackIconExcelent from "@Components/images/NewIcons/feedbackicon_3.png";
+import feedBackIconBeyond from "@Components/images/NewIcons/feedbackicon_4.png";
+import feedBackIconEntertaining from "@Components/images/NewIcons/feedbackicon_5.png";
+import feedBackIconConversation from "@Components/images/NewIcons/feedbackicon_6.png";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -29,7 +35,7 @@ class ClientGiveFeedBack extends React.Component {
       endReason: 0,
       recommend: 0,
       rate: 0,
-      vendorBadge: -1,
+      vendorBadge: [],
     };
     this.giveFeedbck = this.giveFeedbck.bind(this);
   }
@@ -85,25 +91,6 @@ class ClientGiveFeedBack extends React.Component {
           <Radio value={level} key={index}>
             {level}
           </Radio>
-        );
-      });
-    };
-
-    const generateEnoughList = () => {
-      return enoughList.map((enough, index) => {
-        return (
-          <div className="col-md-2 col-sm-4 col-6 mb-2" key={index}>
-            <div
-              className={`enough-item ${this.state.vendorBadge === index ? "active" : ""}`}
-              onClick={() => {
-                this.setState({
-                  vendorBadge: index,
-                });
-              }}
-            >
-              {enough}
-            </div>
-          </div>
         );
       });
     };
@@ -172,7 +159,140 @@ class ClientGiveFeedBack extends React.Component {
                     </div>
                     <div className="enough-list mb-4">
                       <p className="mb-2">Give badges to the vendor</p>
-                      <div className="row">{generateEnoughList()}</div>
+                      <div className="row">
+                        <div className="col-md-2 col-sm-4 col-6 mb-2">
+                          <div
+                            className={`enough-item ${
+                              this.state.vendorBadge.indexOf(0) > -1 ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              let newBadge = [...this.state.vendorBadge];
+                              const index = this.state.vendorBadge.indexOf(0);
+                              if (index > -1) {
+                                newBadge.splice(index, 1);
+                              } else {
+                                newBadge.push(0);
+                              }
+                              this.setState({
+                                vendorBadge: newBadge,
+                              });
+                            }}
+                          >
+                            <Avatar size={50} src={feedBackIconOnTime} />
+                            <p>On Time</p>
+                          </div>
+                        </div>
+                        <div className="col-md-2 col-sm-4 col-6 mb-2">
+                          <div
+                            className={`enough-item ${
+                              this.state.vendorBadge.indexOf(1) > -1 ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              let newBadge = [...this.state.vendorBadge];
+                              const index = this.state.vendorBadge.indexOf(1);
+                              if (index > -1) {
+                                newBadge.splice(index, 1);
+                              } else {
+                                newBadge.push(1);
+                              }
+                              this.setState({
+                                vendorBadge: newBadge,
+                              });
+                            }}
+                          >
+                            <Avatar size={50} src={feedBackIconSkillful} />
+                            <p>Skillful</p>
+                          </div>
+                        </div>
+                        <div className="col-md-2 col-sm-4 col-6 mb-2">
+                          <div
+                            className={`enough-item ${
+                              this.state.vendorBadge.indexOf(2) > -1 ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              let newBadge = [...this.state.vendorBadge];
+                              const index = this.state.vendorBadge.indexOf(2);
+                              if (index > -1) {
+                                newBadge.splice(index, 1);
+                              } else {
+                                newBadge.push(2);
+                              }
+                              this.setState({
+                                vendorBadge: newBadge,
+                              });
+                            }}
+                          >
+                            <Avatar size={50} src={feedBackIconExcelent} />
+                            <p>Excellent Service</p>
+                          </div>
+                        </div>
+                        <div className="col-md-2 col-sm-4 col-6 mb-2">
+                          <div
+                            className={`enough-item ${
+                              this.state.vendorBadge.indexOf(3) > -1 ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              let newBadge = [...this.state.vendorBadge];
+                              const index = this.state.vendorBadge.indexOf(3);
+                              if (index > -1) {
+                                newBadge.splice(index, 1);
+                              } else {
+                                newBadge.push(3);
+                              }
+                              this.setState({
+                                vendorBadge: newBadge,
+                              });
+                            }}
+                          >
+                            <Avatar size={50} src={feedBackIconBeyond} />
+                            <p>Above & Beyond</p>
+                          </div>
+                        </div>
+                        <div className="col-md-2 col-sm-4 col-6 mb-2">
+                          <div
+                            className={`enough-item ${
+                              this.state.vendorBadge.indexOf(4) > -1 ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              let newBadge = [...this.state.vendorBadge];
+                              const index = this.state.vendorBadge.indexOf(4);
+                              if (index > -1) {
+                                newBadge.splice(index, 1);
+                              } else {
+                                newBadge.push(4);
+                              }
+                              this.setState({
+                                vendorBadge: newBadge,
+                              });
+                            }}
+                          >
+                            <Avatar size={50} src={feedBackIconEntertaining} />
+                            <p>Entertaining</p>
+                          </div>
+                        </div>
+                        <div className="col-md-2 col-sm-4 col-6 mb-2">
+                          <div
+                            className={`enough-item ${
+                              this.state.vendorBadge.indexOf(5) > -1 ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              let newBadge = [...this.state.vendorBadge];
+                              const index = this.state.vendorBadge.indexOf(5);
+                              if (index > -1) {
+                                newBadge.splice(index, 1);
+                              } else {
+                                newBadge.push(5);
+                              }
+                              this.setState({
+                                vendorBadge: newBadge,
+                              });
+                            }}
+                          >
+                            <Avatar size={50} src={feedBackIconConversation} />
+                            <p>Great Conversation</p>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div className="feedback-content mb-4">
                       <p className="mb-2">

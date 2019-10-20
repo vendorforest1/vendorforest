@@ -64,8 +64,7 @@ const clearError = () => ({
   type: CLEAR_FAILURE,
 });
 
-export const fetchInitData = () => async (dispatch, getState) => {
-  console.log(apiUrl.GET_HOMEDATA);
+export const fetchInitData = (payload) => async (dispatch, getState) => {
   dispatch(clearError());
   dispatch(fetchRequest());
   return await fetch(apiUrl.GET_HOMEDATA, {

@@ -12,7 +12,19 @@ export default () => {
 
   controllers.get = async (req, res, next) => {
     await Review.findById(req.query._id)
-      .populate("job")
+      .populate({
+        path: "contract",
+        model: "contract",
+        populate: {
+          path: "job",
+          model: "job",
+          select: {
+            budgetType: 1,
+            budget: 1,
+            title: 1,
+          },
+        },
+      })
       .populate("from")
       .populate("to")
       .then(async (reviews) => {
@@ -30,11 +42,20 @@ export default () => {
   };
 
   controllers.getReviews = async (req, res, next) => {
-    await Review.find({
-      to: req.query.to,
-      from: req.query.from,
-    })
-      .populate("job")
+    await Review.find(req.query)
+      .populate({
+        path: "contract",
+        model: "contract",
+        populate: {
+          path: "job",
+          model: "job",
+          select: {
+            budgetType: 1,
+            budget: 1,
+            title: 1,
+          },
+        },
+      })
       .populate("from")
       .populate("to")
       .then(async (reviews) => {
@@ -55,7 +76,19 @@ export default () => {
     await Review.find({
       to: req.user._id,
     })
-      .populate("job")
+      .populate({
+        path: "contract",
+        model: "contract",
+        populate: {
+          path: "job",
+          model: "job",
+          select: {
+            budgetType: 1,
+            budget: 1,
+            title: 1,
+          },
+        },
+      })
       .populate("from")
       .populate("to")
       .then(async (reviews) => {
@@ -100,7 +133,6 @@ export default () => {
             req.body.to =
               String(contract.client) === String(req.body.from) ? contract.vendor : contract.client;
           }
-          console.log(req.body, "-------- review body");
           const reviewDoc = new Review({
             ...req.body,
           });

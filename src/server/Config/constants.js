@@ -29,10 +29,11 @@ export const constants = {
   },
   AVB_HRSPERWEEKS: ["Less than 10hrs/week", "10 ~ 30hrs/week", "30+ hrs/week "],
   JOB_STATUS: {
-    POSTED: 0,
+    PPOSTED: 0,
     HIRED: 1,
-    CANCELED: 2,
-    CLOSED: 2,
+    COMPLETED: 2,
+    CANCELED: 3,
+    CLOSED: 4,
   },
   BID_TYPE: {
     INDIVIDUAL: 0,
@@ -63,7 +64,6 @@ export const constants = {
     OTHER: 2,
   },
   VENDOR_BADGES: {
-    NONE: -1,
     ONTIME: 0,
     SKILLFUL: 1,
     EXCELLENT: 2,
