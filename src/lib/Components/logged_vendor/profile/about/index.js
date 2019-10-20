@@ -1,15 +1,20 @@
+// @ts-nocheck
 import React from "react";
 import { connect } from "react-redux";
-import { List, Rate, Card, Icon, Progress, message } from "antd";
+import { List, Rate, Card, Icon, Progress, message, Modal, Button } from "antd";
 import { fetchReviewsData } from "../essential";
 import ReviewItem from "./ReviewItem";
+import EditHourlyRate from "./EditHourlyRate";
 import defaultProfileImage from "@Components/images/profileplace.png";
 
 class VendorAbout extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      isModal: false,
+    };
+    this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
@@ -23,6 +28,12 @@ class VendorAbout extends React.Component {
     if (!this.props.error && newProps.error) {
       message.error(newProps.error);
     }
+  }
+
+  toggle() {
+    this.setState({
+      isModal: !this.state.isModal,
+    });
   }
 
   render() {
@@ -75,7 +86,17 @@ class VendorAbout extends React.Component {
             <div className="col-md-12">
               <div className="row">
                 <div className="col-md-3 text-center">
-                  <h3>$30</h3>
+                  <div className="d-flex justify-content-center align-items-center">
+                    <h3>{this.props.user.vendor ? this.props.user.vendor.hourlyRate || 30 : 30}</h3>
+                    <div
+                      className="h4 text-color ml-2 mb-0 pointer price-edit editable"
+                      onClick={() => {
+                        this.toggle();
+                      }}
+                    >
+                      <Icon type="edit" />
+                    </div>
+                  </div>
                   <h6>Hourly Rate</h6>
                 </div>
                 <div className="col-md-3 text-center">
@@ -129,6 +150,19 @@ class VendorAbout extends React.Component {
             </div>
           </div>
         </Card>
+        <Modal
+          title="Edit Hourly Rate"
+          visible={this.state.isModal}
+          onOk={this.toggle}
+          onCancel={this.toggle}
+          width={"500px"}
+          footer={null}
+        >
+          <EditHourlyRate
+            rate={this.props.user.vendor ? this.props.user.vendor.hourlyRate || 30 : 30}
+            toggle={this.toggle}
+          />
+        </Modal>
       </div>
     );
   }
