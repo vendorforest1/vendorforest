@@ -1,14 +1,9 @@
 import React from "react";
-import $ from "jquery";
-import { Icon } from "antd";
-// @ts-ignore
 import withStyles from "isomorphic-style-loader/withStyles";
 import { connect } from "react-redux";
 import VendorForestHeader from "@Components/inc/header";
 import VendorForestFooter from "@Components/inc/footer";
 
-// @ts-ignore
-// import "./index.scss";
 import styles from "./index.scss";
 
 import HeaderForm from "./HeaderForm";
@@ -27,22 +22,35 @@ class Home extends React.Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    this.props.fetchInitData();
+  // static getDerivedStateFromProps(props, state) {
+  //   // Any time the current user changes,
+  //   // Reset any parts of state that are tied to that user.
+  //   // In this simple example, that's just the email.
+  //   if (props.pending !== state.pending) {
+  //     return {
+  //       prevPropsUserID: props.userID,
+  //       email: props.defaultEmail,
+  //     };
+  //   }
+  //   return null;
+  // }
+
+  static async fetchInitialData(store) {
+    return await store.dispatch(fetchInitData());
   }
 
   render() {
-    console.log(this.props.pending, this.props.homedata);
+    const { pending, homedata } = this.props;
     return (
       <div>
-        {this.props.pending && <Mask />}
-        {!this.props.pending && this.props.homedata && (
+        {pending && <Mask />}
+        {!pending && homedata && (
           <div>
             <VendorForestHeader />
             <HeaderForm {...this.props} />
             <HomeCategories />
-            <ServicesCategory services={this.props.homedata.services} />
-            <TopRatedVendors vendors={this.props.homedata.vendors} />
+            <ServicesCategory services={homedata.services} />
+            <TopRatedVendors vendors={homedata.vendors} />
             <HowItWorks />
             <NewPostedJobs />
             <BuildTeamsBox />

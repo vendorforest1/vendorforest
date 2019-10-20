@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Form, Radio, Select, Card, message } from "antd";
+import { Input, Form, Radio, Select, Card } from "antd";
 import { connect } from "react-redux";
 import { fetchGetSettings, fetchUpdateBilling } from "./essential";
 // import stripe from "stripe";
@@ -30,21 +30,22 @@ class ClientBillingMethod extends React.Component {
   checkCardInfo(rule, value, callback) {
     const form = this.props.form;
     if (value && form.getFieldValue("cardNumber").length < 15) {
-      callback("must be at least 15 digits");
+      return callback("must be at least 15 digits");
     } else {
-      callback();
+      return callback();
     }
   }
   checkSecurityCode(rule, value, callback) {
     const form = this.props.form;
     if (value && form.getFieldValue("securityCode").length < 3) {
-      callback("must be at least 3 digits");
+      return callback("must be at least 3 digits");
     } else {
-      callback();
+      return callback();
     }
   }
   saveBillingInfo(e) {
     e.preventDefault();
+    console.log("sds");
     this.props.form.validateFields((err, value) => {
       if (!err && !this.props.pending) {
         const params = {

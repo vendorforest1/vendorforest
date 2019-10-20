@@ -12,7 +12,7 @@ import path from "path";
 import { matchPath } from "react-router-dom";
 import ReactDOMServer from "react-dom/server";
 
-// import serialize from "serialize-javascript";
+import serialize from "serialize-javascript";
 
 import config, { passportConfig } from "./Config";
 
@@ -73,10 +73,10 @@ connect(
 const DBCONN = connection;
 
 const sess = {
-  genid: (req) => {
+  genid: () => {
     return uuidv4(); // use UUIDs for session IDs
   },
-  secret: `${process.env.SECRET}`,
+  secret: `${env.SECRET}`,
   saveUninitialized: false, // don't create session until something stored
   resave: false, //don't save session if unmodified
   store: new MongoStore({
@@ -95,12 +95,13 @@ app.use(passport.session());
 
 app.use("/", routes(app, passport));
 
-function prefetchData(url, dispatch) {
+async function prefetchData(url, store) {
   const promises = appRoutes
     .map((route) => ({ route, match: matchPath(url, route) }))
     .filter(({ route, match }) => match && route.component.fetchInitialData)
-    .map(({ route, match }) => console.log(match + " ***"));
-  // .map(({ route, match }) => dispatch(route.component.fetchInitialData(match)));
+    .map(async ({ match, route }) => {
+      return await route.component.fetchInitialData(store);
+    });
   return Promise.all(promises);
 }
 
@@ -110,36 +111,39 @@ app.get("*", (req, res, next) => {
     return next();
   }
 
-  const store = configureStore({});
+  const { store } = configureStore({});
 
-  const promises = prefetchData(req.url, store.dispatch);
+  const promises = prefetchData(req.url, store);
 
-  promises.then((_initialData) => {
-    // console.log("initial State: ", _initialData);
-
-    const context = {
-      state: "ok",
-    };
+  promises.then(() => {
+    let context;
     const css = new Set(); // CSS for all rendered React components
 
     const insertCss = (...styles) =>
       styles.forEach((style) => {
         css.add(style._getCss());
       });
-    // const initialData = store.getState();
-    context.state = store.getState();
 
-    // console.log("STATE: ", store.getState());
+    context = store.getState();
+
     const markup = ReactDOMServer.renderToString(createApp(req.url, store, context, insertCss));
 
-    // console.log("context: ", context);
-    res.render("index", { MARKUP: markup, CSS: [...css].join("") });
+    res.render("index", {
+      MARKUP: markup,
+      CSS: [...css].join(""),
+      // preloadedState: serialize(context, { isJSON: true }),
+      INITIAL_STATE: `<script>
+      // WARNING: See the following for security issues around embedding JSON in HTML:
+      // http://redux.js.org/recipes/ServerRendering.html#security-considerations
+      window.__PRELOADED_STATE__ = ${JSON.stringify(serialize(context)).replace(/</g, "\\u003c")}
+    </script>`,
+    });
   });
 });
 
 //dev experience
 reload(app)
-  .then((reloadReturned) => {
+  .then(() => {
     // reloadReturned object see returns documentation below for what is returned
     // Reload started
     app
@@ -167,7 +171,7 @@ reload(app)
         }
       });
   })
-  .catch(function(err) {
+  .catch(function() {
     // Reload did not start correctly, handle error
     console.log("Reload error!");
   });

@@ -15,10 +15,11 @@ class PastConstracts extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchPastContractsData({
-      client: this.props.user.userObj._id,
-      status: constants.CONTRACT_STATUS.END,
-    });
+    this.props.user &&
+      this.props.fetchPastContractsData({
+        client: this.props.user.userObj._id,
+        status: constants.CONTRACT_STATUS.END,
+      });
   }
 
   render() {

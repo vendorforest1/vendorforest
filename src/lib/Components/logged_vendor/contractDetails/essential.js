@@ -250,7 +250,9 @@ export const fetchCancelMilestoneData = (payload) => async (dispatch, getState) 
       }
       const newMilestones = [...getState().clientContractDetailsReducer.milestones];
       const index = newMilestones.findIndex((ms) => ms._id === result.data._id);
-      if (index > -1) newMilestones.splice(index, 1);
+      if (index > -1) {
+        newMilestones.splice(index, 1);
+      }
       dispatch(fetchMilestonesSuccess(newMilestones));
       dispatch(fetchSuccessMsg(result.message));
     })

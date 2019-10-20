@@ -289,7 +289,7 @@ module.exports = (webpackEnv) => {
       jsonpFunction: `webpackJsonp${appPackageJson.name}`,
     },
     optimization: {
-      minimize: isEnvProduction,
+      minimize: isEnvProduction, //isEnvProduction
       minimizer: [
         // This is only used in production mode
         new TerserPlugin({

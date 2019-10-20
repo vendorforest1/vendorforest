@@ -13,7 +13,7 @@ export default function(passport) {
   const controllers = {};
   const stripePayload = new stripe("sk_test_PHS0wV5HZJ41uaZDQsgqHKQp");
 
-  console.log(stripePayload);
+  console.log("stripePayload");
 
   // @ts-ignore
   controllers.createStripeCharges = async (req, res, next) => {

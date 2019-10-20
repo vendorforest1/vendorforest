@@ -16,7 +16,9 @@ export default function reducer(
     jobs: undefined,
     services: undefined,
     pending: false,
-  }, action) {
+  },
+  action,
+) {
   switch (action.type) {
     case FETCH_REQUEST:
       return {

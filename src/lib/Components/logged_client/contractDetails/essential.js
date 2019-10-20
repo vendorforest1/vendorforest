@@ -158,21 +158,22 @@ export const fetchGetMilestonesData = (payload) => async (dispatch, getState) =>
   Object.keys(payload).forEach((key, index) => {
     urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
   });
-  console.log(`${apiUrl.GET_MILESTONES}${urlStr}`)
+  console.log(`${apiUrl.GET_MILESTONES}${urlStr}`);
   return await fetch(`${apiUrl.GET_MILESTONES}${urlStr}`, {
     method: "GET",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-  }).then((response) => response.json())
-  .then((result) => {
-    if (result.status >= 400) {
-      throw new Error(result.message);
-    }
-    dispatch(fetchMilestonesSuccess(result.data));
   })
-  .catch((err) => dispatch(fetchError(err.message)));
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      dispatch(fetchMilestonesSuccess(result.data));
+    })
+    .catch((err) => dispatch(fetchError(err.message)));
 };
 
 export const fetchCreateMilestoneData = (payload) => async (dispatch, getState) => {
@@ -217,7 +218,9 @@ export const fetchUpdateMilestoneData = (payload) => async (dispatch, getState) 
       }
       const newMilestones = [...getState().clientContractDetailsReducer.milestones];
       const index = newMilestones.findIndex((ms) => ms._id === result.data._id);
-      if (index > -1) newMilestones[index] = result.data;
+      if (index > -1) {
+        newMilestones[index] = result.data;
+      }
       dispatch(fetchMilestonesSuccess(newMilestones));
       dispatch(fetchSuccessMsg(result.message));
     })
@@ -272,7 +275,9 @@ export const fetchCancelMilestoneData = (payload) => async (dispatch, getState) 
       }
       const newMilestones = [...getState().clientContractDetailsReducer.milestones];
       const index = newMilestones.findIndex((ms) => ms._id === result.data._id);
-      if (index > -1) newMilestones.splice(index, 1);
+      if (index > -1) {
+        newMilestones.splice(index, 1);
+      }
       dispatch(fetchMilestonesSuccess(newMilestones));
       dispatch(fetchSuccessMsg(result.message));
     })

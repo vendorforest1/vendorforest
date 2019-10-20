@@ -1,18 +1,15 @@
-import React from 'react'
+import React from "react";
 
 class Mask extends React.Component {
+  componentDidMount() {}
 
-    componentDidMount(){
-        
-    }
-
-    render() {
-        return ( 
-            <div className="mask">
-                <div className="lds-dual-ring"></div>
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="mask">
+        <div className="lds-dual-ring"></div>
+      </div>
+    );
+  }
 }
 
-export default Mask
+export default Mask;

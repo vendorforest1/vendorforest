@@ -5,7 +5,7 @@ import moment from "moment";
 import { constants } from "@Shared/constants";
 import { fetchReviewsData } from "../essential";
 import ReviewItem from "./ReviewItem";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 
 class VendorAbout extends React.Component {
   constructor(props) {
@@ -13,9 +13,13 @@ class VendorAbout extends React.Component {
 
     this.state = {};
   }
+  static async fetchInitialData(store) {
+    console.log("async fetch vendorAbout");
+    return await store.dispatch(fetchReviewsData());
+  }
 
   componentDidMount() {
-    this.props.fetchReviewsData();
+    // this.props.fetchReviewsData();
   }
 
   componentWillReceiveProps(newProps) {
@@ -28,7 +32,8 @@ class VendorAbout extends React.Component {
   }
 
   render() {
-    return (
+    const { user } = this.props.user;
+    const vendorProfile = user && (
       <div className="vendor-about">
         <Card
           title={<span className="h5 font-weight-bold">About</span>}
@@ -40,37 +45,30 @@ class VendorAbout extends React.Component {
               <div className="d-flex flex-md-row flex-column justify-content-between">
                 <div className="account-info d-flex mb-3">
                   <div className="photo-wrap">
-                    <img
-                      src={this.props.user.profileImage || defaultProfileImage}
-                      alt="profile image"
-                    />
+                    <img src={user.profileImage || defaultProfileImage} alt="profile image" />
                   </div>
                   <div className="ml-3">
-                    <h3>{this.props.user.username}</h3>
-                    {this.props.user.bsLocation && (
+                    <h3>{user.username}</h3>
+                    {user.bsLocation && (
                       <p>
                         <Icon type="global" />
                         <span className="ml-1">
-                          {this.props.user.bsLocation
-                            ? `${this.props.user.bsLocation.city}, 
-                                            ${this.props.user.bsLocation.state} ${this.props.user.bsLocation.country}`
+                          {user.bsLocation
+                            ? `${user.bsLocation.city}, 
+                                          ${user.bsLocation.state} ${user.bsLocation.country}`
                             : ""}
                         </span>
                       </p>
                     )}
-                    <Rate value={this.props.user.vendor.rate} disabled allowHalf />
-                    <span className="h6">{this.props.user.vendor.rate}</span>
+                    <Rate value={user.vendor.rate} disabled allowHalf />
+                    <span className="h6">{user.vendor.rate}</span>
                   </div>
                 </div>
                 <div className="status">
                   <p>Job Complated Rate</p>
-                  <Progress
-                    percent={this.props.user.vendor.jobCompletedRate}
-                    size="small"
-                    status="active"
-                  />
+                  <Progress percent={user.vendor.jobCompletedRate} size="small" status="active" />
                   <p>Profile Status</p>
-                  <Progress percent={this.props.user.profilePercent} size="small" status="active" />
+                  <Progress percent={user.profilePercent} size="small" status="active" />
                 </div>
               </div>
             </div>
@@ -81,15 +79,15 @@ class VendorAbout extends React.Component {
                   <h6>Hourly Rate</h6>
                 </div>
                 <div className="col-md-3 text-center">
-                  <h3>${this.props.user.vendor.totalEarning}</h3>
+                  <h3>${user.vendor.totalEarning}</h3>
                   <h6>Total Earning</h6>
                 </div>
                 <div className="col-md-3 text-center">
-                  <h3>{this.props.user.vendor.jobs}</h3>
+                  <h3>{user.vendor.jobs}</h3>
                   <h6>jobs</h6>
                 </div>
                 <div className="col-md-3 text-center">
-                  <h3>{this.props.user.vendor.hoursWorked}</h3>
+                  <h3>{user.vendor.hoursWorked}</h3>
                   <h6>Hours Worked</h6>
                 </div>
               </div>
@@ -133,6 +131,7 @@ class VendorAbout extends React.Component {
         </Card>
       </div>
     );
+    return vendorProfile ? vendorProfile : <div></div>;
   }
 }
 

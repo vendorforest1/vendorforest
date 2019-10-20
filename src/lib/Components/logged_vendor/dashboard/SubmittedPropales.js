@@ -15,10 +15,11 @@ class SubmittedPropales extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchSubmittedProposalesData({
-      vendor: this.props.user.userObj._id,
-      status: constants.PROPOSAL_STATUS.CREATED,
-    });
+    this.props.user &&
+      this.props.fetchSubmittedProposalesData({
+        vendor: this.props.user.userObj._id,
+        status: constants.PROPOSAL_STATUS.CREATED,
+      });
   }
 
   render() {

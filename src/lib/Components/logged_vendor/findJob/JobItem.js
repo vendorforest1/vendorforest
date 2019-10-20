@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Button, Icon, Tag, Rate } from "antd";
 import moment from "moment";
 import { constants } from "@Shared/constants";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 
 class JobItem extends React.Component {
   displaySkills() {
@@ -21,9 +21,11 @@ class JobItem extends React.Component {
   }
 
   getProposal() {
-    const index = this.props.job.proposales.findIndex(
-      (proposal) => proposal.vendor === this.props.user.userObj._id,
-    );
+    const index =
+      this.props.user &&
+      this.props.job.proposales.findIndex(
+        (proposal) => proposal.vendor === this.props.user.userObj._id,
+      );
     return index > -1 ? this.props.job.proposales[index] : null;
   }
 
@@ -108,7 +110,7 @@ class JobItem extends React.Component {
                 {this.props.job.client.bsLocation
                   ? this.props.job.client.bsLocation.country
                   : this.props.job.location.country}{" "}
-                | ${this.props.job.client.client.totalSpent} spent
+                | ${this.props.job.client.client && this.props.job.client.client.totalSpent} spent
               </span>
             </h6>
           </div>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import homeIcon from "@Components/images/NewIcons/icons_Home.png";
 import eventsIcon from "@Components/images/NewIcons/icons_Events.png";
 import weddingsIcon from "@Components/images/NewIcons/icons_Weddings.png";
@@ -6,12 +6,12 @@ import wellnessIcon from "@Components/images/NewIcons/icons_Wellness.png";
 import venueIcon from "@Components/images/NewIcons/icons_Venue.png";
 
 class HomeCategories extends React.Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       top: 0,
       bottom: 0,
-    }
+    };
   }
 
   render() {
@@ -24,7 +24,7 @@ class HomeCategories extends React.Component {
                 <div className="category">
                   <a href="/categories/home">
                     <div className="link_icon">
-                      <img src={homeIcon} alt=""/>
+                      <img src={homeIcon} alt="" />
                     </div>
                     <div className="">Home</div>
                   </a>
@@ -32,7 +32,7 @@ class HomeCategories extends React.Component {
                 <div className="category">
                   <a href="/categories/events">
                     <div className="link_icon">
-                      <img src={eventsIcon} alt=""/>
+                      <img src={eventsIcon} alt="" />
                     </div>
                     <div className="link_content">Events</div>
                   </a>
@@ -40,7 +40,7 @@ class HomeCategories extends React.Component {
                 <div className="category">
                   <a href="/categories/wedding">
                     <div className="link_icon">
-                      <img src={weddingsIcon} alt=""/>
+                      <img src={weddingsIcon} alt="" />
                     </div>
                     <div className="link_content">Weddings</div>
                   </a>
@@ -48,7 +48,7 @@ class HomeCategories extends React.Component {
                 <div className="category">
                   <a href="/categories/wellness">
                     <div className="link_icon">
-                      <img src={wellnessIcon} alt=""/>
+                      <img src={wellnessIcon} alt="" />
                     </div>
                     <div className="link_content">Wellness</div>
                   </a>
@@ -70,4 +70,4 @@ class HomeCategories extends React.Component {
   }
 }
 
-export default HomeCategories
+export default HomeCategories;

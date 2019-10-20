@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Input, Avatar, Checkbox, InputNumber, Icon, Progress, Rate } from "antd";
 import { constants } from "@Shared/constants";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 const { Search } = Input;
 
 class SelectTeamMember extends React.Component {
@@ -30,7 +30,9 @@ class SelectTeamMember extends React.Component {
                   <Checkbox
                     value={index}
                     onChange={() => {
-                      if (this.props.disabled) return;
+                      if (this.props.disabled) {
+                        return;
+                      }
                       const newTeam = { ...team };
                       newTeam.members[index].isSelected = !newTeam.members[index].isSelected;
                       this.props.updateTeam(newTeam);
@@ -39,12 +41,18 @@ class SelectTeamMember extends React.Component {
                     checked={member.isSelected}
                     disabled={this.props.disabled}
                   />
-                  <img src={member.profileImage || defaultProfileImage} alt="vendorprofileimage" style={{ height: "50px", width: "50px" }}/>
+                  <img
+                    src={member.profileImage || defaultProfileImage}
+                    alt="vendorprofileimage"
+                    style={{ height: "50px", width: "50px" }}
+                  />
                   <div className="member-name ml-3">
                     <h6 className=" font-weight-bold">{member.username}</h6>
                     {member.vendor.service && member.vendor.category && (
                       <p>
-                        {member.vendor.service ? `${member.vendor.service.name} / ${member.vendor.category.name}` : 'NONE'}
+                        {member.vendor.service
+                          ? `${member.vendor.service.name} / ${member.vendor.category.name}`
+                          : "NONE"}
                       </p>
                     )}
                     {member.bsLocation && (
@@ -78,7 +86,9 @@ class SelectTeamMember extends React.Component {
                     value={member.budget}
                     disabled={this.props.disabled}
                     onChange={(value) => {
-                      if (this.props.disabled) return;
+                      if (this.props.disabled) {
+                        return;
+                      }
                       const newTeam = { ...team };
                       newTeam.members[index].budget = value;
                       this.props.updateTeam(newTeam);

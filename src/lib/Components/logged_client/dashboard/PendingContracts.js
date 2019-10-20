@@ -16,11 +16,11 @@ class PendingConstracts extends React.Component {
   }
 
   componentDidMount() {
-    console.log("User: ", this.props.user);
-    this.props.fetchPendingContractsData({
-      client: this.props.user.userObj._id,
-      status: constants.CONTRACT_STATUS.CREATED,
-    });
+    this.props.user &&
+      this.props.fetchPendingContractsData({
+        client: this.props.user.userObj._id,
+        status: constants.CONTRACT_STATUS.CREATED,
+      });
   }
 
   render() {

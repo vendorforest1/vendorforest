@@ -42,8 +42,10 @@ class Review extends React.Component {
             <div className="reviews-content p-md-5 p-2">
               <div className="mb-md-5 mb-4">
                 <h6 className="mb-3" style={{ flexGrow: 1 }}>
-                  Your Feedback to {this.props.contract.client.firstName && this.props.contract.client.lastName ? 
-                  `${this.props.contract.client.firstName} ${this.props.contract.client.lastName}` : this.props.contract.client.username}
+                  Your Feedback to{" "}
+                  {this.props.contract.client.firstName && this.props.contract.client.lastName
+                    ? `${this.props.contract.client.firstName} ${this.props.contract.client.lastName}`
+                    : this.props.contract.client.username}
                 </h6>
                 <div className="feedback pl-md-3 pl-0">
                   {this.getMyReview() ? (

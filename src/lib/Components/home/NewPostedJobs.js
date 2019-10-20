@@ -1,21 +1,20 @@
-import React from 'react'
+import React from "react";
 
 class NewPostedJobs extends React.Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = {
-
-    }
+    this.state = {};
   }
-  
+
   render() {
     return (
       <div className="newposted-jobs">
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <h1 className="mb-5">Latest Posted Jobs <span className="text-color">Near You</span></h1>
+              <h1 className="mb-5">
+                Latest Posted Jobs <span className="text-color">Near You</span>
+              </h1>
               <div className="content">
                 <div className="row">
                   <div className="col-lg-1 col-md-2 d-flex justify-content-center mb-2">
@@ -23,18 +22,26 @@ class NewPostedJobs extends React.Component {
                   </div>
                   <div className="col-lg-8 col-md-7">
                     <p className="job-explain pl-md-4 pl-0">
-                      Licensed real estate agent with a passion for teaching.<br/>
-                      I need a: Photographer<br/>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus alias recusandae enim numquam,  <br/>
+                      Licensed real estate agent with a passion for teaching.
+                      <br />
+                      I need a: Photographer
+                      <br />
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus alias
+                      recusandae enim numquam, <br />
                       For : 08-25-2019 at 2:30 PM To 08-25-2019 at 4:45 PM / Lynn, MA, United States
                     </p>
                   </div>
                   <div className="col-md-3 d-flex align-items-end justify-content-md-end justify-content-center">
                     <div className="price-content text-right mt-3 d-flex d-md-block justify-content-center align-items-center">
                       <h6 className=" font-weight-bold mb-2 mr-5">$500</h6>
-                      <button className="button-primary" onClick={()=>{
-                        window.location.href="/login"
-                      }}>Place A Bid</button>
+                      <button
+                        className="button-primary"
+                        onClick={() => {
+                          window.location.href = "/login";
+                        }}
+                      >
+                        Place A Bid
+                      </button>
                     </div>
                   </div>
                 </div>

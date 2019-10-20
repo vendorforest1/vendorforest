@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import CreateContract from "./CreateContract";
 import { fetchDeclineProposal } from "./essential";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 
 class ProposalItem extends React.Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class ProposalItem extends React.Component {
   }
 
   chat() {
-    window.location.href = "/messages/c"
+    window.location.href = "/messages/c";
   }
 
   render() {
@@ -68,7 +68,9 @@ class ProposalItem extends React.Component {
             <div className="ml-2">
               <h6 className="text-dark font-weight-bold">{this.props.proposal.vendor.username}</h6>
               <p>
-                {this.props.proposal.vendor.vendor ? `${this.props.proposal.vendor.vendor.service.name}/${this.props.proposal.vendor.vendor.category.name}` : 'NONE'}
+                {this.props.proposal.vendor.vendor
+                  ? `${this.props.proposal.vendor.vendor.service.name}/${this.props.proposal.vendor.vendor.category.name}`
+                  : "NONE"}
               </p>
               <p className="font-weight-bold text-blue">
                 {constants.ACCOUNTTYPES[this.props.proposal.vendor.accountType]}

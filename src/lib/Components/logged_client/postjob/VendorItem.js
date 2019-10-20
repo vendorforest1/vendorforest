@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Icon, Avatar, Rate, Modal, Progress } from "antd";
 import { constants } from "@Shared/constants";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 
 class VendorItem extends React.Component {
   constructor(props) {
@@ -28,14 +28,13 @@ class VendorItem extends React.Component {
       <div className="vendor-item ">
         <div className="row">
           <div className="col-lg-4 col-md-6 vendor-profile-content d-flex">
-            <Avatar
-              src={this.props.vendor.profileImage || defaultProfileImage}
-              className="photo"
-            />
+            <Avatar src={this.props.vendor.profileImage || defaultProfileImage} className="photo" />
             <div className="ml-2">
               <h6 className="text-dark font-weight-bold">{this.props.vendor.username}</h6>
               <p>
-                {this.props.vendor.vendor.service ? `${this.props.vendor.vendor.service.name} / ${this.props.vendor.vendor.category.name}` : 'NONE'}
+                {this.props.vendor.vendor.service
+                  ? `${this.props.vendor.vendor.service.name} / ${this.props.vendor.vendor.category.name}`
+                  : "NONE"}
               </p>
               <p className="font-weight-bold text-blue">
                 {constants.ACCOUNTTYPES[this.props.vendor.accountType]}

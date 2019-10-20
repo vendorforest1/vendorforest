@@ -8,7 +8,7 @@ import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import { fetchGetJobData } from "./essential";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 import moment from "moment";
 
 class VendorJobDetails extends React.Component {
@@ -216,7 +216,7 @@ class VendorJobDetails extends React.Component {
                           <hr />
                           <div className="client-info mb-2">
                             <img
-                              src={ this.props.job.client.profileImage || defaultProfileImage}
+                              src={this.props.job.client.profileImage || defaultProfileImage}
                               style={{ height: "55px", width: "55px", borderRadius: "100%" }}
                               alt="profileimage"
                             />
@@ -235,7 +235,9 @@ class VendorJobDetails extends React.Component {
                                 {this.props.job.client.bsLocation
                                   ? this.props.job.client.bsLocation.city
                                   : this.props.job.location.city}{" "}
-                                {this.props.job.client.timeZone ? getTimeFromTimezone(this.props.job.client.timeZone) : 'Unknown'}
+                                {this.props.job.client.timeZone
+                                  ? getTimeFromTimezone(this.props.job.client.timeZone)
+                                  : "Unknown"}
                               </p>
                             </div>
                           </div>
@@ -271,26 +273,33 @@ class VendorJobDetails extends React.Component {
                           <div className="client-history">
                             <p>
                               <span className=" font-weight-bold mr-2">Amount Spent: </span>$
-                              {this.props.job.client.client.totalSpent}
+                              {this.props.job.client.client &&
+                                this.props.job.client.client.totalSpent}
                             </p>
                             <p>
                               <span className=" font-weight-bold mr-2">Posted Jobs: </span>
-                              {this.props.job.client.client.postedJobs}
+                              {this.props.job.client.client &&
+                                this.props.job.client.client.postedJobs}
                             </p>
                             <p>
                               <span className=" font-weight-bold mr-2">Open Jobs: </span>
-                              {this.props.job.client.client.openJobs}
+                              {this.props.job.client.client &&
+                                this.props.job.client.client.openJobs}
                             </p>
                             {this.props.job.client.hireRate && (
                               <p>
                                 <span className=" font-weight-bold mr-2">Hire Rate: </span>
-                                {this.props.job.client.client.hireRate}%
+                                {this.props.job.client.client &&
+                                  this.props.job.client.client.hireRate}
+                                %
                               </p>
                             )}
                             {this.props.job.client.avgHourlyRate && (
                               <p>
                                 <span className=" font-weight-bold mr-2">Avg Hourly Rate: </span>$
-                                {this.props.job.client.client.avgHourlyRate}/hr
+                                {this.props.job.client.client &&
+                                  this.props.job.client.client.avgHourlyRate}
+                                /hr
                               </p>
                             )}
                           </div>

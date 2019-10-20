@@ -80,7 +80,7 @@ export default () => {
             },
           },
           async function(err, token) {
-            console.log("err: ", err, "token: ", token, " user ", user);
+            // console.log("err: ", err, "token: ", token, " user ", user);
             if (err) {
               return res.status(400).json({
                 status: 400,
@@ -95,7 +95,15 @@ export default () => {
                 source: token.id,
               },
               (err, customer) => {
-                console.log("customers: ", customer);
+                if (err) {
+                  return res.status(400).json({
+                    status: 400,
+                    data: user,
+                    message: err.message,
+                  });
+                }
+                // console.log("customers: ", customer);
+                return null;
               },
             );
           },

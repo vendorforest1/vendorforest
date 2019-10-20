@@ -93,55 +93,87 @@ class VendorForestClientHeader extends React.Component {
               <div className="col-12 d-flex">
                 <div className="mr-auto">
                   <div className="top-nav-logo">
-                    <a href="/"><img src="https://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png" alt="vendorforest.com" /></a>
+                    <a href="/">
+                      <img
+                        src="https://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png"
+                        alt="vendorforest.com"
+                      />
+                    </a>
                   </div>
                 </div>
                 <div className="menu-content d-none d-xl-flex justify-content-end align-items-center">
-                  <a href="/client" className="mr-4">DASHBOARD</a>
-                  <a href="/findvendors/a" className="mr-4">VENDORS</a>
-                  <a href="/messages/c" className="mr-4">MESSAGES</a>
+                  <a href="/client" className="mr-4">
+                    DASHBOARD
+                  </a>
+                  <a href="/findvendors/a" className="mr-4">
+                    VENDORS
+                  </a>
+                  <a href="/messages/c" className="mr-4">
+                    MESSAGES
+                  </a>
                   <Dropdown overlay={helpMenu} className="mr-3">
                     <a className="ant-dropdown-link" href="#">
-                      <Icon type="question-circle" />&nbsp;<Icon type="down" style={{fontSize: '8px'}}/>
+                      <Icon type="question-circle" />
+                      &nbsp;
+                      <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
                   </Dropdown>
                   <Dropdown overlay={notifiMenu} className="mr-3">
                     <a className="ant-dropdown-link" href="#">
-                      <Icon type="bell" />&nbsp;<Icon type="down" style={{fontSize: '8px'}}/>
+                      <Icon type="bell" />
+                      &nbsp;
+                      <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
                   </Dropdown>
                   <Dropdown overlay={useriMenu}>
                     <a className="ant-dropdown-link" href="#">
-                      <Icon type="user" />&nbsp;<Icon type="down" style={{fontSize: '8px'}}/>
+                      <Icon type="user" />
+                      &nbsp;
+                      <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
                   </Dropdown>
                 </div>
                 <div className="menu-hamburger d-xl-none d-block">
                   <div onClick={this.toggle} className="text-right">
-                    {
-                      this.state.isOpen ?
-                      <img src="https://img.icons8.com/ios/40/000000/multiply.png"/> :
-                      <i className="icon"><img src="https://img.icons8.com/ios/30/000000/menu.png"/></i>
-                    }
+                    {this.state.isOpen ? (
+                      <img src="https://img.icons8.com/ios/40/000000/multiply.png" />
+                    ) : (
+                      <i className="icon">
+                        <img src="https://img.icons8.com/ios/30/000000/menu.png" />
+                      </i>
+                    )}
                   </div>
                 </div>
               </div>
-              {
-                this.state.isOpen &&
+              {this.state.isOpen && (
                 <div className="col-12 d-flex justify-content-center d-xl-none d-block">
                   <div className="w-100">
                     <div className="menu-hamburger-content w-100">
-                      <p className=" text-center"><a href="/client">DASHBOARD</a></p>
-                      <p className=" text-center"><a href="">VENDORS</a></p>
-                      <p className=" text-center"><a href="">MESSAGES</a></p>
-                      <p className=" text-center"><a href="" >HELP</a></p>
-                      <p className=" text-center"><a href="" >NOTIFICATION</a></p>
-                      <p className=" text-center"><a href="" >SETTINGS</a></p>
-                      <p className=" text-center"><a href="" >LOGOUT</a></p>
+                      <p className=" text-center">
+                        <a href="/client">DASHBOARD</a>
+                      </p>
+                      <p className=" text-center">
+                        <a href="">VENDORS</a>
+                      </p>
+                      <p className=" text-center">
+                        <a href="">MESSAGES</a>
+                      </p>
+                      <p className=" text-center">
+                        <a href="">HELP</a>
+                      </p>
+                      <p className=" text-center">
+                        <a href="">NOTIFICATION</a>
+                      </p>
+                      <p className=" text-center">
+                        <a href="">SETTINGS</a>
+                      </p>
+                      <p className=" text-center">
+                        <a href="">LOGOUT</a>
+                      </p>
                     </div>
                   </div>
                 </div>
-              }
+              )}
             </div>
           </div>
         </div>

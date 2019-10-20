@@ -162,15 +162,27 @@ export default () => {
       };
     });
     const query = {};
-    if (req.body.service) query.service = req.body.service;
-    if (req.body.category) query.category = req.body.category;
-    if (req.body.client) query.client = req.body.client;
-    if (req.body.budgetType !== undefined) query.budgetType = req.body.budgetType;
-    if (req.body.vendorType !== undefined) query.vendorType = req.body.vendorType;
-    if (req.body.location && req.body.location.country)
+    if (req.body.service) {
+      query.service = req.body.service;
+    }
+    if (req.body.category) {
+      query.category = req.body.category;
+    }
+    if (req.body.client) {
+      query.client = req.body.client;
+    }
+    if (req.body.budgetType !== undefined) {
+      query.budgetType = req.body.budgetType;
+    }
+    if (req.body.vendorType !== undefined) {
+      query.vendorType = req.body.vendorType;
+    }
+    if (req.body.location && req.body.location.country) {
       query["location.country"] = req.body.location.country;
-    if (req.body.location && req.body.location.city)
+    }
+    if (req.body.location && req.body.location.city) {
       query["location.city"] = req.body.location.city;
+    }
     if (req.body.title) {
       const re = new RegExp(req.body.title, "i");
       query["title"] = re;

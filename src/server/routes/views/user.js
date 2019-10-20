@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get("/register", function(req, res, next) {
   if (!req.user) {
-    next();
+    return next();
   } else {
     //specify which profile page
     if (req.user.accountType === constants.ACCOUNT_TYPE.VENDOR) {
@@ -22,7 +22,7 @@ router.get("/register", function(req, res, next) {
 
 router.get("/login", function(req, res, next) {
   if (!req.user) {
-    next();
+    return next();
   } else {
     //specify which profile page
     if (req.user.accountType === constants.ACCOUNT_TYPE.VENDOR) {

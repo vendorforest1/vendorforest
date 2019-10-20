@@ -1,11 +1,10 @@
 import React from "react";
-import { Input, List, Icon } from "antd";
+import { List, Icon } from "antd";
 import { connect } from "react-redux";
 import PendingContractItem from "./PendingContractItem";
 import { constants } from "@Shared/constants";
 
 import { fetchPendingContractsData } from "./essential";
-const { Search } = Input;
 
 class PendingContracts extends React.Component {
   constructor(props) {
@@ -14,14 +13,26 @@ class PendingContracts extends React.Component {
     this.state = {};
   }
 
+  static async fetchInitialData(store) {
+    console.log("async fetch pendingContract: ", store);
+    // return await store.dispatch(
+    //   fetchPendingContractsData({
+    //     vendor: this.props.user.userObj._id,
+    //     status: constants.CONTRACT_STATUS.CREATED,
+    //   }),
+    // );
+  }
+
   componentDidMount() {
-    this.props.fetchPendingContractsData({
-      vendor: this.props.user.userObj._id,
-      status: constants.CONTRACT_STATUS.CREATED,
-    });
+    this.props.user &&
+      this.props.fetchPendingContractsData({
+        vendor: this.props.user.userObj._id,
+        status: constants.CONTRACT_STATUS.CREATED,
+      });
   }
 
   render() {
+    console.log(this.props.user);
     return (
       <div className="pending-contracts shadow">
         <div className="head">

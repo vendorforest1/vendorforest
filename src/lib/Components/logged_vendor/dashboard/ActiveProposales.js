@@ -15,10 +15,11 @@ class ActiveProposales extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchActiveProposalesData({
-      vendor: this.props.user.userObj._id,
-      status: constants.PROPOSAL_STATUS.HIRED,
-    });
+    this.props.user &&
+      this.props.fetchActiveProposalesData({
+        vendor: this.props.user.userObj._id,
+        status: constants.PROPOSAL_STATUS.HIRED,
+      });
   }
 
   render() {

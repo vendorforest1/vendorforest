@@ -14,6 +14,7 @@ class VendorServices extends React.Component {
     super(props);
 
     this.state = {
+      pending: false,
       currentStep: 0,
       selectedService: undefined,
       selectedCategory: undefined,
@@ -23,13 +24,34 @@ class VendorServices extends React.Component {
     this.save = this.save.bind(this);
   }
 
-  componentDidMount() {
-    this.setState({
-      selectedService: this.props.user.vendor.service,
-      selectedCategory: this.props.user.vendor.category,
-      selectedSubCategories: this.props.user.vendor.subCategories,
-    });
-    this.props.fetchServiceData();
+  static async fetchInitialData(store) {
+    return await store.dispatch(fetchServiceData());
+  }
+
+  // componentDidMount() {
+  //   this.props.user.vendor &&
+  //     this.setState({
+  //       selectedService: this.props.user.vendor.service,
+  //       selectedCategory: this.props.user.vendor.category,
+  //       selectedSubCategories: this.props.user.vendor.subCategories,
+  //     });
+  //   this.props.fetchServiceData();
+  // }
+
+  static getDerivedStateFromProps(props, state) {
+    // Any time the current user changes,
+    // Reset any parts of state that are tied to that user.
+    // In this simple example, that's just the email.
+    if (props.pending !== state.pending) {
+      console.log("**** ", props.pending, state.pending);
+      return {
+        pending: props.pending,
+        selectedService: props.user.vendor.service,
+        selectedCategory: props.user.vendor.category,
+        selectedSubCategories: props.user.vendor.subCategories,
+      };
+    }
+    return null;
   }
 
   componentWillReceiveProps(newProps) {

@@ -4,7 +4,7 @@ import moment from "moment";
 import { Input, Card, Divider, Icon, Avatar, Modal, Button, Table, Form } from "antd";
 import { fetchOffersData, fetchOfferDecline, fetchOfferAccept } from "./essential";
 import { constants } from "@Shared/constants";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 const { TextArea } = Input;
 
 class VendorOffers extends React.Component {

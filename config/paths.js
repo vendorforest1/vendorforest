@@ -95,7 +95,7 @@ module.exports = {
   appViews: resolveApp("src/views"),
   appComponents: resolveApp("src/lib/Components"),
   appBackend: resolveApp("src/server"),
-  appJsConfig: resolveApp("jsconfig.json"),
+  appJsConfig: resolveApp("tsconfig.json"),
   packageLockFile: resolveApp("yarn.lock"),
   testsSetup: resolveModule(resolveApp, "src/setupTests"),
   proxySetup: resolveApp("src/setupProxy.js"),

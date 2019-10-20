@@ -12,51 +12,50 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import StyleContext from "isomorphic-style-loader/StyleContext";
 // import { createBrowserHistory } from "history";
 
 import App from "@Shared/App";
 import configureStore from "@Shared/configureStore";
+// import { ContextProvider, ContextConsumer } from "@Shared/SharedContext";
 
-const mountApp = document.getElementById("root");
+const evaluateString = eval;
 
-const insertCss = (...styles) => {
-  const removeCss = styles.map((style) => style._insertCss());
-  return () => removeCss.forEach((dispose) => dispose());
-};
+function deserialize(serializedJavascript) {
+  return evaluateString("(" + serializedJavascript + ")");
+}
 
-//window._initialData_ will be changed to use
-// const store = configureStore(window.__initialData__);
-// delete window.__initialData__;
+async function hydrate() {
+  const mountApp = document.getElementById("root");
 
-//dangerouslySetInnerHTML
+  const preloadedState = window.__PRELOADED_STATE__;
+  delete window.__PRELOADED_STATE__;
 
-//SEE BELOW (still not preffered. Use context)
+  const insertCss = (...styles) => {
+    const removeCss = styles.map((style) => style._insertCss());
+    return () => removeCss.forEach((dispose) => dispose());
+  };
 
-//function createMarkup() {
-// return {__html: 'First &middot; Second'};
-// }
+  // change if a better way using --context is discovered
+  const { persistor, store } = await configureStore(deserialize(preloadedState));
+  // const history = createBrowserHistory();
 
-// function MyComponent() {
-//   return <div dangerouslySetInnerHTML={createMarkup()} />;
-// }
+  console.log("store: ", store.getState());
 
-const store = configureStore({});
-const persistor = persistStore(store);
-// const history = createBrowserHistory();
-
-const jsx = (
-  <Provider store={store}>
-    <StyleContext.Provider value={{ insertCss }}>
-      <PersistGate persistor={persistor}>
+  // persistor.persist("homeReducer");
+  const jsx = (
+    <Provider store={store}>
+      <StyleContext.Provider value={{ insertCss }}>
+        {/* <PersistGate loading={null} persistor={persistor}> */}
         <BrowserRouter>
           <App />
         </BrowserRouter>
-      </PersistGate>
-    </StyleContext.Provider>
-  </Provider>
-);
+        {/* </PersistGate> */}
+      </StyleContext.Provider>
+    </Provider>
+  );
+  ReactDOM.hydrate(jsx, mountApp);
+}
 
-ReactDOM.hydrate(jsx, mountApp);
+hydrate();

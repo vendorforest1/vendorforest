@@ -14,10 +14,11 @@ class PastProposales extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchPastProposalesData({
-      vendor: this.props.user.userObj._id,
-      status: constants.PROPOSAL_STATUS.DECLINE,
-    });
+    this.props.user &&
+      this.props.fetchPastProposalesData({
+        vendor: this.props.user.userObj._id,
+        status: constants.PROPOSAL_STATUS.DECLINE,
+      });
   }
 
   render() {
