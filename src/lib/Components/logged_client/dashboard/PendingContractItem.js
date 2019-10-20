@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Tag, Icon, Avatar, Progress, message } from "antd";
 import moment from "moment";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 import {
   updatePendingContracts,
   updatePastContracts,

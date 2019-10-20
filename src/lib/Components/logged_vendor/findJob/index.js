@@ -13,10 +13,7 @@ import { constants } from "@Shared/constants";
 import countryData from "@Shared/country_state.json";
 import store from "store";
 
-import { 
-  fetchFindJobsData,
-  fetchServiceData
-} from "./essential";
+import { fetchFindJobsData, fetchServiceData } from "./essential";
 const { Option } = Select;
 
 const Search = Input.Search;
@@ -53,7 +50,9 @@ class VendorFindJob extends React.Component {
       this.setState({
         filterServices: newProps.services,
         filterCategories:
-          this.state.filterService === -1 ? [] : newProps.services[this.state.filterService].categories,
+          this.state.filterService === -1
+            ? []
+            : newProps.services[this.state.filterService].categories,
       });
     }
     if (!this.props.error && newProps.error) {
@@ -68,24 +67,29 @@ class VendorFindJob extends React.Component {
     const params = {
       // @ts-ignore
       service:
-        this.state.filterService === -1 ? undefined : this.state.filterServices[this.state.filterService]._id,
+        this.state.filterService === -1
+          ? undefined
+          : this.state.filterServices[this.state.filterService]._id,
       // @ts-ignore
       category:
-        this.state.filterCategory === -1 ? undefined : this.state.filterCategories[this.state.filterCategory]._id,
+        this.state.filterCategory === -1
+          ? undefined
+          : this.state.filterCategories[this.state.filterCategory]._id,
       budgetType: this.state.filterBudgetType === -1 ? undefined : this.state.filterBudgetType,
-      location: this.state.filterAnyLocation ? undefined : {
+      location: this.state.filterAnyLocation
+        ? undefined
+        : {
             country: this.state.filterCountries[this.state.filterCountry],
             city: this.state.filterCity === "" ? undefined : this.state.filterCity,
           },
       vendorType: this.state.filterVendorType === 0 ? undefined : this.state.filterVendorType,
-      status: [0, 1], 
+      status: [0, 1],
       ...searchParams,
     };
     this.props.fetchFindJobsData(params);
   }
 
   render() {
-
     const generateFilterServiceOptions = () => {
       // @ts-ignore
       return this.state.filterServices.map((service, index) => {
@@ -383,16 +387,8 @@ class VendorFindJob extends React.Component {
 }
 
 const mapStateToProps = ({ vendorFindJobReducer, loginReducer }) => {
-  const { 
-    error, 
-    success, 
-    jobs,
-    services,
-    pending 
-  } = vendorFindJobReducer;
-  const { 
-    user 
-  } = loginReducer;
+  const { error, success, jobs, services, pending } = vendorFindJobReducer;
+  const { user } = loginReducer;
   return {
     error,
     success,
@@ -403,7 +399,10 @@ const mapStateToProps = ({ vendorFindJobReducer, loginReducer }) => {
   };
 };
 
-export default connect( mapStateToProps,{
-  fetchFindJobsData,
-  fetchServiceData,
-})(withStyles(globalStyle, localStyle)(VendorFindJob));
+export default connect(
+  mapStateToProps,
+  {
+    fetchFindJobsData,
+    fetchServiceData,
+  },
+)(withStyles(globalStyle, localStyle)(VendorFindJob));

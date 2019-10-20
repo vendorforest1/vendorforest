@@ -1,11 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { List, Rate, Card, Icon, Progress, message } from "antd";
-import { 
-  fetchReviewsData 
-} from "../essential";
+import { fetchReviewsData } from "../essential";
 import ReviewItem from "./ReviewItem";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 
 class VendorAbout extends React.Component {
   constructor(props) {

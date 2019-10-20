@@ -1,32 +1,28 @@
-import React from 'react'
-import JobItem from './JobItem';
+import React from "react";
+import JobItem from "./JobItem";
 
 class NewPostedJobs extends React.Component {
-
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state = {
-
-    }
+    this.state = {};
   }
-  
-  render() {
 
+  render() {
     const generateJobs = () => {
       return this.props.jobs.map((job, index) => {
-        return <JobItem job={job} key={index}/>
-      })
-    }
+        return <JobItem job={job} key={index} />;
+      });
+    };
 
     return (
       <div className="newposted-jobs">
         <div className="container">
           <div className="row">
             <div className="col-12">
-              <h1 className="mb-5">Latest Posted Jobs <span className="text-color">Near You</span></h1>
-              <div className="content">
-                {generateJobs()}
-              </div>
+              <h1 className="mb-5">
+                Latest Posted Jobs <span className="text-color">Near You</span>
+              </h1>
+              <div className="content">{generateJobs()}</div>
             </div>
           </div>
         </div>

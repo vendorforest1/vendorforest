@@ -38,181 +38,181 @@ export default [
   {
     path: `/`,
     exact: true,
-    component: Home
+    component: Home,
   },
   {
     path: "/login",
     exact: true,
-    component: MainLogin
+    component: MainLogin,
   },
   {
     path: "/register",
     exact: true,
-    component: MainRegister
+    component: MainRegister,
   },
   {
     path: "/resetpass",
     exact: true,
-    component: ResetPass
+    component: ResetPass,
   },
   {
     path: "/categories/:id",
     exact: true,
-    component: ServiceCategories
+    component: ServiceCategories,
   },
   {
     path: "/messages/:actype",
     exact: true,
-    component: Messages
+    component: Messages,
   },
   {
     path: "/messages/room/:room_id",
     exact: true,
-    component: Messages
+    component: Messages,
   },
   {
     path: "/findvendors",
     exact: true,
-    component: FindVendors
+    component: FindVendors,
   },
 
   /*================================== CLIENT LINKS ==========================*/
   {
-    path: '/client/settings',
+    path: "/client/settings",
     exact: true,
-    component: ClientSettings
+    component: ClientSettings,
   },
   {
     path: "/client/postjob",
     exact: true,
-    component: PostJob
+    component: PostJob,
   },
   {
     path: "/client/editjob/:id",
     exact: true,
-    component: PostJob
+    component: PostJob,
   },
   {
     path: "/client/contract/:id",
     exact: true,
-    component: ClientContractDetails
+    component: ClientContractDetails,
   },
   {
     path: "/client/job/:id",
     exact: true,
-    component: ClientJobDetails
+    component: ClientJobDetails,
   },
   {
     path: "/client/givefeedback/:contract_id",
     exact: true,
-    component: ClientGiveFeedBack
+    component: ClientGiveFeedBack,
   },
   {
     path: "/client/dispute",
     exact: true,
-    component: ClientDispute
+    component: ClientDispute,
   },
   {
     path: "/client",
     exact: true,
-    component: ClientDashboard
+    component: ClientDashboard,
   },
   /*================================== VENDOR LINKS ==========================*/
   {
     path: "/vendor/profile",
     exact: true,
-    component: VendorProfile
+    component: VendorProfile,
   },
   {
     path: "/vendor/registration",
     exact: true,
-    component: RegisterVendors
+    component: RegisterVendors,
   },
   {
     path: "/vendor/job/:id",
     exact: true,
-    component: VendorJobDetails
+    component: VendorJobDetails,
   },
   {
     path: "/vendor/placebid/:job_id/:proposal_id",
     exact: true,
-    component: VendorPlacebid
+    component: VendorPlacebid,
   },
   {
     path: "/vendor/placebid/:job_id",
     exact: true,
-    component: VendorPlacebid
+    component: VendorPlacebid,
   },
   {
     path: "/vendor/givefeedback/:contract_id",
     exact: true,
-    component: VendorGiveFeedBack
+    component: VendorGiveFeedBack,
   },
   {
     path: "/vendor/dispute",
     exact: true,
-    component: VendorDispute
+    component: VendorDispute,
   },
   {
     path: "/vendor/settings",
     exact: true,
-    component: VendorSettings
+    component: VendorSettings,
   },
   {
     path: "/provendorsettings",
     exact: true,
-    component: ProVendorSettings
+    component: ProVendorSettings,
   },
   {
     path: "/vendor/findjob",
     exact: true,
-    component: VendorFindJob
+    component: VendorFindJob,
   },
   {
     path: "/vendor/team/:id",
     exact: true,
-    component: VendorViewTeam
+    component: VendorViewTeam,
   },
   {
     path: "/vendor/contract/:id",
     exact: true,
-    component: VendorContractDetails
+    component: VendorContractDetails,
   },
   {
     path: "/vendor",
     exact: true,
-    component: VendorDashboard
+    component: VendorDashboard,
   },
   /*================================ Venue ====================================*/
   {
     path: `/venue`,
-    component: RegisterVenue
+    component: RegisterVenue,
   },
   {
     path: `/venuesettings`,
-    component: VenueSettings
+    component: VenueSettings,
   },
   {
     path: "/findvenues",
     exact: true,
-    component: FindVenues
+    component: FindVenues,
   },
   {
     path: "/venuedetails",
     exact: true,
-    component: VenueDetails
+    component: VenueDetails,
   },
   /*================================ PRO VENDOR LINKS ========================*/
   {
     path: `/emailsent/:id`,
-    component: EmailConfirmRequire
+    component: EmailConfirmRequire,
   },
   {
     path: `/confirmation/:token`,
-    component: EmailConfrimSuccess
+    component: EmailConfrimSuccess,
   },
   {
     path: "*",
-    component: NoMatch
-  }
+    component: NoMatch,
+  },
 ];

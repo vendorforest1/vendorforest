@@ -54,9 +54,12 @@ class VendorMemberList extends React.Component {
                   </a>
                 }
                 <Divider type="vertical" />
-                <a className="text-color pointer" onClick={() => {
-                  window.location.href = "/messages/v"
-                }}>
+                <a
+                  className="text-color pointer"
+                  onClick={() => {
+                    window.location.href = "/messages/v";
+                  }}
+                >
                   <Icon type="wechat" className="mr-1" />
                   Chat
                 </a>

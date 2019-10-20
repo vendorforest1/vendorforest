@@ -8,7 +8,7 @@ import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import { fetchGetJobData } from "./essential";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 import moment from "moment";
 
 class VendorJobDetails extends React.Component {
@@ -216,7 +216,7 @@ class VendorJobDetails extends React.Component {
                           <hr />
                           <div className="client-info mb-2">
                             <img
-                              src={ this.props.job.client.profileImage || defaultProfileImage}
+                              src={this.props.job.client.profileImage || defaultProfileImage}
                               style={{ height: "55px", width: "55px", borderRadius: "100%" }}
                               alt="profileimage"
                             />
@@ -235,7 +235,9 @@ class VendorJobDetails extends React.Component {
                                 {this.props.job.client.bsLocation
                                   ? this.props.job.client.bsLocation.city
                                   : this.props.job.location.city}{" "}
-                                {this.props.job.client.timeZone ? getTimeFromTimezone(this.props.job.client.timeZone) : 'Unknown'}
+                                {this.props.job.client.timeZone
+                                  ? getTimeFromTimezone(this.props.job.client.timeZone)
+                                  : "Unknown"}
                               </p>
                             </div>
                           </div>

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Button, Icon, Tag, Rate } from "antd";
 import moment from "moment";
 import { constants } from "@Shared/constants";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 
 class JobItem extends React.Component {
   displaySkills() {
@@ -37,13 +37,20 @@ class JobItem extends React.Component {
               <div>
                 <h6 className="mb-2 text-dark">
                   <span>{this.getBudgetType()}</span> |{" "}
-                  <span className="h6 text-color mr-2"> ${this.props.job.budget} {this.props.job.budgetType === 1 ? "/hr" : ""}</span>
-                  {
-                    this.props.job.budgetType === 1 &&  <span>({constants.AVB_HRSPERWEEKS[this.props.job.avbHrsPerWeek]})</span>
-                  }
+                  <span className="h6 text-color mr-2">
+                    {" "}
+                    ${this.props.job.budget} {this.props.job.budgetType === 1 ? "/hr" : ""}
+                  </span>
+                  {this.props.job.budgetType === 1 && (
+                    <span>({constants.AVB_HRSPERWEEKS[this.props.job.avbHrsPerWeek]})</span>
+                  )}
                 </h6>
                 <p className="mb-2">
-                  <Icon type="global" /> <span className="ml-1"> Location: {this.props.job.location.city} / {this.props.job.location.country}</span>
+                  <Icon type="global" />{" "}
+                  <span className="ml-1">
+                    {" "}
+                    Location: {this.props.job.location.city} / {this.props.job.location.country}
+                  </span>
                 </p>
               </div>
               <div className="col">{this.displaySkills()}</div>
@@ -68,26 +75,40 @@ class JobItem extends React.Component {
             <button
               className="button-primary col"
               onClick={(e) => {
-                console.log(this.props.user)
-                if (this.props.user && this.props.user.userObj.accountType === constants.ACCOUNT_TYPE.VENDOR){
+                console.log(this.props.user);
+                if (
+                  this.props.user &&
+                  this.props.user.userObj.accountType === constants.ACCOUNT_TYPE.VENDOR
+                ) {
                   window.location.href = `/vendor/placebid/${this.props.job._id}`;
-                }else{
-                  window.location.href='/login'
+                } else {
+                  window.location.href = "/login";
                 }
               }}
-            >Place a bid</button>
+            >
+              Place a bid
+            </button>
           </div>
         </div>
-        <p className="mb-2"> {this.props.job.description.length > 200 ? this.props.job.description.slice(0, 200) + "..." : this.props.job.description}</p>
+        <p className="mb-2">
+          {" "}
+          {this.props.job.description.length > 200
+            ? this.props.job.description.slice(0, 200) + "..."
+            : this.props.job.description}
+        </p>
         <div className="client d-flex">
-          <img src={this.props.job.client.profileImage || defaultProfileImage} style={{ height: "35px", width: "35px" }}/>
+          <img
+            src={this.props.job.client.profileImage || defaultProfileImage}
+            style={{ height: "35px", width: "35px" }}
+          />
           <div className="ml-2">
             <h6 className="text-color">{this.props.job.client.username}</h6>
             <h6 className="text-dark">
               <span>
-                {
-                  this.props.job.client.bsLocation ? this.props.job.client.bsLocation.country : this.props.job.location.country
-                }{" "} | ${this.props.job.client.client.totalSpent} spent
+                {this.props.job.client.bsLocation
+                  ? this.props.job.client.bsLocation.country
+                  : this.props.job.location.country}{" "}
+                | ${this.props.job.client.client.totalSpent} spent
               </span>
             </h6>
           </div>
@@ -103,5 +124,7 @@ const mapStateToProps = ({ findJobReducer, loginReducer }) => {
     user,
   };
 };
-export default connect( mapStateToProps, {
-})(JobItem);
+export default connect(
+  mapStateToProps,
+  {},
+)(JobItem);

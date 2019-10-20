@@ -11,12 +11,8 @@ import Milestones from "./Milestones";
 import AttachFiles from "./AttachFiles";
 import Review from "./Review";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
-import { 
-  fetchUpdateContractData, 
-  fetchEndContractData, 
-  fetchGetContractData 
-} from "./essential";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import { fetchUpdateContractData, fetchEndContractData, fetchGetContractData } from "./essential";
+import defaultProfileImage from "@Components/images/profileplace.png";
 const { TabPane } = Tabs;
 
 class ClientContractDetails extends React.Component {
@@ -83,7 +79,6 @@ class ClientContractDetails extends React.Component {
   }
 
   render() {
-
     return (
       <div className="contract-details">
         <VF_ClientHeader />
@@ -92,19 +87,17 @@ class ClientContractDetails extends React.Component {
             <div className="row">
               <div className="col-12">
                 <div className="content-details shadow">
-                  {
-                    !this.props.contract && this.props.pending && 
+                  {!this.props.contract && this.props.pending && (
                     <div className="text-center loading-small py-5">
                       <Icon type="sync" spin />
                     </div>
-                  }
-                  {
-                    this.props.contract && 
+                  )}
+                  {this.props.contract && (
                     <div>
                       <div className="head d-md-flex d-block justify-content-between align-items-center">
                         <div className="user mb-3 mb-md-0">
                           <Avatar
-                            src={ this.props.contract.vendor.profileImage || defaultProfileImage}
+                            src={this.props.contract.vendor.profileImage || defaultProfileImage}
                             className="photo"
                           />
                           <div className="info ml-2">
@@ -114,14 +107,21 @@ class ClientContractDetails extends React.Component {
                               </a>
                             </h6>
                             <p className="text-grey">
-                              {this.props.contract.vendor.bsLocation ? `${this.props.contract.vendor.bsLocation.city} / ${this.props.contract.vendor.bsLocation.country}` : 'NONE'}
+                              {this.props.contract.vendor.bsLocation
+                                ? `${this.props.contract.vendor.bsLocation.city} / ${this.props.contract.vendor.bsLocation.country}`
+                                : "NONE"}
                             </p>
                             <p className="text-grey">
-                              {this.props.contract.vendor.timeZone ? getTimeFromTimezone(this.props.contract.vendor.timeZone) : 'NONE'}
+                              {this.props.contract.vendor.timeZone
+                                ? getTimeFromTimezone(this.props.contract.vendor.timeZone)
+                                : "NONE"}
                             </p>
-                            <div className="text-color pointer h5" onClick={()=>{
-                              window.location.href = "/messages/c"
-                            }}>
+                            <div
+                              className="text-color pointer h5"
+                              onClick={() => {
+                                window.location.href = "/messages/c";
+                              }}
+                            >
                               <Icon type="message" />
                             </div>
                           </div>
@@ -144,21 +144,20 @@ class ClientContractDetails extends React.Component {
                           </p>
                         </div>
                         <div className="status">
-                          {
-                            this.props.contract.status === constants.CONTRACT_STATUS.CREATED && this.props.contract.completedPercent < 100 && 
-                            <div>
-                              <button
-                                className={`button-primary ${
-                                  this._button === 0 && this.props.pending ? "disable" : ""
-                                }`}
-                                onClick={this.jobComplete}
-                              >
-                                Job Complete
-                              </button>
-                            </div>
-                          }
-                          {
-                            this.props.contract.status === constants.CONTRACT_STATUS.CREATED && 
+                          {this.props.contract.status === constants.CONTRACT_STATUS.CREATED &&
+                            this.props.contract.completedPercent < 100 && (
+                              <div>
+                                <button
+                                  className={`button-primary ${
+                                    this._button === 0 && this.props.pending ? "disable" : ""
+                                  }`}
+                                  onClick={this.jobComplete}
+                                >
+                                  Job Complete
+                                </button>
+                              </div>
+                            )}
+                          {this.props.contract.status === constants.CONTRACT_STATUS.CREATED && (
                             <div>
                               <button
                                 className={`button-white ${
@@ -169,20 +168,20 @@ class ClientContractDetails extends React.Component {
                                 End Contract
                               </button>
                             </div>
-                          }
-                          {
-                            this.props.contract.status === constants.CONTRACT_STATUS.END && !this.isLeftFeedBack() && 
-                            <div>
-                              <button
-                                className="button-primary"
-                                onClick={() => {
-                                  window.location.href = `/client/givefeedback/${this.props.contract._id}`;
-                                }}
-                              >
-                                Leave Feedback
-                              </button>
-                            </div>
-                          }
+                          )}
+                          {this.props.contract.status === constants.CONTRACT_STATUS.END &&
+                            !this.isLeftFeedBack() && (
+                              <div>
+                                <button
+                                  className="button-primary"
+                                  onClick={() => {
+                                    window.location.href = `/client/givefeedback/${this.props.contract._id}`;
+                                  }}
+                                >
+                                  Leave Feedback
+                                </button>
+                              </div>
+                            )}
                         </div>
                       </div>
                       <div className="main-content">
@@ -199,7 +198,7 @@ class ClientContractDetails extends React.Component {
                         </Tabs>
                       </div>
                     </div>
-                  }
+                  )}
                 </div>
               </div>
             </div>
@@ -212,23 +211,17 @@ class ClientContractDetails extends React.Component {
 }
 
 const mapStateToProps = ({ clientContractDetailsReducer, loginReducer }) => {
-  const { 
-    error, 
-    contract,
-    milestones,
-    success, 
-    pending 
-  } = clientContractDetailsReducer;
+  const { error, contract, milestones, success, pending } = clientContractDetailsReducer;
 
   const { user } = loginReducer;
 
-  return { 
-    error, 
+  return {
+    error,
     contract,
     milestones,
-    success, 
-    pending, 
-    user 
+    success,
+    pending,
+    user,
   };
 };
 

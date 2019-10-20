@@ -178,7 +178,8 @@ export const fetchGetReviewsData = (payload) => async (dispatch, getState) => {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-  }).then((response) => response.json())
+  })
+    .then((response) => response.json())
     .then((result) => {
       if (result.status >= 400) {
         throw new Error(result.message);

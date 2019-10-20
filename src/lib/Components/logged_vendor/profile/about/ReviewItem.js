@@ -1,5 +1,5 @@
 import React from "react";
-import { Rate} from "antd";
+import { Rate } from "antd";
 import moment from "moment";
 
 class ReviewItem extends React.Component {
@@ -17,10 +17,9 @@ class ReviewItem extends React.Component {
             <h6 className="text-color pointer mb-2">{this.props.review.contract.job.title}</h6>
             <p className="text-grey">
               <span className=" font-weight-bold">
-                {
-                  this.props.review.from.firstName && this.props.review.from.lastName ? 
-                  `${this.props.review.from.firstName} ${this.props.review.from.lastName}` : this.props.review.from.username
-                }
+                {this.props.review.from.firstName && this.props.review.from.lastName
+                  ? `${this.props.review.from.firstName} ${this.props.review.from.lastName}`
+                  : this.props.review.from.username}
               </span>
               <span> on {moment(this.props.review.cratedAt).format("MMM DD, YYYY")}</span>
             </p>

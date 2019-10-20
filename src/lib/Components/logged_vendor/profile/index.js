@@ -81,21 +81,46 @@ class VendorProfile extends React.Component {
                     <div className="side-section">
                       <div className="content">
                         <ul>
-                          <li onClick={() => {
-                            this.selectMenu(0);
-                          }} className={this.state.selectedMenu === 0 ? "active" : ""}>About</li>
-                          <li onClick={() => {
-                            this.selectMenu(1);
-                          }} className={this.state.selectedMenu === 1 ? "active" : ""}>Portfolio</li>
-                          <li onClick={() => {
-                            this.selectMenu(2);
-                          }} className={this.state.selectedMenu === 2 ? "active" : ""}>Teams</li>
-                          <li onClick={() => {
-                            this.selectMenu(3);
-                          }} className={this.state.selectedMenu === 3 ? "active" : ""}>Services</li>
-                          <li onClick={() => {
-                            this.selectMenu(4);
-                          }} className={this.state.selectedMenu === 4 ? "active" : ""}>Payment</li>
+                          <li
+                            onClick={() => {
+                              this.selectMenu(0);
+                            }}
+                            className={this.state.selectedMenu === 0 ? "active" : ""}
+                          >
+                            About
+                          </li>
+                          <li
+                            onClick={() => {
+                              this.selectMenu(1);
+                            }}
+                            className={this.state.selectedMenu === 1 ? "active" : ""}
+                          >
+                            Portfolio
+                          </li>
+                          <li
+                            onClick={() => {
+                              this.selectMenu(2);
+                            }}
+                            className={this.state.selectedMenu === 2 ? "active" : ""}
+                          >
+                            Teams
+                          </li>
+                          <li
+                            onClick={() => {
+                              this.selectMenu(3);
+                            }}
+                            className={this.state.selectedMenu === 3 ? "active" : ""}
+                          >
+                            Services
+                          </li>
+                          <li
+                            onClick={() => {
+                              this.selectMenu(4);
+                            }}
+                            className={this.state.selectedMenu === 4 ? "active" : ""}
+                          >
+                            Payment
+                          </li>
                         </ul>
                         <div className="w-100 select-menu">
                           <Select

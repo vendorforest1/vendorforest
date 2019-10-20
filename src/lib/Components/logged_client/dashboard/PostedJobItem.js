@@ -32,7 +32,9 @@ class PostedJobItem extends React.Component {
               {this.props.job.title} {this.displayJobStatus()}
             </h5>
             <p className="mb-3 text-grey">
-              {this.props.job.service.name ? `${this.props.job.service.name}/${this.props.job.category.name}` : 'NONE'}
+              {this.props.job.service.name
+                ? `${this.props.job.service.name}/${this.props.job.category.name}`
+                : "NONE"}
             </p>
             <p>{this.props.job.description.substring(0, 350) + "..."}</p>
           </div>

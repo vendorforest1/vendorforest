@@ -258,7 +258,7 @@ class PostJobStepOne extends React.Component {
 }
 
 const mapStateToProps = ({ clientPostjobReducer }) => {
-  const { 
+  const {
     error,
     success,
     currentStep,

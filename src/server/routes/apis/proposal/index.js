@@ -8,8 +8,8 @@ import { create, getProposales, _delete, get, update } from "./validation";
 
 const router = express.Router();
 const proposalCtr = getProposalCtr();
-const validator = expressValidation.createValidator({ 
-    passError: true 
+const validator = expressValidation.createValidator({
+  passError: true,
 });
 
 router.use(isAuthenticatedForApi);

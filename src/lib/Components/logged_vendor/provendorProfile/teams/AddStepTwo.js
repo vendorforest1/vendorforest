@@ -1,9 +1,8 @@
 import React from "react";
 import { Input, Form, Avatar, Select, Button } from "antd";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 const { Option } = Select;
 const permissions = ["Photographer", "Event Planner", "Manager"];
-
 
 class AddStepTwo extends React.Component {
   constructor(props) {

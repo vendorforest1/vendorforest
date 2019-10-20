@@ -2,7 +2,7 @@ import React from "react";
 import { Tag, Icon, Avatar, Progress } from "antd";
 import moment from "moment";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 
 class PendingContractItem extends React.Component {
   constructor(props) {

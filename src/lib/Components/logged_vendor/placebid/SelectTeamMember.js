@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Input, Avatar, Checkbox, InputNumber, Icon, Progress, Rate } from "antd";
 import { constants } from "@Shared/constants";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 const { Search } = Input;
 
 class SelectTeamMember extends React.Component {
@@ -39,12 +39,18 @@ class SelectTeamMember extends React.Component {
                     checked={member.isSelected}
                     disabled={this.props.disabled}
                   />
-                  <img src={member.profileImage || defaultProfileImage} alt="vendorprofileimage" style={{ height: "50px", width: "50px" }}/>
+                  <img
+                    src={member.profileImage || defaultProfileImage}
+                    alt="vendorprofileimage"
+                    style={{ height: "50px", width: "50px" }}
+                  />
                   <div className="member-name ml-3">
                     <h6 className=" font-weight-bold">{member.username}</h6>
                     {member.vendor.service && member.vendor.category && (
                       <p>
-                        {member.vendor.service ? `${member.vendor.service.name} / ${member.vendor.category.name}` : 'NONE'}
+                        {member.vendor.service
+                          ? `${member.vendor.service.name} / ${member.vendor.category.name}`
+                          : "NONE"}
                       </p>
                     )}
                     {member.bsLocation && (

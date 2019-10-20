@@ -7,7 +7,7 @@ import moment from "moment";
 import CreateContract from "./CreateContract";
 import ProposalDetails from "./ProposalDetails";
 import { fetchDeclineProposal } from "./essential";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 
 class ProposalItem extends React.Component {
   constructor(props) {
@@ -54,7 +54,7 @@ class ProposalItem extends React.Component {
   }
 
   chat() {
-    window.location.href = "/messages/c"
+    window.location.href = "/messages/c";
   }
 
   render() {
@@ -69,7 +69,9 @@ class ProposalItem extends React.Component {
             <div className="ml-2">
               <h6 className="text-dark font-weight-bold">{this.props.proposal.vendor.username}</h6>
               <p>
-                {this.props.proposal.vendor.vendor ? `${this.props.proposal.vendor.vendor.service.name}/${this.props.proposal.vendor.vendor.category.name}` : 'NONE'}
+                {this.props.proposal.vendor.vendor
+                  ? `${this.props.proposal.vendor.vendor.service.name}/${this.props.proposal.vendor.vendor.category.name}`
+                  : "NONE"}
               </p>
               <p className="font-weight-bold text-blue">
                 {constants.ACCOUNTTYPES[this.props.proposal.vendor.accountType]}
@@ -110,7 +112,8 @@ class ProposalItem extends React.Component {
             {this.props.proposal.status === constants.PROPOSAL_STATUS.CREATED && (
               <div className="proposal-action col d-md-block d-flex justify-content-between">
                 <p className="text-color pointer mb-1" onClick={this.search}>
-                  <Icon type="search" className="mr-2" />View
+                  <Icon type="search" className="mr-2" />
+                  View
                 </p>
                 <p className="text-red pointer mb-1" onClick={this.delete}>
                   <Icon type="close" className="mr-2" />
@@ -166,14 +169,20 @@ class ProposalItem extends React.Component {
           onClose={this.toggle}
           visible={this.state.drawVisible}
           title={
-          <div className="d-flex">
-            <h5 className="mr-4">Proposal Details</h5>
-            <button className="button-primary" style={{
-              height: '30px',
-              lineHeight: '30px',
-              minWidth: '80px'
-            }}>Hire</button>
-          </div>}
+            <div className="d-flex">
+              <h5 className="mr-4">Proposal Details</h5>
+              <button
+                className="button-primary"
+                style={{
+                  height: "30px",
+                  lineHeight: "30px",
+                  minWidth: "80px",
+                }}
+              >
+                Hire
+              </button>
+            </div>
+          }
         >
           <ProposalDetails
             proposal={this.props.proposal}

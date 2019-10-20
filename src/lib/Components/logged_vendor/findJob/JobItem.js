@@ -3,14 +3,10 @@ import { connect } from "react-redux";
 import { Button, Icon, Tag, Rate } from "antd";
 import moment from "moment";
 import { constants } from "@Shared/constants";
-import defaultProfileImage from '@Components/images/profileplace.png'
+import defaultProfileImage from "@Components/images/profileplace.png";
 
 class JobItem extends React.Component {
-
-
-  componentDidMount(){
-    
-  }
+  componentDidMount() {}
 
   displaySkills() {
     return this.props.job.subCategories.map((subct, index) => {
@@ -110,7 +106,9 @@ class JobItem extends React.Component {
           <div className="ml-2">
             <h6 className="text-color">{this.props.job.client.username}</h6>
             <h6 className="text-dark">
-              <span> {this.props.job.client.bsLocation
+              <span>
+                {" "}
+                {this.props.job.client.bsLocation
                   ? this.props.job.client.bsLocation.country
                   : this.props.job.location.country}{" "}
                 | ${this.props.job.client.client.totalSpent} spent
