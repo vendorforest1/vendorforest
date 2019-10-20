@@ -638,16 +638,18 @@ module.exports = (webpackEnv) => {
   const serverConfig = {
     mode: isEnvProduction ? "production" : isEnvDevelopment && "development",
     target: "node",
-    externals: [nodeExternals({
-      whitelist: ["jquery"]
-    })],
+    externals: [
+      nodeExternals({
+        whitelist: ["jquery"],
+      }),
+    ],
     name: "backend",
     entry: [paths.appBackendEntry].filter(Boolean),
-    devServer: {
-      hot: isEnvDevelopment && true,
-      port: 4444,
-      injectClient: true,
-    },
+    // devServer: {
+    //   hot: isEnvDevelopment && true,
+    //   port: 4444,
+    //   injectClient: true,
+    // },
     resolve: {
       //extensions: [".js", ".jsx"],
       extensions: paths.moduleFileExtensions.map((ext) => `.${ext}`),

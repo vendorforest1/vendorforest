@@ -17,6 +17,7 @@ export function withRouterWorkaround(Inner) {
 
 class App extends React.Component {
   render() {
+    console.log("App*** ", this.props);
     return (
       <Switch>
         {Routes.map((route, i) => (
@@ -39,4 +40,5 @@ class App extends React.Component {
 
 const AppWithStyles = withStyles(styles)(App);
 
-export default withRouter(AppWithStyles);
+export default AppWithStyles;
+// export default withRouter(AppWithStyles);
