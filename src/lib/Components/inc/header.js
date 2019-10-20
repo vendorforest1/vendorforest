@@ -1,6 +1,9 @@
 import React from "react";
 import withStyles from "isomorphic-style-loader/withStyles";
 import style from "./index.scss";
+import { connect } from "react-redux";
+import createStore from "@Shared/configureStore";
+import { ContextConsumer } from "@Shared/SharedContext";
 
 class VendorForestHeader extends React.Component {
   constructor(props) {
@@ -9,7 +12,9 @@ class VendorForestHeader extends React.Component {
     this.state = {
       isOpen: false,
     };
+    this.store = createStore().persistor;
     this.toggle = this.toggle.bind(this);
+    this.getVenderForestHeader = this.getVenderForestHeader.bind(this);
   }
 
   toggle() {
@@ -18,8 +23,8 @@ class VendorForestHeader extends React.Component {
     });
   }
 
-  render() {
-    return (
+  getVenderForestHeader() {
+    const unSigned = (
       <div className="top-header">
         <div className="top-small-nav d-lg-block d-none">
           <div className="container">
@@ -122,10 +127,36 @@ class VendorForestHeader extends React.Component {
         </div>
       </div>
     );
+    return (
+      <ContextConsumer>
+        {({ context }) => {
+          console.log("context: ", context);
+          return unSigned;
+        }}
+      </ContextConsumer>
+    );
+    // if(this.props.user && this.props.user.type)
+    // return unSigned;
+  }
+
+  render() {
+    return this.getVenderForestHeader();
   }
 }
 
-export default withStyles(style)(VendorForestHeader);
+const mapStateToProps = ({ loginReducer }) => {
+  const { user } = loginReducer;
+  return {
+    user,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {},
+)(withStyles(style)(VendorForestHeader));
+
+// export default withStyles(style)(VendorForestHeader);
 
 export class SearchBar extends React.Component {
   render() {

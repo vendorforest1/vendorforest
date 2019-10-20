@@ -15,6 +15,7 @@ import NewPostedJobs from "./NewPostedJobs";
 import BuildTeamsBox from "./BuildTeamsBox";
 import Mask from "./Mask";
 import { fetchInitData } from "./essential";
+import { ContextProvider } from "@Shared/SharedContext";
 
 class Home extends React.Component {
   constructor(props) {
@@ -40,21 +41,25 @@ class Home extends React.Component {
   }
 
   render() {
-    const { pending, homedata } = this.props;
+    const { pending, homedata, user } = this.props;
+
+    console.log(user, " ^^^^^^^^^^^^^^^^^");
     return (
       <div>
         {pending && <Mask />}
-        {!pending && homedata && (
+        {!pending && homedata && this.props.user && (
           <div>
-            <VendorForestHeader />
-            <HeaderForm {...this.props} />
-            <HomeCategories />
-            <ServicesCategory services={homedata.services} />
-            <TopRatedVendors vendors={homedata.vendors} />
-            <HowItWorks />
-            <NewPostedJobs jobs={this.props.homedata.jobs} />
-            <BuildTeamsBox />
-            <VendorForestFooter />
+            <ContextProvider context={this.props.user}>
+              <VendorForestHeader />
+              <HeaderForm {...this.props} />
+              <HomeCategories />
+              <ServicesCategory services={homedata.services} />
+              <TopRatedVendors vendors={homedata.vendors} />
+              <HowItWorks />
+              <NewPostedJobs jobs={this.props.homedata.jobs} />
+              <BuildTeamsBox />
+              <VendorForestFooter />
+            </ContextProvider>
           </div>
         )}
       </div>

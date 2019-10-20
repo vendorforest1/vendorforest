@@ -30,7 +30,7 @@ const persistConfig = {
   key: "root",
   // storage: sessionStorage, //persists only until tab is closed
   storage, // persists even after tab is closed
-  whitelist: ["homeReducer"], //loginReducer
+  whitelist: ["loginReducer"],
   blacklist: [],
   timeout: null,
   debug: true,
