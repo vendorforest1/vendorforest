@@ -1,3 +1,4 @@
+// @ts-nocheck
 import express from "express";
 import expressValidation from "express-joi-validation";
 

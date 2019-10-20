@@ -14,25 +14,33 @@ class ProposalItem extends React.Component {
     super(props);
 
     this.state = {
-      drawVisible: false,
+      proposalDrawVisible: false,
+      contractDrawVisible: false,
       pending: false,
     };
-    this.search = this.search.bind(this);
+    this.view = this.view.bind(this);
     this.delete = this.delete.bind(this);
     this.chat = this.chat.bind(this);
-    this.toggle = this.toggle.bind(this);
+    this.toggleProposal = this.toggleProposal.bind(this);
+    this.toggleContract = this.toggleContract.bind(this);
   }
 
   componentDidMount() {}
 
-  toggle() {
+  toggleProposal() {
     this.setState({
-      drawVisible: !this.state.drawVisible,
+      proposalDrawVisible: !this.state.proposalDrawVisible,
     });
   }
 
-  search() {
-    this.toggle();
+  toggleContract() {
+    this.setState({
+      contractDrawVisible: !this.state.contractDrawVisible,
+    });
+  }
+
+  view() {
+    this.toggleProposal();
   }
 
   delete() {
@@ -111,7 +119,7 @@ class ProposalItem extends React.Component {
             </h5>
             {this.props.proposal.status === constants.PROPOSAL_STATUS.CREATED && (
               <div className="proposal-action col d-md-block d-flex justify-content-between">
-                <p className="text-color pointer mb-1" onClick={this.search}>
+                <p className="text-color pointer mb-1" onClick={this.view}>
                   <Icon type="search" className="mr-2" />
                   View
                 </p>
@@ -150,11 +158,11 @@ class ProposalItem extends React.Component {
             )}
           </div>
         </div>
-        {/* <Drawer
-          placement="right"
+        <Drawer
+          placement="left"
           closable={true}
-          onClose={this.toggle}
-          visible={this.state.drawVisible}
+          onClose={this.toggleContract}
+          visible={this.state.contractDrawVisible}
           title={<span className="font-weight-bold">Create Contract</span>}
         >
           <CreateContract
@@ -162,12 +170,12 @@ class ProposalItem extends React.Component {
             toggle={this.toggle}
             job={this.props.job}
           />
-        </Drawer> */}
+        </Drawer>
         <Drawer
           placement="right"
           closable={true}
-          onClose={this.toggle}
-          visible={this.state.drawVisible}
+          onClose={this.toggleProposal}
+          visible={this.state.proposalDrawVisible}
           title={
             <div className="d-flex">
               <h5 className="mr-4">Proposal Details</h5>
@@ -178,17 +186,17 @@ class ProposalItem extends React.Component {
                   lineHeight: "30px",
                   minWidth: "80px",
                 }}
+                onClick={() => {
+                  this.toggleProposal();
+                  this.toggleContract();
+                }}
               >
                 Hire
               </button>
             </div>
           }
         >
-          <ProposalDetails
-            proposal={this.props.proposal}
-            toggle={this.toggleProposal}
-            job={this.props.job}
-          />
+          <ProposalDetails proposal={this.props.proposal} job={this.props.job} />
         </Drawer>
       </div>
     );

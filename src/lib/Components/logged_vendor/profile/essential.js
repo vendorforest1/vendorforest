@@ -344,3 +344,24 @@ export const fetchCreateTeam = async (payload) => {
       throw err.message;
     });
 };
+
+export const fetchUpdateVendorProfile = async (payload) => {
+  return await fetch(apiUrl.CREATE_TEAM, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {
+      throw err.message;
+    });
+};
