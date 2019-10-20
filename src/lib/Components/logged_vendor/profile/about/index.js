@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Form, InputNumber, List, Rate, Card, Icon, Progress, message } from "antd";
-import moment from "moment";
-import { constants } from "@Shared/constants";
-import { fetchReviewsData } from "../essential";
+import { List, Rate, Card, Icon, Progress, message } from "antd";
+import { 
+  fetchReviewsData 
+} from "../essential";
 import ReviewItem from "./ReviewItem";
 import defaultProfileImage from '@Components/images/profileplace.png'
 

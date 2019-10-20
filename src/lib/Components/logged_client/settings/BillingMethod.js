@@ -30,17 +30,17 @@ class ClientBillingMethod extends React.Component {
   checkCardInfo(rule, value, callback) {
     const form = this.props.form;
     if (value && form.getFieldValue("cardNumber").length < 15) {
-      callback("must be at least 15 digits");
+      return callback("must be at least 15 digits");
     } else {
-      callback();
+      return callback();
     }
   }
   checkSecurityCode(rule, value, callback) {
     const form = this.props.form;
     if (value && form.getFieldValue("securityCode").length < 3) {
-      callback("must be at least 3 digits");
+      return callback("must be at least 3 digits");
     } else {
-      callback();
+      return callback();
     }
   }
   saveBillingInfo(e) {

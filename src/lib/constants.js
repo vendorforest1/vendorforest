@@ -37,8 +37,9 @@ export const constants = {
   JOB_STATUS: {
     POSTED: 0,
     HIRED: 1,
-    CANCELED: 2,
-    CLOSED: 3,
+    COMPLETED: 2,
+    CANCELED: 3,
+    CLOSED: 4,
   },
   BID_TYPE: {
     INDIVIDUAL: 0,

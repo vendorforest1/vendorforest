@@ -53,6 +53,21 @@
     @media screen and (max-width:768px){
         width: 100% !important;
     }
+    .proposal_details{
+        .vendor-content{
+            .vendor-status{
+                .job-progress{
+                    max-width: 170px;
+                }
+            }
+        }
+        .like-rate{
+            color: #07b107;
+            svg{
+                width: 10px;
+            }
+        }
+    }
 }
 
 .add-mstbtn{

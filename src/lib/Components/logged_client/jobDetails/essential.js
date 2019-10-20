@@ -4,6 +4,7 @@ import { apiUrl } from "@Shared/constants";
 const FETCH_REQUEST = "FETCH_REQUEST";
 const FETCH_JOB_SUCCESS = "FETCH_JOB_SUCCESS";
 const FETCH_PROPOSALES_SUCCESS = "FETCH_PROPOSALES_SUCCESS";
+const FETCH_REVIEWS_SUCCESS = "FETCH_REVIEWS_SUCCESS";
 const FETCH_MSG_SUCCESS = "FETCH_MSG_SUCCESS";
 const FETCH_FAILURE = "FETCH_FAILURE";
 const CLEAR_FAILURE = "CLEAR_FAILURE";
@@ -15,6 +16,7 @@ export default function reducer(
     success: undefined,
     job: undefined,
     proposales: undefined,
+    reviews: [],
     pending: false,
   },
   action,
@@ -35,6 +37,12 @@ export default function reducer(
       return {
         ...state,
         proposales: action.payload,
+        pending: false,
+      };
+    case FETCH_REVIEWS_SUCCESS:
+      return {
+        ...state,
+        reviews: action.payload,
         pending: false,
       };
     case FETCH_MSG_SUCCESS:
@@ -71,9 +79,14 @@ const fetchJobSuccess = (jobInfo) => ({
   payload: jobInfo,
 });
 
-const fetchProposalesSuccess = (jobInfo) => ({
+const fetchProposalesSuccess = (proposalesInfo) => ({
   type: FETCH_PROPOSALES_SUCCESS,
-  payload: jobInfo,
+  payload: proposalesInfo,
+});
+
+const fetchReviewsSuccess = (reviewsInfo) => ({
+  type: FETCH_REVIEWS_SUCCESS,
+  payload: reviewsInfo,
 });
 
 const fetchSuccessMsg = (success) => ({
@@ -148,6 +161,29 @@ export const fetchGetProposalesData = (payload) => async (dispatch, getState) =>
         throw new Error(result.message);
       }
       dispatch(fetchProposalesSuccess(result.data));
+    })
+    .catch((err) => dispatch(fetchError(err.message)));
+};
+
+export const fetchGetReviewsData = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
+  let urlStr = "";
+  Object.keys(payload).forEach((key, index) => {
+    urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
+  });
+  return await fetch(`${apiUrl.GET_REVIEWS}${urlStr}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  }).then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      dispatch(fetchReviewsSuccess(result.data));
     })
     .catch((err) => dispatch(fetchError(err.message)));
 };

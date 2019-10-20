@@ -584,3 +584,42 @@ html {
         }
     }
 }
+
+.newposted-jobs{
+    .job-item{
+        display: flex;
+        justify-content: space-between;
+        @media screen and (max-width:768px){
+            padding: 15px;
+            display: block;
+            h5{
+                font-size: 16px;
+            }                
+            .job-summary{
+                margin-bottom: 10px;
+            }
+        }
+        .job-summary{
+            .color-gray{
+                color: #888;
+            }
+            flex-grow: 1;
+            .anticon{
+                vertical-align: 0.1rem
+            }
+        }
+        .job-action{
+            flex-basis: 110px;
+        }
+        .button-primary, .button-white{
+            height: 40px;
+            line-height: 40px;
+            width: 130px;
+            min-width: 130px;
+            flex-grow: 0;
+            @media screen and (max-width:768px){
+                flex-grow: 1;
+            }
+        }
+    }
+}

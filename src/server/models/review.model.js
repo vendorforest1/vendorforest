@@ -38,10 +38,9 @@ const ReviewSchema = new mongoose.Schema(
     //   type: Number,
     //   default: 0,
     // },
-    vendorBadge: {
+    vendorBadge: [{
       type: Number,
-      default: constants.VENDOR_BADGES.NONE,
-    },
+    }],
   },
   {
     versionKey: false,

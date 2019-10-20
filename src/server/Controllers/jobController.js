@@ -7,7 +7,6 @@ export default () => {
   const controllers = {};
 
   controllers.getClientJobs = async (req, res, next) => {
-    console.log("user", req.user.accountType);
     let query = {
       client: req.user._id,
     };
@@ -18,7 +17,6 @@ export default () => {
         };
       });
     }
-
     await Job.find(query)
       .populate("service")
       .populate("category")
@@ -31,6 +29,8 @@ export default () => {
           model: "user",
           path: "vendor",
         },
+      }).sort({
+        createdAt: -1
       })
       .then(async (jobs) => {
         return res.status(200).json({

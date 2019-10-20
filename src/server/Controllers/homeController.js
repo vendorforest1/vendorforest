@@ -37,7 +37,18 @@ export default () => {
             }).limit(9)
             const jobs = await Job.find({
                 status: constants.JOB_STATUS.POSTED
-            }).lean().sort({
+            })
+            .populate("service")
+            .populate("category")
+            .populate({
+                path: "client",
+                model: "user",
+                populate: {
+                  path: "client",
+                  model: "client",
+                },
+            })
+            .lean().sort({
                 createdAt: -1
             }).limit(3);
             return res.status(200).json({

@@ -14,6 +14,8 @@ class PostedJobItem extends React.Component {
     switch (this.props.job.status) {
       case constants.JOB_STATUS.POSTED:
         return <span className="text-color h6">(OPEN)</span>;
+      case constants.JOB_STATUS.HIRED:
+        return <span className="text-color h6">(HIRED)</span>;
       case constants.JOB_STATUS.CLOSED:
         return <span className="text-danger h6">(CLOSED)</span>;
       case constants.JOB_STATUS.CANCELED:

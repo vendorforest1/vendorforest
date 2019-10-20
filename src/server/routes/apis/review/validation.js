@@ -26,7 +26,7 @@ export const create = {
     feedback: Joi.string().required(),
     endReason: Joi.number(),
     recommend: Joi.number(),
-    vendorBadge: Joi.number(),
+    vendorBadge: Joi.array().items(Joi.number()),
   })
 }
 

@@ -5,6 +5,7 @@ import { constants } from "@Shared/constants";
 import { connect } from "react-redux";
 import moment from "moment";
 import CreateContract from "./CreateContract";
+import ProposalDetails from "./ProposalDetails";
 import { fetchDeclineProposal } from "./essential";
 import defaultProfileImage from '@Components/images/profileplace.png'
 
@@ -16,7 +17,7 @@ class ProposalItem extends React.Component {
       drawVisible: false,
       pending: false,
     };
-    this.hire = this.hire.bind(this);
+    this.search = this.search.bind(this);
     this.delete = this.delete.bind(this);
     this.chat = this.chat.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -30,7 +31,7 @@ class ProposalItem extends React.Component {
     });
   }
 
-  hire() {
+  search() {
     this.toggle();
   }
 
@@ -108,9 +109,8 @@ class ProposalItem extends React.Component {
             </h5>
             {this.props.proposal.status === constants.PROPOSAL_STATUS.CREATED && (
               <div className="proposal-action col d-md-block d-flex justify-content-between">
-                <p className="text-color pointer mb-1" onClick={this.hire}>
-                  <Icon type="check" className="mr-2" />
-                  Hire
+                <p className="text-color pointer mb-1" onClick={this.search}>
+                  <Icon type="search" className="mr-2" />View
                 </p>
                 <p className="text-red pointer mb-1" onClick={this.delete}>
                   <Icon type="close" className="mr-2" />
@@ -147,7 +147,7 @@ class ProposalItem extends React.Component {
             )}
           </div>
         </div>
-        <Drawer
+        {/* <Drawer
           placement="right"
           closable={true}
           onClose={this.toggle}
@@ -157,6 +157,27 @@ class ProposalItem extends React.Component {
           <CreateContract
             proposal={this.props.proposal}
             toggle={this.toggle}
+            job={this.props.job}
+          />
+        </Drawer> */}
+        <Drawer
+          placement="right"
+          closable={true}
+          onClose={this.toggle}
+          visible={this.state.drawVisible}
+          title={
+          <div className="d-flex">
+            <h5 className="mr-4">Proposal Details</h5>
+            <button className="button-primary" style={{
+              height: '30px',
+              lineHeight: '30px',
+              minWidth: '80px'
+            }}>Hire</button>
+          </div>}
+        >
+          <ProposalDetails
+            proposal={this.props.proposal}
+            toggle={this.toggleProposal}
             job={this.props.job}
           />
         </Drawer>

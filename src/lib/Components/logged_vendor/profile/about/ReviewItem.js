@@ -1,6 +1,5 @@
 import React from "react";
-import { Button, Icon, Avatar, Rate, Modal, Progress } from "antd";
-import { constants } from "@Shared/constants";
+import { Rate} from "antd";
 import moment from "moment";
 
 class ReviewItem extends React.Component {
@@ -13,17 +12,24 @@ class ReviewItem extends React.Component {
   render() {
     return (
       <div className="review-item">
-        <p>{this.props.review.feedback}</p>
         <div className="w-100 d-flex justify-content-between">
           <div className="mr-2">
-            <a className="text-color pointer mr-3" href="">
-              <h5>{this.props.review.from.username}</h5>
-            </a>
-            <span>on {moment(this.props.review.cratedAt).format("MMM DD, YYYY")}</span>
-            <h6 className="text-color pointer">{this.props.review.job.title}</h6>
+            <h6 className="text-color pointer mb-2">{this.props.review.contract.job.title}</h6>
+            <p className="text-grey">
+              <span className=" font-weight-bold">
+                {
+                  this.props.review.from.firstName && this.props.review.from.lastName ? 
+                  `${this.props.review.from.firstName} ${this.props.review.from.lastName}` : this.props.review.from.username
+                }
+              </span>
+              <span> on {moment(this.props.review.cratedAt).format("MMM DD, YYYY")}</span>
+            </p>
+            <p className="text-grey font-italic">{this.props.review.feedback}</p>
           </div>
-          <Rate value={this.props.user.vendor.rate} disabled allowHalf />
-          <span className="h6">{this.props.user.vendor.rate}</span>
+          <div>
+            <Rate value={this.props.review.rate} disabled allowHalf />
+            <span className="text-grey">{this.props.review.rate}</span>
+          </div>
         </div>
       </div>
     );

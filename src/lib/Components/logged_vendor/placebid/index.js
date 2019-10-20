@@ -235,7 +235,8 @@ class PlaceBid extends React.Component {
                   <Icon type="sync" spin />
                 </div>
               )}
-              {this.props.job && (
+              {
+                this.props.job && (
                 <div className="col-12">
                   <div className="job-content shadow mb-5">
                     <div className="row">

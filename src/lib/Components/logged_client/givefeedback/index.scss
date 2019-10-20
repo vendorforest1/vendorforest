@@ -12,10 +12,9 @@
             .enough-list{
                 .enough-item{
                     width: 100%;
-                    height: 80px;
-                    line-height: 80px;
                     text-align: center;
                     border: 1px solid #eee;
+                    padding: 10px 0;
                     cursor: pointer;
                     &.active{
                         background-color: #07b107;

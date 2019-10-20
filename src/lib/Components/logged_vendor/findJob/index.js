@@ -49,7 +49,6 @@ class VendorFindJob extends React.Component {
   }
 
   componentWillReceiveProps(newProps) {
-    console.log(newProps.services, "---------- services --------")
     if (newProps.services) {
       this.setState({
         filterServices: newProps.services,
