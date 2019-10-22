@@ -67,7 +67,6 @@ const clearLoginError = () => ({
 export const fetchLogin = (payload) => async (dispatch, getState) => {
   dispatch(clearLoginError());
   dispatch(requestLogin());
-  console.log("apiurl", apiUrl.LOGIN);
   return await fetch(apiUrl.LOGIN, {
     method: "POST",
     headers: {
@@ -78,7 +77,6 @@ export const fetchLogin = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("Results: ", result);
       if (result.status >= 400) {
         throw new Error(result.msg);
       }

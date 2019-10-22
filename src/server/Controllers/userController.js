@@ -1,3 +1,4 @@
+// @ts-nocheck
 import crypto from "crypto";
 //import passport from'passport';
 import User from "@Models/user.model";
@@ -5,6 +6,7 @@ import Token from "@Models/token.model";
 import Client from "@Models/client.model";
 import Vendor from "@Models/vendor.model";
 import mailService from "@Config/mail";
+import geoip from 'geoip-lite';
 import getEnv, { constants } from "@Config/index";
 
 const env = getEnv();
@@ -44,6 +46,9 @@ export default function(passport) {
 
   controllers.login = function(req, res, next) {
     try {
+      var get_ip = require('ipware')().get_ip;
+      var geo = geoip.lookup("192.168.0.225");
+      console.log(geo)
       if (!req.isAuthenticated()) {
         passport.authenticate("local", (err, userObject) => {
           if (err) {

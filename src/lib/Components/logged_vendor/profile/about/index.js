@@ -55,7 +55,7 @@ class VendorAbout extends React.Component {
                     />
                   </div>
                   <div className="ml-3">
-                    <h3>{this.props.user.username}</h3>
+                    <h3>{this.props.user.firstName && this.props.user.lastName ? `${this.props.user.firstName} ${this.props.user.lastName}` : this.props.user.username}</h3>
                     {this.props.user.bsLocation && (
                       <p>
                         <Icon type="global" />
