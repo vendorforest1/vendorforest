@@ -37,17 +37,22 @@ class Home extends React.Component {
   // }
 
   static async fetchInitialData(store) {
-    return await store.dispatch(fetchInitData());
+    console.log(store, "$$$$$$$$$$$$$");
+
+    await store.dispatch(fetchInitData());
+  }
+
+  componentDidMount() {
+    //this.persistor.dispatch({ type: REHYDRATE });
   }
 
   render() {
-    const { pending, homedata, user } = this.props;
+    const { pending, homedata } = this.props;
 
-    console.log(user, " ^^^^^^^^^^^^^^^^^");
     return (
       <div>
         {pending && <Mask />}
-        {!pending && homedata && this.props.user && (
+        {!pending && homedata && (
           <div>
             <ContextProvider context={this.props.user}>
               <VendorForestHeader />

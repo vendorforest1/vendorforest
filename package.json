@@ -99,6 +99,7 @@
     "@babel/runtime": "^7.6.0",
     "@cometchat-pro/chat": "^1.8.11",
     "@hapi/joi": "^15.1.1",
+    "@react-native-community/async-storage": "^1.6.2",
     "@types/googlemaps": "^3.37.5",
     "@types/markerclustererplus": "^2.1.33",
     "@zeit/next-sass": "^1.0.1",

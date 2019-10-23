@@ -9,6 +9,7 @@ export default () => {
   const controllers = {};
 
   controllers.get = async (req, res, next) => {
+    console.log("req.isAuthenticated() ", req.isAuthenticated());
     try {
       const services = await Service.find({}).populate({
         path: "categories",
@@ -60,6 +61,7 @@ export default () => {
       return res.status(200).json({
         status: 200,
         data: {
+          user: req.user,
           services: services,
           vendors: vendors,
           jobs: jobs,
@@ -68,8 +70,7 @@ export default () => {
     } catch (error) {
       return res.status(500).json({
         status: 500,
-        message:
-          process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
       });
     }
   };

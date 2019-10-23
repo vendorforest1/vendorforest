@@ -79,6 +79,7 @@ export const fetchInitData = (payload) => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
+      console.log("FetchIntialData: req.user: ", result.data);
       dispatch(fetchInitSuccess(result.data));
     })
     .catch((err) => dispatch(fetchError(err.message)));

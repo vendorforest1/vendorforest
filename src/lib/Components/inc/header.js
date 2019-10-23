@@ -4,6 +4,7 @@ import style from "./index.scss";
 import { connect } from "react-redux";
 import createStore from "@Shared/configureStore";
 import { ContextConsumer } from "@Shared/SharedContext";
+import { ReactReduxContext } from "react-redux";
 
 class VendorForestHeader extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class VendorForestHeader extends React.Component {
     this.state = {
       isOpen: false,
     };
-    this.store = createStore().persistor;
+    this.persistor = createStore({}).persistor;
     this.toggle = this.toggle.bind(this);
     this.getVenderForestHeader = this.getVenderForestHeader.bind(this);
   }
@@ -21,6 +22,10 @@ class VendorForestHeader extends React.Component {
     this.setState({
       isOpen: !this.state.isOpen,
     });
+  }
+  componentDidMount() {
+    const X = this.persistor.dispatch({ type: "persist/REHYDRATE" });
+    console.log("in header, hydrate: ", X);
   }
 
   getVenderForestHeader() {
@@ -128,24 +133,31 @@ class VendorForestHeader extends React.Component {
       </div>
     );
     return (
-      <ContextConsumer>
-        {({ context }) => {
-          console.log("context: ", context);
+      <ReactReduxContext.Consumer>
+        {({ storeState, store }) => {
+          console.log("135: ", storeState);
           return unSigned;
         }}
-      </ContextConsumer>
+      </ReactReduxContext.Consumer>
+      // <ContextConsumer>
+      //   {({ context }) => {
+      //     console.log("context: ", context);
+      //     return unSigned;
+      //   }}
+      // </ContextConsumer>
     );
     // if(this.props.user && this.props.user.type)
     // return unSigned;
   }
 
   render() {
+    console.log("********************* ", this.props);
     return this.getVenderForestHeader();
   }
 }
 
-const mapStateToProps = ({ loginReducer }) => {
-  const { user } = loginReducer;
+const mapStateToProps = ({ persistorReducer }) => {
+  const { user } = persistorReducer;
   return {
     user,
   };

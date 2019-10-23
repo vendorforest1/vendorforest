@@ -39,23 +39,20 @@ async function hydrate() {
 
   // change if a better way using --context is discovered
   const { persistor, store } = await configureStore(deserialize(preloadedState));
-  // const history = createBrowserHistory();
-
-  console.log("store: ", store.getState());
-
-  // persistor.persist("homeReducer");
+  console.log(persistor);
   const jsx = (
-    <Provider store={store}>
-      <StyleContext.Provider value={{ insertCss }}>
-        {/* <PersistGate loading={null} persistor={persistor}> */}
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-        {/* </PersistGate> */}
-      </StyleContext.Provider>
-    </Provider>
+    <StyleContext.Provider value={{ insertCss }}>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </PersistGate>
+      </Provider>
+    </StyleContext.Provider>
   );
-  ReactDOM.hydrate(jsx, mountApp);
+  ReactDOM.render(jsx, mountApp);
+  persistor.dispatch({ type: "persist/REHYDRATE" });
 }
 
 hydrate();

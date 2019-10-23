@@ -36,27 +36,28 @@ const persistConfig = {
   debug: true,
 };
 
-// const persist_Reducer = (
-//   state = {
-//     error: false,
-//     user: undefined,
-//     pending: false,
-//   },
-//   action,
-// ) => {
-//   switch (action.type) {
-//     case "persist/REHYDRATE":
-//       return Object.assign({}, state, action.payload, {
-//         storeIsReady: true,
-//       });
-//     default:
-//       return Object.assign({}, state, action.payload, {
-//         storeIsReady: false,
-//       });
-//   }
-// };
+const persistorReducer = (
+  state = {
+    error: false,
+    user: undefined,
+    pending: false,
+  },
+  action,
+) => {
+  switch (action.type) {
+    case "persist/REHYDRATE":
+      return Object.assign({}, state, action.payload, {
+        storeIsReady: true,
+      });
+    default:
+      return Object.assign({}, state, action.payload, {
+        storeIsReady: false,
+      });
+  }
+};
 
 const reducers = combineReducers({
+  persistorReducer,
   loginReducer,
   registerReducer,
   homeReducer,

@@ -241,6 +241,9 @@ module.exports = (webpackEnv) => {
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
     target: "web", //BY DEFAULT
+    devServer: {
+      historyApiFallback: true,
+    },
     name: "frontend",
     entry: [
       // Include an alternative client for WebpackDevServer. A client's job is to
@@ -643,6 +646,9 @@ module.exports = (webpackEnv) => {
         whitelist: ["jquery"],
       }),
     ],
+    devServer: {
+      historyApiFallback: true,
+    },
     name: "backend",
     entry: [paths.appBackendEntry].filter(Boolean),
     // devServer: {
