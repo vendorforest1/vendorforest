@@ -57,8 +57,12 @@ class VendorAbout extends React.Component {
                     <img src={user.profileImage || defaultProfileImage} alt="profile image" />
                   </div>
                   <div className="ml-3">
-                    <h3>{user.username}</h3>
-                    {user.bsLocation && (
+                    <h3>
+                      {this.props.user.firstName && this.props.user.lastName
+                        ? `${this.props.user.firstName} ${this.props.user.lastName}`
+                        : this.props.user.username}
+                    </h3>
+                    {this.props.user.bsLocation && (
                       <p>
                         <Icon type="global" />
                         <span className="ml-1">

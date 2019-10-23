@@ -83,6 +83,14 @@ const UserSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "vendor",
     },
+    currentLocation: {
+      ipAddress: String,
+      country: String,
+      state: String,
+      city: String,
+      lat: Number,
+      lng: Number,
+    }
   },
   {
     timestamps: true,
