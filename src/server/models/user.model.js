@@ -90,7 +90,7 @@ const UserSchema = new mongoose.Schema(
       city: String,
       lat: Number,
       lng: Number,
-    }
+    },
   },
   {
     timestamps: true,

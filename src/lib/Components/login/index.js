@@ -24,9 +24,11 @@ class MainLogin extends React.Component {
   componentWillReceiveProps(nextProps, nextState) {
     if (nextProps.user && nextProps.user.userObj && this._isButton) {
       if (nextProps.user.userObj.accountType === constants.ACCOUNT_TYPE.VENDOR) {
-        window.location.href = `/${constants.ACCOUNTTYPES[nextProps.user.userObj.accountType]}/findjob`;
+        window.location.href = `/${
+          constants.ACCOUNTTYPES[nextProps.user.userObj.accountType]
+        }/findjob`;
       } else {
-        window.location.href =`/${constants.ACCOUNTTYPES[nextProps.user.userObj.accountType]}`;
+        window.location.href = `/${constants.ACCOUNTTYPES[nextProps.user.userObj.accountType]}`;
       }
     }
   }
