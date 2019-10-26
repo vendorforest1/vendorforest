@@ -9,6 +9,8 @@ import mailService from "@Config/mail";
 import geoip from "geoip-lite";
 import getEnv, { constants } from "@Config/index";
 
+const get_ip = require("ipware")().get_ip;
+
 const env = getEnv();
 
 export default function(passport) {
@@ -46,8 +48,7 @@ export default function(passport) {
 
   controllers.login = function(req, res, next) {
     try {
-      var get_ip = require("ipware")().get_ip;
-      var geo = geoip.lookup("192.168.0.225");
+      const geo = geoip.lookup("192.168.0.225");
       console.log(geo);
       if (!req.isAuthenticated()) {
         passport.authenticate("local", (err, userObject) => {
