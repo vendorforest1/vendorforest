@@ -28,7 +28,7 @@ COPY package.json ./
 #COPY .npmrc /usr/src/demo-server
 
 # and install dependencies
-RUN npm i
+RUN yarn install
 
 # Copy our source into container
 COPY . .
@@ -36,7 +36,7 @@ COPY . .
 COPY --chown=openjdk:openjdk . .
 
 # now run as new user nodejs from group nodejs
-USER node
+USER openjdk
 
 EXPOSE 4444
 
