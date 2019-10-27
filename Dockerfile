@@ -33,7 +33,7 @@ RUN npm i
 # Copy our source into container
 COPY . .
 
-COPY --chown=node:node . .
+COPY --chown=openjdk:openjdk . .
 
 # now run as new user nodejs from group nodejs
 USER node
