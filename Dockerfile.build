@@ -9,6 +9,6 @@ WORKDIR /home/nodejs/app
 #RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
 
 COPY package.json /home/nodejs/app/package.json
-RUN yarn install
+RUN npm install
 
 CMD ["tar", "-czf", "-", "node_modules"]
