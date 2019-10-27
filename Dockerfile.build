@@ -2,10 +2,11 @@ FROM nodesource/node:4
 RUN mkdir -p /home/nodejs/app
 WORKDIR /home/nodejs/app
 
-RUN mkdir -p /root/.ssh
-ADD ~/.ssh/id_rsa /root/.ssh/id_rsa
-RUN chmod 700 /root/.ssh/id_rsa
-RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
+#no npmrc
+#RUN mkdir -p /root/.ssh
+#ADD ~/.ssh/id_rsa /root/.ssh/id_rsa
+#RUN chmod 700 /root/.ssh/id_rsa
+#RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
 
 COPY package.json /home/nodejs/app/package.json
 RUN yarn install
