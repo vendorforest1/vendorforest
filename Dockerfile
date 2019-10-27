@@ -20,10 +20,9 @@ RUN groupadd -r nodejs && useradd -m -r -g nodejs nodejs
 USER nodejs
 
 # Create an app directory (in the Docker container)
-RUN mkdir -p /home/nodejs/app/node_modules && chown -R openjdk:openjdk /home/nodejs/app
-WORKDIR /home/node/app
+RUN mkdir -p /home/nodejs/app/node_modules && chown -R nodejs:nodejs /home/nodejs/app
 
-#COPY dist ./
+WORKDIR /home/node/app
 
 RUN echo "*******" $CONNSTR
 
