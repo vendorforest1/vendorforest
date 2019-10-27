@@ -17,7 +17,7 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
 #RUN groupadd -r nodejs && useradd -m -r -g nodejs nodejs
 
 # Create an app directory (in the Docker container)
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+RUN mkdir -p /home/node/app/node_modules && chown -R openjdk:openjdk /home/node/app
 WORKDIR /home/node/app
 
 #COPY dist ./
