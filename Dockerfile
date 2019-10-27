@@ -1,4 +1,10 @@
-FROM node:10-alpine
+#FROM node:10-alpine
+FROM openjdk:8-jdk
+
+# Install NodeJS
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+    apt-get update && \
+    apt-get install -y nodejs
 
 # Install Yarn
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
