@@ -14,7 +14,10 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
 
 # run as non-root user inside the docker container
 # see https://vimeo.com/171803492 at 17:20 mark
-#RUN groupadd -r nodejs && useradd -m -r -g nodejs nodejs
+RUN groupadd -r nodejs && useradd -m -r -g nodejs nodejs
+
+# now run as new user nodejs from group nodejs
+USER nodejs
 
 # Create an app directory (in the Docker container)
 RUN mkdir -p /home/node/app/node_modules && chown -R openjdk:openjdk /home/node/app
@@ -24,24 +27,18 @@ WORKDIR /home/node/app
 
 RUN echo "*******" $CONNSTR
 
-COPY package.json ./
-#COPY .npmrc /usr/src/demo-server
+COPY package.json /home/nodejs/app/package.json
 
 # and install dependencies
-RUN yarn install
+RUN yarn install --production
 
 # Copy our source into container
-COPY . .
-
-COPY --chown=openjdk:openjdk . .
-
-# now run as new user nodejs from group nodejs
-USER openjdk
+COPY --chown=nodejs:nodejs . /home/nodejs/app
 
 EXPOSE 4444
 
 #investigate 
 #docker run -it --entrypoint sh vendorforest/demov1.0
+ENV NODE_ENV production
 
-#CMD [ "yarn", "start" ]
-CMD ["node", "dist"]
+CMD [ "yarn", "start" ]
