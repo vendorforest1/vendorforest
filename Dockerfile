@@ -1,6 +1,10 @@
 #FROM node:10-alpine
 FROM openjdk:8-jdk
 
+# run as non-root user inside the docker container
+# see https://vimeo.com/171803492 at 17:20 mark
+RUN groupadd -r nodejs && useradd -m -r -g nodejs nodejs
+
 # Install NodeJS
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
     apt-get update && \
@@ -11,10 +15,6 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
     apt-get update && \
     apt-get install -y yarn
-
-# run as non-root user inside the docker container
-# see https://vimeo.com/171803492 at 17:20 mark
-RUN groupadd -r nodejs && useradd -m -r -g nodejs nodejs
 
 # now run as new user nodejs from group nodejs
 USER nodejs
@@ -29,8 +29,7 @@ RUN echo $CONNSTR
 COPY package.json /home/nodejs/app/package.json
 
 # and install dependencies
-RUN yarn install 
-#--production=true
+RUN yarn install --production=false
 
 # Copy our source into container
 COPY --chown=nodejs:nodejs . /home/nodejs/app
