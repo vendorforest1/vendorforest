@@ -29,7 +29,8 @@ RUN echo $CONNSTR
 COPY package.json /home/nodejs/app/package.json
 
 # and install dependencies
-RUN yarn install --production=true
+RUN yarn install 
+#--production=true
 
 # Copy our source into container
 COPY --chown=nodejs:nodejs . /home/nodejs/app
