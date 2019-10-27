@@ -24,12 +24,12 @@ RUN mkdir -p /home/nodejs/app/node_modules && chown -R nodejs:nodejs /home/nodej
 
 WORKDIR /home/node/app
 
-RUN echo "*******" $CONNSTR
+RUN echo $CONNSTR
 
 COPY package.json /home/nodejs/app/package.json
 
 # and install dependencies
-RUN yarn install --production
+RUN yarn install --production=true
 
 # Copy our source into container
 COPY --chown=nodejs:nodejs . /home/nodejs/app
