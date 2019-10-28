@@ -2,6 +2,12 @@ FROM nodesource/node:4
 RUN mkdir -p /home/nodejs/app
 WORKDIR /home/nodejs/app
 
+# Install Yarn
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
+    apt-get update && \
+    apt-get install -y yarn
+
 #no npmrc
 #RUN mkdir -p /root/.ssh
 #ADD ~/.ssh/id_rsa /root/.ssh/id_rsa
@@ -9,6 +15,6 @@ WORKDIR /home/nodejs/app
 #RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
 
 COPY package.json /home/nodejs/app/package.json
-RUN npm install
+RUN yarn install
 
 CMD ["tar", "-czf", "-", "node_modules"]
