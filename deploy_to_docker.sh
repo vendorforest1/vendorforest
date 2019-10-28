@@ -9,7 +9,13 @@ docker rm vendorforest-demov1.0
 docker rmi -f vendorforest/demov1.0 
 
 #build
-docker build -t vendorforest/demov1.0 .
+echo "app dependencies."
+docker build -t vendorforestapp-build -f Dockerfile.build . 
+
+#deploy app resources
+docker run vendorforestapp-build > node_modules.tar.gz
+
+docker build -t vendorforest/demov1.0 -f Dockerfile.dist .
 
 echo "Done building image."
 

@@ -1,4 +1,4 @@
-FROM node:8.9.1-alpine
+FROM node:10-alpine
 
 ARG NODE_ENV=production
 ENV NODE_ENV=$NODE_ENV
@@ -17,6 +17,7 @@ COPY package.json yarn.lock ./
 RUN set -ex; \
   if [ "$NODE_ENV" = "production" ]; then \
     yarn install --no-cache --frozen-lockfile --production; \
+        yarn cache clean;       \
   elif [ "$NODE_ENV" = "test" ]; then \
     yarn install --no-cache --frozen-lockfile; \
   fi;

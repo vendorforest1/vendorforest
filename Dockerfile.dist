@@ -1,0 +1,26 @@
+FROM node:10-alpine
+
+# run as non-root user inside the docker container
+# see https://vimeo.com/171803492 at 17:20 mark
+RUN groupadd -r nodejs && useradd -m -r -g nodejs nodejs
+
+# now run as new user nodejs from group nodejs
+USER nodejs
+
+# Create an app directory (in the Docker container)
+RUN mkdir -p  /home/nodejs/app
+WORKDIR /home/node/app
+
+RUN echo $CONNSTR
+
+ADD node_modules.tar.gz /home/nodejs/app
+COPY . /home/nodejs/app
+
+EXPOSE 4444
+
+#To investigate 
+#docker run -it --entrypoint sh vendorforest/demov1.0
+
+ENV NODE_ENV production
+
+CMD [ "yarn", "start" ]
