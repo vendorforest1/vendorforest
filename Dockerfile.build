@@ -1,12 +1,10 @@
-FROM nodesource/node:4
+FROM node:8.9.1-alpine
+
+ARG NODE_ENV=production
+ENV NODE_ENV=$NODE_ENV
+
 RUN mkdir -p /home/nodejs/app
 WORKDIR /home/nodejs/app
-
-# Install Yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-    apt-get update && \
-    apt-get install -y yarn
 
 #no npmrc
 #RUN mkdir -p /root/.ssh
@@ -14,7 +12,13 @@ RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
 #RUN chmod 700 /root/.ssh/id_rsa
 #RUN echo "Host github.com\n\tStrictHostKeyChecking no\n" >> /root/.ssh/config
 
-COPY package.json /home/nodejs/app/package.json
-RUN yarn install
+# Install Node.js dependencies
+COPY package.json yarn.lock ./
+RUN set -ex; \
+  if [ "$NODE_ENV" = "production" ]; then \
+    yarn install --no-cache --frozen-lockfile --production; \
+  elif [ "$NODE_ENV" = "test" ]; then \
+    yarn install --no-cache --frozen-lockfile; \
+  fi;
 
 CMD ["tar", "-czf", "-", "node_modules"]
