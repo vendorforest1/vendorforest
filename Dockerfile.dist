@@ -1,20 +1,26 @@
 FROM node:10-alpine
+#FROM alpine:latest
 
 # run as non-root user inside the docker container
 # see https://vimeo.com/171803492 at 17:20 mark
-RUN groupadd -r nodejs && useradd -m -r -g nodejs nodejs
+RUN addgroup -S nodegroup && adduser -S nodejs -G nodegroup
+#RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 # now run as new user nodejs from group nodejs
 USER nodejs
 
 # Create an app directory (in the Docker container)
 RUN mkdir -p  /home/nodejs/app
-WORKDIR /home/node/app
+
+RUN chown -R nodejs:nodegroup /home/nodejs/app
+WORKDIR /home/nodejs/app
 
 RUN echo $CONNSTR
 
 ADD node_modules.tar.gz /home/nodejs/app
 COPY . /home/nodejs/app
+
+RUN yarn build
 
 EXPOSE 4444
 

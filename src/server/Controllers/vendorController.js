@@ -1,6 +1,6 @@
 import User from "../models/user.model";
 import Vendor from "../models/vendor.model";
-import Team from "../models/team.model";
+// import Team from "../models/team.model";
 import Company from "../models/company.model";
 import { calculateDistance } from "@Utils/utils";
 import getEnv, { constants } from "@Config/index";
