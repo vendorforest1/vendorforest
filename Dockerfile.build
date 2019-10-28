@@ -18,8 +18,9 @@ RUN set -ex; \
   if [ "$NODE_ENV" = "production" ]; then \
     yarn install --no-cache --frozen-lockfile --production; \
         yarn cache clean;       \
-  elif [ "$NODE_ENV" = "test" ]; then \
+  elif [ "$NODE_ENV" = "development" ]; then \
     yarn install --no-cache --frozen-lockfile; \
+        yarn cache clean;       \
   fi;
 
 CMD ["tar", "-czf", "-", "node_modules"]
