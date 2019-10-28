@@ -142,38 +142,64 @@ app.get("*", (req, res, next) => {
 });
 
 //dev experience
-reload(app)
-  .then(() => {
-    // reloadReturned object see returns documentation below for what is returned
-    // Reload started
-    app
-      .listen(PORT, () => {
-        console.log(`App listening on port ${PORT}!`);
-      })
-      .on("error", (error) => {
-        if (error.syscall !== "listen") {
-          throw error;
-        }
-        let bind = typeof PORT === "string" ? "Pipe " + PORT : "Port " + PORT;
-
-        // handle specific listen errors with friendly messages
-        switch (error.code) {
-          case "EACCES":
-            console.error(bind + " requires elevated privileges");
-            env.exit(1);
-            break;
-          case "EADDRINUSE":
-            console.error(bind + " is already in use");
-            env.exit(1);
-            break;
-          default:
+env.MODE === "development" &&
+  reload(app)
+    .then(() => {
+      // reloadReturned object see returns documentation below for what is returned
+      // Reload started
+      app
+        .listen(PORT, () => {
+          console.log(`App listening on port ${PORT}!`);
+        })
+        .on("error", (error) => {
+          if (error.syscall !== "listen") {
             throw error;
-        }
-      });
-  })
-  .catch(function() {
-    // Reload did not start correctly, handle error
-    console.log("Reload error!");
-  });
+          }
+          let bind = typeof PORT === "string" ? "Pipe " + PORT : "Port " + PORT;
 
+          // handle specific listen errors with friendly messages
+          switch (error.code) {
+            case "EACCES":
+              console.error(bind + " requires elevated privileges");
+              env.exit(1);
+              break;
+            case "EADDRINUSE":
+              console.error(bind + " is already in use");
+              env.exit(1);
+              break;
+            default:
+              throw error;
+          }
+        });
+    })
+    .catch(function() {
+      // Reload did not start correctly, handle error
+      console.log("Reload error!");
+    });
+
+env.MODE === "production" &&
+  app
+    .listen(PORT, () => {
+      console.log(`App listening on port ${PORT}!`);
+    })
+    .on("error", (error) => {
+      if (error.syscall !== "listen") {
+        throw error;
+      }
+      let bind = typeof PORT === "string" ? "Pipe " + PORT : "Port " + PORT;
+
+      // handle specific listen errors with friendly messages
+      switch (error.code) {
+        case "EACCES":
+          console.error(bind + " requires elevated privileges");
+          env.exit(1);
+          break;
+        case "EADDRINUSE":
+          console.error(bind + " is already in use");
+          env.exit(1);
+          break;
+        default:
+          throw error;
+      }
+    });
 export default app;
