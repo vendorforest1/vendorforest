@@ -15,3 +15,5 @@ paymentRouter.use(isAuthenticatedForApi);
 paymentRouter.use("/charges/:charges", paymentCtr.createStripeCharges);
 paymentRouter.use("/customers", paymentCtr.createStripeAccount);
 paymentRouter.use("/token", paymentCtr.createToken);
+paymentRouter.get("/authorize", paymentCtr.getAccountId);
+paymentRouter.get("/stripe_web_hook", paymentCtr.stripeWebHook);

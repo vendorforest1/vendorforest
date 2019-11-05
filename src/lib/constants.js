@@ -97,6 +97,8 @@ export const apiUrl = {
 
   GET_SERVICE: `${API_URL}/apis/service/get_services`,
 
+  GET_STRIPE_ID: `${API_URL}/apis/payment/authorize`,
+
   CLIENT_GET_SETTINGS: `${API_URL}/apis/client/settings`,
   CLIENT_POST_ACCOUNT: `${API_URL}/apis/client/account`,
   CLIENT_POST_BILLING: `${API_URL}/apis/client/billing`,

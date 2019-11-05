@@ -1,19 +1,74 @@
-import stripe from "stripe";
+// import stripe from "stripe";
+import User from "@Models/user.model";
+import getEnv, { constants } from "@Config/index";
+
+const stripe = require("stripe")("sk_test_56uZ1yKQJ3mSwdEAMUbeYUli00gzPpx7SK");
+// import { config } from "dotenv";
 // const crypto = require("crypto");
 // //const passport = require('passport');
 // const User = require("../models/user.model");
 // const Token = require("../models/token.model");
 // const Client = require("../models/client.model");
 // const Vendor = require("../models/vendor.model");
-// const constants = require("../config/constants");
+// const constant = require("../Config/constants");
 
 // TODO
 // @ts-ignore
 export default function(passport) {
   const controllers = {};
-  const stripePayload = new stripe("sk_test_PHS0wV5HZJ41uaZDQsgqHKQp");
+  // const stripePayload = new stripe("sk_test_PHS0wV5HZJ41uaZDQsgqHKQp");
 
   console.log("stripePayload");
+
+  controllers.getAccountId = (req, res) => {
+    req.session.state = Math.random()
+      .toString(36)
+      .slice(2);
+
+    let parameters = {
+      client_id: "ca_G69qhU4bRaQUrWwoYPRNlzu50gvOEgEy",
+      state: req.session.state,
+    };
+    console.log(parameters);
+    return res.status(200).json({
+      status: 200,
+      message: parameters,
+    });
+  };
+
+  controllers.stripeWebHook = (req, res) => {
+    var code = req.query.code;
+
+    stripe.oauth
+      .token({
+        grant_type: "authorization_code",
+        code: code,
+      })
+      .then(function(response) {
+        // console.log(response);
+        const connected_account_id = {
+          connectedAccountId: response.stripe_user_id,
+        };
+        // const newAccountID = new User(connected_account_id);
+        try {
+          User.findOneAndUpdate(
+            {
+              email: req.user.email,
+            },
+            connected_account_id,
+            {
+              new: true,
+            },
+          ).then(
+            console.log("Your Stripe account Id is saved."),
+            res.redirect(`/${constants.ACCOUNTTYPES[req.user.accountType]}/settings`),
+          );
+        } catch (error) {
+          console.log(error);
+        }
+        // newAccountID.save();
+      });
+  };
 
   // @ts-ignore
   controllers.createStripeCharges = async (req, res, next) => {
