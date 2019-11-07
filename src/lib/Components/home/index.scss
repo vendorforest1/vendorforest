@@ -253,10 +253,10 @@ html {
         padding: 20px 0 0 0;
 
         .content-item {
-            box-shadow: 0 1px 6px #39494c59;
+            box-shadow: none;
             text-align: center;
             padding: 20px 5px;
-            background-color: white;
+            background-color: transparent;
             color: #424242;
             cursor: pointer;
 
@@ -622,4 +622,8 @@ html {
             }
         }
     }
+}
+
+.icon {
+    height: 40px;
 }
