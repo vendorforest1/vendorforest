@@ -11,6 +11,9 @@ export default function() {
     SESS_DB_USER: env.SESS_DB_USER,
     SESS_COLLECTION: env.SESS_COLLECTION,
     CONNSTR: env.CONNSTR,
+    STRIPE_SECRET_KEY: env.STRIPE_SECRET_KEY,
+    STRIPE_PUBLISHABLE_KEY: env.STRIPE_PUBLISHABLE_KEY,
+    CLIENT_ID: env.CLIENT_ID,
     exit: process.exit,
   };
 }

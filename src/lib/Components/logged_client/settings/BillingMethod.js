@@ -1,7 +1,7 @@
 import React from "react";
 import { Input, Form, Radio, Select, Card } from "antd";
 import { connect } from "react-redux";
-import { fetchGetSettings, fetchUpdateBilling } from "./essential";
+import { fetchGetSettings, fetchUpdateBilling, confirmCardSetup } from "./essential";
 // import stripe from "stripe";
 // import { Elements, injectStripe } from "react-stripe-elements";
 
@@ -13,7 +13,6 @@ class ClientBillingMethod extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      billingMethod: props.user.client.billingMethod,
       number: "",
       firstName: "",
       lastName: "",
@@ -26,6 +25,10 @@ class ClientBillingMethod extends React.Component {
     this.checkSecurityCode = this.checkSecurityCode.bind(this);
     this.checkCardInfo = this.checkCardInfo.bind(this);
   }
+
+  // componentDidMount() {
+  //   this.props.confirmCardSetup();
+  // }
 
   checkCardInfo(rule, value, callback) {
     const form = this.props.form;
@@ -49,7 +52,6 @@ class ClientBillingMethod extends React.Component {
     this.props.form.validateFields((err, value) => {
       if (!err && !this.props.pending) {
         const params = {
-          billingMethod: this.state.billingMethod,
           number: value.cardNumber,
           firstName: value.firstName,
           lastName: value.lastName,
@@ -57,7 +59,7 @@ class ClientBillingMethod extends React.Component {
           exp_year: this.state.expYear,
           cvc: value.securityCode,
         };
-        this.props.fetchUpdateBilling(params);
+        this.props.confirmCardSetup(params);
       }
     });
   }
@@ -294,5 +296,6 @@ export default connect(
   {
     fetchGetSettings,
     fetchUpdateBilling,
+    confirmCardSetup,
   },
 )(ClientBillingMethodForm);

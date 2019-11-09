@@ -1,14 +1,15 @@
-import stripe from "stripe";
+import getEnv, { constants } from "@Config/index";
 import User from "@Models/user.model";
 import Client from "@Models/client.model";
 // import Token from "../models/token.model";
-import getEnv, { constants } from "@Config/index";
+import { async } from "q";
 
 const env = getEnv();
+const stripe = require("stripe")(env.STRIPE_SECRET_KEY);
 
 export default () => {
   const controllers = {};
-  const stripePayload = new stripe("sk_test_PHS0wV5HZJ41uaZDQsgqHKQp");
+  // const stripePayload = new stripe("sk_test_PHS0wV5HZJ41uaZDQsgqHKQp");
 
   //client deposits money into an escrow account
   controllers.depositMoney = async (req, res, next) => {
@@ -16,6 +17,17 @@ export default () => {
       .populate("client")
       .then(async (user) => {})
       .catch((error) => {});
+  };
+
+  controllers.getPubKey = async (req, res) => {
+    const stripePubKey = env.CLIENT_ID;
+    console.log(stripePubKey);
+    return res.json({ pubKey: stripePubKey });
+  };
+
+  controllers.getSetupIntent = async (req, res) => {
+    const intent = await stripe.setupIntents.create();
+    return res.json({ client_secret: intent.client_secret });
   };
 
   controllers.getClient = async (req, res, next) => {

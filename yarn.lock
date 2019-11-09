@@ -11669,9 +11669,10 @@ react-star-rating-component@^1.4.1:
     classnames "^2.2.5"
     prop-types "^15.6.1"
 
-react-stripe-elements@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/react-stripe-elements/-/react-stripe-elements-5.0.1.tgz#9030eb84ca06ecda4009769d09937e1cd65d2ec7"
+react-stripe-elements@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/react-stripe-elements/-/react-stripe-elements-5.1.0.tgz#b55a09ccd6ce7a55ca61f1d1de24cdfa8f0f3b04"
+  integrity sha512-4UlzOLNdbJsZr4JwbTdJjxhedAfalDDtfEYLHEBo0MKG0KgSLRAeIJup0/6NSpKtBLK4ieOMAwvyln9ICOSilQ==
   dependencies:
     prop-types "15.7.2"
 

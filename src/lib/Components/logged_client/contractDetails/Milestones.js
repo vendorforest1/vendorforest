@@ -238,7 +238,6 @@ class Milestones extends React.Component {
 }
 
 const MilestonesForm = Form.create({ name: "client_add_milestoneform" })(Milestones);
-
 const mapStateToProps = ({ clientContractDetailsReducer, loginReducer }) => {
   const { error, contract, milestones, success, pending } = clientContractDetailsReducer;
 

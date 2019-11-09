@@ -1,11 +1,12 @@
 import { apiUrl } from "@Shared/constants";
+import { async } from "q";
+// import stripe from "react-stripe-elements";
 // Actions
 const FETCH_SETTINGS_REQUEST = "FETCH_SETTINGS_REQUEST";
 const FETCH_SETTINGS_SUCCESS = "FETCH_SETTINGS_SUCCESS";
 const FETCH_MSG_SUCCESS = "FETCH_MSG_SUCCESS";
 const FETCH_SETTINGS_FAILURE = "FETCH_SETTINGS_FAILURE";
 const CLEAR_SETTINGS_FAILURE = "CLEAR_SETTINGS_FAILURE";
-
 // Reducer
 export default function reducer(
   state = {
@@ -76,6 +77,61 @@ const clearSettingsError = () => ({
   type: CLEAR_SETTINGS_FAILURE,
 });
 
+const getPublicKey = () => {
+  return fetch(apiUrl.GET_PUB_KEY, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log("public_key", result);
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      } else {
+        return result.pubKey;
+        // getSetupIntent(result);
+      }
+    });
+};
+
+const getSetupIntent = () => {
+  return fetch(apiUrl.GET_SETUP_INTENT, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log("___setupintent___", result.client_secret);
+      return result.client_secret;
+    });
+};
+
+export const confirmCardSetup = (payload) => async (dispatch, getState) => {
+  dispatch(clearSettingsError());
+  const pubKey = getPublicKey();
+  const clientSecret = getSetupIntent();
+  // const strip = stripe(pubKey);
+  // stripe.confirmCardSetup(
+  //   clientSecret,
+  //   {
+  //     payment_method: {
+  //       card: {
+
+  //       }
+  //     }
+  //   }
+  // )
+  console.log("pubkey:", pubKey);
+  console.log("setupintent:", clientSecret);
+  console.log("payloads:", payload.cvc);
+  // stripe.confirmCardSetup()
+};
 //TODO encrypt Card information
 export const fetchUpdateBilling = (payload) => async (dispatch, getState) => {
   dispatch(clearSettingsError());

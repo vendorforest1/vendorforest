@@ -104,6 +104,8 @@ export const apiUrl = {
   CLIENT_POST_BILLING: `${API_URL}/apis/client/billing`,
   CLIENT_POST_RESETPASS: `${API_URL}/apis/client/resetpass`,
   CLIENT_POST_NOTIFYSETTING: `${API_URL}/apis/client/notification`,
+  GET_PUB_KEY: `${API_URL}/apis/client/getpubkey`,
+  GET_SETUP_INTENT: `${API_URL}/apis/client/getsetupintent`,
 
   VENDOR_GET: `${API_URL}/apis/vendor/get`,
   VENDOR_FIND: `${API_URL}/apis/vendor/find`,

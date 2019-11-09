@@ -34,6 +34,8 @@ import VenueSettings from "@Components/logged_venue/settings";
 import ServiceCategories from "@Components/service_categories";
 import Messages from "@Components/messages";
 
+import Milestones from "@Components/logged_client/contractDetails/Milestones";
+
 export default [
   {
     path: `/`,
@@ -116,6 +118,11 @@ export default [
     path: "/client",
     exact: true,
     component: ClientDashboard,
+  },
+  {
+    path: "/client/milestones",
+    exact: true,
+    component: Milestones,
   },
   /*================================== VENDOR LINKS ==========================*/
   {
