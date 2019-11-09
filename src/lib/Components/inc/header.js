@@ -13,7 +13,7 @@ class VendorForestHeader extends React.Component {
     this.state = {
       isOpen: false,
     };
-    this.persistor = createStore({}).persistor;
+    // this.persistor = createStore({}).persistor;
     this.toggle = this.toggle.bind(this);
     this.getVenderForestHeader = this.getVenderForestHeader.bind(this);
   }
@@ -23,10 +23,10 @@ class VendorForestHeader extends React.Component {
       isOpen: !this.state.isOpen,
     });
   }
-  componentDidMount() {
-    const X = this.persistor.dispatch({ type: "persist/REHYDRATE" });
-    console.log("in header, hydrate: ", X);
-  }
+  // async UNSAFE_componentWillMount() {
+  //   await this.persistor.dispatch({ type: "persist/REHYDRATE" });
+  //   await console.log("in header, hydrate: ", this.props.user);
+  // }
 
   getVenderForestHeader() {
     const unSigned = (
@@ -136,6 +136,9 @@ class VendorForestHeader extends React.Component {
       <ReactReduxContext.Consumer>
         {({ storeState, store }) => {
           console.log("135: ", storeState);
+          {
+            /* store.dispatch({ type: "persist/REHYDRATE" }); */
+          }
           return unSigned;
         }}
       </ReactReduxContext.Consumer>
@@ -151,12 +154,12 @@ class VendorForestHeader extends React.Component {
   }
 
   render() {
-    console.log("********************* ", this.props);
     return this.getVenderForestHeader();
   }
 }
 
-const mapStateToProps = ({ persistorReducer }) => {
+const mapStateToProps = ({ persistorReducer, clientDashboardReducer }) => {
+  console.log("#################### ", persistorReducer, " &&&& ", clientDashboardReducer);
   const { user } = persistorReducer;
   return {
     user,

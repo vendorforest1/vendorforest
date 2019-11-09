@@ -39,7 +39,8 @@ async function hydrate() {
 
   // change if a better way using --context is discovered
   const { persistor, store } = await configureStore(deserialize(preloadedState));
-  console.log(persistor);
+  persistor.dispatch({ type: "persist/REHYDRATE" });
+  console.log(persistor.getState());
   const jsx = (
     <StyleContext.Provider value={{ insertCss }}>
       <Provider store={store}>
@@ -52,7 +53,6 @@ async function hydrate() {
     </StyleContext.Provider>
   );
   ReactDOM.render(jsx, mountApp);
-  persistor.dispatch({ type: "persist/REHYDRATE" });
 }
 
 hydrate();

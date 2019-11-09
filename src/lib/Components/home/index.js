@@ -72,7 +72,8 @@ class Home extends React.Component {
   }
 }
 
-const mapStateToProps = ({ homeReducer, loginReducer }) => {
+const mapStateToProps = ({ persistorReducer, homeReducer, loginReducer }) => {
+  console.log("$$$$$$$$$$ ", persistorReducer);
   const { error, homedata, success, pending } = homeReducer;
 
   const { user } = loginReducer;

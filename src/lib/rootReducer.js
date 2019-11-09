@@ -30,7 +30,7 @@ const persistConfig = {
   key: "root",
   // storage: sessionStorage, //persists only until tab is closed
   storage, // persists even after tab is closed
-  whitelist: ["loginReducer"],
+  whitelist: ["loginReducer", "clientDashboardReducer"],
   blacklist: [],
   timeout: null,
   debug: true,
@@ -46,6 +46,7 @@ const persistorReducer = (
 ) => {
   switch (action.type) {
     case "persist/REHYDRATE":
+      console.log("persist/REHYDRATE: ", action.payload.clientDashboardReducer);
       return Object.assign({}, state, action.payload, {
         storeIsReady: true,
       });

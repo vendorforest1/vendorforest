@@ -1,5 +1,4 @@
 import React from "react";
-import moment from "moment";
 import withStyles from "isomorphic-style-loader/withStyles";
 import VendorForestClientHeader from "@Components/inc/client_header";
 import VendorForestFooter from "@Components/inc/footer";
@@ -10,6 +9,7 @@ import PastContracts from "./PastContracts";
 
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
+import createStore from "@Shared/configureStore";
 
 class ClientDashboard extends React.Component {
   constructor(props) {
@@ -20,7 +20,9 @@ class ClientDashboard extends React.Component {
       pastContracts: [],
     };
   }
-
+  componentWillUnmount() {
+    // this.persistor.dispatch({ type: "persist/REHYDRATE" });
+  }
   render() {
     return (
       <div className="client-dashboard">
