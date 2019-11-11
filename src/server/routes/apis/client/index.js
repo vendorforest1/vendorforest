@@ -12,6 +12,7 @@ const validator = expressValidation.createValidator({ passError: true });
 router.use(isAuthenticatedForApi);
 router.get("/getpubkey", clientCtrl.getPubKey);
 router.post("/getsetupintent", clientCtrl.getSetupIntent);
+router.post("/getclientid", clientCtrl.getClientId);
 
 router.post("/billing", clientCtrl.updateBillingInformation);
 router.get("/settings", clientCtrl.getClient);

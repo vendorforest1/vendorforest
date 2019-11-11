@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { injectStripe, CardElement } from "react-stripe-elements";
 import { Input, Form, Radio, Select, Card } from "antd";
-import { getSetupIntent } from "./essential";
+import { getClientId } from "./essential";
 
 class ClientBilling extends Component {
   static fetchInitialData() {}
@@ -45,10 +45,12 @@ class ClientBilling extends Component {
   async saveBillingInfo(e) {
     e.preventDefault();
     if (this.props.stripe) {
-      // console.log("first_name__:", this.state.firstName + this.state.lastName);
-      this.props.stripe
+          this.props.stripe
         .createToken({type: 'card', name: this.state.firstName + this.state.lastName})
-        .then((payload) => console.log('[token]', payload.token.card));
+        .then((payload) => { 
+          console.log('[token]', payload.token.id);
+          getClientId(payload.token.id);
+        });
     } else {
       console.log("Stripe.js hasn't loaded yet.");
     }

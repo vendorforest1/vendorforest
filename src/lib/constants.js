@@ -106,6 +106,7 @@ export const apiUrl = {
   CLIENT_POST_NOTIFYSETTING: `${API_URL}/apis/client/notification`,
   GET_PUB_KEY: `${API_URL}/apis/client/getpubkey`,
   GET_SETUP_INTENT: `${API_URL}/apis/client/getsetupintent`,
+  GET_CLIENT_ID: `${API_URL}/apis/client/getclientid`,
 
   VENDOR_GET: `${API_URL}/apis/vendor/get`,
   VENDOR_FIND: `${API_URL}/apis/vendor/find`,

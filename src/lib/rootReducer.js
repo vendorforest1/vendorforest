@@ -1,7 +1,11 @@
-import { combineReducers } from "redux";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-// import sessionStorage from "redux-persist/lib/storage/session";
+//v4
+// import { combineReducers } from "redux";
+// import { persistReducer, REHYDRATE } from "redux-persist";
+// import storage from "redux-persist/lib/storage";
+
+//v5
+import { REHYDRATE, PURGE, persistCombineReducers } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // or whatever storage you are using
 
 import loginReducer from "@Components/login/essential";
 import registerReducer from "@Components/register/essential";
@@ -26,50 +30,83 @@ import vendorDashboardReducer from "@Components/logged_vendor/dashboard/essentia
 import vendorContractDetailsReducer from "@Components/logged_vendor/contractDetails/essential";
 import vendorReviewReducer from "@Components/logged_vendor/givefeedback/essential";
 
-const persistConfig = {
-  key: "root",
-  // storage: sessionStorage, //persists only until tab is closed
-  storage, // persists even after tab is closed
-  whitelist: ["loginReducer"],
-  blacklist: [],
-  timeout: null,
-  debug: true,
-};
+import hardSet from "redux-persist/lib/stateReconciler/hardSet";
+import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 
-const persistorReducer = (
-  state = {
-    error: false,
-    user: undefined,
-    pending: false,
-  },
-  action,
-) => {
-  switch (action.type) {
-    case "persist/REHYDRATE":
-      return Object.assign({}, state, action.payload, {
-        storeIsReady: true,
-      });
-    default:
-      return Object.assign({}, state, action.payload, {
-        storeIsReady: false,
-      });
-  }
-};
+// const AsyncStorage = useAsyncStorage("root");
 
-const reducers = combineReducers({
-  persistorReducer,
+//v4
+// const persistConfig = {
+//   key: "root",
+//   storage, // persists even after tab is closed
+//   // storage: sessionStorage, //persists only until tab is closed
+//   whitelist: ["loginReducer", "login"],
+//   // version: 0,
+//   // blacklist: [],
+//   timeout: null,
+//   debug: true,
+//   // stateReconciler: false,
+//   stateReconciler: autoMergeLevel2,
+//   // stateReconciler: hardSet,
+//   writeFailHandler: (status) => {
+//     console.log("Store setItem failed: ------ ", status);
+//   },
+// };
+
+// const persistorReducer = (
+//   state = {
+//     error: false,
+//     pending: false,
+//   },
+//   action,
+// ) => {
+//   switch (action.type) {
+//     case REHYDRATE:
+//       return Object.assign({}, state, action.payload, {
+//         storeIsReady: true,
+//       });
+//     default:
+//       return state;
+//   }
+// };
+
+// const reducers = combineReducers({
+//   // persistorReducer,
+//   login: loginReducer,
+//   loginReducer,
+//   registerReducer,
+//   homeReducer,
+//   messagesReducer,
+//   clientDashboardReducer,
+//   clientPostjobReducer,
+//   clientSettingsReducer,
+//   clientJobDetailsReducer,
+//   clientContractDetailsReducer,
+//   clientReviewReducer,
+//   vendorProfileReducer,
+//   vendorSettingsReducer,
+//   vendorDashboardReducer,
+//   vendorFindJobReducer,
+//   vendorJobDetailsReducer,
+//   vendorPlaceBidReducer,
+//   vendorViewTeamReducer,
+//   vendorContractDetailsReducer,
+//   vendorReviewReducer,
+// });
+
+const reducers = {
+  // persistorReducer,
+  login: loginReducer,
   loginReducer,
   registerReducer,
   homeReducer,
   messagesReducer,
-
   clientDashboardReducer,
   clientPostjobReducer,
   clientSettingsReducer,
   clientJobDetailsReducer,
   clientContractDetailsReducer,
   clientReviewReducer,
-
   vendorProfileReducer,
   vendorSettingsReducer,
   vendorDashboardReducer,
@@ -79,6 +116,13 @@ const reducers = combineReducers({
   vendorViewTeamReducer,
   vendorContractDetailsReducer,
   vendorReviewReducer,
-});
-
-export default persistReducer(persistConfig, reducers);
+};
+const config = {
+  key: "primary",
+  storage,
+  timeout: null,
+  // stateReconciler: autoMergeLevel2,
+};
+let reducer = persistCombineReducers(config, reducers);
+export default reducer;
+// export default persistReducer(persistConfig, reducer);

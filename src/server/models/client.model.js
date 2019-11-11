@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { string } from "prop-types";
 
 const ClientSchema = new mongoose.Schema(
   {
@@ -26,6 +27,9 @@ const ClientSchema = new mongoose.Schema(
       securityCode: {
         type: String,
       },
+    },
+    stripe_client_id: {
+      type: String,
     },
     paypal: {
       type: String,

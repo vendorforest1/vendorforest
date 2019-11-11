@@ -1,10 +1,9 @@
 import React from "react";
 import withStyles from "isomorphic-style-loader/withStyles";
-import style from "./index.scss";
+import styles from "./index.scss";
+import ClientHeader from "./client_header";
+import VendorHeader from "./vendor_header";
 import { connect } from "react-redux";
-import createStore from "@Shared/configureStore";
-import { ContextConsumer } from "@Shared/SharedContext";
-import { ReactReduxContext } from "react-redux";
 
 class VendorForestHeader extends React.Component {
   constructor(props) {
@@ -13,9 +12,8 @@ class VendorForestHeader extends React.Component {
     this.state = {
       isOpen: false,
     };
-    this.persistor = createStore({}).persistor;
     this.toggle = this.toggle.bind(this);
-    this.getVenderForestHeader = this.getVenderForestHeader.bind(this);
+    this.getUnSignedVenderForestHeader = this.getUnSignedVenderForestHeader.bind(this);
   }
 
   toggle() {
@@ -23,12 +21,11 @@ class VendorForestHeader extends React.Component {
       isOpen: !this.state.isOpen,
     });
   }
-  componentDidMount() {
-    const X = this.persistor.dispatch({ type: "persist/REHYDRATE" });
-    console.log("in header, hydrate: ", X);
-  }
 
-  getVenderForestHeader() {
+  componentWillReceiveProps(nextProps, nextState) {
+    console.log("_------------------- ", nextProps, " ------------", nextState);
+  }
+  getUnSignedVenderForestHeader() {
     const unSigned = (
       <div className="top-header">
         <div className="top-small-nav d-lg-block d-none">
@@ -37,13 +34,13 @@ class VendorForestHeader extends React.Component {
               <div className="col-8 d-flex justify-content-start">
                 <small className="mr-4">
                   <i className="icon">
-                    <img src="https://img.icons8.com/ios-glyphs/15/000000/marker.png" />
+                    <img src="https://img.icons8.com/ios-glyphs/15/000000/marker.png" alt="" />
                   </i>
                   Lynn,Massachusetts,US{" "}
                 </small>
                 <small>
                   <i className="icon">
-                    <img src="https://img.icons8.com/ios-glyphs/15/000000/new-post.png" />
+                    <img src="https://img.icons8.com/ios-glyphs/15/000000/new-post.png" alt="" />
                   </i>
                   Info@Vendorforest.Com
                 </small>
@@ -83,7 +80,10 @@ class VendorForestHeader extends React.Component {
                   </a>
                   <a role="button" href="/register" className="button-primary">
                     <i className="icon">
-                      <img src="https://img.icons8.com/ios-glyphs/15/ffffff/bookmark-ribbon.png" />
+                      <img
+                        src="https://img.icons8.com/ios-glyphs/15/ffffff/bookmark-ribbon.png"
+                        alt=""
+                      />
                     </i>
                     JOIN AS A VENDOR
                   </a>
@@ -91,10 +91,10 @@ class VendorForestHeader extends React.Component {
                 <div className="menu-hamburger d-xl-none d-block">
                   <div onClick={this.toggle} className="text-right">
                     {this.state.isOpen ? (
-                      <img src="https://img.icons8.com/ios/40/000000/multiply.png" />
+                      <img src="https://img.icons8.com/ios/40/000000/multiply.png" alt="" />
                     ) : (
                       <i className="icon">
-                        <img src="https://img.icons8.com/ios/30/000000/menu.png" />
+                        <img src="https://img.icons8.com/ios/30/000000/menu.png" alt="" />
                       </i>
                     )}
                   </div>
@@ -118,7 +118,10 @@ class VendorForestHeader extends React.Component {
                       </p>
                       <a role="button" href="/registration" className="button-primary">
                         <i className="icon">
-                          <img src="https://img.icons8.com/ios-glyphs/15/ffffff/bookmark-ribbon.png" />
+                          <img
+                            alt=""
+                            src="https://img.icons8.com/ios-glyphs/15/ffffff/bookmark-ribbon.png"
+                          />
                         </i>
                         JOIN AS A VENDOR
                       </a>
@@ -132,43 +135,32 @@ class VendorForestHeader extends React.Component {
         </div>
       </div>
     );
-    return (
-      <ReactReduxContext.Consumer>
-        {({ storeState, store }) => {
-          console.log("135: ", storeState);
-          return unSigned;
-        }}
-      </ReactReduxContext.Consumer>
-      // <ContextConsumer>
-      //   {({ context }) => {
-      //     console.log("context: ", context);
-      //     return unSigned;
-      //   }}
-      // </ContextConsumer>
-    );
-    // if(this.props.user && this.props.user.type)
-    // return unSigned;
+    return unSigned;
   }
 
   render() {
-    console.log("********************* ", this.props);
-    return this.getVenderForestHeader();
+    if (!this.props.user) {
+      return this.getUnSignedVenderForestHeader();
+    } else {
+      let { userObj } = this.props.user;
+      if (userObj.accountType === 0) {
+        return <ClientHeader />;
+      }
+      return <VendorHeader />;
+    }
   }
 }
 
-const mapStateToProps = ({ persistorReducer }) => {
-  const { user } = persistorReducer;
-  return {
-    user,
-  };
+const mapStateToProps = ({ loginReducer }) => {
+  const { user } = loginReducer;
+
+  return { user };
 };
 
 export default connect(
   mapStateToProps,
   {},
-)(withStyles(style)(VendorForestHeader));
-
-// export default withStyles(style)(VendorForestHeader);
+)(withStyles(styles)(VendorForestHeader));
 
 export class SearchBar extends React.Component {
   render() {

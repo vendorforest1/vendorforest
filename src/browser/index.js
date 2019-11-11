@@ -12,14 +12,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
+import { PersistGate } from "redux-persist/lib/integration/react";
 import StyleContext from "isomorphic-style-loader/StyleContext";
-// import { createBrowserHistory } from "history";
 
 import App from "@Shared/App";
 import configureStore from "@Shared/configureStore";
-// import { ContextProvider, ContextConsumer } from "@Shared/SharedContext";
-
+import { REHYDRATE, PERSIST, FLUSH } from "redux-persist";
 const evaluateString = eval;
 
 function deserialize(serializedJavascript) {
@@ -36,23 +34,27 @@ async function hydrate() {
     const removeCss = styles.map((style) => style._insertCss());
     return () => removeCss.forEach((dispose) => dispose());
   };
+  try {
+    // change if a better way using --context is discovered
+    console.log("deserialize(preloadedState): ", deserialize(preloadedState));
+    const { persistor, store } = await configureStore(deserialize(preloadedState));
+    //    await store.dispatch({ type: "persit/PURGE"});
 
-  // change if a better way using --context is discovered
-  const { persistor, store } = await configureStore(deserialize(preloadedState));
-  console.log(persistor);
-  const jsx = (
-    <StyleContext.Provider value={{ insertCss }}>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </PersistGate>
-      </Provider>
-    </StyleContext.Provider>
-  );
-  ReactDOM.render(jsx, mountApp);
-  persistor.dispatch({ type: "persist/REHYDRATE" });
+    const jsx = (
+      <StyleContext.Provider value={{ insertCss }}>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </PersistGate>
+        </Provider>
+      </StyleContext.Provider>
+    );
+    ReactDOM.render(jsx, mountApp);
+  } catch (e) {
+    console.log("somewent wrong while app was hydrating!");
+  }
 }
 
 hydrate();

@@ -113,25 +113,20 @@ export const getSetupIntent = () => {
     });
 };
 
-export const confirmCardSetup = (payload) => async (dispatch, getState) => {
-  dispatch(clearSettingsError());
-  const pubKey = getPublicKey();
-  const clientSecret = getSetupIntent();
-  // const strip = stripe(pubKey);
-  // stripe.confirmCardSetup(
-  //   clientSecret,
-  //   {
-  //     payment_method: {
-  //       card: {
-
-  //       }
-  //     }
-  //   }
-  // )
-  console.log("pubkey:", pubKey);
-  console.log("setupintent:", clientSecret);
-  console.log("payloads:", payload.cvc);
-  // stripe.confirmCardSetup()
+export const getClientId = (card) => {
+  return fetch(apiUrl.GET_CLIENT_ID, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token_id:card })
+  })
+  .then((response) => response.json())
+  .then((result) => {
+    console.log("Client_ID:", result)
+  })
+  .catch((err) => console.log("Client_ID", err));
 };
 //TODO encrypt Card information
 export const fetchUpdateBilling = (payload) => async (dispatch, getState) => {

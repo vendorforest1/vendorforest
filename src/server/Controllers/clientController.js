@@ -30,6 +30,36 @@ export default () => {
     return res.json({ client_secret: intent.client_secret });
   };
 
+  controllers.getClientId = async (req, res) => {
+    console.log("Here is backend");
+    await stripe.customers.create({
+        source: req.body.token_id,
+        email: req.user.email,
+      })
+      .then((result) => {
+        console.log(result.id);
+        const stripe_client_id = {
+          stripe_client_id: result.id,
+        }
+        try {
+          User.findOneAndUpdate(
+            {
+              email: req.user.email,
+            },
+              stripe_client_id,
+            {
+              new: true,
+            },
+          ).then(
+            console.log("Your Stripe Client Id is saved."),
+            res.redirect(`/${constants.ACCOUNTTYPES[req.user.accountType]}/settings`),
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      });
+  };
+
   controllers.getClient = async (req, res, next) => {
     await User.findById(req.user._id)
       .populate("client")

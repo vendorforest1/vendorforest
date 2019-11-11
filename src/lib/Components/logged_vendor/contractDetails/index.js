@@ -13,13 +13,18 @@ import Review from "./Review";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
 import { fetchGetContractData, fetchUpdateContractData, updateContract } from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
-const { TabPane } = Tabs;
+import configureStore from "@Shared/configureStore";
+import { REHYDRATE } from "redux-persist";
 
+const { TabPane } = Tabs;
+// const { persistor } = configureStore();
 class VendorContractDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
     this.clickTab = this.clickTab.bind(this);
+
+    // persistor.dispatch({ type: REHYDRATE });
   }
 
   clickTab(key) {
@@ -34,7 +39,7 @@ class VendorContractDetails extends React.Component {
     }
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       message.success(newProps.success);
     }
@@ -178,7 +183,8 @@ class VendorContractDetails extends React.Component {
   }
 }
 
-const mapStateToProps = ({ vendorContractDetailsReducer, loginReducer }) => {
+const mapStateToProps = ({ vendorContractDetailsReducer, loginReducer, persistorReducer }) => {
+  console.log(persistorReducer, " <---------------");
   const { error, contract, success, pending } = vendorContractDetailsReducer;
 
   const { user } = loginReducer;
