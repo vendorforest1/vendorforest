@@ -4,9 +4,6 @@ import { constants } from "@Config/index";
 
 const router = express.Router();
 
-// export default function(app, passport) {
-// const userCtr = userController(passport);
-
 router.get("/register", function(req, res, next) {
   if (!req.user) {
     return next();
@@ -19,6 +16,14 @@ router.get("/register", function(req, res, next) {
     }
   }
 });
+
+// router.get("/signed", function(req, res, next) {
+//   if (!req.user) {
+//     res.status(300).json({ user: undefined });
+//   } else {
+//     res.status(200).json({ ...req.user });
+//   }
+// });
 
 router.get("/login", function(req, res, next) {
   if (!req.user) {
@@ -42,6 +47,4 @@ router.get("/logout", (req, res, next) => {
   return res.redirect(401, "/err"); // Handle unauthenticated response
 });
 
-// return router;
-// }
 export default router;

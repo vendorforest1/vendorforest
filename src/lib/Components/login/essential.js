@@ -24,11 +24,11 @@ export default function reducer(
       };
     case FETCH_LOGIN_SUCCESS:
       user = action.payload;
-      return {
-        ...state,
+      console.log("FETCH_LOGIN_SUCCESS: ", action.payload);
+      return Object.assign({}, state, {
         user,
         pending: false,
-      };
+      });
     case FETCH_LOGIN_FAILURE:
       return {
         ...state,
