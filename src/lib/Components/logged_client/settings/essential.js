@@ -120,13 +120,13 @@ export const getClientId = (card) => {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ token_id:card })
+    body: JSON.stringify({ token_id: card }),
   })
-  .then((response) => response.json())
-  .then((result) => {
-    console.log("Client_ID:", result)
-  })
-  .catch((err) => console.log("Client_ID", err));
+    .then((response) => response.json())
+    .then((result) => {
+      console.log("Client_ID:", result);
+    })
+    .catch((err) => console.log("Client_ID", err));
 };
 //TODO encrypt Card information
 export const fetchUpdateBilling = (payload) => async (dispatch, getState) => {

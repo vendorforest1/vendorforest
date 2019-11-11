@@ -45,10 +45,10 @@ class ClientBilling extends Component {
   async saveBillingInfo(e) {
     e.preventDefault();
     if (this.props.stripe) {
-          this.props.stripe
-        .createToken({type: 'card', name: this.state.firstName + this.state.lastName})
-        .then((payload) => { 
-          console.log('[token]', payload.token.id);
+      this.props.stripe
+        .createToken({ type: "card", name: this.state.firstName + this.state.lastName })
+        .then((payload) => {
+          console.log("[token]", payload.token.id);
           getClientId(payload.token.id);
         });
     } else {
@@ -69,8 +69,6 @@ class ClientBilling extends Component {
       }
     });
   }
-
-
 
   render() {
     const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
@@ -106,13 +104,13 @@ class ClientBilling extends Component {
         fontSmoothing: "antialiased",
         fontSize: "16px",
         "::placeholder": {
-          color: "#aab7c4"
-        }
+          color: "#aab7c4",
+        },
       },
       invalid: {
         color: "#fa755a",
-        iconColor: "#fa755a"
-      }
+        iconColor: "#fa755a",
+      },
     };
     return (
       <div className="client-billingmethod">
@@ -138,7 +136,7 @@ class ClientBilling extends Component {
                 </Radio>
                 <div className="row mt-4">
                   <div className="col-md-12">
-                  <CardElement className="sr-input sr-card-element" style={styles} />
+                    <CardElement className="sr-input sr-card-element" style={styles} />
                   </div>
                   <div className="col-md-6">
                     <Form.Item

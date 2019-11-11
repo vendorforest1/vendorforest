@@ -32,7 +32,8 @@ export default () => {
 
   controllers.getClientId = async (req, res) => {
     console.log("Here is backend");
-    await stripe.customers.create({
+    await stripe.customers
+      .create({
         source: req.body.token_id,
         email: req.user.email,
       })
@@ -40,13 +41,13 @@ export default () => {
         console.log(result.id);
         const stripe_client_id = {
           stripe_client_id: result.id,
-        }
+        };
         try {
           User.findOneAndUpdate(
             {
               email: req.user.email,
             },
-              stripe_client_id,
+            stripe_client_id,
             {
               new: true,
             },

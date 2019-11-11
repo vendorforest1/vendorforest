@@ -87,7 +87,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
     stripe_client_id: {
-      type:String,
+      type: String,
     },
     currentLocation: {
       ipAddress: String,
