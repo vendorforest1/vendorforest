@@ -77,14 +77,15 @@ const clearSettingsError = () => ({
   type: CLEAR_SETTINGS_FAILURE,
 });
 
-const getPublicKey = () => {
-  return fetch(apiUrl.GET_PUB_KEY, {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  })
+export const getPublicKey = () => {
+  return window
+    .fetch(apiUrl.GET_PUB_KEY, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
     .then((response) => response.json())
     .then((result) => {
       console.log("public_key", result);
@@ -92,19 +93,19 @@ const getPublicKey = () => {
         throw new Error(result.message);
       } else {
         return result.pubKey;
-        // getSetupIntent(result);
       }
     });
 };
 
-const getSetupIntent = () => {
-  return fetch(apiUrl.GET_SETUP_INTENT, {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-  })
+export const getSetupIntent = () => {
+  return window
+    .fetch(apiUrl.GET_SETUP_INTENT, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
     .then((response) => response.json())
     .then((result) => {
       console.log("___setupintent___", result.client_secret);
