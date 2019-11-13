@@ -5,11 +5,13 @@
     width: 100%;
     top: 0;
     left: 0;
+    margin-top: -20px;
     .top-small-nav{
         line-height: 30px;
         height: 30px;
-        background-color: #eee;
+        background-color: #ffffff;
         display: flex;
+        border-bottom: 1px solid #F2F2F2;
     }
     .top-main-nav{
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -44,6 +46,7 @@
     a{
         color: #424242;
         text-decoration: none;
+        font-weight: 700 !important;
         &:hover{
             color: #07b107;
             text-decoration: none !important;
@@ -97,11 +100,23 @@
         }
     }
 }
+#rainbow_top{
+    margin-top: 20px;
+    height: 3px;
+    max-width: 100%;
+}
+
+#rainbow_bottom{
+    margin-bottom: -20px;
+    height: 3px;  
+    max-width: 100%;  
+}
 
 .footer{
     background: #222;
     padding: 80px 0;
     color: white;
+    margin-bottom: -20px;
     h3{
         font-size: 16px;
         font-weight: bolder;

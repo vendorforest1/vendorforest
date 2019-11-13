@@ -3,6 +3,7 @@ import { Menu, Dropdown, Icon } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import style from "./index.scss";
 import store from "store";
+import rainbow from "@Components/images/header/pettran.jpg";
 
 const helpMenu = (
   <Menu>
@@ -93,6 +94,7 @@ class VF_VendorHeader extends React.Component {
   render() {
     return (
       <div className="top-header">
+        <img src={rainbow} alt="" id="rainbow_top" />
         <div className="top-main-nav">
           <div className="container">
             <div className="row">
