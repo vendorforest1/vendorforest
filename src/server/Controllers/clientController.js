@@ -51,10 +51,7 @@ export default () => {
             {
               new: true,
             },
-          ).then(
-            console.log("Your Stripe Client Id is saved."),
-            res.redirect(`/${constants.ACCOUNTTYPES[req.user.accountType]}/settings`),
-          );
+          ).then(console.log("Your Stripe Client Id is saved."));
         } catch (error) {
           console.log(error);
         }

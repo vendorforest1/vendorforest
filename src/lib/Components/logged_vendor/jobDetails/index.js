@@ -360,9 +360,6 @@ const mapStateToProps = ({ vendorJobDetailsReducer, loginReducer }) => {
   return { error, job, success, pending, user };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetJobData,
-  },
-)(withStyles(globalStyle, localStyle)(VendorJobDetails));
+export default connect(mapStateToProps, {
+  fetchGetJobData,
+})(withStyles(globalStyle, localStyle)(VendorJobDetails));

@@ -1,8 +1,11 @@
 import { apiUrl, constants } from "@Shared/constants";
+// import getStorage from "redux-persist/es/storage/getStorage";
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
+const SET_CLIENT_NAME = "SET_CLIENT_NAME";
 const FETCH_INIT_SUCCESS = "FETCH_INIT_SUCCESS";
-const FETCH_MSG_SUCCESS = "FETCH_MSG_SUCCESS";
+const FETCH_CONNECTEDUSER_SUCCESS = "FETCH_CONNECTEDUSER_SUCCESS";
+const FETCH_OLD_MESSAGE = "FETCH_OLD_MESSAGE";
 const FETCH_POSTEDJOB_SUCCESS = "FETCH_POSTEDJOB_SUCCESS";
 const FETCH_PASTCONTRACT_SUCCESS = "FETCH_PASTCONTRACT_SUCCESS";
 const FETCH_PENDINGCONTRACT_SUCCESS = "FETCH_PENDINGCONTRACT_SUCCESS";
@@ -18,6 +21,9 @@ export default function reducer(
     pendingContracts: undefined,
     pastContracts: undefined,
     pending: false,
+    connectedUser: undefined,
+    oldMsg: undefined,
+    clientName: undefined,
   },
   action,
 ) {
@@ -51,11 +57,20 @@ export default function reducer(
         pendingContracts: action.payload,
         pending: false,
       };
-    case FETCH_MSG_SUCCESS:
+    case FETCH_CONNECTEDUSER_SUCCESS:
       return {
         ...state,
-        pending: false,
-        success: action.payload,
+        connectedUser: action.payload,
+      };
+    case FETCH_OLD_MESSAGE:
+      return {
+        ...state,
+        oldMsg: action.payload,
+      };
+    case SET_CLIENT_NAME:
+      return {
+        ...state,
+        clientName: action.payload,
       };
     case FETCH_FAILURE:
       return {
@@ -100,9 +115,19 @@ const fetchPastContractsSuccess = (contractInfo) => ({
   payload: contractInfo,
 });
 
-const fetchSuccessMsg = (success) => ({
-  type: FETCH_MSG_SUCCESS,
-  payload: success,
+const fetchGetConnectedUserSuccess = (connectedUser) => ({
+  type: FETCH_CONNECTEDUSER_SUCCESS,
+  payload: connectedUser,
+});
+
+const fetchOldMsgSuccess = (oldMsgs) => ({
+  type: FETCH_OLD_MESSAGE,
+  payload: oldMsgs,
+});
+
+const setClientID = (clientName) => ({
+  type: SET_CLIENT_NAME,
+  payload: clientName,
 });
 
 const fetchError = (err) => ({
@@ -126,6 +151,52 @@ export const updatePastContracts = (payload) => {
     type: FETCH_PASTCONTRACT_SUCCESS,
     payload: payload,
   };
+};
+
+export const fetchContactedUser = () => async (dispatch, getState) => {
+  return await fetch(apiUrl.GET_CONNECTED_USERS, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      console.log("@@@@@@@@@@result.data ===", result.data);
+      dispatch(fetchGetConnectedUserSuccess(result.data));
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch(fetchError(err.message));
+    });
+};
+
+export const fetchOldMsg = (payload) => async (dispatch, getState) => {
+  dispatch(setClientID(payload));
+  return await fetch(apiUrl.GET_OLD_MSG, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ clientID: payload }),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      console.log("&&&&&&&&&All old messages&&&&&&&&& ===", result.data);
+      dispatch(fetchOldMsgSuccess(result.data));
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch(fetchError(err.message));
+    });
 };
 
 export const fetchPostJobsData = () => async (dispatch, getState) => {

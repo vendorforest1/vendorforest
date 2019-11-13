@@ -179,9 +179,6 @@ const mapStateToProps = ({ vendorProfileReducer }) => {
   return { error, user, reviews, pending };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchReviewsData,
-  },
-)(VendorAbout);
+export default connect(mapStateToProps, {
+  fetchReviewsData,
+})(VendorAbout);

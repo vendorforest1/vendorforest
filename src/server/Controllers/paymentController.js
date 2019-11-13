@@ -2,7 +2,8 @@
 import User from "@Models/user.model";
 import getEnv, { constants } from "@Config/index";
 
-const stripe = require("stripe")("sk_test_56uZ1yKQJ3mSwdEAMUbeYUli00gzPpx7SK");
+const env = getEnv();
+const stripe = require("stripe")(env.STRIPE_SECRET_KEY);
 // import { config } from "dotenv";
 // const crypto = require("crypto");
 // //const passport = require('passport');
@@ -11,7 +12,6 @@ const stripe = require("stripe")("sk_test_56uZ1yKQJ3mSwdEAMUbeYUli00gzPpx7SK");
 // const Client = require("../models/client.model");
 // const Vendor = require("../models/vendor.model");
 // const constant = require("../Config/constants");
-
 // TODO
 // @ts-ignore
 export default function(passport) {

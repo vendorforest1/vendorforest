@@ -192,9 +192,6 @@ const mapStateToProps = ({ vendorProfileReducer, loginReducer }) => {
 
 const AddTeamStepTwoForm = Form.create({ name: "vendor_addteam_steptwo" })(AddStepTwo);
 
-export default connect(
-  mapStateToProps,
-  {
-    updateTeams,
-  },
-)(AddTeamStepTwoForm);
+export default connect(mapStateToProps, {
+  updateTeams,
+})(AddTeamStepTwoForm);

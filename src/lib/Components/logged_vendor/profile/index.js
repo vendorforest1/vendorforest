@@ -167,9 +167,6 @@ const mapStateToProps = ({ vendorProfileReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetUserData,
-  },
-)(withStyles(globalStyle, localStyle)(VendorProfile));
+export default connect(mapStateToProps, {
+  fetchGetUserData,
+})(withStyles(globalStyle, localStyle)(VendorProfile));

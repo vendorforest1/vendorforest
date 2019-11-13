@@ -129,7 +129,4 @@ const mapStateToProps = ({ findJobReducer, loginReducer }) => {
     user,
   };
 };
-export default connect(
-  mapStateToProps,
-  {},
-)(JobItem);
+export default connect(mapStateToProps, {})(JobItem);

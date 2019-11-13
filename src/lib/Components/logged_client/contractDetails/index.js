@@ -225,11 +225,8 @@ const mapStateToProps = ({ clientContractDetailsReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetContractData,
-    fetchEndContractData,
-    fetchUpdateContractData,
-  },
-)(withStyles(globalStyle, localStyle)(ClientContractDetails));
+export default connect(mapStateToProps, {
+  fetchGetContractData,
+  fetchEndContractData,
+  fetchUpdateContractData,
+})(withStyles(globalStyle, localStyle)(ClientContractDetails));

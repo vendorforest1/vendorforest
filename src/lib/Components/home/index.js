@@ -75,9 +75,6 @@ const mapStateToProps = ({ homeReducer }) => {
   return { error, homeData: homedata, success, pending };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchInitData,
-  },
-)(withStyles(styles)(Home));
+export default connect(mapStateToProps, {
+  fetchInitData,
+})(withStyles(styles)(Home));

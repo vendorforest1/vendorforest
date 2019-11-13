@@ -1,4 +1,5 @@
 import { apiUrl } from "@Shared/constants";
+import * as sub from "./subscribe";
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
 const FETCH_INIT_SUCCESS = "FETCH_INIT_SUCCESS";
@@ -11,7 +12,6 @@ const CLEAR_FAILURE = "CLEAR_FAILURE";
 
 const UPDATE_JOB = "UPDATE_JOB";
 const UPDATE_STEP = "UPDATE_STEP";
-
 // Reducer
 export default function reducer(
   state = {
@@ -214,7 +214,30 @@ export const fetchMatchVendorData = (payload) => async (dispatch, getState) => {
 };
 
 export const fetchPostJob = async (payload) => {
+  console.log("post_information", payload);
   return await fetch(apiUrl.CREATE_JOB, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {
+      throw err.message;
+    });
+};
+
+export const sendEmail = async (payload) => {
+  sub.subscribeUser(payload);
+  return await fetch(apiUrl.SEND_EMAIL, {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -272,6 +295,28 @@ export const fetchGetJob = async (payload) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
+      return result;
+    })
+    .catch((err) => {
+      throw err.message;
+    });
+};
+// to test init chat
+export const initChat = async (payload) => {
+  return await fetch(apiUrl.INIT_CHAT, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ vendor: payload, avatar: "http://pictures.com" }),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      console.log("kkkkkkkkkk", result);
       return result;
     })
     .catch((err) => {

@@ -9,6 +9,7 @@ import {
   fetchMatchVendorData,
   fetchPostJob,
   fetchUpdateJob,
+  sendEmail,
 } from "./essential";
 import { constants } from "@Shared/constants";
 const Search = Input.Search;
@@ -127,6 +128,7 @@ class PostJobStepThree extends React.Component {
       this.updatePostedJob(params);
     } else {
       this.createJob(params);
+      sendEmail(params);
     }
   }
 
@@ -327,11 +329,8 @@ const mapStateToProps = ({ clientPostjobReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    updateJob,
-    updateStep,
-    fetchMatchVendorData,
-  },
-)(PostJobStepThree);
+export default connect(mapStateToProps, {
+  updateJob,
+  updateStep,
+  fetchMatchVendorData,
+})(PostJobStepThree);

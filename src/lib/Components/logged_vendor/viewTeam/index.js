@@ -187,9 +187,6 @@ const mapStateToProps = ({ vendorViewTeamReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchTeamData,
-  },
-)(withStyles(globalStyle, localStyle)(VendorViewTeam));
+export default connect(mapStateToProps, {
+  fetchTeamData,
+})(withStyles(globalStyle, localStyle)(VendorViewTeam));

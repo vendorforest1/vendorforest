@@ -1,7 +1,6 @@
 import { Strategy } from "passport-local";
 import User from "@Models/user.model";
 import crypto from "crypto";
-
 //const BearerStrategy = require('passport-http-bearer').Strategy;
 
 export function passportConfig(passport) {

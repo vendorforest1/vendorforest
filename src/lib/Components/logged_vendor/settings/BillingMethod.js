@@ -98,9 +98,6 @@ const VendorBillingMethodForm = Form.create({ name: "vendor_setting_billingmetho
 
 // const VendorMyAccountForm = Form.create({ name: "vendor_setting_myaccount" })(VendorMyAccount);
 
-export default connect(
-  mapStateToProps,
-  {
-    signupStripe,
-  },
-)(VendorBillingMethodForm);
+export default connect(mapStateToProps, {
+  signupStripe,
+})(VendorBillingMethodForm);

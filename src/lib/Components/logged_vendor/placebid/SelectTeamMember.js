@@ -126,7 +126,4 @@ const mapStateToProps = ({ loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(SelectTeamMember);
+export default connect(mapStateToProps, {})(SelectTeamMember);

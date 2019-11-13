@@ -397,9 +397,6 @@ const mapStateToProps = ({ vendorSettingsReducer }) => {
 
 const VendorCompanyInfoForm = Form.create({ name: "vendor_companyinfo" })(VendorCompanyInfo);
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchUpdateCompany,
-  },
-)(VendorCompanyInfoForm);
+export default connect(mapStateToProps, {
+  fetchUpdateCompany,
+})(VendorCompanyInfoForm);

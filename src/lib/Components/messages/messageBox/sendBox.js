@@ -3,6 +3,7 @@ import { Button, Icon } from "antd";
 import moment from "moment";
 import { connect } from "react-redux";
 import { constants } from "@Shared/constants";
+import io from "socket.io-client";
 import {} from "../essential";
 
 class SendBox extends React.Component {
@@ -10,10 +11,24 @@ class SendBox extends React.Component {
     super(props);
 
     this.state = {
+      //user: null,
       value: "",
       rows: 1,
       minRows: 1,
       maxRows: 10,
+    };
+    this.socket = io();
+    this.sendMessage = (ev) => {
+      ev.preventDefault();
+      alert(this.props.clientName);
+      this.socket.emit("sendMessage", {
+        message: this.state.value,
+        user: "chen",
+      });
+      this.setState({ value: "" });
+      this.socket.on("resendMsg", (result) => {
+        alert(result);
+      });
     };
   }
 
@@ -59,7 +74,9 @@ class SendBox extends React.Component {
             <Icon type="paper-clip" style={{ fontSize: "22px", color: "#929292" }} />
           </div>
         </div>
-        <button className="button-primary">Send</button>
+        <button className="button-primary" onClick={this.sendMessage}>
+          Send
+        </button>
       </div>
     );
   }
@@ -76,7 +93,4 @@ const mapStateToProps = ({ messagesReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(SendBox);
+export default connect(mapStateToProps, {})(SendBox);

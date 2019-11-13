@@ -39,7 +39,4 @@ const mapStateToProps = ({ messagesReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(SidebarSearch);
+export default connect(mapStateToProps, {})(SidebarSearch);

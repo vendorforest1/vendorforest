@@ -78,9 +78,6 @@ const mapStateToProps = ({ vendorDashboardReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchPastContractsData,
-  },
-)(PastConstracts);
+export default connect(mapStateToProps, {
+  fetchPastContractsData,
+})(PastConstracts);

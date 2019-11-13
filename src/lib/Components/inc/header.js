@@ -4,7 +4,8 @@ import styles from "./index.scss";
 import ClientHeader from "./client_header";
 import VendorHeader from "./vendor_header";
 import { connect } from "react-redux";
-
+import rainbow from "@Components/images/header/pettran.jpg";
+import io from "socket.io-client";
 class VendorForestHeader extends React.Component {
   constructor(props) {
     super(props);
@@ -28,6 +29,7 @@ class VendorForestHeader extends React.Component {
   getUnSignedVenderForestHeader() {
     const unSigned = (
       <div className="top-header">
+        <img src={rainbow} alt="" id="rainbow_top" />
         <div className="top-small-nav d-lg-block d-none">
           <div className="container">
             <div className="row">
@@ -157,10 +159,7 @@ const mapStateToProps = ({ loginReducer }) => {
   return { user };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(withStyles(styles)(VendorForestHeader));
+export default connect(mapStateToProps, {})(withStyles(styles)(VendorForestHeader));
 
 export class SearchBar extends React.Component {
   render() {

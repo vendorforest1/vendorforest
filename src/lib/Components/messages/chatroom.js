@@ -33,7 +33,4 @@ const mapStateToProps = ({ messagesReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(ChatRoom);
+export default connect(mapStateToProps, {})(ChatRoom);

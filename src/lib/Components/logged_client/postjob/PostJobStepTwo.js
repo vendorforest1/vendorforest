@@ -406,10 +406,7 @@ const mapStateToProps = ({ clientPostjobReducer }) => {
 
 const ClientPostJobStepTwoForm = Form.create({ name: "client_postjob_steptwo" })(PostJobStepTwo);
 
-export default connect(
-  mapStateToProps,
-  {
-    updateJob,
-    updateStep,
-  },
-)(ClientPostJobStepTwoForm);
+export default connect(mapStateToProps, {
+  updateJob,
+  updateStep,
+})(ClientPostJobStepTwoForm);
