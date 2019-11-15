@@ -192,11 +192,8 @@ const mapStateToProps = ({ vendorContractDetailsReducer, loginReducer, persistor
   return { error, contract, success, pending, user };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetContractData,
-    fetchUpdateContractData,
-    updateContract,
-  },
-)(withStyles(globalStyle, localStyle)(VendorContractDetails));
+export default connect(mapStateToProps, {
+  fetchGetContractData,
+  fetchUpdateContractData,
+  updateContract,
+})(withStyles(globalStyle, localStyle)(VendorContractDetails));

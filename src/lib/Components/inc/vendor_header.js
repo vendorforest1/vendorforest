@@ -4,6 +4,7 @@ import withStyles from "isomorphic-style-loader/withStyles";
 import style from "./index.scss";
 import store from "store";
 import rainbow from "@Components/images/header/pettran.jpg";
+import io from "socket.io-client";
 
 const helpMenu = (
   <Menu>
@@ -83,6 +84,14 @@ class VF_VendorHeader extends React.Component {
       isOpen: false,
     };
     this.toggle = this.toggle.bind(this);
+  }
+
+  componentDidMount() {
+    const socket = io("http://localhost:4444/client/postjob");
+    socket.on("notify", (message, callback) => {
+      alert(message);
+      callback();
+    });
   }
 
   toggle() {

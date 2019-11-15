@@ -76,7 +76,4 @@ const mapStateToProps = ({ messagesReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(SendBox);
+export default connect(mapStateToProps, {})(SendBox);

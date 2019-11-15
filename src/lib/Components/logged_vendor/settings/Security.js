@@ -95,9 +95,6 @@ const mapStateToProps = ({ vendorSettingsReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchResetPass,
-  },
-)(VendorSecurityForm);
+export default connect(mapStateToProps, {
+  fetchResetPass,
+})(VendorSecurityForm);

@@ -95,9 +95,6 @@ const mapStateToProps = ({ clientSettingsReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchResetPass,
-  },
-)(ClientSecurityForm);
+export default connect(mapStateToProps, {
+  fetchResetPass,
+})(ClientSecurityForm);

@@ -158,10 +158,7 @@ const mapStateToProps = ({ loginReducer }) => {
   return { user };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(withStyles(styles)(VendorForestHeader));
+export default connect(mapStateToProps, {})(withStyles(styles)(VendorForestHeader));
 
 export class SearchBar extends React.Component {
   render() {

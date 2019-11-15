@@ -244,9 +244,6 @@ const mapStateToProps = ({ clientSettingsReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchUpdateNotifYSettings,
-  },
-)(ClientNotification);
+export default connect(mapStateToProps, {
+  fetchUpdateNotifYSettings,
+})(ClientNotification);

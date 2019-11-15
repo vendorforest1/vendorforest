@@ -14,6 +14,11 @@ export default function() {
     STRIPE_SECRET_KEY: env.STRIPE_SECRET_KEY,
     STRIPE_PUBLISHABLE_KEY: env.STRIPE_PUBLISHABLE_KEY,
     CLIENT_ID: env.CLIENT_ID,
+    EMAIL_ADDRESS:process.env.EMAIL_ADDRESS,
+    EMAIL_PASSWORD:process.env.EMAIL_PASSWORD,
+    ACCOUNT_SID:process.env.ACCOUNT_SID,
+    AUTH_TOKEN:process.env.AUTH_TOKEN,
+    SERVER_TWILIO_NUMBER:process.env.SERVER_TWILIO_NUMBER,
     exit: process.exit,
   };
 }

@@ -36,7 +36,4 @@ const mapStateToProps = ({ messagesReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(SidebarControl);
+export default connect(mapStateToProps, {})(SidebarControl);

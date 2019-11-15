@@ -57,13 +57,10 @@ app.set("view engine", "ejs");
 
 //create the server
 //initializing connections
-connect(
-  env.CONNSTR,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-)
+connect(env.CONNSTR, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => console.log("Connected"))
   .catch((error) => {
     console.log("Connection failed with - ", error);

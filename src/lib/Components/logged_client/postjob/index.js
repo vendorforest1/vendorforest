@@ -273,11 +273,8 @@ const mapStateToProps = ({ clientPostjobReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    updateJob,
-    fetchInitialData,
-    fetchServiceData,
-  },
-)(withStyles(globalStyle, localStyle)(PostJob));
+export default connect(mapStateToProps, {
+  updateJob,
+  fetchInitialData,
+  fetchServiceData,
+})(withStyles(globalStyle, localStyle)(PostJob));

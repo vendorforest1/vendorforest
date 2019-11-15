@@ -177,7 +177,4 @@ const mapStateToProps = ({ clientJobDetailsReducer, loginReducer }) => {
   return { error, job, success, pending, user };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(JobContent);
+export default connect(mapStateToProps, {})(JobContent);

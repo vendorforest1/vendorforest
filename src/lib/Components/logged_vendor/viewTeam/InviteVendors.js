@@ -185,9 +185,6 @@ const mapStateToProps = ({ vendorViewTeamReducer, loginReducer }) => {
 
 const InviteVendorsForm = Form.create({ name: "vendor_addteam" })(InviteVendors);
 
-export default connect(
-  mapStateToProps,
-  {
-    updateTeam,
-  },
-)(InviteVendorsForm);
+export default connect(mapStateToProps, {
+  updateTeam,
+})(InviteVendorsForm);

@@ -91,7 +91,4 @@ const mapStateToProps = ({ vendorContractDetailsReducer, loginReducer }) => {
   return { error, contract, success, pending, user };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(Review);
+export default connect(mapStateToProps, {})(Review);

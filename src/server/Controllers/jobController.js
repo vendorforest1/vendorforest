@@ -1,7 +1,21 @@
 import Job from "@Models/job.model";
+import User from "@Models/user.model";
+import socketio from "socket.io";
+import http from "http";
+import express from "express";
 import getEnv, { constants } from "@Config/index";
+import { async } from "q";
 
+const fs = require("fs");
+// const Hogan = require('hogan.js');
+const nodemailer = require("nodemailer");
 const env = getEnv();
+
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
+// const emailTemplate = fs.readFile("../../views/emails/test.hjs", (error) => console.log(error));
+// const compileTemplate = Hogan.compile(emailTemplate);
 
 export default () => {
   const controllers = {};
@@ -128,6 +142,98 @@ export default () => {
             process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
+  };
+
+  controllers.sendEmail = async (req, res) => {
+    // create reusable transporter object using the default SMTP transport
+    console.log("sendEmail node js", req.body.location.country);
+    const country = req.body.location.country;
+    const state = req.body.location.state;
+    const city = req.body.location.city;
+    const lat = req.body.postRadius;
+    const title = req.body.title;
+    const description = req.body.description;
+    // query["location.city"] = req.body.location.city;
+    await User.find(
+      {
+        accountType: 1,
+        "bsLocation.country": country,
+        "bsLocation.state": state,
+        "bsLocation.city": city,
+        "bsLocation.lat": { $lt: lat },
+      },
+      {
+        email: 1,
+        phone: 1,
+        _id: 0,
+      },
+    )
+      .then((data) =>
+        data.map((result) => {
+          // sendingEmail(result.email, title, description);
+          // sendingSms(result.phone, title, description);
+          notification(result.email, title, description);
+        }),
+      )
+      .catch((error) => console.log("error occured", error));
+  };
+
+  const sendingEmail = async (emailAddress, title, description) => {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: env.EMAIL_ADDRESS,
+        pass: env.EMAIL_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    // send mail with defined transport object
+    const info = await transporter.sendMail({
+      from: '"VendorForest Support Team" <vendorforest@gmail.com>', // sender address
+      to: emailAddress, // list of receivers
+      subject: "Hello ✔",
+      text: "Hello world?",
+      html: `<h1>${title}</h1><div>${description}</div>`,
+      // html: compileTemplate.render({ title: title, description: description }),
+    });
+
+    console.log("Message sent: %s", info.messageId);
+  };
+
+  const sendingSms = async (phone, title, description) => {
+    const accountSid = env.ACCOUNT_SID;
+    const authToken = env.AUTH_TOKEN;
+    const client = require("twilio")(accountSid, authToken);
+    try {
+      client.messages
+        .create({
+          to: phone,
+          from: env.SERVER_TWILIO_NUMBER,
+          body: `New Job posted in your location.
+                  Please Bid on this project. 
+                  Title:${title}
+                  Description:${description}`,
+        })
+        .then((message) => console.log(message.sid));
+      console.log("end");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const notification = async (emailAddress, title, description) => {
+    console.log("I'm in notification header.");
+    await io.on("connection", (socket) => {
+      console.log("New Websocket connection!");
+      // socket.join("room");
+      const messageDetail = `New job posted near your location. title=${title} description=${description}`;
+      socket.broadcast.emit("nitify", messageDetail);
+    });
   };
 
   controllers.update = async (req, res, next) => {

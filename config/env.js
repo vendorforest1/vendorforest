@@ -78,6 +78,11 @@ function getClientEnvironment(publicUrl) {
         STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
         STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
         CLIENT_ID: process.env.CLIENT_ID,
+        EMAIL_ADDRESS:process.env.EMAIL_ADDRESS,
+        EMAIL_PASSWORD:process.env.EMAIL_PASSWORD,
+        ACCOUNT_SID:process.env.ACCOUNT_SID,
+        AUTH_TOKEN:process.env.AUTH_TOKEN,
+        SERVER_TWILIO_NUMBER:process.env.SERVER_TWILIO_NUMBER,
         // Useful for determining whether we’re running in production mode.
         // Most importantly, it switches React into the correct mode.
         NODE_ENV: process.env.NODE_ENV || "development",

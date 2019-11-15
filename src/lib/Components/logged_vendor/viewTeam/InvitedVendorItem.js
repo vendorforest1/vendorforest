@@ -135,10 +135,7 @@ const mapStateToProps = ({ vendorViewTeamReducer, loginReducer }) => {
     user,
   };
 };
-export default connect(
-  mapStateToProps,
-  {
-    fetchInviteAccept,
-    updateTeam,
-  },
-)(InvitedVendorItem);
+export default connect(mapStateToProps, {
+  fetchInviteAccept,
+  updateTeam,
+})(InvitedVendorItem);

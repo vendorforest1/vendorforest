@@ -124,7 +124,4 @@ const mapStateToProps = ({ loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(PastContractItem);
+export default connect(mapStateToProps, {})(PastContractItem);

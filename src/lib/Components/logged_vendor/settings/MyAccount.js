@@ -392,10 +392,7 @@ const mapStateToProps = ({ vendorSettingsReducer }) => {
 
 const VendorMyAccountForm = Form.create({ name: "vendor_setting_myaccount" })(VendorMyAccount);
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchUpdateAccount,
-    fetchSendCodeEmail,
-  },
-)(VendorMyAccountForm);
+export default connect(mapStateToProps, {
+  fetchUpdateAccount,
+  fetchSendCodeEmail,
+})(VendorMyAccountForm);

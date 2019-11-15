@@ -267,9 +267,6 @@ const mapStateToProps = ({ vendorProfileReducer }) => {
 
 const AddPortfolioForm = Form.create({ name: "vendor_addportfolio_form" })(AddPortfolio);
 
-export default connect(
-  mapStateToProps,
-  {
-    updatePortfolios,
-  },
-)(AddPortfolioForm);
+export default connect(mapStateToProps, {
+  updatePortfolios,
+})(AddPortfolioForm);

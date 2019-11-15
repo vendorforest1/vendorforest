@@ -218,11 +218,8 @@ const mapStateToProps = ({ clientContractDetailsReducer, loginReducer }) => {
   return { error, contract, milestones, success, pending, user };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetMilestonesData,
-    fetchRequestRleaseMilestoneData,
-    fetchCancelMilestoneData,
-  },
-)(MilestonesForm);
+export default connect(mapStateToProps, {
+  fetchGetMilestonesData,
+  fetchRequestRleaseMilestoneData,
+  fetchCancelMilestoneData,
+})(MilestonesForm);

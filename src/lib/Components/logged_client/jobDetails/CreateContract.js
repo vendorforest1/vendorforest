@@ -333,10 +333,7 @@ const mapStateToProps = ({ clientJobDetailsReducer, loginReducer }) => {
 
 const CreateContractForm = Form.create({ name: "client_createcontact_form" })(CreateContract);
 
-export default connect(
-  mapStateToProps,
-  {
-    updateJob,
-    updateProposal,
-  },
-)(CreateContractForm);
+export default connect(mapStateToProps, {
+  updateJob,
+  updateProposal,
+})(CreateContractForm);

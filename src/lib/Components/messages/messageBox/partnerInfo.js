@@ -36,7 +36,4 @@ const mapStateToProps = ({ messagesReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(PartnerInfo);
+export default connect(mapStateToProps, {})(PartnerInfo);

@@ -409,10 +409,7 @@ const mapStateToProps = ({ vendorFindJobReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchFindJobsData,
-    fetchServiceData,
-  },
-)(withStyles(globalStyle, localStyle)(VendorFindJob));
+export default connect(mapStateToProps, {
+  fetchFindJobsData,
+  fetchServiceData,
+})(withStyles(globalStyle, localStyle)(VendorFindJob));

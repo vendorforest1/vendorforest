@@ -70,9 +70,6 @@ const mapStateToProps = ({ vendorProfileReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchUpdateData,
-  },
-)(EditHourlyRateForm);
+export default connect(mapStateToProps, {
+  fetchUpdateData,
+})(EditHourlyRateForm);

@@ -47,7 +47,4 @@ const mapStateToProps = ({ messagesReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(ContactItem);
+export default connect(mapStateToProps, {})(ContactItem);
