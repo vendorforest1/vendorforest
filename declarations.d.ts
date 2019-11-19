@@ -18,4 +18,9 @@ declare module "*.scss" {
   export default value;
 }
 
+declare module "*.hjs" {
+  const value: any;
+  export default value;
+}
+
 declare module "isomorphic-style-loader/withStyles";

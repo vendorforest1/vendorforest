@@ -5,6 +5,7 @@ import ClientHeader from "./client_header";
 import VendorHeader from "./vendor_header";
 import { connect } from "react-redux";
 import rainbow from "@Components/images/header/pettran.jpg";
+import io from "socket.io-client";
 class VendorForestHeader extends React.Component {
   constructor(props) {
     super(props);
@@ -15,6 +16,15 @@ class VendorForestHeader extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.getUnSignedVenderForestHeader = this.getUnSignedVenderForestHeader.bind(this);
   }
+
+  // componentDidMount() {
+  //   const socket = io("http://localhost:4444/client/postjob");
+  //   socket.on("notify", (message, callback) => {
+  //     console.log("Notification field.");
+  //     alert(message);
+  //     callback();
+  //   });
+  // }
 
   toggle() {
     this.setState({

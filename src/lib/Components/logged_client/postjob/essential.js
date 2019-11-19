@@ -1,4 +1,6 @@
 import { apiUrl } from "@Shared/constants";
+import * as serviceWorker from "./serviceWorker";
+import { subscribeUser } from "./subScriptions";
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
 const FETCH_INIT_SUCCESS = "FETCH_INIT_SUCCESS";
@@ -89,6 +91,10 @@ export default function reducer(
       return state;
   }
 }
+
+serviceWorker.register();
+
+subscribeUser();
 
 // Action Creators
 const fetchRequest = () => ({

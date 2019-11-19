@@ -6,16 +6,17 @@ import express from "express";
 import getEnv, { constants } from "@Config/index";
 import { async } from "q";
 
+//Sending Email
 const fs = require("fs");
-// const Hogan = require('hogan.js');
+const Hogan = require("hogan.js");
 const nodemailer = require("nodemailer");
+// const emailTemplate = fs.readFileSync("/public/emails/email_new_jobs_arround_area.hjs", "utf-8");
+// const compileTemplate = Hogan.compile(emailTemplate);
 const env = getEnv();
 
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
-// const emailTemplate = fs.readFile("../../views/emails/test.hjs", (error) => console.log(error));
-// const compileTemplate = Hogan.compile(emailTemplate);
 
 export default () => {
   const controllers = {};
@@ -172,7 +173,7 @@ export default () => {
         data.map((result) => {
           // sendingEmail(result.email, title, description);
           // sendingSms(result.phone, title, description);
-          notification(result.email, title, description);
+          // notification(result.email, title, description);
         }),
       )
       .catch((error) => console.log("error occured", error));
@@ -198,8 +199,8 @@ export default () => {
       to: emailAddress, // list of receivers
       subject: "Hello ✔",
       text: "Hello world?",
-      html: `<h1>${title}</h1><div>${description}</div>`,
-      // html: compileTemplate.render({ title: title, description: description }),
+      // html: `<h1>${title}</h1><div>${description}</div>`,
+      html: compileTemplate.render({ title: title, description: description }),
     });
 
     console.log("Message sent: %s", info.messageId);
@@ -226,15 +227,15 @@ export default () => {
     }
   };
 
-  const notification = async (emailAddress, title, description) => {
-    console.log("I'm in notification header.");
-    await io.on("connection", (socket) => {
-      console.log("New Websocket connection!");
-      // socket.join("room");
-      const messageDetail = `New job posted near your location. title=${title} description=${description}`;
-      socket.broadcast.emit("nitify", messageDetail);
-    });
-  };
+  // const notification = async (emailAddress, title, description) => {
+  //   console.log("I'm in notification header.");
+  //   await io.on("connection", (socket) => {
+  //     console.log("New Websocket connection!", socket.id);
+  //     // socket.join("room");
+  //     const messageDetail = `New job posted near your location. title=${title} description=${description}`;
+  //     socket.broadcast.emit("notify", messageDetail);
+  //   });
+  // };
 
   controllers.update = async (req, res, next) => {
     await Job.findOneAndUpdate(

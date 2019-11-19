@@ -204,6 +204,7 @@
     "styliner": "^1.0.4",
     "twilio": "^3.37.1",
     "uuid": "^3.3.2",
+    "web-push": "^3.4.1",
     "webpack-cli": "^3.3.9",
     "webpack-node-externals": "^1.7.2",
     "whatwg-fetch": "2.0.4",
