@@ -9,7 +9,7 @@
 
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
-
+require("browser-env")(["window", "navigator"]);
 const isLocalhost = Boolean(
   window.location.hostname === "localhost" ||
     // [::1] is the IPv6 localhost address.
@@ -30,9 +30,8 @@ export function register(config) {
     }
 
     window.addEventListener("load", () => {
-      const swFileName =
-        process.env.NODE_ENV === "production" ? "service-worker.js" : "custom-sw.js";
-      const swUrl = `${process.env.PUBLIC_URL}/${swFileName}`;
+      console.log("process.env.PUBLIC_URL = ", process.env.PUBLIC_URL);
+      const swUrl = `${process.env.PUBLIC_URL}/custom-sw.js`;
 
       if (isLocalhost) {
         // This is running on localhost. Let's check if a service worker still exists or not.

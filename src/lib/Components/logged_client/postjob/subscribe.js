@@ -1,9 +1,15 @@
-const convertedVapidKey = urlBase64ToUint8Array(process.env.REACT_APP_PUBLIC_VAPID_KEY);
+import { apiUrl } from "@Shared/constants";
+
+require("browser-env")(["window", "navigator", "document"]);
+
+const convertedVapidKey = urlBase64ToUint8Array(
+  "BMSMy4iVHJXAqq1f4L5o-xvRlUJQ900EkfI-kft-lBjbvyqkIX5lm_nU8XibDYnbRhUEUQr6e0Gdk0aYd7SRoUo",
+);
 
 function urlBase64ToUint8Array(base64String) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   // eslint-disable-next-line
-  const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/")
+  const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/");
 
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
@@ -14,17 +20,19 @@ function urlBase64ToUint8Array(base64String) {
   return outputArray;
 }
 
-function sendSubscription(subscription) {
-  return fetch(`${process.env.REACT_APP_API_URL}/notifications/subscribe`, {
+export function sendSubscription(subscription, data) {
+  console.log("@@@@@@@@*******helloworld", subscription, data);
+  return fetch(apiUrl.SEND_NOTIFICATION, {
     method: "POST",
-    body: JSON.stringify(subscription),
     headers: {
+      Accept: "application/json",
       "Content-Type": "application/json",
     },
+    body: JSON.stringify({ subscription: subscription, post: data }),
   });
 }
 
-export function subscribeUser() {
+export function subscribeUser(basis) {
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.ready
       .then(function(registration) {
@@ -42,8 +50,7 @@ export function subscribeUser() {
                 userVisibleOnly: true,
               })
               .then(function(newSubscription) {
-                console.log("New subscription added.");
-                sendSubscription(newSubscription);
+                sendSubscription(newSubscription, basis);
               })
               .catch(function(e) {
                 if (Notification.permission !== "granted") {
@@ -53,8 +60,7 @@ export function subscribeUser() {
                 }
               });
           } else {
-            console.log("Existed subscription detected.");
-            sendSubscription(existedSubscription);
+            sendSubscription(existedSubscription, basis);
           }
         });
       })

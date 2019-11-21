@@ -6,6 +6,8 @@ import express from "express";
 import getEnv, { constants } from "@Config/index";
 import { async } from "q";
 
+//send notification
+const webpush = require("web-push");
 //Sending Email
 const fs = require("fs");
 const Hogan = require("hogan.js");
@@ -145,9 +147,26 @@ export default () => {
       });
   };
 
+  controllers.sendingNotification = (req, res) => {
+    const title = req.body.post.title;
+    const subscription = req.body.subscription;
+    webpush.setVapidDetails(env.WEB_PUSH_CONTACT, env.PUBLIC_VAPID_KEY, env.PRIVATE_VAPID_KEY);
+    console.log("SUBscription list", subscription);
+
+    const payload = JSON.stringify({
+      title: "New job posted in Vendorforest.com",
+      body: title,
+    });
+    webpush
+      .sendNotification(subscription, payload)
+      .then((result) => console.log("after sending notification", result))
+      .catch((e) => console.log(e.stack));
+
+    res.status(200).json({ success: true });
+  };
+
   controllers.sendEmail = async (req, res) => {
     // create reusable transporter object using the default SMTP transport
-    console.log("sendEmail node js", req.body.location.country);
     const country = req.body.location.country;
     const state = req.body.location.state;
     const city = req.body.location.city;
@@ -199,8 +218,8 @@ export default () => {
       to: emailAddress, // list of receivers
       subject: "Hello ✔",
       text: "Hello world?",
-      // html: `<h1>${title}</h1><div>${description}</div>`,
-      html: compileTemplate.render({ title: title, description: description }),
+      html: `<h1>${title}</h1><div>${description}</div>`,
+      // html: compileTemplate.render({ title: title, description: description }),
     });
 
     console.log("Message sent: %s", info.messageId);

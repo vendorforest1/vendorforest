@@ -24,7 +24,7 @@ import routes from "./routes";
 import appRoutes from "@Shared/routes";
 
 const reload = require("reload");
-
+const webpush = require("web-push");
 const app = express();
 const env = config();
 const MongoStore = connectMongo(session);
@@ -54,7 +54,7 @@ app.use("/static", express.static("dist/static"));
 // app.set("views", path.resolve("public"));
 app.set("views", path.resolve("dist/static"));
 app.set("view engine", "ejs");
-
+app.use(express.static("public"));
 //create the server
 //initializing connections
 connect(env.CONNSTR, {
@@ -200,4 +200,24 @@ env.MODE === "production" &&
           throw error;
       }
     });
+// const publicKey = "BKjy-sJCK2N9RRs2aT_bZ8QnvNoEcsfe-INOccUjxH6gnguPkKj_Zwqnr1ueRTHCLceepDC508-ejH_VO9bB08Y";
+// const privateKey = "hnphxW_R3t0M5PxkJ_Lzg9onbx421AEkSG9xLch9Lyk";
+// const webPushContact = "mailto: contact@my-site.com";
+// webpush.setVapidDetails(webPushContact, publicKey, privateKey);
+// app.post("/client/subscription", (req, res) => {
+//   const subscription = req.body
+
+//   console.log("SUBscription list", subscription)
+
+//   const payload = JSON.stringify({
+//     title: 'Hello!',
+//     body: 'It works.',
+//   })
+
+//   webpush.sendNotification(subscription, payload)
+//     .then(result => console.log("after sending notification", result))
+//     .catch(e => console.log(e.stack))
+
+//   res.status(200).json({'success': true})
+// });
 export default app;

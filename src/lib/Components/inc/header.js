@@ -17,15 +17,6 @@ class VendorForestHeader extends React.Component {
     this.getUnSignedVenderForestHeader = this.getUnSignedVenderForestHeader.bind(this);
   }
 
-  // componentDidMount() {
-  //   const socket = io("http://localhost:4444/client/postjob");
-  //   socket.on("notify", (message, callback) => {
-  //     console.log("Notification field.");
-  //     alert(message);
-  //     callback();
-  //   });
-  // }
-
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen,

@@ -139,6 +139,7 @@ export const apiUrl = {
   FIND_JOBS: `${API_URL}/apis/job/find`,
   GET_JOB: `${API_URL}/apis/job/get`,
   SEND_EMAIL: `${API_URL}/apis/job/send_email`,
+  SEND_NOTIFICATION: `${API_URL}/apis/job/sendNewJobNotification`,
 
   CREATE_PROPOSAL: `${API_URL}/apis/proposal/create`,
   UPDATE_PROPOSAL: `${API_URL}/apis/proposal/update`,

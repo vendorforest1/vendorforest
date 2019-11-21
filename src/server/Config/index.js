@@ -19,6 +19,9 @@ export default function() {
     ACCOUNT_SID:process.env.ACCOUNT_SID,
     AUTH_TOKEN:process.env.AUTH_TOKEN,
     SERVER_TWILIO_NUMBER:process.env.SERVER_TWILIO_NUMBER,
+    WEB_PUSH_CONTACT:process.env.WEB_PUSH_CONTACT,
+    PUBLIC_VAPID_KEY:process.env.PUBLIC_VAPID_KEY,
+    PRIVATE_VAPID_KEY:process.env.PRIVATE_VAPID_KEY,
     exit: process.exit,
   };
 }

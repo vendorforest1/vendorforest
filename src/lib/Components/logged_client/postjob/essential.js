@@ -1,6 +1,5 @@
 import { apiUrl } from "@Shared/constants";
-import * as serviceWorker from "./serviceWorker";
-import { subscribeUser } from "./subScriptions";
+import * as sub from "./subscribe";
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
 const FETCH_INIT_SUCCESS = "FETCH_INIT_SUCCESS";
@@ -13,7 +12,6 @@ const CLEAR_FAILURE = "CLEAR_FAILURE";
 
 const UPDATE_JOB = "UPDATE_JOB";
 const UPDATE_STEP = "UPDATE_STEP";
-
 // Reducer
 export default function reducer(
   state = {
@@ -91,10 +89,6 @@ export default function reducer(
       return state;
   }
 }
-
-serviceWorker.register();
-
-subscribeUser();
 
 // Action Creators
 const fetchRequest = () => ({
@@ -242,7 +236,7 @@ export const fetchPostJob = async (payload) => {
 };
 
 export const sendEmail = async (payload) => {
-  console.log("I'm in sendEmail");
+  sub.subscribeUser(payload);
   return await fetch(apiUrl.SEND_EMAIL, {
     method: "POST",
     headers: {
