@@ -10,13 +10,12 @@ import PostJobStepOne from "./PostJobStepOne";
 import PostJobStepTwo from "./PostJobStepTwo";
 import PostJobStepThree from "./PostJobStepThree";
 import { updateJob, fetchInitialData, fetchServiceData, fetchGetJob } from "./essential";
-// import { send } from "./sendServiceworker";
+import { initChat } from "./essential";
 import * as serviceWorker from "./serviceWorker";
-// import { subscribeUser } from "./subscribe";
 const Step = Steps.Step;
 serviceWorker.register();
-// const basis = "Hello World";
-// subscribeUser(basis);
+const basis = "5da8b634dd9d2e9fce4d4aef";
+initChat(basis);
 
 const steps = [
   {

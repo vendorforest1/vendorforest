@@ -1,5 +1,6 @@
 import Job from "@Models/job.model";
 import User from "@Models/user.model";
+import Chat from "@Models/chat.model";
 import socketio from "socket.io";
 import http from "http";
 import express from "express";
@@ -8,6 +9,8 @@ import { async } from "q";
 
 //send notification
 const webpush = require("web-push");
+const dateTime = require("node-datetime");
+// const dt = dateTime.create();
 //Sending Email
 const fs = require("fs");
 const Hogan = require("hogan.js");
@@ -143,6 +146,32 @@ export default () => {
           status: 500,
           message:
             process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
+  controllers.initChat = async (req, res) => {
+    const from = req.user._id;
+    const to = req.body.vendor;
+    const time = new Date().toLocaleString();
+    const newChatConnection = new Chat({
+      from: from,
+      to: to,
+      msg: "Your bid has been awarded.",
+      time: time,
+    });
+    await newChatConnection
+      .save()
+      .then(async (job) => {
+        return res.status(200).json({
+          status: 200,
+          message: "Job has been published",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: error,
         });
       });
   };
