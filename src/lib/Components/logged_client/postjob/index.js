@@ -14,8 +14,8 @@ import { initChat } from "./essential";
 import * as serviceWorker from "./serviceWorker";
 const Step = Steps.Step;
 serviceWorker.register();
-const basis = "5da8b634dd9d2e9fce4d4aef";
-initChat(basis);
+// const basis = "gerardvendor";
+// initChat(basis);
 
 const steps = [
   {

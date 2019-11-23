@@ -151,7 +151,7 @@ export default () => {
   };
 
   controllers.initChat = async (req, res) => {
-    const from = req.user._id;
+    const from = req.user.username;
     const to = req.body.vendor;
     const time = new Date().toLocaleString();
     const newChatConnection = new Chat({
@@ -162,7 +162,7 @@ export default () => {
     });
     await newChatConnection
       .save()
-      .then(async (job) => {
+      .then(async () => {
         return res.status(200).json({
           status: 200,
           message: "Job has been published",

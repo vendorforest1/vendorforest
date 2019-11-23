@@ -2,7 +2,7 @@ import { apiUrl, constants } from "@Shared/constants";
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
 const FETCH_INIT_SUCCESS = "FETCH_INIT_SUCCESS";
-const FETCH_MSG_SUCCESS = "FETCH_MSG_SUCCESS";
+const FETCH_CONNECTEDUSER_SUCCESS = "FETCH_CONNECTEDUSER_SUCCESS";
 const FETCH_POSTEDJOB_SUCCESS = "FETCH_POSTEDJOB_SUCCESS";
 const FETCH_PASTCONTRACT_SUCCESS = "FETCH_PASTCONTRACT_SUCCESS";
 const FETCH_PENDINGCONTRACT_SUCCESS = "FETCH_PENDINGCONTRACT_SUCCESS";
@@ -18,6 +18,7 @@ export default function reducer(
     pendingContracts: undefined,
     pastContracts: undefined,
     pending: false,
+    connectedUser: undefined,
   },
   action,
 ) {
@@ -51,11 +52,10 @@ export default function reducer(
         pendingContracts: action.payload,
         pending: false,
       };
-    case FETCH_MSG_SUCCESS:
+    case FETCH_CONNECTEDUSER_SUCCESS:
       return {
         ...state,
-        pending: false,
-        success: action.payload,
+        connectedUser: action.payload,
       };
     case FETCH_FAILURE:
       return {
@@ -100,9 +100,9 @@ const fetchPastContractsSuccess = (contractInfo) => ({
   payload: contractInfo,
 });
 
-const fetchSuccessMsg = (success) => ({
-  type: FETCH_MSG_SUCCESS,
-  payload: success,
+const fetchGetConnectedUserSuccess = (connectedUser) => ({
+  type: FETCH_CONNECTEDUSER_SUCCESS,
+  payload: connectedUser,
 });
 
 const fetchError = (err) => ({
@@ -126,6 +126,28 @@ export const updatePastContracts = (payload) => {
     type: FETCH_PASTCONTRACT_SUCCESS,
     payload: payload,
   };
+};
+
+export const fetchContactedUser = () => async (dispatch, getState) => {
+  return await fetch(apiUrl.GET_CONNECTED_USERS, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      console.log("@@@@@@@@@@result.data ===", result.data);
+      dispatch(fetchGetConnectedUserSuccess(result.data));
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch(fetchError(err.message));
+    });
 };
 
 export const fetchPostJobsData = () => async (dispatch, getState) => {
