@@ -1,14 +1,15 @@
-import stripe from "stripe";
+import getEnv, { constants } from "@Config/index";
 import User from "@Models/user.model";
 import Client from "@Models/client.model";
 // import Token from "../models/token.model";
-import getEnv, { constants } from "@Config/index";
+import { async } from "q";
 
 const env = getEnv();
+const stripe = require("stripe")(env.STRIPE_SECRET_KEY);
 
 export default () => {
   const controllers = {};
-  const stripePayload = new stripe("sk_test_PHS0wV5HZJ41uaZDQsgqHKQp");
+  // const stripePayload = new stripe("sk_test_PHS0wV5HZJ41uaZDQsgqHKQp");
 
   //client deposits money into an escrow account
   controllers.depositMoney = async (req, res, next) => {
@@ -16,6 +17,48 @@ export default () => {
       .populate("client")
       .then(async (user) => {})
       .catch((error) => {});
+  };
+
+  controllers.getPubKey = async (req, res) => {
+    const stripePubKey = env.CLIENT_ID;
+    console.log(stripePubKey);
+    return res.json({ pubKey: stripePubKey });
+  };
+
+  controllers.getSetupIntent = async (req, res) => {
+    const intent = await stripe.setupIntents.create();
+    return res.json({ client_secret: intent.client_secret });
+  };
+
+  controllers.getClientId = async (req, res) => {
+    console.log("Here is backend");
+    await stripe.customers
+      .create({
+        source: req.body.token_id,
+        email: req.user.email,
+      })
+      .then((result) => {
+        console.log(result.id);
+        const stripe_client_id = {
+          stripe_client_id: result.id,
+        };
+        try {
+          User.findOneAndUpdate(
+            {
+              email: req.user.email,
+            },
+            stripe_client_id,
+            {
+              new: true,
+            },
+          ).then(
+            console.log("Your Stripe Client Id is saved."),
+            res.redirect(`/${constants.ACCOUNTTYPES[req.user.accountType]}/settings`),
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      });
   };
 
   controllers.getClient = async (req, res, next) => {

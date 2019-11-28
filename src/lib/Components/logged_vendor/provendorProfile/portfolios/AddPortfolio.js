@@ -53,7 +53,7 @@ class AddPortfolio extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
+  UNSAFE__componentWillReceiveProps(newProps) {
     if (this.props.portfolio !== newProps.portfolio) {
       this.setState({
         portfolioId: newProps.portfolio._id,
@@ -262,14 +262,12 @@ class AddPortfolio extends React.Component {
 }
 
 const mapStateToProps = ({ vendorProfileReducer }) => {
-  return ({ error, user, portfolios } = vendorProfileReducer);
+  const { error, user, portfolios } = vendorProfileReducer;
+  return { error, user, portfolios };
 };
 
 const AddPortfolioForm = Form.create({ name: "vendor_addportfolio_form" })(AddPortfolio);
 
-export default connect(
-  mapStateToProps,
-  {
-    updatePortfolios,
-  },
-)(AddPortfolioForm);
+export default connect(mapStateToProps, {
+  updatePortfolios,
+})(AddPortfolioForm);

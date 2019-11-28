@@ -1,11 +1,11 @@
 // @ts-nocheck
 import React from "react";
 import { connect } from "react-redux";
-import { Input, Radio, Icon, Drawer, Progress, List, Avatar, Select } from "antd";
+import { Input, Radio, Icon, List, Select } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 
-import VF_VendorHeader from "@Components/inc/vendor_header";
-import VF_Footer from "@Components/inc/footer";
+import VendorHeader from "@Components/inc/vendor_header";
+import Footer from "@Components/inc/footer";
 import JobItem from "./JobItem";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
@@ -55,7 +55,7 @@ class VendorFindJob extends React.Component {
     this.props.fetchServiceData();
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (newProps.services) {
       this.setState({
         filterServices: newProps.services,
@@ -134,7 +134,7 @@ class VendorFindJob extends React.Component {
 
     return (
       <div className="vendor-find-job">
-        <VF_VendorHeader />
+        <VendorHeader />
         <div className="content">
           <div className="container">
             <div className="row">
@@ -390,7 +390,7 @@ class VendorFindJob extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }
@@ -409,10 +409,7 @@ const mapStateToProps = ({ vendorFindJobReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchFindJobsData,
-    fetchServiceData,
-  },
-)(withStyles(globalStyle, localStyle)(VendorFindJob));
+export default connect(mapStateToProps, {
+  fetchFindJobsData,
+  fetchServiceData,
+})(withStyles(globalStyle, localStyle)(VendorFindJob));

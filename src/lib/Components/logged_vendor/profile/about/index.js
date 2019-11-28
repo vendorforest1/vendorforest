@@ -25,7 +25,7 @@ class VendorAbout extends React.Component {
     // this.props.fetchReviewsData();
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       message.success(newProps.success);
     }

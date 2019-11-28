@@ -7,10 +7,13 @@ import Vendor from "@Models/vendor.model";
 import mailService from "@Config/mail";
 import geoip from "geoip-lite";
 import getEnv, { constants } from "@Config/index";
+import mongoose from "mongoose";
 
 const getIp = require("ipware")().get_ip;
 
 const env = getEnv();
+
+console.log(env);
 
 export default function(passport) {
   const controllers = {};
@@ -52,19 +55,14 @@ export default function(passport) {
       if (!req.isAuthenticated()) {
         passport.authenticate("local", (err, userObject) => {
           if (err) {
-            console.log("Hit /apis/login endpoint!! err: ", err);
-
             return res.status(401).send(err);
           }
-          console.log("Hit /apis/login endpoint!! before: ", userObject);
 
           if (!userObject) {
             return res.status(401).send({
               msg: "Error occured",
             });
           }
-
-          console.log("Hit /apis/login endpoint!! ", userObject);
 
           req.login(userObject.userObj, (err) => {
             if (err) {
@@ -82,9 +80,9 @@ export default function(passport) {
   };
 
   controllers.getUser = async (req, res, next) => {
-    await User.findById(req.user._id)
-      .populate("client")
-      .populate("vendor")
+    await User.findById(req.params.id)
+      .populate({ path: "vendor" })
+      .populate({ path: "client" })
       .then(async (user) => {
         if (!user) {
           return res.status(401).json({
@@ -109,51 +107,121 @@ export default function(passport) {
   };
 
   controllers.register = async function(req, res, next) {
-    const userData = {
-      email: req.body.email,
-      username: req.body.username,
-      password: req.body.password,
-      accountType: req.body.accountType,
-    };
-
     //use schema.create to insert data into the db
-    const newUser = new User(userData);
-
-    await newUser.save(async function(err, user) {
-      if (err) {
-        return res.status(500).json({
-          status: 500,
-          type: err.name,
-          msg: err.message,
-          errors: err.errors,
-        });
-      }
-
-      // Create a verification token for this user
-      const token = new Token({
-        _userId: user._id,
-        email: user.email,
-        token: crypto.randomBytes(16).toString("hex"),
+    if (req.body.accountType === 1) {
+      const vendor = new Vendor({
+        _id: new mongoose.Types.ObjectId(),
       });
 
-      await token.save(async function(err) {
+      vendor.save(function(err) {
         if (err) {
-          console.log("TOKEN ERR: ", err);
           return res.status(500).json({
             status: 500,
+            type: err.name,
             msg: err.message,
+            errors: err.errors,
           });
         }
+        const user = new User({
+          _id: new mongoose.Types.ObjectId(),
+          email: req.body.email,
+          username: req.body.username,
+          password: req.body.password,
+          accountType: req.body.accountType,
+          vendor: vendor._id,
+        });
 
-        mail.welcome(req, user, token.token);
+        user.save(function(err, user) {
+          if (err) {
+            return res.status(500).json({
+              status: 500,
+              type: err.name,
+              msg: err.message,
+              errors: err.errors,
+            });
+          }
+          const token = new Token({
+            _userId: user._id,
+            email: user.email,
+            token: crypto.randomBytes(16).toString("hex"),
+          });
 
-        return res.status(200).json({
-          status: 200,
-          id: user._id,
-          msg: "A verification email has been sent to " + user.email + ".",
+          token.save(async function(err) {
+            if (err) {
+              console.log("TOKEN ERR: ", err);
+              return res.status(500).json({
+                status: 500,
+                msg: err.message,
+              });
+            }
+
+            mail.welcome(req, user, token.token);
+
+            return res.status(200).json({
+              status: 200,
+              id: user._id,
+              msg: "A verification email has been sent to " + user.email + ".",
+            });
+          });
         });
       });
-    });
+    } else {
+      const client = new Client({
+        _id: new mongoose.Types.ObjectId(),
+      });
+      client.save(function(err) {
+        if (err) {
+          return res.status(500).json({
+            status: 500,
+            type: err.name,
+            msg: err.message,
+            errors: err.errors,
+          });
+        }
+        const user = new User({
+          _id: new mongoose.Types.ObjectId(),
+          email: req.body.email,
+          username: req.body.username,
+          password: req.body.password,
+          accountType: req.body.accountType,
+          client: client._id,
+        });
+
+        user.save(function(err, user) {
+          if (err) {
+            return res.status(500).json({
+              status: 500,
+              type: err.name,
+              msg: err.message,
+              errors: err.errors,
+            });
+          }
+          const token = new Token({
+            _userId: user._id,
+            email: user.email,
+            token: crypto.randomBytes(16).toString("hex"),
+          });
+
+          token.save(async function(err) {
+            if (err) {
+              console.log("TOKEN ERR: ", err);
+              return res.status(500).json({
+                status: 500,
+                msg: err.message,
+              });
+            }
+
+            mail.welcome(req, user, token.token);
+
+            return res.status(200).json({
+              status: 200,
+              id: user._id,
+              msg: "A verification email has been sent to " + user.email + ".",
+            });
+          });
+        });
+      });
+    }
   };
 
   controllers.emailSent = async (req, res, next) => {

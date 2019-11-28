@@ -1,11 +1,12 @@
 import { apiUrl } from "@Shared/constants";
+import { async } from "q";
+// import stripe from "react-stripe-elements";
 // Actions
 const FETCH_SETTINGS_REQUEST = "FETCH_SETTINGS_REQUEST";
 const FETCH_SETTINGS_SUCCESS = "FETCH_SETTINGS_SUCCESS";
 const FETCH_MSG_SUCCESS = "FETCH_MSG_SUCCESS";
 const FETCH_SETTINGS_FAILURE = "FETCH_SETTINGS_FAILURE";
 const CLEAR_SETTINGS_FAILURE = "CLEAR_SETTINGS_FAILURE";
-
 // Reducer
 export default function reducer(
   state = {
@@ -76,6 +77,57 @@ const clearSettingsError = () => ({
   type: CLEAR_SETTINGS_FAILURE,
 });
 
+export const getPublicKey = () => {
+  return window
+    .fetch(apiUrl.GET_PUB_KEY, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log("public_key", result);
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      } else {
+        return result.pubKey;
+      }
+    });
+};
+
+export const getSetupIntent = () => {
+  return window
+    .fetch(apiUrl.GET_SETUP_INTENT, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log("___setupintent___", result.client_secret);
+      return result.client_secret;
+    });
+};
+
+export const getClientId = (card) => {
+  return fetch(apiUrl.GET_CLIENT_ID, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token_id: card }),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log("Client_ID:", result);
+    })
+    .catch((err) => console.log("Client_ID", err));
+};
 //TODO encrypt Card information
 export const fetchUpdateBilling = (payload) => async (dispatch, getState) => {
   dispatch(clearSettingsError());

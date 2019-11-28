@@ -28,7 +28,7 @@ class VendorEditTeam extends React.Component {
     });
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     this.setState({
       name: newProps.team ? newProps.team.name : "",
       about: newProps.team ? newProps.team.about : "",

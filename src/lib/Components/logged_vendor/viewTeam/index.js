@@ -129,7 +129,7 @@ class VendorViewTeam extends React.Component {
     });
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
+  UNSAFE__componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       message.success(newProps.success);
     }
@@ -187,9 +187,6 @@ const mapStateToProps = ({ vendorViewTeamReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchTeamData,
-  },
-)(withStyles(globalStyle, localStyle)(VendorViewTeam));
+export default connect(mapStateToProps, {
+  fetchTeamData,
+})(withStyles(globalStyle, localStyle)(VendorViewTeam));

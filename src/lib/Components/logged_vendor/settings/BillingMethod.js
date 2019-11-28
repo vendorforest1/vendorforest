@@ -1,5 +1,9 @@
 import React from "react";
-import { Input, Form, Radio, Select, Card } from "antd";
+import { Input, Form, Radio, Select, Card, Row, Col } from "antd";
+import stripeImage from "@Components/images/stripe/stripe.png";
+import stripeLinkButton from "@Components/images/stripe/str_link_button.png";
+import { signupStripe } from "./essential";
+import { connect } from "react-redux";
 
 class VendorBillingMethod extends React.Component {
   constructor(props) {
@@ -15,6 +19,13 @@ class VendorBillingMethod extends React.Component {
       securityCode: "",
     };
   }
+
+  goToStripe = () => {
+    // alert("stripe");
+    // const userEmail = this.props.user.email;
+    this.props.signupStripe();
+    // console.log("userEmail is " + userEmail);
+  };
 
   render() {
     const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
@@ -47,157 +58,22 @@ class VendorBillingMethod extends React.Component {
 
     return (
       <div className="vendor-billingmethod">
+        {/* <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://connect.stripe.com/connect/default/oauth/test&client_id=ca_G69qhU4bRaQUrWwoYPRNlzu50gvOEgEy&state=asdwasd2132"><button>Connect to Stripe</button></a> */}
         <Card
           title={<span className="h5 font-weight-bold">Add New Billing Method</span>}
           style={{ marginBottom: "50px" }}
         >
-          <div className="row">
-            <div className="col-md-8 mb-5">
-              <Radio.Group
-                onChange={(e) => {
-                  this.setState({
-                    paymentMethod: e.target.value,
-                  });
-                }}
-                value={this.state.paymentMethod}
-              >
-                <Radio value={0} className="d-block mb-3">
-                  Add a Credit Card
-                </Radio>
-                <div className="row mt-4">
-                  <div className="col-md-12">
-                    <Form.Item
-                      label="Card Number"
-                      validateStatus={cardNumberError ? "error" : ""}
-                      help={cardNumberError || ""}
-                    >
-                      {getFieldDecorator("cardNumber", {
-                        initialValue: this.state.cardNumber,
-                        rules: [{ required: true, message: "Please input your card number." }],
-                      })(
-                        <Input
-                          placeholder="Card Number"
-                          name="cardNumber"
-                          onChange={(value) => {
-                            this.setState({
-                              cardNumber: value.target.value,
-                            });
-                          }}
-                        />,
-                      )}
-                    </Form.Item>
-                  </div>
-                  <div className="col-md-6">
-                    <Form.Item
-                      label="First Name"
-                      validateStatus={firstNameError ? "error" : ""}
-                      help={firstNameError || ""}
-                    >
-                      {getFieldDecorator("firstName", {
-                        initialValue: this.state.firstName,
-                        rules: [{ required: true, message: "Please input your first name." }],
-                      })(
-                        <Input
-                          placeholder="First Name"
-                          name="firstName"
-                          onChange={(value) => {
-                            this.setState({
-                              firstName: value.target.value,
-                            });
-                          }}
-                        />,
-                      )}
-                    </Form.Item>
-                  </div>
-                  <div className="col-md-6">
-                    <Form.Item
-                      label="Last Name"
-                      validateStatus={lastNameError ? "error" : ""}
-                      help={lastNameError || ""}
-                    >
-                      {getFieldDecorator("lastName", {
-                        initialValue: this.state.lastName,
-                        rules: [{ required: true, message: "Please input your last name." }],
-                      })(
-                        <Input
-                          placeholder="Last Name"
-                          name="lastName"
-                          onChange={(value) => {
-                            this.setState({
-                              lastName: value.target.value,
-                            });
-                          }}
-                        />,
-                      )}
-                    </Form.Item>
-                  </div>
-                  <div className="col-md-4">
-                    <Form.Item label="Expire Month" required>
-                      <Select
-                        value={String(this.state.expireMonth)}
-                        onChange={(value) => {
-                          this.setState({
-                            expireMonth: Number(value),
-                          });
-                        }}
-                      >
-                        {generateExpireMonthOptions()}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                  <div className="col-md-4">
-                    <Form.Item label="Expire Year" required>
-                      <Select
-                        value={String(this.state.expireYear)}
-                        onChange={(value) => {
-                          this.setState({
-                            expireYear: Number(value),
-                          });
-                        }}
-                      >
-                        {generateExpireYearOptions()}
-                      </Select>
-                    </Form.Item>
-                  </div>
-                  <div className="col-md-4">
-                    <Form.Item
-                      label="Security Code"
-                      validateStatus={securityCodeError ? "error" : ""}
-                      help={securityCodeError || ""}
-                    >
-                      {getFieldDecorator("lastName", {
-                        initialValue: this.state.securityCode,
-                        rules: [{ required: true, message: "Please input your security code." }],
-                      })(
-                        <Input
-                          placeholder="Security Code"
-                          name="securityCode"
-                          onChange={(value) => {
-                            this.setState({
-                              securityCode: value.target.value,
-                            });
-                          }}
-                        />,
-                      )}
-                    </Form.Item>
-                  </div>
-                </div>
-                <Radio value={1} className="d-block mb-3">
-                  Paypal
-                </Radio>
-                <div className="row mt-4">
-                  <div className="col-12 paypal-content">
-                    <p className="text-grey mb-3">
-                      You’ll be redirected to PayPal to link a verified account.
-                    </p>
-                    <button className="button-white">Connect to your paypal</button>
-                  </div>
-                </div>
-              </Radio.Group>
-            </div>
-            <div className="col-12">
-              <button className="button-primary">Save</button>
-            </div>
+          <div>
+            <Row style={{ textAlign: "center" }}>
+              <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:4444/vendor/settings&client_id=ca_G69qhU4bRaQUrWwoYPRNlzu50gvOEgEy">
+                <button>
+                  <img src={stripeLinkButton} />
+                </button>
+              </a>
+              {/* <button onClick={ this.goToStripe }>
+                <img src={ stripeLinkButton } />
+              </button> */}
+            </Row>
           </div>
         </Card>
       </div>
@@ -205,8 +81,26 @@ class VendorBillingMethod extends React.Component {
   }
 }
 
+const mapStateToProps = ({ vendorSettingsReducer }) => {
+  const { error, user, pending } = vendorSettingsReducer;
+  return {
+    error,
+    user,
+    pending,
+  };
+};
+
 const VendorBillingMethodForm = Form.create({ name: "vendor_setting_billingmethod" })(
   VendorBillingMethod,
 );
 
-export default VendorBillingMethodForm;
+// export default VendorBillingMethodForm;
+
+// const VendorMyAccountForm = Form.create({ name: "vendor_setting_myaccount" })(VendorMyAccount);
+
+export default connect(
+  mapStateToProps,
+  {
+    signupStripe,
+  },
+)(VendorBillingMethodForm);

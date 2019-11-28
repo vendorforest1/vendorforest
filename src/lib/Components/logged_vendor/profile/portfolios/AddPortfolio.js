@@ -53,7 +53,7 @@ class AddPortfolio extends React.Component {
     }
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (this.props.portfolio !== newProps.portfolio) {
       this.setState({
         portfolioId: newProps.portfolio._id,

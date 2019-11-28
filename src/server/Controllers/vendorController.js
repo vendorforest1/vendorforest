@@ -1,11 +1,11 @@
-import User from "../models/user.model";
-import Vendor from "../models/vendor.model";
+import User from "@Models/user.model";
+import Vendor from "@Models/vendor.model";
 // import Team from "../models/team.model";
-import Company from "../models/company.model";
+import Company from "@Models/company.model";
 import { calculateDistance } from "@Utils/utils";
 import getEnv, { constants } from "@Config/index";
 
-const config = getEnv();
+const env = getEnv();
 
 export default () => {
   const controllers = {};
@@ -25,7 +25,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              config.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `User ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -38,12 +38,69 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
-
+  //**********************.. */
+  controllers.getVendor = async (req, res, next) => {
+    await Vendor.findById(req.user.vendor._id)
+      .populate("vendor")
+      .then(async (user) => {
+        if (!user) {
+          return res.status(401).json({
+            status: 401,
+            message:
+              env.MODE === "development"
+                ? `User ${constants.DEV_EMPTYDOC_MSG}`
+                : constants.PROD_COMMONERROR_MSG,
+          });
+        }
+        await Vendor.findOneAndUpdate(
+          {
+            _id: user.vendor._id,
+          },
+          req.body,
+          {
+            new: true,
+          },
+        )
+          .populate({ path: "company" })
+          .populate({ path: "service" })
+          .populate({ path: "category" })
+          .then(async (vendor) => {
+            if (!vendor) {
+              return res.status(401).json({
+                status: 401,
+                message:
+                  env.MODE === "development"
+                    ? `Vendor ${constants.DEV_EMPTYDOC_MSG}`
+                    : constants.PROD_COMMONERROR_MSG,
+              });
+            }
+            user.vendor = vendor;
+            return res.status(200).json({
+              status: 200,
+              data: user,
+              message: "Profile has been updated",
+            });
+          })
+          .catch((error) => {
+            throw new Error(error.message);
+          });
+        // return res.status(200).json({
+        //   status: 200,
+        //   data: user,
+        // });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+  /******************* */
   controllers.find = async (req, res, next) => {
     await User.find({
       email: req.query.email,
@@ -60,8 +117,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -74,14 +130,15 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              config.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `User ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
-        await Vendor.findOneAndUpdate(
+        console.log(user);
+        await Vendor.updateOne(
           {
-            _id: user.vendor._id,
+            _id: req.user.vendor,
           },
           req.body,
           {
@@ -89,17 +146,20 @@ export default () => {
           },
         )
           .populate("company")
+          .populate("service")
+          .populate("category")
           .then(async (vendor) => {
             if (!vendor) {
               return res.status(401).json({
                 status: 401,
                 message:
-                  config.env.NODE_ENV === "development"
+                  env.MODE === "development"
                     ? `Vendor ${constants.DEV_EMPTYDOC_MSG}`
                     : constants.PROD_COMMONERROR_MSG,
               });
             }
-            user.vendor = vendor;
+            //user.vendor = vendor;
+            console.log("vendor profile upate: ", user, " OR: ", vendor);
             return res.status(200).json({
               status: 200,
               data: user,
@@ -113,8 +173,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -127,14 +186,14 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              config.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `User ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
         await Vendor.findOneAndUpdate(
           {
-            _id: user.vendor._id,
+            _id: user.vendor,
           },
           {
             notification: {
@@ -152,7 +211,7 @@ export default () => {
               return res.status(401).json({
                 status: 401,
                 message:
-                  config.env.NODE_ENV === "development"
+                  env.MODE === "development"
                     ? `Vendor ${constants.DEV_EMPTYDOC_MSG}`
                     : constants.PROD_COMMONERROR_MSG,
               });
@@ -171,8 +230,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -185,7 +243,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              config.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `User ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -205,7 +263,7 @@ export default () => {
                 return res.status(401).json({
                   status: 401,
                   message:
-                    config.env.NODE_ENV === "development"
+                    env.MODE === "development"
                       ? `Company ${constants.DEV_EMPTYDOC_MSG}`
                       : constants.PROD_COMMONERROR_MSG,
                 });
@@ -257,8 +315,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -305,8 +362,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };

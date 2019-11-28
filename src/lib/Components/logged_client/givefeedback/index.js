@@ -40,7 +40,7 @@ class ClientGiveFeedBack extends React.Component {
     this.giveFeedbck = this.giveFeedbck.bind(this);
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       message.success(newProps.success);
       this.props.history.push(`/client`);

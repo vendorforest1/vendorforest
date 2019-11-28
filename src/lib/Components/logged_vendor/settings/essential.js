@@ -96,9 +96,32 @@ export const fetchGetInitData = (payload) => async (dispatch, getState) => {
     .catch((err) => dispatch(fetchError(err.message)));
 };
 
+export const signupStripe = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
+  return await fetch(apiUrl.GET_STRIPE_ID, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      dispatch(fetchSuccess(result.data));
+      dispatch(fetchSuccessMsg(result.message));
+    })
+    .catch((err) => dispatch(fetchError(err.message)));
+};
+
 export const fetchUpdateAccount = (payload) => async (dispatch, getState) => {
   dispatch(clearError());
   dispatch(fetchRequest());
+  console.log("update req: ", payload);
+
   return await fetch(apiUrl.UPDATE_ACCOUNT, {
     method: "POST",
     headers: {
@@ -112,6 +135,7 @@ export const fetchUpdateAccount = (payload) => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
+      console.log("update response: ", result);
       dispatch(fetchSuccess(result.data));
       dispatch(fetchSuccessMsg(result.message));
     })

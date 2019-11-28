@@ -1,6 +1,6 @@
 import moment from "moment";
 // eslint-disable-next-line no-process-env
-const API_URL = process.env.API_URL;
+export const API_URL = process.env.API_URL;
 
 export const constants = {
   GOOGLEMAP_API: "AIzaSyB7XtSfuHtmsmPBIYW4WzGS_QrwJ7DrX54",
@@ -97,11 +97,16 @@ export const apiUrl = {
 
   GET_SERVICE: `${API_URL}/apis/service/get_services`,
 
+  GET_STRIPE_ID: `${API_URL}/apis/payment/authorize`,
+
   CLIENT_GET_SETTINGS: `${API_URL}/apis/client/settings`,
   CLIENT_POST_ACCOUNT: `${API_URL}/apis/client/account`,
   CLIENT_POST_BILLING: `${API_URL}/apis/client/billing`,
   CLIENT_POST_RESETPASS: `${API_URL}/apis/client/resetpass`,
   CLIENT_POST_NOTIFYSETTING: `${API_URL}/apis/client/notification`,
+  GET_PUB_KEY: `${API_URL}/apis/client/getpubkey`,
+  GET_SETUP_INTENT: `${API_URL}/apis/client/getsetupintent`,
+  GET_CLIENT_ID: `${API_URL}/apis/client/getclientid`,
 
   VENDOR_GET: `${API_URL}/apis/vendor/get`,
   VENDOR_FIND: `${API_URL}/apis/vendor/find`,

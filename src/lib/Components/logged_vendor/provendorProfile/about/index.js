@@ -15,7 +15,7 @@ class VendorAbout extends React.Component {
     this.props.fetchReviewsData();
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
+  UNSAFE__componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       message.success(newProps.success);
     }
@@ -179,9 +179,6 @@ const mapStateToProps = ({ vendorProfileReducer }) => {
   return { error, user, reviews, pending };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchReviewsData,
-  },
-)(VendorAbout);
+export default connect(mapStateToProps, {
+  fetchReviewsData,
+})(VendorAbout);

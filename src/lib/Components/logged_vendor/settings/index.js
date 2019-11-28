@@ -47,7 +47,7 @@ class VendorSettings extends React.Component {
     this.props.fetchGetInitData();
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       message.success(newProps.success);
     }

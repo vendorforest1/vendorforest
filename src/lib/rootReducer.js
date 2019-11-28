@@ -1,7 +1,7 @@
-import { combineReducers } from "redux";
-import { persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-// import sessionStorage from "redux-persist/lib/storage/session";
+//v5
+import { persistCombineReducers } from "redux-persist";
+// import { REHYDRATE, PURGE, persistCombineReducers } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // or whatever storage you are using
 
 import loginReducer from "@Components/login/essential";
 import registerReducer from "@Components/register/essential";
@@ -26,51 +26,18 @@ import vendorDashboardReducer from "@Components/logged_vendor/dashboard/essentia
 import vendorContractDetailsReducer from "@Components/logged_vendor/contractDetails/essential";
 import vendorReviewReducer from "@Components/logged_vendor/givefeedback/essential";
 
-const persistConfig = {
-  key: "root",
-  // storage: sessionStorage, //persists only until tab is closed
-  storage, // persists even after tab is closed
-  whitelist: ["loginReducer", "clientDashboardReducer"],
-  blacklist: [],
-  timeout: null,
-  debug: true,
-};
-
-const persistorReducer = (
-  state = {
-    error: false,
-    user: undefined,
-    pending: false,
-  },
-  action,
-) => {
-  switch (action.type) {
-    case "persist/REHYDRATE":
-      console.log("persist/REHYDRATE: ", action.payload.clientDashboardReducer);
-      return Object.assign({}, state, action.payload, {
-        storeIsReady: true,
-      });
-    default:
-      return Object.assign({}, state, action.payload, {
-        storeIsReady: false,
-      });
-  }
-};
-
-const reducers = combineReducers({
-  persistorReducer,
+const reducers = {
+  login: loginReducer,
   loginReducer,
   registerReducer,
   homeReducer,
   messagesReducer,
-
   clientDashboardReducer,
   clientPostjobReducer,
   clientSettingsReducer,
   clientJobDetailsReducer,
   clientContractDetailsReducer,
   clientReviewReducer,
-
   vendorProfileReducer,
   vendorSettingsReducer,
   vendorDashboardReducer,
@@ -80,6 +47,11 @@ const reducers = combineReducers({
   vendorViewTeamReducer,
   vendorContractDetailsReducer,
   vendorReviewReducer,
-});
+};
+const config = {
+  key: "primary",
+  storage,
+  timeout: null,
+};
 
-export default persistReducer(persistConfig, reducers);
+export default persistCombineReducers(config, reducers);

@@ -18,9 +18,9 @@ class EmailConfirmRequire extends React.Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     if (this.props.match.params.token) {
-      return await fetch(`${apiUrl.EMAILCONFIRM}/${this.props.match.params.token}`, {
+      return fetch(`${apiUrl.EMAILCONFIRM}/${this.props.match.params.token}`, {
         method: "GET",
         headers: {
           Accept: "application/json",

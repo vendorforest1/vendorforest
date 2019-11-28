@@ -4,7 +4,6 @@ import withStyles from "isomorphic-style-loader/withStyles";
 
 import styles from "@Sass/index.scss";
 import Routes from "./routes";
-// import { ContextConsumer } from "./SharedContext";
 
 export function withRouterWorkaround(Inner) {
   const Wrapped = (props) => <Inner {...props} />;
@@ -31,5 +30,4 @@ const App = (props) => (
 
 const AppWithStyles = withStyles(styles)(App);
 
-// export default AppWithStyles;
 export default withRouter(AppWithStyles);

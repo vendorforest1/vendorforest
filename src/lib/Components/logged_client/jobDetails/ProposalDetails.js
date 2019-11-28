@@ -22,7 +22,7 @@ class ProposalDetails extends React.Component {
     });
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (this.props.proposal._id !== newProps.proposal._id) {
       this.props.fetchGetReviewsData({
         to: newProps.proposal.vendor._id,

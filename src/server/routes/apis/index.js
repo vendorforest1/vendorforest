@@ -1,17 +1,17 @@
-import express from "express"; //;
-import client from "./client"; //;
-import vendor from "./vendor"; //;
-import review from "./review"; //;
-import portfolio from "./portfolio"; //.default;
+import express from "express";
+import client from "./client";
+import vendor from "./vendor";
+import review from "./review";
+import portfolio from "./portfolio";
 import home from "./home";
-import job from "./job"; //;
-import proposal from "./proposal"; //.default;
-import offer from "./offer"; //;
-import contract from "./contract"; //.default;
-import milestone from "./milestone"; //;
-import service from "./service"; //.default;
-import team from "./team"; //;
-import user from "./user"; //;
+import job from "./job";
+import proposal from "./proposal";
+import offer from "./offer";
+import contract from "./contract";
+import milestone from "./milestone";
+import service from "./service";
+import team from "./team";
+import user from "./user";
 
 import { paymentRouter } from "@Routes/apis/PaymentSystem";
 

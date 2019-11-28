@@ -20,19 +20,21 @@ class MainLogin extends React.Component {
     super(props);
     this.state = {};
   }
-  // @ts-ignore
-  componentWillReceiveProps(nextProps, nextState) {
+  UNSAFE_componentWillReceiveProps(nextProps, nextState) {
     if (nextProps.user && nextProps.user.userObj && this._isButton) {
       if (nextProps.user.userObj.accountType === constants.ACCOUNT_TYPE.VENDOR) {
-        window.location.href = `/${
-          constants.ACCOUNTTYPES[nextProps.user.userObj.accountType]
-        }/findjob`;
+        this.props.history.push(
+          `/${constants.ACCOUNTTYPES[nextProps.user.userObj.accountType]}/findjob`,
+          nextProps.user.userObj,
+        );
       } else {
-        window.location.href = `/${constants.ACCOUNTTYPES[nextProps.user.userObj.accountType]}`;
+        this.props.history.push(
+          `/${constants.ACCOUNTTYPES[nextProps.user.userObj.accountType]}`,
+          nextProps.user.userObj,
+        );
       }
     }
   }
-
   // @ts-ignore
   handleSubmit = async (e) => {
     e.preventDefault();

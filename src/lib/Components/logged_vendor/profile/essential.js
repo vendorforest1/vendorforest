@@ -1,4 +1,4 @@
-import { apiUrl } from "@Shared/constants";
+import { apiUrl, API_URL } from "@Shared/constants";
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
 const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
@@ -143,9 +143,15 @@ export const updateTeams = (payload) => {
 };
 
 export const fetchGetUserData = (payload) => async (dispatch, getState) => {
+  const { user } = getState().login;
+  let id = undefined;
+  if (user) {
+    console.log("test: ", user);
+    id = user.userObj._id;
+  }
   dispatch(clearError());
   dispatch(fetchRequest());
-  return await fetch(apiUrl.GET_USER, {
+  return await fetch(`${API_URL}/apis/${id}/get_user`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -165,6 +171,8 @@ export const fetchGetUserData = (payload) => async (dispatch, getState) => {
 export const fetchUpdateData = (payload) => async (dispatch, getState) => {
   dispatch(clearError());
   dispatch(fetchRequest());
+  console.log("payload: ", payload);
+
   return await fetch(apiUrl.VENDOR_UPDATE_PROFILE, {
     method: "POST",
     headers: {
@@ -175,6 +183,7 @@ export const fetchUpdateData = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
+      console.log("result: ", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
@@ -291,6 +300,7 @@ export const fetchServiceData = () => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
+      console.log(result.data);
       dispatch(fetchServiceSuccess(result.data));
     })
     .catch((err) => {
@@ -356,6 +366,7 @@ export const fetchUpdateVendorProfile = async (payload) => {
   })
     .then((response) => response.json())
     .then((result) => {
+      console.log("fetchUpdateVendorProfile: ", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }

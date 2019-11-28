@@ -19,6 +19,7 @@ const validator = expressValidation.createValidator({ passError: true });
 router.use(isAuthenticatedForApi);
 router.get("/get", vendorCtr.get);
 router.get("/find", validator.query(find.query), vendorCtr.find);
+router.get("/getvendor", validator.query(find.query), vendorCtr.getVendor);
 router.post("/update", validator.body(update.body), vendorCtr.update);
 router.post(
   "/notification",

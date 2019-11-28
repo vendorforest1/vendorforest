@@ -57,13 +57,11 @@ app.set("view engine", "ejs");
 
 //create the server
 //initializing connections
-connect(
-  env.CONNSTR,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  },
-)
+connect(env.CONNSTR, {
+  useFindAndModify: false,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
   .then(() => console.log("Connected"))
   .catch((error) => {
     console.log("Connection failed with - ", error);
@@ -95,15 +93,16 @@ app.use(passport.session());
 
 app.use("/", routes(app, passport));
 
-async function prefetchData(url, store) {
-  const promises = appRoutes
-    .map((route) => ({ route, match: matchPath(url, route) }))
-    .filter(({ route, match }) => match && route.component.fetchInitialData)
-    .map(async ({ match, route }) => {
-      return await route.component.fetchInitialData(store);
-    });
-  return Promise.all(promises);
-}
+//TODO use prefetchData the right way. SPIKE
+// async function prefetchData(url, store) {
+//   const promises = appRoutes
+//     .map((route) => ({ route, match: matchPath(url, route) }))
+//     .filter(({ route, match }) => match && route.component.fetchInitialData)
+//     .map(async ({ match, route }) => {
+//       return await route.component.fetchInitialData(store);
+//     });
+//   return Promise.all(promises);
+// }
 
 app.get("*", (req, res, next) => {
   //file request are not processed here
@@ -111,34 +110,34 @@ app.get("*", (req, res, next) => {
     return next();
   }
 
-  const { store } = configureStore({});
+  const { store } = configureStore();
+  // const promises = prefetchData(req.url, store);
 
-  const promises = prefetchData(req.url, store);
+  // promises.then(() => {
+  let context;
+  const css = new Set(); // CSS for all rendered React components
 
-  promises.then(() => {
-    let context;
-    const css = new Set(); // CSS for all rendered React components
+  const insertCss = (...styles) =>
+    styles.forEach((style) => {
+      css.add(style._getCss());
+    });
 
-    const insertCss = (...styles) =>
-      styles.forEach((style) => {
-        css.add(style._getCss());
-      });
+  context = {};
+  // context = store.getState();
 
-    context = store.getState();
+  const markup = ReactDOMServer.renderToString(createApp(req.url, store, context, insertCss));
 
-    const markup = ReactDOMServer.renderToString(createApp(req.url, store, context, insertCss));
-
-    res.render("index", {
-      MARKUP: markup,
-      CSS: [...css].join(""),
-      // preloadedState: serialize(context, { isJSON: true }),
-      INITIAL_STATE: `<script>
+  res.render("index", {
+    MARKUP: markup,
+    CSS: [...css].join(""),
+    // preloadedState: serialize(context, { isJSON: true }),
+    INITIAL_STATE: `<script>
       // WARNING: See the following for security issues around embedding JSON in HTML:
       // http://redux.js.org/recipes/ServerRendering.html#security-considerations
       window.__PRELOADED_STATE__ = ${JSON.stringify(serialize(context)).replace(/</g, "\\u003c")}
     </script>`,
-    });
   });
+  // });
 });
 
 //dev experience

@@ -1,10 +1,9 @@
 import React from "react";
 import { Avatar, Progress, Icon, Tabs, message } from "antd";
 import { connect } from "react-redux";
-import moment from "moment";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_ClientHeader from "@Components/inc/client_header";
-import VF_Footer from "@Components/inc/footer";
+import ClientHeader from "@Components/inc/client_header";
+import Footer from "@Components/inc/footer";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import Milestones from "./Milestones";
@@ -38,7 +37,7 @@ class ClientContractDetails extends React.Component {
     }
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       message.success(newProps.success);
     }
@@ -81,7 +80,7 @@ class ClientContractDetails extends React.Component {
   render() {
     return (
       <div className="contract-details">
-        <VF_ClientHeader />
+        <ClientHeader />
         <div className="content">
           <div className="container">
             <div className="row">
@@ -204,7 +203,7 @@ class ClientContractDetails extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }
@@ -225,11 +224,8 @@ const mapStateToProps = ({ clientContractDetailsReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetContractData,
-    fetchEndContractData,
-    fetchUpdateContractData,
-  },
-)(withStyles(globalStyle, localStyle)(ClientContractDetails));
+export default connect(mapStateToProps, {
+  fetchGetContractData,
+  fetchEndContractData,
+  fetchUpdateContractData,
+})(withStyles(globalStyle, localStyle)(ClientContractDetails));

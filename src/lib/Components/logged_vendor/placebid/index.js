@@ -50,7 +50,7 @@ class PlaceBid extends React.Component {
     this.props.fetchTeamsData();
   }
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       message.success(newProps.success);
       if (!this.isUpdate()) {

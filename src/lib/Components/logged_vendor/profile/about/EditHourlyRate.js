@@ -22,7 +22,7 @@ class EditHourlyRate extends React.Component {
     });
   };
 
-  componentWillReceiveProps(newProps) {
+  UNSAFE_componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       this.props.toggle();
     }

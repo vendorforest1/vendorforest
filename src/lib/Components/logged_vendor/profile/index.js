@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Select, Icon, message } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_VendorHeader from "@Components/inc/vendor_header";
-import VF_Footer from "@Components/inc/footer";
+import VendorHeader from "@Components/inc/vendor_header";
+import Footer from "@Components/inc/footer";
 import VendorPortfolios from "./portfolios";
 import VendorAbout from "./about/index";
 import VendorTeams from "./teams";
@@ -48,12 +48,20 @@ class VendorProfile extends React.Component {
     this.props.fetchGetUserData();
   }
 
-  componentWillReceiveProps(newProps) {
-    if (!this.props.success && newProps.success) {
-      message.success(newProps.success);
+  static getDerivedStateFromProps(props, state) {
+    if (props.success) {
+      message.success(props.success);
     }
-    if (!this.props.error && newProps.error) {
-      message.error(newProps.error);
+    if (props.error) {
+      message.error(props.error);
+    }
+    if (props.pending !== state.pending) {
+      return {
+        pending: props.pending,
+        success: props.success,
+        error: props.error,
+        user: props.user,
+      };
     }
   }
 
@@ -66,7 +74,7 @@ class VendorProfile extends React.Component {
   render() {
     return (
       <div className="App">
-        <VF_VendorHeader />
+        <VendorHeader />
         <div className="container">
           <div className="row">
             <div className="col-12">
@@ -151,13 +159,14 @@ class VendorProfile extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ vendorProfileReducer }) => {
+  console.log("***** ", vendorProfileReducer.user);
   const { error, success, user, pending } = vendorProfileReducer;
   return {
     error,
@@ -167,9 +176,6 @@ const mapStateToProps = ({ vendorProfileReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetUserData,
-  },
-)(withStyles(globalStyle, localStyle)(VendorProfile));
+export default connect(mapStateToProps, {
+  fetchGetUserData,
+})(withStyles(globalStyle, localStyle)(VendorProfile));
