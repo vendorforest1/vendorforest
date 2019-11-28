@@ -8,6 +8,11 @@ import { timeZone } from "@Shared/timezone.json";
 import GoogleMapLoader from "react-google-maps-loader";
 import GooglePlacesSuggest from "react-google-places-suggest";
 
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
 class ClientMyAccount extends React.Component {
   _btnIndex = 0;
 
@@ -63,10 +68,13 @@ class ClientMyAccount extends React.Component {
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      this.setState({
-        photoUrl: info.file.response.url,
-        loading: false,
-      });
+      console.log("info result&&&&&&", info.file.response.url);
+      getBase64(info.file.originFileObj, (photoUrl) =>
+        this.setState({
+          photoUrl: photoUrl,
+          loading: false,
+        }),
+      );
     }
   };
 
@@ -143,7 +151,7 @@ class ClientMyAccount extends React.Component {
     const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
 
     const photoUrl = this.state.photoUrl;
-
+    console.log("image url &&&&&&&&", photoUrl);
     const uploadButton = (
       <div>
         <Icon type={this.state.loading ? "loading" : "plus"} />

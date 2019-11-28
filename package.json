@@ -101,6 +101,7 @@
     "@hapi/joi": "^15.1.1",
     "@types/googlemaps": "^3.37.5",
     "@types/markerclustererplus": "^2.1.33",
+    "@types/mongodb": "^3.3.11",
     "@zeit/next-sass": "^1.0.1",
     "acorn": "^6.1.1",
     "antd": "^3.25.2",

@@ -6,6 +6,7 @@ import withStyles from "isomorphic-style-loader/withStyles";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import { connect } from "react-redux";
+import { fetchContactedUser } from "./essential";
 import ChatRoom from "./chatroom";
 
 import {} from "./essential";
@@ -21,12 +22,24 @@ class Messages extends React.Component {
   }
 
   componentDidMount() {
+    this.props.fetchContactedUser();
+    const accountType = this.props.user.userObj.accountType;
+    const friends = this.props.connectedUser;
+    // const friend = friends[0].user;
+    var users = [];
+    if (friends) {
+      for (var i = 0; i < Object.keys(friends).length; i++) {
+        users[i] = accountType === 0 ? friends[i].roomName : friends[i].user;
+      }
+    }
+    console.log("accountType === ", accountType, "friend ======", users.toString());
     const userID = this.props.user.userObj._id;
     const userName = this.props.user.userObj.username;
+    const profileImage = this.props.user.userObj.profileImage;
     window.chat_id = userID;
     window.chat_name = userName;
-    window.chat_avatar = "USER_AVATAR";
-    window.chat_link = "thomas, chen";
+    window.chat_avatar = profileImage;
+    window.chat_link = "Tom, chen, gerardvendor";
 
     var js = document.createElement("script");
     js.type = "text/javascript";
@@ -77,10 +90,18 @@ class Messages extends React.Component {
     );
   }
 }
-
-const mapStateToProps = ({ loginReducer }) => {
+const mapStateToProps = ({ messagesReducer, loginReducer }) => {
+  const { error, success, pending, connectedUser } = messagesReducer;
   const { user } = loginReducer;
-  return { user };
+  return {
+    error,
+    success,
+    pending,
+    connectedUser,
+    user,
+  };
 };
 
-export default connect(mapStateToProps, {})(withStyles(globalStyle, localStyle)(Messages));
+export default connect(mapStateToProps, { fetchContactedUser })(
+  withStyles(globalStyle, localStyle)(Messages),
+);

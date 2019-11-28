@@ -79,6 +79,7 @@ class AddPortfolio extends React.Component {
   imgPreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
+      console.log("Preview Image or URL", file.preview);
     }
     this.setState({
       previewImage: file.url || file.preview,
@@ -101,6 +102,7 @@ class AddPortfolio extends React.Component {
   vidPreview = async (file) => {
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
+      console.log("dkkddkkdffdfdsfdf", file.preview);
     }
 
     this.setState({
@@ -121,6 +123,8 @@ class AddPortfolio extends React.Component {
       if (!error && !this.props.pending) {
         const data = { ...values };
         (data.attachImgFiles = this.state.attachImgFiles.map((file) => {
+          console.log("file URL&&&&&&&&&&&&&&&", file.url);
+          console.log("file Response.URL**********", file.response.url);
           return {
             name: file.name,
             uid: file.uid,
