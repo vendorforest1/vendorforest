@@ -1,8 +1,7 @@
-import getEnv, { constants } from "@Config/index";
 import User from "@Models/user.model";
 import Client from "@Models/client.model";
 // import Token from "../models/token.model";
-import { async } from "q";
+import getEnv, { constants } from "@Config/index";
 
 const env = getEnv();
 const stripe = require("stripe")(env.STRIPE_SECRET_KEY);
@@ -58,7 +57,7 @@ export default () => {
       });
   };
 
-  controllers.getClient = async (req, res, next) => {
+  controllers.getClient = async (req, res, _next) => {
     await User.findById(req.user._id)
       .populate("client")
       .then(async (user) => {
@@ -85,7 +84,7 @@ export default () => {
   };
 
   //client updates account billing information
-  controllers.updateBillingInformation = async (req, res, next) => {
+  controllers.updateBillingInformation = async (req, res, _next) => {
     await User.findById(req.user._id)
       .populate("client")
       .then(async (user) => {
@@ -120,7 +119,7 @@ export default () => {
             },
           },
           async function(err, token) {
-            // console.log("err: ", err, "token: ", token, " user ", user);
+            console.log("err: ", err, "token: ", token, " user ", user);
             if (err) {
               return res.status(400).json({
                 status: 400,
@@ -134,16 +133,8 @@ export default () => {
                 email: user.email,
                 source: token.id,
               },
-              (err, customer) => {
-                if (err) {
-                  return res.status(400).json({
-                    status: 400,
-                    data: user,
-                    message: err.message,
-                  });
-                }
-                // console.log("customers: ", customer);
-                return null;
+              (_err, customer) => {
+                console.log("customers: ", customer);
               },
             );
           },
@@ -184,10 +175,10 @@ export default () => {
         //     throw new Error(error.message);
         //   });
       })
-      .catch((error) => {});
+      .catch((_error) => {});
   };
 
-  controllers.updateNotifySettings = async (req, res, next) => {
+  controllers.updateNotifySettings = async (req, res, _next) => {
     await User.findById(req.user._id)
       .populate("client")
       .then(async (user) => {
