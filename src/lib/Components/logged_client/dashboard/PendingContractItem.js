@@ -201,10 +201,7 @@ const mapStateToProps = ({ clientDashboardReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    updatePendingContracts,
-    updatePastContracts,
-  },
-)(PendingContractItem);
+export default connect(mapStateToProps, {
+  updatePendingContracts,
+  updatePastContracts,
+})(PendingContractItem);

@@ -465,13 +465,10 @@ const mapStateToProps = ({ vendorPlaceBidReducer, loginReducer }) => {
   };
 };
 const PlaceBidForm = Form.create({ name: "place_bid" })(PlaceBid);
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetJobData,
-    fetchGetProposalData,
-    fetchTeamsData,
-    fetchProposalSubmit,
-    fetchProposalUpdate,
-  },
-)(withStyles(globalStyle, localStyle)(PlaceBidForm));
+export default connect(mapStateToProps, {
+  fetchGetJobData,
+  fetchGetProposalData,
+  fetchTeamsData,
+  fetchProposalSubmit,
+  fetchProposalUpdate,
+})(withStyles(globalStyle, localStyle)(PlaceBidForm));

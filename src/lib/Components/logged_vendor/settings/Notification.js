@@ -246,9 +246,6 @@ const mapStateToProps = ({ vendorSettingsReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchUpdateNotifYSettings,
-  },
-)(VendorNotification);
+export default connect(mapStateToProps, {
+  fetchUpdateNotifYSettings,
+})(VendorNotification);

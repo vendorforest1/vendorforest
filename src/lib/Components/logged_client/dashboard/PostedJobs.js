@@ -97,9 +97,6 @@ const mapStateToProps = ({ clientDashboardReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchPostJobsData,
-  },
-)(PostedJobs);
+export default connect(mapStateToProps, {
+  fetchPostJobsData,
+})(PostedJobs);

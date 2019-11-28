@@ -271,11 +271,8 @@ const mapStateToProps = ({ vendorViewTeamReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchOffersData,
-    fetchOfferDecline,
-    fetchOfferAccept,
-  },
-)(VendorOffersForm);
+export default connect(mapStateToProps, {
+  fetchOffersData,
+  fetchOfferDecline,
+  fetchOfferAccept,
+})(VendorOffersForm);

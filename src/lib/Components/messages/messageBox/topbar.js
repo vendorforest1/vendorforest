@@ -33,7 +33,4 @@ const mapStateToProps = ({ messagesReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(MessageBoxTopbar);
+export default connect(mapStateToProps, {})(MessageBoxTopbar);

@@ -1,7 +1,28 @@
 import Job from "@Models/job.model";
+import User from "@Models/user.model";
+import Chat from "@Models/chat.model";
+import Room from "@Models/chatRoom.model";
+import socketio from "socket.io";
+import http from "http";
+import express from "express";
 import getEnv, { constants } from "@Config/index";
+import { async } from "q";
 
+//send notification
+const webpush = require("web-push");
+const dateTime = require("node-datetime");
+// const dt = dateTime.create();
+//Sending Email
+const fs = require("fs");
+const Hogan = require("hogan.js");
+const nodemailer = require("nodemailer");
+// const emailTemplate = fs.readFileSync("/public/emails/email_new_jobs_arround_area.hjs", "utf-8");
+// const compileTemplate = Hogan.compile(emailTemplate);
 const env = getEnv();
+
+const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
 
 export default () => {
   const controllers = {};
@@ -128,6 +149,175 @@ export default () => {
             process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
+  };
+
+  controllers.initChat = async (req, res) => {
+    const myName = req.user.username;
+    const clientName = req.body.vendor;
+    const avatar = req.body.avatar;
+    const time = new Date().toLocaleString();
+    //message info
+    const newChatConnection = new Chat({
+      user: myName,
+      roomID: clientName,
+      msg: "Your bid has been awarded.",
+      avatarUrl: avatar,
+      time: time,
+    });
+    console.log("Chat Information", newChatConnection);
+    await newChatConnection
+      .save()
+      .then(async () => {
+        return res.status(200).json({
+          status: 200,
+          message: "Job has been awarded.",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: error,
+        });
+      });
+    //sender
+    const senderRoomInfo = new Room({
+      user: myName,
+      roomName: clientName,
+    });
+    console.log("room Information", senderRoomInfo);
+    await senderRoomInfo
+      .save()
+      .then(async () => {
+        return res.status(200).json({
+          status: 200,
+          message: "Room for user has been saved.",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: error,
+        });
+      });
+    //receiver
+    // const receiverRoomInfo = new Room({
+    //   user: clientName,
+    //   roomName: myName,
+    // });
+    // console.log("room Information", receiverRoomInfo);
+    // await receiverRoomInfo
+    //   .save()
+    //   .then(async () => {
+    //     return res.status(200).json({
+    //       status: 200,
+    //       message: "Room for vendor has been saved.",
+    //     });
+    //   })
+    //   .catch((error) => {
+    //     return res.status(500).json({
+    //       status: 500,
+    //       message: error,
+    //     });
+    //   });
+  };
+
+  controllers.sendingNotification = (req, res) => {
+    const title = req.body.post.title;
+    const subscription = req.body.subscription;
+    webpush.setVapidDetails(env.WEB_PUSH_CONTACT, env.PUBLIC_VAPID_KEY, env.PRIVATE_VAPID_KEY);
+    console.log("SUBscription list", subscription);
+
+    const payload = JSON.stringify({
+      title: "New job posted in Vendorforest.com",
+      body: title,
+    });
+    webpush
+      .sendNotification(subscription, payload)
+      .then((result) => console.log("after sending notification", result))
+      .catch((e) => console.log(e.stack));
+
+    res.status(200).json({ success: true });
+  };
+
+  controllers.sendEmail = async (req, res) => {
+    // create reusable transporter object using the default SMTP transport
+    const country = req.body.location.country;
+    const state = req.body.location.state;
+    const city = req.body.location.city;
+    const lat = req.body.postRadius;
+    const title = req.body.title;
+    const description = req.body.description;
+    // query["location.city"] = req.body.location.city;
+    await User.find(
+      {
+        accountType: 1,
+        "bsLocation.country": country,
+        "bsLocation.state": state,
+        "bsLocation.city": city,
+        "bsLocation.lat": { $lt: lat },
+      },
+      {
+        email: 1,
+        phone: 1,
+        _id: 0,
+      },
+    )
+      .then((data) =>
+        data.map((result) => {
+          // sendingEmail(result.email, title, description);
+          // sendingSms(result.phone, title, description);
+          // notification(result.email, title, description);
+        }),
+      )
+      .catch((error) => console.log("error occured", error));
+  };
+
+  const sendingEmail = async (emailAddress, title, description) => {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: env.EMAIL_ADDRESS,
+        pass: env.EMAIL_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    // send mail with defined transport object
+    const info = await transporter.sendMail({
+      from: '"VendorForest Support Team" <vendorforest@gmail.com>', // sender address
+      to: emailAddress, // list of receivers
+      subject: "Hello ✔",
+      text: "Hello world?",
+      html: `<h1>${title}</h1><div>${description}</div>`,
+      // html: compileTemplate.render({ title: title, description: description }),
+    });
+
+    console.log("Message sent: %s", info.messageId);
+  };
+
+  const sendingSms = async (phone, title, description) => {
+    const accountSid = env.ACCOUNT_SID;
+    const authToken = env.AUTH_TOKEN;
+    const client = require("twilio")(accountSid, authToken);
+    try {
+      client.messages
+        .create({
+          to: phone,
+          from: env.SERVER_TWILIO_NUMBER,
+          body: `New Job posted in your location.
+                  Please Bid on this project. 
+                  Title:${title}
+                  Description:${description}`,
+        })
+        .then((message) => console.log(message.sid));
+      console.log("end");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   controllers.update = async (req, res, next) => {

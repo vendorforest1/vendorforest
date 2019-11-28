@@ -181,9 +181,6 @@ const mapStateToProps = ({ clientJobDetailsReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetReviewsData,
-  },
-)(ProposalDetails);
+export default connect(mapStateToProps, {
+  fetchGetReviewsData,
+})(ProposalDetails);

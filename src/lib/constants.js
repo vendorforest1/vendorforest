@@ -138,6 +138,9 @@ export const apiUrl = {
   GET_CLIENT_JOBS: `${API_URL}/apis/job/get_client_jobs`,
   FIND_JOBS: `${API_URL}/apis/job/find`,
   GET_JOB: `${API_URL}/apis/job/get`,
+  SEND_EMAIL: `${API_URL}/apis/job/send_email`,
+  SEND_NOTIFICATION: `${API_URL}/apis/job/sendNewJobNotification`,
+  INIT_CHAT: `${API_URL}/apis/job/initChat`,
 
   CREATE_PROPOSAL: `${API_URL}/apis/proposal/create`,
   UPDATE_PROPOSAL: `${API_URL}/apis/proposal/update`,
@@ -163,6 +166,9 @@ export const apiUrl = {
   CANCEL_MILESTONE: `${API_URL}/apis/milestone/cancel`,
   GET_MILESTONES: `${API_URL}/apis/milestone/get_milestones`,
   GET_MILESTONE: `${API_URL}/apis/milestone/get`,
+
+  GET_CONNECTED_USERS: `${API_URL}/apis/chat/get_connected_users`,
+  GET_OLD_MSG: `${API_URL}/apis/chat/get_old_msg`,
 };
 
 export const getTimeFromTimezone = (timeZone) => {

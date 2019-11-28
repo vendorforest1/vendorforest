@@ -89,7 +89,7 @@ class ServicesCategory extends React.Component {
           <div key={index} className="col-md-4 mb-2">
             <div className="content-item">
               <a href={`/findvendors?cat=${cat}`}>
-                <img src={ require(`../images/icons/${cat}.png`) } className="icon" alt=""></img>
+                <img src={require(`../images/icons/${cat}.png`)} className="icon" alt=""></img>
                 <p>{cat}</p>
               </a>
             </div>

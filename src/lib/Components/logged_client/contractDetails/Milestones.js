@@ -253,12 +253,9 @@ const mapStateToProps = ({ clientContractDetailsReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetMilestonesData,
-    fetchCreateMilestoneData,
-    fetchRleaseMilestoneData,
-    fetchCancelMilestoneData,
-  },
-)(MilestonesForm);
+export default connect(mapStateToProps, {
+  fetchGetMilestonesData,
+  fetchCreateMilestoneData,
+  fetchRleaseMilestoneData,
+  fetchCancelMilestoneData,
+})(MilestonesForm);

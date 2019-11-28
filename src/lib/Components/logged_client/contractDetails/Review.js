@@ -93,7 +93,4 @@ const mapStateToProps = ({ clientContractDetailsReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {},
-)(Review);
+export default connect(mapStateToProps, {})(Review);

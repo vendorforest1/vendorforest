@@ -361,10 +361,7 @@ const mapStateToProps = ({ clientSettingsReducer }) => {
 
 const ClientMyAccountForm = Form.create({ name: "client_setting_myaccount" })(ClientMyAccount);
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchUpdateAccount,
-    fetchSendCodeEmail,
-  },
-)(ClientMyAccountForm);
+export default connect(mapStateToProps, {
+  fetchUpdateAccount,
+  fetchSendCodeEmail,
+})(ClientMyAccountForm);

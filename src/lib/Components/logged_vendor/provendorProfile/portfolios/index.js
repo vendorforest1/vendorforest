@@ -114,9 +114,6 @@ const mapStateToProps = ({ vendorProfileReducer }) => {
   return ({ error, user, portfolios, pending } = vendorProfileReducer);
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchPortfoliosData,
-  },
-)(withStyles(style)(VendorPortfolios));
+export default connect(mapStateToProps, {
+  fetchPortfoliosData,
+})(withStyles(style)(VendorPortfolios));

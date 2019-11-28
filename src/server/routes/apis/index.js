@@ -12,7 +12,7 @@ import milestone from "./milestone";
 import service from "./service";
 import team from "./team";
 import user from "./user";
-
+import chat from "./chat";
 import { paymentRouter } from "@Routes/apis/PaymentSystem";
 
 export default function(app, passport) {
@@ -31,6 +31,7 @@ export default function(app, passport) {
   router.use("/milestone", milestone);
   router.use("/payment", paymentRouter);
   router.use("/home", home);
+  router.use("/chat", chat);
   router.use("/", user(app, passport));
   router.use((err, req, res, next) => {
     console.log("router Error", err);

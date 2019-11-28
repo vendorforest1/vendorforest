@@ -10,7 +10,15 @@ import PostJobStepOne from "./PostJobStepOne";
 import PostJobStepTwo from "./PostJobStepTwo";
 import PostJobStepThree from "./PostJobStepThree";
 import { updateJob, fetchInitialData, fetchServiceData, fetchGetJob } from "./essential";
+import { initChat } from "./essential";
+import * as serviceWorker from "./serviceWorker";
 const Step = Steps.Step;
+serviceWorker.register();
+// //for chat testing only
+// const io = require("socket.io-client");
+// const socket = io();
+// const basis = "chen";
+// initChat(basis);
 
 const steps = [
   {
@@ -273,11 +281,8 @@ const mapStateToProps = ({ clientPostjobReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    updateJob,
-    fetchInitialData,
-    fetchServiceData,
-  },
-)(withStyles(globalStyle, localStyle)(PostJob));
+export default connect(mapStateToProps, {
+  updateJob,
+  fetchInitialData,
+  fetchServiceData,
+})(withStyles(globalStyle, localStyle)(PostJob));

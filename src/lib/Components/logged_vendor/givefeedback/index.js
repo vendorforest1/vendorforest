@@ -124,9 +124,6 @@ const mapStateToProps = ({ vendorReviewReducer, loginReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchCreateReviewData,
-  },
-)(withStyles(globalStyle, localStyle)(VendorGiveFeedBackForm));
+export default connect(mapStateToProps, {
+  fetchCreateReviewData,
+})(withStyles(globalStyle, localStyle)(VendorGiveFeedBackForm));

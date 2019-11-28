@@ -117,7 +117,4 @@ const mapStateToProps = ({ vendorViewTeamReducer, loginReducer }) => {
     user,
   };
 };
-export default connect(
-  mapStateToProps,
-  {},
-)(VendorMemberItem);
+export default connect(mapStateToProps, {})(VendorMemberItem);

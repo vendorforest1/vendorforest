@@ -153,9 +153,6 @@ const mapStateToProps = ({ clientSettingsReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchGetSettings,
-  },
-)(withStyles(globalStyle, localStyle)(ClientSettings));
+export default connect(mapStateToProps, {
+  fetchGetSettings,
+})(withStyles(globalStyle, localStyle)(ClientSettings));
