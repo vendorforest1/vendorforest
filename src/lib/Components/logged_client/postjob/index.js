@@ -17,7 +17,7 @@ serviceWorker.register();
 // //for chat testing only
 // const io = require("socket.io-client");
 // const socket = io();
-// const basis = "chen";
+// const basis = "5db5d6a446f6143292c5817a";
 // initChat(basis);
 
 const steps = [

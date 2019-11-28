@@ -32,10 +32,6 @@ class ProposalItem extends React.Component {
 
   connectChat() {
     const vendorID = this.props.proposal.vendor;
-    // socket.emit("bidAwarded", { roomID: vendorID, content: "Your bid has been awarded." });
-    // socket.on("awardedbidresult", (msg) => {
-    //   alert(msg);
-    // });
     this.props.initChat(vendorID);
   }
 

@@ -7,6 +7,7 @@ import http from "http";
 import express from "express";
 import getEnv, { constants } from "@Config/index";
 import { async } from "q";
+import { ObjectId } from "bson";
 
 //send notification
 const webpush = require("web-push");
@@ -152,26 +153,23 @@ export default () => {
   };
 
   controllers.initChat = async (req, res) => {
+    // const ObjectId = require("mongodb").ObjectID;
     const myName = req.user.username;
-    const clientName = req.body.vendor;
-    const avatar = req.body.avatar;
-    const time = new Date().toLocaleString();
-    //message info
-    const newChatConnection = new Chat({
-      user: myName,
-      roomID: clientName,
-      msg: "Your bid has been awarded.",
-      avatarUrl: avatar,
-      time: time,
-    });
-    console.log("Chat Information", newChatConnection);
-    await newChatConnection
-      .save()
-      .then(async () => {
-        return res.status(200).json({
-          status: 200,
-          message: "Job has been awarded.",
+    const vendorID = req.body.vendor;
+    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", vendorID);
+    await User.findOne({ _id: ObjectId(vendorID) }, function(err, result) {
+      if (err) {
+        throw err;
+      }
+      console.log("TTTTTTTTTTTTTTTTTTTTTT", result.username);
+    })
+      .then((result) => {
+        console.log("KLLLLLLLLLLJKJKJL", result);
+        const senderRoomInfo = new Room({
+          user: myName,
+          roomName: result.username,
         });
+        senderRoomInfo.save();
       })
       .catch((error) => {
         return res.status(500).json({
@@ -179,46 +177,6 @@ export default () => {
           message: error,
         });
       });
-    //sender
-    const senderRoomInfo = new Room({
-      user: myName,
-      roomName: clientName,
-    });
-    console.log("room Information", senderRoomInfo);
-    await senderRoomInfo
-      .save()
-      .then(async () => {
-        return res.status(200).json({
-          status: 200,
-          message: "Room for user has been saved.",
-        });
-      })
-      .catch((error) => {
-        return res.status(500).json({
-          status: 500,
-          message: error,
-        });
-      });
-    //receiver
-    // const receiverRoomInfo = new Room({
-    //   user: clientName,
-    //   roomName: myName,
-    // });
-    // console.log("room Information", receiverRoomInfo);
-    // await receiverRoomInfo
-    //   .save()
-    //   .then(async () => {
-    //     return res.status(200).json({
-    //       status: 200,
-    //       message: "Room for vendor has been saved.",
-    //     });
-    //   })
-    //   .catch((error) => {
-    //     return res.status(500).json({
-    //       status: 500,
-    //       message: error,
-    //     });
-    //   });
   };
 
   controllers.sendingNotification = (req, res) => {
@@ -264,9 +222,8 @@ export default () => {
     )
       .then((data) =>
         data.map((result) => {
-          // sendingEmail(result.email, title, description);
-          // sendingSms(result.phone, title, description);
-          // notification(result.email, title, description);
+          sendingEmail(result.email, title, description);
+          sendingSms(result.phone, title, description);
         }),
       )
       .catch((error) => console.log("error occured", error));

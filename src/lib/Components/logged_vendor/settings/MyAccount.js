@@ -8,6 +8,12 @@ import GoogleMapLoader from "react-google-maps-loader";
 import GooglePlacesSuggest from "react-google-places-suggest";
 import countryData from "../../../country_state.json";
 
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
+
 class VendorMyAccount extends React.Component {
   _btnIndex = 0;
 
@@ -64,10 +70,12 @@ class VendorMyAccount extends React.Component {
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      this.setState({
-        photoUrl: info.file.response.url,
-        loading: false,
-      });
+      getBase64(info.file.originFileObj, (photoUrl) =>
+        this.setState({
+          photoUrl: photoUrl,
+          loading: false,
+        }),
+      );
     }
   };
 

@@ -309,7 +309,7 @@ export const initChat = async (payload) => {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ vendor: payload, avatar: "http://pictures.com" }),
+    body: JSON.stringify({ vendor: payload }),
   })
     .then((response) => response.json())
     .then((result) => {
