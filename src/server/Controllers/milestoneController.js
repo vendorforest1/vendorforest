@@ -12,7 +12,7 @@ export default () => {
     const user = req.user.stripe_client_id;
     const price = newMilestone.price;
     const paymentIntentID = paymentIntent(user, price);
-    console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntentID);
+    console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntentID.id);
     await newMilestone
       .save()
       .then(async (milestone) => {
@@ -45,6 +45,7 @@ export default () => {
         payment_method: paymentMethodId,
         confirm: true,
       });
+      console.log("##########paymentIntent@@@@@@@@@@@@", paymentIntent);
     } catch (err) {
       // Error code will be authentication_required if authentication is needed
       console.log('Error code is: ', err.code);
@@ -93,59 +94,92 @@ export default () => {
   };
 
   controllers.release = async (req, res, next) => {
-    await Milestone.findOneAndUpdate(
-      {
-        _id: req.body._id,
-      },
-      {
-        status: constants.MILESTONE_STATUS.RELEASED,
-      },
-      {
-        new: true,
-      },
-    )
-      .then(async (milestone) => {
-        if (!milestone) {
-          return res.status(401).json({
-            status: 401,
-            message:
-              env.NODE_ENV === "development"
-                ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
-                : constants.PROD_COMMONERROR_MSG,
-          });
-        }
-        await Contract.findOneAndUpdate(
-          {
-            _id: milestone.contract,
-          },
-          {
-            $inc: {
-              paidPrice: milestone.price,
-            },
-          },
-        ).then(async (contract) => {
-          if (!contract) {
-            return res.status(401).json({
-              status: 401,
-              message:
-                env.NODE_ENV === "development"
-                  ? `Contract ${constants.DEV_EMPTYDOC_MSG}`
-                  : constants.PROD_COMMONERROR_MSG,
-            });
-          }
-          return res.status(200).json({
-            status: 200,
-            data: milestone,
-            message: "Milestone has been released successfully.",
-          });
-        });
+    const userStripeAccount = req.user.stripe_client_id;
+    const milestoneID = req.body._id;
+    try {
+      await Milestone.find({
+        _id: milestoneID,
       })
-      .catch((error) => {
-        return res.status(500).json({
-          status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        .populate({
+          path: "contract",
+          model: "contract",
+          populate: {
+            path: "vendor",
+            model: "user",
+          },
+        })
+        .then((milestone) => {
+          const vendorStripeID = milestone[0].contract.vendor.connectedAccountId;
+          const price = milestone[0].price;
+          stripe.transfers.create({
+              amount: price * 100 * 0.75,
+              currency: "usd",
+              destination: "acct_1Fk7vdBfP3BuiHmP",
+            })
+            .then(async (transfer) => {
+              const transferResult = transfer.amount;
+              console.log("transfer result+++++===", transfer);
+              await Milestone.findOneAndUpdate(
+                {
+                  _id: milestoneID,
+                },
+                {
+                  status: constants.MILESTONE_STATUS.RELEASED,
+                },
+                {
+                  new: true,
+                },
+              )
+                .then(async (milestone) => {
+                  if (!milestone) {
+                    return res.status(401).json({
+                      status: 401,
+                      message:
+                        env.NODE_ENV === "development"
+                          ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                          : constants.PROD_COMMONERROR_MSG,
+                    });
+                  }
+                  await Contract.findOneAndUpdate(
+                    {
+                      _id: milestone.contract,
+                    },
+                    {
+                      $inc: {
+                        paidPrice: milestone.price,
+                      },
+                    },
+                  ).then(async (contract) => {
+                    if (!contract) {
+                      return res.status(401).json({
+                        status: 401,
+                        message:
+                          env.NODE_ENV === "development"
+                            ? `Contract ${constants.DEV_EMPTYDOC_MSG}`
+                            : constants.PROD_COMMONERROR_MSG,
+                      });
+                    }
+                    return res.status(200).json({
+                      status: 200,
+                      data: milestone,
+                      message: "Milestone has been released successfully.",
+                    });
+                  });
+                })
+                .catch((error) => {
+                  return res.status(500).json({
+                    status: 500,
+                    message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+                  });
+                });
+            });
+        })
+        .catch((error) => {
+          console.log("Error occured", error);
         });
-      });
+    } catch (err) {
+      console.log("err ocurred &&&&&", err);
+    }
   };
 
   controllers.reqRelease = async (req, res, next) => {
