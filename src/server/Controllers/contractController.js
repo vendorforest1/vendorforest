@@ -25,7 +25,7 @@ export default () => {
             return res.status(401).json({
               status: 401,
               message:
-                process.env.NODE_ENV === "development"
+                env.MODE === "development"
                   ? `Proposal ${constants.DEV_EMPTYDOC_MSG}`
                   : constants.PROD_COMMONERROR_MSG,
             });
@@ -45,7 +45,7 @@ export default () => {
               return res.status(401).json({
                 status: 401,
                 message:
-                  process.env.NODE_ENV === "development"
+                  env.MODE === "development"
                     ? `Job ${constants.DEV_EMPTYDOC_MSG}`
                     : constants.PROD_COMMONERROR_MSG,
               });
@@ -61,8 +61,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -138,7 +137,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              process.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `Contract ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -152,8 +151,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -227,7 +225,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              process.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `Contract ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -241,8 +239,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -310,7 +307,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              process.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `Contract ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -323,8 +320,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -384,8 +380,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };

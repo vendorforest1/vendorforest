@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Rate, Form, InputNumber, message } from "antd";
-import moment from "moment";
+import { Form, InputNumber } from "antd";
 import { fetchUpdateData } from "../essential";
 
 class EditHourlyRate extends React.Component {
@@ -22,14 +21,14 @@ class EditHourlyRate extends React.Component {
     });
   };
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (!this.props.success && newProps.success) {
-      this.props.toggle();
+  static getDerivedStateFromProps(props, state) {
+    if (!state.success && props.success) {
+      props.toggle();
     }
   }
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
 
     return (
       <div className="edit-hourlyrate w-100 pb-5">
