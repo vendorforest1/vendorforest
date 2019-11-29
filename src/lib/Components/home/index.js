@@ -1,9 +1,14 @@
 import React from "react";
+import $ from "jquery";
+import { Icon } from "antd";
+// @ts-ignore
 import withStyles from "isomorphic-style-loader/withStyles";
-import { connect, ReactReduxContext } from "react-redux";
+import { connect } from "react-redux";
 import VendorForestHeader from "@Components/inc/header";
 import VendorForestFooter from "@Components/inc/footer";
 
+// @ts-ignore
+// import "./index.scss";
 import styles from "./index.scss";
 
 import HeaderForm from "./HeaderForm";
@@ -15,49 +20,31 @@ import NewPostedJobs from "./NewPostedJobs";
 import BuildTeamsBox from "./BuildTeamsBox";
 import Mask from "./Mask";
 import { fetchInitData } from "./essential";
-// import { ContextProvider } from "@Shared/SharedContext";
-import configureStore from "@Shared/configureStore";
 
-const myStore = configureStore().store;
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { pending: false, user: undefined, homeData: undefined };
-    this.store = configureStore().store;
-  }
-  static getDerivedStateFromProps(props, state) {
-    if (props.homeData !== state.homeData) {
-      return {
-        pending: false,
-        homeData: props.homeData,
-      };
-    } else {
-      myStore.dispatch(fetchInitData());
-      return {
-        pending: true,
-        homeData: undefined,
-      };
-    }
+    this.state = {};
   }
 
-  // static async fetchInitialData(store) {
-  // await store.dispatch(fetchInitData());
-  // }
+  async componentDidMount() {
+    await this.props.fetchInitData();
+  }
 
   render() {
-    const { pending, homeData } = this.state;
+    console.log(this.props.pending, this.props.homedata);
     return (
       <div>
-        {pending && <Mask />}
-        {!pending && homeData && (
+        {this.props.pending && <Mask />}
+        {!this.props.pending && this.props.homedata && (
           <div>
             <VendorForestHeader />
             <HeaderForm {...this.props} />
             <HomeCategories />
-            <ServicesCategory services={homeData.services} />
-            <TopRatedVendors vendors={homeData.vendors} />
+            <ServicesCategory services={this.props.homedata.services} />
+            <TopRatedVendors vendors={this.props.homedata.vendors} />
             <HowItWorks />
-            <NewPostedJobs jobs={this.props.homeData.jobs} />
+            <NewPostedJobs jobs={this.props.homedata.jobs} />
             <BuildTeamsBox />
             <VendorForestFooter />
           </div>
@@ -67,12 +54,12 @@ class Home extends React.Component {
   }
 }
 
-const mapStateToProps = ({ homeReducer }) => {
+const mapStateToProps = ({ homeReducer, loginReducer }) => {
   const { error, homedata, success, pending } = homeReducer;
 
-  // const { user } = loginReducer;
+  const { user } = loginReducer;
 
-  return { error, homeData: homedata, success, pending };
+  return { error, homedata, success, pending, user };
 };
 
 export default connect(mapStateToProps, {

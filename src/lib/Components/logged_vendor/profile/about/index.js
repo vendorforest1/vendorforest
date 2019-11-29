@@ -1,7 +1,7 @@
 // @ts-nocheck
 import React from "react";
 import { connect } from "react-redux";
-import { List, Rate, Card, Icon, Progress, message, Modal, Button } from "antd";
+import { List, Rate, Card, Icon, Progress, message, Modal } from "antd";
 import { fetchReviewsData } from "../essential";
 import ReviewItem from "./ReviewItem";
 import EditHourlyRate from "./EditHourlyRate";
@@ -16,16 +16,12 @@ class VendorAbout extends React.Component {
     };
     this.toggle = this.toggle.bind(this);
   }
-  static async fetchInitialData(store) {
-    console.log("async fetch vendorAbout");
-    return await store.dispatch(fetchReviewsData());
-  }
 
   componentDidMount() {
-    // this.props.fetchReviewsData();
+    this.props.fetchReviewsData();
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       message.success(newProps.success);
     }
@@ -41,8 +37,7 @@ class VendorAbout extends React.Component {
   }
 
   render() {
-    const { user } = this.props.user;
-    const vendorProfile = user && (
+    return (
       <div className="vendor-about">
         <Card
           title={<span className="h5 font-weight-bold">About</span>}
@@ -54,7 +49,10 @@ class VendorAbout extends React.Component {
               <div className="d-flex flex-md-row flex-column justify-content-between">
                 <div className="account-info d-flex mb-3">
                   <div className="photo-wrap">
-                    <img src={user.profileImage || defaultProfileImage} alt="profile image" />
+                    <img
+                      src={this.props.user.profileImage || defaultProfileImage}
+                      alt={"profile"}
+                    />
                   </div>
                   <div className="ml-3">
                     <h3>
@@ -66,22 +64,26 @@ class VendorAbout extends React.Component {
                       <p>
                         <Icon type="global" />
                         <span className="ml-1">
-                          {user.bsLocation
-                            ? `${user.bsLocation.city}, 
-                                          ${user.bsLocation.state} ${user.bsLocation.country}`
+                          {this.props.user.bsLocation
+                            ? `${this.props.user.bsLocation.city}, 
+                                            ${this.props.user.bsLocation.state} ${this.props.user.bsLocation.country}`
                             : ""}
                         </span>
                       </p>
                     )}
-                    <Rate value={user.vendor.rate} disabled allowHalf />
-                    <span className="h6">{user.vendor.rate}</span>
+                    <Rate value={this.props.user.vendor.rate} disabled allowHalf />
+                    <span className="h6">{this.props.user.vendor.rate}</span>
                   </div>
                 </div>
                 <div className="status">
                   <p>Job Complated Rate</p>
-                  <Progress percent={user.vendor.jobCompletedRate} size="small" status="active" />
+                  <Progress
+                    percent={this.props.user.vendor.jobCompletedRate}
+                    size="small"
+                    status="active"
+                  />
                   <p>Profile Status</p>
-                  <Progress percent={user.profilePercent} size="small" status="active" />
+                  <Progress percent={this.props.user.profilePercent} size="small" status="active" />
                 </div>
               </div>
             </div>
@@ -102,15 +104,15 @@ class VendorAbout extends React.Component {
                   <h6>Hourly Rate</h6>
                 </div>
                 <div className="col-md-3 text-center">
-                  <h3>${user.vendor.totalEarning}</h3>
+                  <h3>${this.props.user.vendor.totalEarning}</h3>
                   <h6>Total Earning</h6>
                 </div>
                 <div className="col-md-3 text-center">
-                  <h3>{user.vendor.jobs}</h3>
+                  <h3>{this.props.user.vendor.jobs}</h3>
                   <h6>jobs</h6>
                 </div>
                 <div className="col-md-3 text-center">
-                  <h3>{user.vendor.hoursWorked}</h3>
+                  <h3>{this.props.user.vendor.hoursWorked}</h3>
                   <h6>Hours Worked</h6>
                 </div>
               </div>
@@ -167,7 +169,6 @@ class VendorAbout extends React.Component {
         </Modal>
       </div>
     );
-    return vendorProfile ? vendorProfile : <div></div>;
   }
 }
 

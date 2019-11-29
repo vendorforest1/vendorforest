@@ -39,7 +39,7 @@ async function hydrate() {
   const jsx = (
     <StyleContext.Provider value={{ insertCss }}>
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
+        <PersistGate persistor={persistor}>
           <BrowserRouter>
             <App />
           </BrowserRouter>

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Button, Icon, Tag, Rate } from "antd";
+import { Icon, Tag } from "antd";
 import moment from "moment";
 import { constants } from "@Shared/constants";
 import defaultProfileImage from "@Components/images/profileplace.png";
@@ -100,30 +100,35 @@ class JobItem extends React.Component {
             : this.props.job.description}
         </p>
         <div className="w-100 mb-3">{this.displaySkills()}</div>
-        <div className="client d-flex">
-          <img
-            src={this.props.job.client.profileImage || defaultProfileImage}
-            style={{ height: "35px", width: "35px" }}
-          ></img>
-          <div className="ml-2">
-            <h6 className="text-color">{this.props.job.client.username}</h6>
-            <h6 className="text-dark">
-              <span>
-                {" "}
-                {this.props.job.client.bsLocation
-                  ? this.props.job.client.bsLocation.country
-                  : this.props.job.location.country}{" "}
-                | ${this.props.job.client.client && this.props.job.client.client.totalSpent} spent
-              </span>
-            </h6>
+        {this.props.job.client && (
+          <div className="client d-flex">
+            {" "}
+            I get here
+            <img
+              src={this.props.job.client.profileImage || defaultProfileImage}
+              style={{ height: "35px", width: "35px" }}
+              alt=""
+            />
+            <div className="ml-2">
+              <h6 className="text-color">{this.props.job.client.username}</h6>
+              <h6 className="text-dark">
+                <span>
+                  {" "}
+                  {this.props.job.client.bsLocation
+                    ? this.props.job.client.bsLocation.country
+                    : this.props.job.location.country}{" "}
+                  | ${this.props.job.client.client && this.props.job.client.client.totalSpent} spent
+                </span>
+              </h6>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ findJobReducer, loginReducer }) => {
+const mapStateToProps = ({ loginReducer }) => {
   const { user } = loginReducer;
   return {
     user,

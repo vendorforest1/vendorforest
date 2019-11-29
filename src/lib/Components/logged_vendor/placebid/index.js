@@ -50,32 +50,33 @@ class PlaceBid extends React.Component {
     this.props.fetchTeamsData();
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (!this.props.success && newProps.success) {
-      message.success(newProps.success);
-      if (!this.isUpdate()) {
-        this.props.history.push("/vendor/findjob");
+  // UNSAFE_componentWillReceiveProps(newProps) {
+  static getDerivedStateFromProps(props, state) {
+    if (!state.success && props.success) {
+      message.success(props.success);
+      if (!props.match.params.proposal_id) {
+        state.history.push("/vendor/findjob");
       }
     }
-    if (!this.props.error && newProps.error) {
-      message.error(newProps.error);
+    if (!state.error && props.error) {
+      message.error(props.error);
     }
-    if (!this.props.proposal && newProps.proposal) {
-      this.setState({
-        bidType: newProps.proposal.bidType,
-        offerBudget: newProps.proposal.offerBudget,
-        getPaidPrice: newProps.proposal.offerBudget * 0.75,
-      });
+    if (!state.proposal && props.proposal) {
+      return {
+        bidType: props.proposal.bidType,
+        offerBudget: props.proposal.offerBudget,
+        getPaidPrice: props.proposal.offerBudget * 0.75,
+      };
     }
     if (
-      newProps.teams &&
-      newProps.proposal &&
-      newProps.proposal.bidType === constants.BID_TYPE.TEAM &&
-      this.state.teams.length === 0
+      props.teams &&
+      props.proposal &&
+      props.proposal.bidType === constants.BID_TYPE.TEAM &&
+      state.teams.length === 0
     ) {
-      const newTeams = [...newProps.teams].filter((team) => {
+      const newTeams = [...props.teams].filter((team) => {
         return (
-          newProps.proposal.offers.filter((offer) => {
+          props.proposal.offers.filter((offer) => {
             if (team._id === offer.team) {
               team.members.forEach((member) => {
                 if (member._id === offer.receiver) {
@@ -89,10 +90,11 @@ class PlaceBid extends React.Component {
           }).length > 0
         );
       });
-      this.setState({
+      return {
         teams: newTeams,
-      });
+      };
     }
+    return null;
   }
 
   isUpdate() {

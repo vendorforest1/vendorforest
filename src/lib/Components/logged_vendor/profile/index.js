@@ -44,25 +44,23 @@ class VendorProfile extends React.Component {
     this.selectMenu = this.selectMenu.bind(this);
   }
 
-  componentDidMount() {
-    this.props.fetchGetUserData();
+  async componentDidMount() {
+    await this.props.fetchGetUserData();
   }
 
   static getDerivedStateFromProps(props, state) {
-    if (props.success) {
+    if (!state.success && props.success) {
       message.success(props.success);
     }
-    if (props.error) {
+    if (state.error && props.error) {
       message.error(props.error);
     }
-    if (props.pending !== state.pending) {
-      return {
-        pending: props.pending,
-        success: props.success,
-        error: props.error,
-        user: props.user,
-      };
-    }
+    return {
+      pending: props.pending,
+      success: props.success,
+      error: props.error,
+      user: props.user,
+    };
   }
 
   selectMenu(index) {
@@ -166,7 +164,6 @@ class VendorProfile extends React.Component {
 }
 
 const mapStateToProps = ({ vendorProfileReducer }) => {
-  console.log("***** ", vendorProfileReducer.user);
   const { error, success, user, pending } = vendorProfileReducer;
   return {
     error,

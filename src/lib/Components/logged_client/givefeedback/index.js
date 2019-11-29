@@ -19,15 +19,6 @@ const { TextArea } = Input;
 
 const endReasons = ["Job Completed", "No Experienced Vendor", "Other Reason"];
 
-const enoughList = [
-  "On Time",
-  "Skillful",
-  "Excellent Service",
-  "Above & Beyond",
-  "Entertaining",
-  "Great Conversation",
-];
-
 class ClientGiveFeedBack extends React.Component {
   constructor(props) {
     super(props);
@@ -40,14 +31,19 @@ class ClientGiveFeedBack extends React.Component {
     this.giveFeedbck = this.giveFeedbck.bind(this);
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (!this.props.success && newProps.success) {
-      message.success(newProps.success);
-      this.props.history.push(`/client`);
+  // UNSAFE_componentWillReceiveProps(newProps) {
+  static getDerivedStateFromProps(props, state) {
+    if (!state.success && props.success) {
+      message.success(props.success);
+      state.history.push(`/client`);
     }
-    if (!this.props.error && newProps.error) {
-      message.error(newProps.error);
+    if (!state.error && props.error) {
+      message.error(props.error);
     }
+    return {
+      success: props.success,
+      error: props.error,
+    };
   }
 
   giveFeedbck() {
@@ -73,7 +69,7 @@ class ClientGiveFeedBack extends React.Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
 
     const generateReasonOptions = () => {
       return endReasons.map((reason, index) => {
