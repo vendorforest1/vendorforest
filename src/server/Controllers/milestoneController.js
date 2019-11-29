@@ -3,12 +3,16 @@ import Milestone from "@Models/milestone.model";
 import Contract from "@Models/contract.model";
 import getEnv, { constants } from "@Config/index";
 const env = getEnv();
-
+const stripe = require("stripe")(env.STRIPE_SECRET_KEY);
 export default () => {
   const controllers = {};
 
   controllers.create = async (req, res, next) => {
     const newMilestone = new Milestone({ ...req.body });
+    const user = req.user.stripe_client_id;
+    const price = newMilestone.price;
+    const paymentIntentID = paymentIntent(user, price);
+    console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntentID);
     await newMilestone
       .save()
       .then(async (milestone) => {
@@ -24,6 +28,34 @@ export default () => {
           message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
+  };
+
+  const paymentIntent = async (clientID, price) => {
+    const paymentIntent = await stripe.paymentMethods.list({
+      customer: clientID,
+      type: "card",
+    });
+    console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntent.data[0].id);
+    const paymentMethodId = paymentIntent.data[0].id;
+    try {
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: price * 100,
+        currency: 'usd',
+        customer: clientID,
+        payment_method: paymentMethodId,
+        confirm: true,
+      });
+    } catch (err) {
+      // Error code will be authentication_required if authentication is needed
+      console.log('Error code is: ', err.code);
+      payment_intent_id = err.raw.payment_intent.id;
+      stripe.paymentIntents.retrieve(
+        payment_intent_id,
+        function(err, paymentIntentRetrieved) {
+          console.log('PI retrieved: ', paymentIntentRetrieved.id);
+        }
+        );
+    }
   };
 
   controllers.update = async (req, res, next) => {

@@ -177,6 +177,7 @@ export const fetchGetMilestonesData = (payload) => async (dispatch, getState) =>
 };
 
 export const fetchCreateMilestoneData = (payload) => async (dispatch, getState) => {
+  console.log("milestone payload", payload);
   dispatch(clearError());
   dispatch(fetchRequest());
   return await fetch(apiUrl.CREATE_MILESTONE, {
@@ -193,6 +194,7 @@ export const fetchCreateMilestoneData = (payload) => async (dispatch, getState) 
         throw new Error(result.message);
       }
       const newMilestones = [...getState().clientContractDetailsReducer.milestones];
+      console.log("newMilestone created+++++++++++", newMilestones);
       newMilestones.push(result.data);
       dispatch(fetchMilestonesSuccess(newMilestones));
       dispatch(fetchSuccessMsg(result.message));
