@@ -25,7 +25,6 @@ class Messages extends React.Component {
     this.props.fetchContactedUser();
     const accountType = this.props.user.userObj.accountType;
     const friends = this.props.connectedUser;
-    // const friend = friends[0].user;
     var users = [];
     if (friends) {
       for (var i = 0; i < Object.keys(friends).length; i++) {
@@ -81,7 +80,6 @@ class Messages extends React.Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-12">
-              {/* <ChatRoom /> */}
               <div id="cometchat_embed_synergy_container"></div>
             </div>
           </div>

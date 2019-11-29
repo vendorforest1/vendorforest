@@ -123,13 +123,11 @@ class AddPortfolio extends React.Component {
       if (!error && !this.props.pending) {
         const data = { ...values };
         (data.attachImgFiles = this.state.attachImgFiles.map((file) => {
-          console.log("file URL&&&&&&&&&&&&&&&", file.url);
-          console.log("file Response.URL**********", file.response.url);
           return {
             name: file.name,
             uid: file.uid,
             status: file.status,
-            url: file.url || file.response.url,
+            url: file.thumbUrl || file.response.url,
           };
         })),
           (data.attachVidFiles = this.state.attachVidFiles.map((file) => {
@@ -137,7 +135,7 @@ class AddPortfolio extends React.Component {
               name: file.name,
               uid: file.uid,
               status: file.status,
-              url: file.url || file.response.url,
+              url: file.thumbUrl || file.response.url,
             };
           })),
           (data.coverImage = data.attachImgFiles.length > 0 ? data.attachImgFiles[0] : undefined);
@@ -219,7 +217,7 @@ class AddPortfolio extends React.Component {
                 </Modal>
               </div>
             </div>
-            <div className="col-12 mb-3">
+            {/* <div className="col-12 mb-3">
               <h6 className="mb-3">Videos</h6>
               <div className="clearfix">
                 <Upload
@@ -235,7 +233,7 @@ class AddPortfolio extends React.Component {
                   <img alt="example" style={{ width: "100%" }} src={previewVideo} />
                 </Modal>
               </div>
-            </div>
+            </div> */}
             <div className="col-md-12">
               <Form.Item label="Title">
                 {getFieldDecorator("title", {

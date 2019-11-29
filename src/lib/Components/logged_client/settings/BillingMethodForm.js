@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { injectStripe, CardElement } from "react-stripe-elements";
-import { Input, Form, Radio, Select, Card } from "antd";
+import { Input, Form, Radio, Select, Card, message } from "antd";
 import { getClientId } from "./essential";
 
 class ClientBilling extends Component {
@@ -51,8 +51,9 @@ class ClientBilling extends Component {
           console.log("[token]", payload.token.id);
           getClientId(payload.token.id);
         });
+      message.success("Your account is successfully registered.");
     } else {
-      console.log("Stripe.js hasn't loaded yet.");
+      message.error("Stripe.js hasn't loaded yet.");
     }
     console.log("sds");
     this.props.form.validateFields((err, value) => {
@@ -196,6 +197,7 @@ class ClientBilling extends Component {
               </Radio.Group>
             </div>
             <div className="col-12">
+              {}
               <button className="button-primary" onClick={this.saveBillingInfo}>
                 Save
               </button>
