@@ -2,6 +2,7 @@
 import Milestone from "@Models/milestone.model";
 import Contract from "@Models/contract.model";
 import getEnv, { constants } from "@Config/index";
+import { async } from "q";
 const env = getEnv();
 const stripe = require("stripe")(env.STRIPE_SECRET_KEY);
 export default () => {
@@ -11,28 +12,37 @@ export default () => {
     const newMilestone = new Milestone({ ...req.body });
     const user = req.user.stripe_client_id;
     const price = newMilestone.price;
-    const paymentIntentID = paymentIntent(user, price);
-    console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntentID.id);
-    await newMilestone
-      .save()
-      .then(async (milestone) => {
-        return res.status(200).json({
-          status: 200,
-          data: milestone,
-          message: "Milestone has been created successfully.",
-        });
+    const paymentIntentID = await paymentIntent(user, price)
+      .then(() => {
+        newMilestone
+          .save()
+          .then(async (milestone) => {
+            console.log("milestone", milestone);
+            return res.status(200).json({
+              status: 200,
+              data: milestone,
+              message: "Milestone has been created successfully.",
+            });
+          })
+          .catch((error) => {
+            return res.status(500).json({
+              status: 500,
+              message:
+                env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+            });
+          });
       })
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: `Errors ${error}`,
         });
       });
   };
 
   const paymentIntent = async (clientID, price) => {
     const paymentIntent = await stripe.paymentMethods.list({
-      customer: clientID,
+      customer: "clientID",
       type: "card",
     });
     console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntent.data[0].id);
@@ -40,7 +50,7 @@ export default () => {
     try {
       const paymentIntent = await stripe.paymentIntents.create({
         amount: price * 100,
-        currency: 'usd',
+        currency: "usd",
         customer: clientID,
         payment_method: paymentMethodId,
         confirm: true,
@@ -48,14 +58,11 @@ export default () => {
       console.log("##########paymentIntent@@@@@@@@@@@@", paymentIntent);
     } catch (err) {
       // Error code will be authentication_required if authentication is needed
-      console.log('Error code is: ', err.code);
+      console.log("Error code is: ", err.code);
       payment_intent_id = err.raw.payment_intent.id;
-      stripe.paymentIntents.retrieve(
-        payment_intent_id,
-        function(err, paymentIntentRetrieved) {
-          console.log('PI retrieved: ', paymentIntentRetrieved.id);
-        }
-        );
+      stripe.paymentIntents.retrieve(payment_intent_id, function(err, paymentIntentRetrieved) {
+        console.log("PI retrieved: ", paymentIntentRetrieved.id);
+      });
     }
   };
 
@@ -111,10 +118,11 @@ export default () => {
         .then((milestone) => {
           const vendorStripeID = milestone[0].contract.vendor.connectedAccountId;
           const price = milestone[0].price;
-          stripe.transfers.create({
+          stripe.transfers
+            .create({
               amount: price * 100 * 0.75,
               currency: "usd",
-              destination: "acct_1Fk7vdBfP3BuiHmP",
+              destination: vendorStripeID,
             })
             .then(async (transfer) => {
               const transferResult = transfer.amount;
@@ -169,7 +177,10 @@ export default () => {
                 .catch((error) => {
                   return res.status(500).json({
                     status: 500,
-                    message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+                    message:
+                      env.NODE_ENV === "development"
+                        ? error.message
+                        : constants.PROD_COMMONERROR_MSG,
                   });
                 });
             });
