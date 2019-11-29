@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Icon, Avatar, Tag } from "antd";
+import { Input, Icon, Tag } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import { connect } from "react-redux";
 import VF_VendorHeader from "@Components/inc/vendor_header";
@@ -63,7 +63,7 @@ class VendorJobDetails extends React.Component {
     const index =
       this.props.user &&
       this.props.job.proposales.findIndex(
-        (proposal) => proposal.vendor._id === this.props.user.userObj._id,
+        (proposal) => proposal.vendor && proposal.vendor._id === this.props.user.userObj._id,
       );
     return index > -1 ? this.props.job.proposales[index] : null;
   }
@@ -216,96 +216,97 @@ class VendorJobDetails extends React.Component {
                             </button>
                           </div>
                           <hr />
-                          <div className="client-info mb-2">
-                            <img
-                              src={this.props.job.client.profileImage || defaultProfileImage}
-                              style={{ height: "55px", width: "55px", borderRadius: "100%" }}
-                              alt="profileimage"
-                            />
-                            <div className="info ml-2">
-                              <h6>
-                                <a href="/client" className="text-color font-weight-bold">
-                                  {this.props.job.client.username}
-                                </a>
-                              </h6>
-                              <p>
-                                {this.props.job.client.bsLocation
-                                  ? this.props.job.client.bsLocation.country
-                                  : this.props.job.location.country}
-                              </p>
-                              <p>
-                                {this.props.job.client.bsLocation
-                                  ? this.props.job.client.bsLocation.city
-                                  : this.props.job.location.city}{" "}
-                                {this.props.job.client.timeZone
-                                  ? getTimeFromTimezone(this.props.job.client.timeZone)
-                                  : "Unknown"}
-                              </p>
+                          {this.props.job.client && (
+                            <div>
+                              {" "}
+                              <div className="client-info mb-2">
+                                <img
+                                  src={this.props.job.client.profileImage || defaultProfileImage}
+                                  style={{ height: "55px", width: "55px", borderRadius: "100%" }}
+                                  alt="profileimage"
+                                />
+                                <div className="info ml-2">
+                                  <h6>
+                                    <a href="/client" className="text-color font-weight-bold">
+                                      {this.props.job.client.username}
+                                    </a>
+                                  </h6>
+                                  <p>
+                                    {this.props.job.client.bsLocation
+                                      ? this.props.job.client.bsLocation.country
+                                      : this.props.job.location.country}
+                                  </p>
+                                  <p>
+                                    {this.props.job.client.bsLocation
+                                      ? this.props.job.client.bsLocation.city
+                                      : this.props.job.location.city}{" "}
+                                    {this.props.job.client.timeZone
+                                      ? getTimeFromTimezone(this.props.job.client.timeZone)
+                                      : "Unknown"}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="client-verified-info text-center">
+                                <p>
+                                  <span
+                                    className={`${
+                                      this.props.job.client.isConfirmed ? "text-color" : ""
+                                    } mr-3`}
+                                  >
+                                    <Icon type="mail" />
+                                  </span>
+                                  <span
+                                    className={`${
+                                      this.props.job.client.phone ? "text-color" : ""
+                                    } mr-3`}
+                                  >
+                                    <Icon type="mobile" />
+                                  </span>
+                                  <span
+                                    className={`${
+                                      this.props.job.client.bsLocation ? "text-color" : ""
+                                    } mr-3`}
+                                  >
+                                    <Icon type="global" />
+                                  </span>
+                                  <span className="mr-3">
+                                    <Icon type="dollar" />
+                                  </span>
+                                </p>
+                              </div>
+                              <hr />
+                              <div className="client-history">
+                                <p>
+                                  <span className=" font-weight-bold mr-2">Amount Spent: </span>$
+                                  {this.props.job.client.client.totalSpent}
+                                </p>
+                                <p>
+                                  <span className=" font-weight-bold mr-2">Posted Jobs: </span>
+                                  {this.props.job.client.client.postedJobs}
+                                </p>
+                                <p>
+                                  <span className=" font-weight-bold mr-2">Open Jobs: </span>
+                                  {this.props.job.client.client.openJobs}
+                                </p>
+                                {this.props.job.client.hireRate && (
+                                  <p>
+                                    <span className=" font-weight-bold mr-2">Hire Rate: </span>
+                                    {this.props.job.client.client.hireRate}%
+                                  </p>
+                                )}
+                                {this.props.job.client.avgHourlyRate && (
+                                  <p>
+                                    <span className=" font-weight-bold mr-2">
+                                      Avg Hourly Rate:{" "}
+                                    </span>
+                                    ${this.props.job.client.client.avgHourlyRate}
+                                    /hr
+                                  </p>
+                                )}
+                              </div>
+                              <hr />{" "}
                             </div>
-                          </div>
-                          <div className="client-verified-info text-center">
-                            <p>
-                              <span
-                                className={`${
-                                  this.props.job.client.isConfirmed ? "text-color" : ""
-                                } mr-3`}
-                              >
-                                <Icon type="mail" />
-                              </span>
-                              <span
-                                className={`${
-                                  this.props.job.client.phone ? "text-color" : ""
-                                } mr-3`}
-                              >
-                                <Icon type="mobile" />
-                              </span>
-                              <span
-                                className={`${
-                                  this.props.job.client.bsLocation ? "text-color" : ""
-                                } mr-3`}
-                              >
-                                <Icon type="global" />
-                              </span>
-                              <span className="mr-3">
-                                <Icon type="dollar" />
-                              </span>
-                            </p>
-                          </div>
-                          <hr />
-                          <div className="client-history">
-                            <p>
-                              <span className=" font-weight-bold mr-2">Amount Spent: </span>$
-                              {this.props.job.client.client &&
-                                this.props.job.client.client.totalSpent}
-                            </p>
-                            <p>
-                              <span className=" font-weight-bold mr-2">Posted Jobs: </span>
-                              {this.props.job.client.client &&
-                                this.props.job.client.client.postedJobs}
-                            </p>
-                            <p>
-                              <span className=" font-weight-bold mr-2">Open Jobs: </span>
-                              {this.props.job.client.client &&
-                                this.props.job.client.client.openJobs}
-                            </p>
-                            {this.props.job.client.hireRate && (
-                              <p>
-                                <span className=" font-weight-bold mr-2">Hire Rate: </span>
-                                {this.props.job.client.client &&
-                                  this.props.job.client.client.hireRate}
-                                %
-                              </p>
-                            )}
-                            {this.props.job.client.avgHourlyRate && (
-                              <p>
-                                <span className=" font-weight-bold mr-2">Avg Hourly Rate: </span>$
-                                {this.props.job.client.client &&
-                                  this.props.job.client.client.avgHourlyRate}
-                                /hr
-                              </p>
-                            )}
-                          </div>
-                          <hr />
+                          )}
                           <div className="job-link">
                             <p className=" font-weight-bold">Job Link</p>
                             <Input
