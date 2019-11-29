@@ -101,55 +101,59 @@ class PendingContractItem extends React.Component {
     return (
       <div className="pending-contract-item ">
         <div className="row">
-          <div className="col-lg-6 mb-3">
-            <h5 className="mb-2 text-grey">{this.props.contract.job.title}</h5>
-            <div className="mb-3 text-grey">{this.displaySkills()}</div>
-            <p>
-              <b>Begin date & time:</b> <Icon type="calendar" />{" "}
-              {moment(this.props.contract.stDateTime).format("MMMM DD, YYYY")} -{" "}
-              <Icon type="clock-circle" />{" "}
-              {moment(this.props.contract.stDateTime).format("HH:mm A")}
-            </p>
-            <p>
-              <b>Estimated End date & time:</b> <Icon type="calendar" />{" "}
-              {moment(this.props.contract.endDateTime).format("MMMM DD, YYYY")} -{" "}
-              <Icon type="clock-circle" />{" "}
-              {moment(this.props.contract.endDateTime).format("HH:mm A")}
-            </p>
-            <p>
-              <b>Contract Budget:</b> <Icon type="dollar" />
-              &nbsp;
-              <span className="text-color">
-                ${this.props.contract.budget}
-                {this.props.contract.job.budgetType === constants.BUDGET_TYPE.HOURLY ? "/hr" : ""}
-              </span>
-            </p>
-          </div>
-          <div className="col-lg-6 d-md-flex justify-content-between d-block">
-            <div className="user">
-              <Avatar
-                src={this.props.contract.vendor.profileImage || defaultProfileImage}
-                className="photo"
-              />
-              <div className="info ml-2">
-                <h6>
-                  <a href="" className="text-color font-weight-bold">
-                    {this.props.contract.vendor.username}
-                  </a>
-                </h6>
-                {this.props.contract.vendor.bsLocation && (
-                  <p className="text-grey">
-                    {this.props.contract.vendor.bsLocation.city} /{" "}
-                    {this.props.contract.vendor.bsLocation.country}
-                  </p>
-                )}
-                {this.props.contract.vendor.timeZone && (
-                  <p className="text-grey">
-                    {getTimeFromTimezone(this.props.contract.vendor.timeZone)}
-                  </p>
-                )}
-              </div>
+          {this.props.contract && this.props.contract.job && (
+            <div className="col-lg-6 mb-3">
+              <h5 className="mb-2 text-grey">{this.props.contract.job.title}</h5>
+              <div className="mb-3 text-grey">{this.displaySkills()}</div>
+              <p>
+                <b>Begin date & time:</b> <Icon type="calendar" />{" "}
+                {moment(this.props.contract.stDateTime).format("MMMM DD, YYYY")} -{" "}
+                <Icon type="clock-circle" />{" "}
+                {moment(this.props.contract.stDateTime).format("HH:mm A")}
+              </p>
+              <p>
+                <b>Estimated End date & time:</b> <Icon type="calendar" />{" "}
+                {moment(this.props.contract.endDateTime).format("MMMM DD, YYYY")} -{" "}
+                <Icon type="clock-circle" />{" "}
+                {moment(this.props.contract.endDateTime).format("HH:mm A")}
+              </p>
+              <p>
+                <b>Contract Budget:</b> <Icon type="dollar" />
+                &nbsp;
+                <span className="text-color">
+                  ${this.props.contract.budget}
+                  {this.props.contract.job.budgetType === constants.BUDGET_TYPE.HOURLY ? "/hr" : ""}
+                </span>
+              </p>
             </div>
+          )}
+          <div className="col-lg-6 d-md-flex justify-content-between d-block">
+            {this.props.contract.vendor && (
+              <div className="user">
+                <Avatar
+                  src={this.props.contract.vendor.profileImage || defaultProfileImage}
+                  className="photo"
+                />
+                <div className="info ml-2">
+                  <h6>
+                    <a href="" className="text-color font-weight-bold">
+                      {this.props.contract.vendor.username}
+                    </a>
+                  </h6>
+                  {this.props.contract.vendor.bsLocation && (
+                    <p className="text-grey">
+                      {this.props.contract.vendor.bsLocation.city} /{" "}
+                      {this.props.contract.vendor.bsLocation.country}
+                    </p>
+                  )}
+                  {this.props.contract.vendor.timeZone && (
+                    <p className="text-grey">
+                      {getTimeFromTimezone(this.props.contract.vendor.timeZone)}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
             <div className="status">
               <Progress
                 percent={this.props.contract.completedPercent}

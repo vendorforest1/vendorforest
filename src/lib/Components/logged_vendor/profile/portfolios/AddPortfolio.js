@@ -53,25 +53,25 @@ class AddPortfolio extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (this.props.portfolio !== newProps.portfolio) {
-      this.setState({
-        portfolioId: newProps.portfolio._id,
-        attachImgFiles: newProps.portfolio.attachImgFiles,
-        attachVidFiles: newProps.portfolio.attachVidFiles,
-        title: newProps.portfolio.title,
-        caption: newProps.portfolio.caption,
-      });
+  // UNSAFE_componentWillReceiveProps(newProps) {
+  static getDerivedStateFromProps(props, state) {
+    if (props.portfolio) {
+      return {
+        portfolioId: props.portfolio._id,
+        attachImgFiles: props.portfolio.attachImgFiles,
+        attachVidFiles: props.portfolio.attachVidFiles,
+        title: props.portfolio.title,
+        caption: props.portfolio.caption,
+      };
     }
-    if (this.props.portfolio && !newProps.portfolio) {
-      this.setState({
-        portfolioId: undefined,
-        attachImgFiles: [],
-        attachVidFiles: [],
-        title: "",
-        caption: "",
-      });
-    }
+    // return {
+    //   portfolioId: undefined,
+    //   attachImgFiles: [],
+    //   attachVidFiles: [],
+    //   title: "",
+    //   caption: "",
+    // };
+    return null;
   }
 
   imgPreviewCancel = () => this.setState({ previewImgVisible: false });
