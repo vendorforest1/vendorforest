@@ -1,7 +1,6 @@
 import React from "react";
 import { Avatar, Slider, Icon, Tabs, message } from "antd";
 import { connect } from "react-redux";
-import moment from "moment";
 import withStyles from "isomorphic-style-loader/withStyles";
 import VF_ClientHeader from "@Components/inc/client_header";
 import VF_Footer from "@Components/inc/footer";
@@ -13,8 +12,6 @@ import Review from "./Review";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
 import { fetchGetContractData, fetchUpdateContractData, updateContract } from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
-import configureStore from "@Shared/configureStore";
-import { REHYDRATE } from "redux-persist";
 
 const { TabPane } = Tabs;
 // const { persistor } = configureStore();
@@ -39,13 +36,18 @@ class VendorContractDetails extends React.Component {
     }
   }
 
-  UNSAFE__componentWillReceiveProps(newProps) {
-    if (!this.props.success && newProps.success) {
-      message.success(newProps.success);
+  // UNSAFE__componentWillReceiveProps(newProps) {
+  static getDerivedStateFromProps(props, state) {
+    if (!state.success && props.success) {
+      message.success(props.success);
     }
-    if (!this.props.error && newProps.error) {
-      message.error(newProps.error);
+    if (!state.error && props.error) {
+      message.error(props.error);
     }
+    return {
+      success: props.success,
+      error: props.error,
+    };
   }
 
   isLeftFeedBack() {

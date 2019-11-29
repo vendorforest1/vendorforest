@@ -13,15 +13,7 @@ class PendingContracts extends React.Component {
     this.state = {};
   }
 
-  static async fetchInitialData(store) {
-    console.log("async fetch pendingContract: ", store);
-    // return await store.dispatch(
-    //   fetchPendingContractsData({
-    //     vendor: this.props.user.userObj._id,
-    //     status: constants.CONTRACT_STATUS.CREATED,
-    //   }),
-    // );
-  }
+  // static async fetchInitialData(store) {}
 
   componentDidMount() {
     this.props.user &&

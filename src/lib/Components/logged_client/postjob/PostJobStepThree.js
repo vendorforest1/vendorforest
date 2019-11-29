@@ -88,12 +88,13 @@ class PostJobStepThree extends React.Component {
     });
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (newProps.vendors) {
-      this.setState({
-        searchVendors: newProps.vendors,
-      });
+  static getDerivedStateFromProps(props, state) {
+    if (props.vendors) {
+      return {
+        searchVendors: props.vendors,
+      };
     }
+    return null;
   }
 
   post() {

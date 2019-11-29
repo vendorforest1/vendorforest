@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Button, Icon, Tag, Rate } from "antd";
+import { Icon, Tag } from "antd";
 import moment from "moment";
 import { constants } from "@Shared/constants";
 import defaultProfileImage from "@Components/images/profileplace.png";
@@ -74,7 +74,7 @@ class JobItem extends React.Component {
           <div className="job-action text-md-right text-center ">
             <button
               className="button-primary col"
-              onClick={(e) => {
+              onClick={() => {
                 console.log(this.props.user);
                 if (
                   this.props.user &&
@@ -100,6 +100,7 @@ class JobItem extends React.Component {
           <img
             src={this.props.job.client.profileImage || defaultProfileImage}
             style={{ height: "35px", width: "35px" }}
+            alt=""
           />
           <div className="ml-2">
             <h6 className="text-color">{this.props.job.client.username}</h6>
@@ -118,7 +119,7 @@ class JobItem extends React.Component {
   }
 }
 
-const mapStateToProps = ({ findJobReducer, loginReducer }) => {
+const mapStateToProps = ({ loginReducer }) => {
   const { user } = loginReducer;
   return {
     user,

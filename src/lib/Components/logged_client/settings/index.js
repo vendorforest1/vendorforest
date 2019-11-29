@@ -44,13 +44,18 @@ class ClientSettings extends React.Component {
     this.props.fetchGetSettings();
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (!this.props.success && newProps.success) {
-      message.success(newProps.success);
+  // UNSAFE_componentWillReceiveProps(newProps) {
+  static getDerivedStateFromProps(props, state) {
+    if (!state.success && props.success) {
+      message.success(props.success);
     }
-    if (!this.props.error && newProps.error) {
-      message.error(newProps.error);
+    if (!state.error && props.error) {
+      message.error(props.error);
     }
+    return {
+      success: props.success,
+      error: props.error,
+    };
   }
 
   selectMenu(index) {

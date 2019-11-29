@@ -38,15 +38,7 @@ class VendorFindJob extends React.Component {
     };
   }
 
-  static async fetchInitialData(store) {
-    console.log("async fetch");
-    await store.dispatch(
-      fetchFindJobsData({
-        status: [constants.JOB_STATUS.POSTED, constants.JOB_STATUS.HIRED],
-      }),
-    );
-    await store.dispatch(fetchServiceData());
-  }
+  // static async fetchInitialData(store) {}
 
   componentDidMount() {
     this.props.fetchFindJobsData({
@@ -55,18 +47,19 @@ class VendorFindJob extends React.Component {
     this.props.fetchServiceData();
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (newProps.services) {
-      this.setState({
-        filterServices: newProps.services,
+  // UNSAFE_componentWillReceiveProps(newProps) {
+  static getDerivedStateFromProps(props, state) {
+    if (props.services) {
+      return {
+        success: props.success,
+        error: props.error,
+        filterServices: props.services,
         filterCategories:
-          this.state.filterService === -1
-            ? []
-            : newProps.services[this.state.filterService].categories,
-      });
+          state.filterService === -1 ? [] : props.services[state.filterService].categories,
+      };
     }
-    if (!this.props.error && newProps.error) {
-      if (newProps.error.status === 302) {
+    if (!state.error && props.error) {
+      if (props.error.status === 302) {
         store.clearAll();
         window.location.href = "/login";
       }
