@@ -26,8 +26,7 @@ export default () => {
                   escrowPrice: milestone.price,
                 },
               },
-            )
-
+            );
             console.log("milestone", milestone);
             return res.status(200).json({
               status: 200,
@@ -53,7 +52,7 @@ export default () => {
 
   const paymentIntent = async (clientID, price) => {
     const paymentIntent = await stripe.paymentMethods.list({
-      customer: "clientID",
+      customer: clientID,
       type: "card",
     });
     console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntent.data[0].id);
