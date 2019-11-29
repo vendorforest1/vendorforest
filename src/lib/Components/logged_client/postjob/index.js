@@ -1,9 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Steps, Button, message, Icon, Tag } from "antd";
+import { Steps, message, Icon, Tag } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_ClientHeader from "@Components/inc/client_header";
-import VF_Footer from "@Components/inc/footer";
+import ClientHeader from "@Components/inc/client_header";
+import Footer from "@Components/inc/footer";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import PostJobStepOne from "./PostJobStepOne";
@@ -43,10 +43,9 @@ class PostJob extends React.Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    this.props.fetchInitialData();
-    this.props.fetchServiceData();
-    console.log("id", this.props.match.params.id);
+  async componentDidMount() {
+    await this.props.fetchInitialData();
+    await this.props.fetchServiceData();
     if (this.props.match.params.id) {
       // this.props.updateJob({
       //     service: '',
@@ -78,13 +77,18 @@ class PostJob extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (!this.props.success && newProps.success) {
-      message.success(newProps.success);
+  // UNSAFE_componentWillReceiveProps(newProps) {
+  static getDerivedStateFromProps(props, state) {
+    if (!state.success && props.success) {
+      message.success(props.success);
     }
-    if (!this.props.error && newProps.error) {
-      message.error(newProps.error);
+    if (!state.error && props.error) {
+      message.error(props.error);
     }
+    return {
+      success: props.success,
+      error: props.error,
+    };
   }
 
   selectService(service) {
@@ -141,8 +145,6 @@ class PostJob extends React.Component {
   }
 
   render() {
-    console.log(this.props.services);
-
     const generateServiceList = () => {
       if (!this.props.services) {
         return "";
@@ -209,7 +211,7 @@ class PostJob extends React.Component {
 
     return (
       <div className="client-postjob">
-        <VF_ClientHeader />
+        <ClientHeader />
         <div className="content">
           <div className="container">
             {this.props.user && this.props.job ? (
@@ -252,7 +254,7 @@ class PostJob extends React.Component {
             )}
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }
