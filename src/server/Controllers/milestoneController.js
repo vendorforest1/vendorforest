@@ -17,6 +17,16 @@ export default () => {
         newMilestone
           .save()
           .then(async (milestone) => {
+            await Contract.findOneAndUpdate(
+              {
+                _id: milestone.contract,
+              },
+              {
+                $inc: {
+                  escrowPrice: milestone.price,
+                },
+              },
+            )
             console.log("milestone", milestone);
             return res.status(200).json({
               status: 200,
@@ -42,7 +52,7 @@ export default () => {
 
   const paymentIntent = async (clientID, price) => {
     const paymentIntent = await stripe.paymentMethods.list({
-      customer: "clientID",
+      customer: clientID,
       type: "card",
     });
     console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntent.data[0].id);
@@ -155,6 +165,7 @@ export default () => {
                     {
                       $inc: {
                         paidPrice: milestone.price,
+                        escrowPrice: -milestone.price,
                       },
                     },
                   ).then(async (contract) => {
@@ -183,13 +194,26 @@ export default () => {
                         : constants.PROD_COMMONERROR_MSG,
                   });
                 });
+            })
+            .catch((error) => {
+              return res.status(500).json({
+                status: 500,
+                message: `Errors ${error}`,
+              });
             });
         })
         .catch((error) => {
-          console.log("Error occured", error);
+          return res.status(500).json({
+            status: 500,
+            message: `Errors ${error}`,
+          });
         });
-    } catch (err) {
-      console.log("err ocurred &&&&&", err);
+    } catch (error) {
+      console.log("err ocurred &&&&&", error);
+      return res.status(500).json({
+        status: 500,
+        message: `Errors ${error}`,
+      });
     }
   };
 
