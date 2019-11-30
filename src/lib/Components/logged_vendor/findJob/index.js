@@ -64,6 +64,11 @@ class VendorFindJob extends React.Component {
         window.location.href = "/login";
       }
     }
+    return {
+      success: props.success,
+      error: props.error,
+      ...state,
+    };
   }
 
   search(searchParams) {

@@ -102,8 +102,6 @@ class JobItem extends React.Component {
         <div className="w-100 mb-3">{this.displaySkills()}</div>
         {this.props.job.client && (
           <div className="client d-flex">
-            {" "}
-            I get here
             <img
               src={this.props.job.client.profileImage || defaultProfileImage}
               style={{ height: "35px", width: "35px" }}

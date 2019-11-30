@@ -176,7 +176,6 @@ class PostJobStepThree extends React.Component {
       // await this.props.fetchUpdateJob(params);
       fetchUpdateJob(params)
         .then((data) => {
-          console.log("I get here");
           this.setState({
             pending: false,
           });
