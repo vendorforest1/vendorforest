@@ -1,6 +1,5 @@
 export function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
-    console.log("isAuthenticated", req.url);
     return next();
   }
 
@@ -9,7 +8,6 @@ export function isAuthenticated(req, res, next) {
 }
 
 export function isAuthenticatedForApi(req, res, next) {
-  console.log("isAuthenticatedForApi");
   if (req.isAuthenticated()) {
     return next();
   }

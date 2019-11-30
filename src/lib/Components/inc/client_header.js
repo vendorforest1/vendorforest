@@ -125,7 +125,7 @@ class VendorForestClientHeader extends React.Component {
                   <a href="/client" className="mr-4">
                     DASHBOARD
                   </a>
-                  <a href="/findvendors/a" className="mr-4">
+                  <a href="/findvendors" className="mr-4">
                     VENDORS
                   </a>
                   <a href="/messages/c" className="mr-4">

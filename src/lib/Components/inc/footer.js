@@ -11,8 +11,8 @@ class VendorForestFooter extends React.Component {
               <div className="col-12 mb-4">
                 <img
                   className="footer-logo"
-                  src="http://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png"
-                  alt="image description"
+                  src="https://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png"
+                  alt=" footer"
                   width="300"
                 />
               </div>

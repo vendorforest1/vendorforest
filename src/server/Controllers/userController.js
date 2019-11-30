@@ -13,8 +13,6 @@ const getIp = require("ipware")().get_ip;
 
 const env = getEnv();
 
-console.log("************", env);
-
 export default function(passport) {
   const controllers = {};
   const mail = mailService({
@@ -80,7 +78,7 @@ export default function(passport) {
   };
 
   controllers.getUser = async (req, res, next) => {
-    await User.findById(req.params.id)
+    await User.findById(req.user._id)
       .populate({ path: "vendor" })
       .populate({ path: "client" })
       .then(async (user) => {

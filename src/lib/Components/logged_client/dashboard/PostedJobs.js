@@ -13,8 +13,8 @@ class PostedJobs extends Component {
     this.state = {};
   }
 
-  componentDidMount() {
-    this.props.fetchPostJobsData();
+  async componentDidMount() {
+    await this.props.fetchPostJobsData();
   }
 
   render() {
@@ -79,6 +79,7 @@ class PostedJobs extends Component {
 }
 
 const mapStateToProps = ({ clientDashboardReducer, loginReducer }) => {
+  console.log("wtf", clientDashboardReducer);
   const {
     error,
     success,

@@ -1,5 +1,5 @@
 import Joi from "joi";
-import getEnv, { constants } from "@Config/index";
+import { constants } from "@Config/index";
 
 export const find = {
   user: Joi.object({
@@ -54,6 +54,7 @@ export const create = {
     accountType: Joi.number().allow([constants.ACCOUNT_TYPE.CLIENT]),
   }),
   body: Joi.object({
+    status: Joi.number().required(),
     service: Joi.string().required(),
     category: Joi.string().required(),
     subCategories: Joi.array().items(Joi.string().required()),

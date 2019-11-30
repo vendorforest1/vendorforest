@@ -6,12 +6,8 @@ import uuidv4 from "uuid/v4";
 import passport from "passport";
 import cors from "cors";
 import bodyParser from "body-parser";
-
 import path from "path";
-
-import { matchPath } from "react-router-dom";
 import ReactDOMServer from "react-dom/server";
-
 import serialize from "serialize-javascript";
 
 import config, { passportConfig } from "./Config";
@@ -21,16 +17,14 @@ import configureStore from "@Shared/configureStore";
 import createApp from "./jsxReactApp";
 import routes from "./routes";
 
-import appRoutes from "@Shared/routes";
-
 const reload = require("reload");
-const webpush = require("web-push");
 const app = express();
 const env = config();
 const MongoStore = connectMongo(session);
 
 const PORT = env.PORT;
 
+console.log(env);
 //this is Development demo for production. in real production see below
 //set cookie to sess.cookie.secure = true;
 if (env.MODE === "production") {
@@ -136,8 +130,8 @@ app.get("*", (req, res, next) => {
       // http://redux.js.org/recipes/ServerRendering.html#security-considerations
       window.__PRELOADED_STATE__ = ${JSON.stringify(serialize(context)).replace(/</g, "\\u003c")}
     </script>`,
+    HOT_RELOAD: env.MODE === "development" ? "/reload/reload.js" : "",
   });
-  // });
 });
 
 //dev experience

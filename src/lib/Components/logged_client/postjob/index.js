@@ -10,15 +10,7 @@ import PostJobStepOne from "./PostJobStepOne";
 import PostJobStepTwo from "./PostJobStepTwo";
 import PostJobStepThree from "./PostJobStepThree";
 import { updateJob, fetchInitialData, fetchServiceData, fetchGetJob } from "./essential";
-import { initChat } from "./essential";
-import * as serviceWorker from "./serviceWorker";
 const Step = Steps.Step;
-serviceWorker.register();
-// //for chat testing only
-// const io = require("socket.io-client");
-// const socket = io();
-// const basis = "5db5d6a446f6143292c5817a";
-// initChat(basis);
 
 const steps = [
   {
@@ -78,7 +70,7 @@ class PostJob extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
+  componentWillReceiveProps(newProps) {
     if (!this.props.success && newProps.success) {
       message.success(newProps.success);
     }

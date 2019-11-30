@@ -155,6 +155,7 @@ export const fetchInitialData = () => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
+      console.log("essential ******** wtf ", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }

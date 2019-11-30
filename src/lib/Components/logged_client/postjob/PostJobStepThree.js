@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Form, InputNumber, Radio, Input, List, Icon, Select, message } from "antd";
+import { InputNumber, Radio, Input, List, Icon, Select, message } from "antd";
 import VendorItem from "./VendorItem";
 import moment from "moment";
 import {
@@ -8,8 +8,8 @@ import {
   updateStep,
   fetchMatchVendorData,
   fetchPostJob,
-  fetchUpdateJob,
   sendEmail,
+  fetchUpdateJob,
 } from "./essential";
 import { constants } from "@Shared/constants";
 const Search = Input.Search;
@@ -77,24 +77,38 @@ class PostJobStepThree extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({
-      budgetType: this.props.job.budgetType,
-      budget: this.props.job.budget || 5.0,
-    });
-    this.props.fetchMatchVendorData({
-      radius: this.props.job.postRadius,
-      lat: this.props.job.location.lat,
-      lng: this.props.job.location.lng,
-    });
+    this.props.job &&
+      this.setState({
+        budgetType: this.props.job.budgetType,
+        budget: this.props.job.budget || 5.0,
+      });
+    this.props.job &&
+      this.props.job.location &&
+      this.props.fetchMatchVendorData({
+        radius: this.props.job.postRadius,
+        lat: this.props.job.location.lat,
+        lng: this.props.job.location.lng,
+      });
   }
 
   static getDerivedStateFromProps(props, state) {
+    if (props.error) {
+      message.error(props.error.message);
+    } else if (props.success) {
+      message.success(props.success.message);
+      this.props.history.push("/client");
+    }
     if (props.vendors) {
       return {
         searchVendors: props.vendors,
+        pending: props.pending,
+        success: props.success,
+        error: props.error,
       };
     }
-    return null;
+    return {
+      ...state,
+    };
   }
 
   post() {
@@ -107,6 +121,7 @@ class PostJobStepThree extends React.Component {
     const job = { ...this.props.job, ...data };
     const params = {
       _id: job._id,
+      status: job.status,
       service: job.service,
       category: job.category,
       subCategories: job.subCategories,
@@ -128,16 +143,15 @@ class PostJobStepThree extends React.Component {
     if (params._id) {
       this.updatePostedJob(params);
     } else {
+      params.status = constants.JOB_STATUS.POSTED;
       this.createJob(params);
       sendEmail(params);
     }
   }
 
-  createJob(params) {
+  async createJob(params) {
     if (!this.state.pending) {
-      this.setState({
-        pending: true,
-      });
+      // await this.props.fetchPostJob(params);
       fetchPostJob(params)
         .then((data) => {
           this.setState({
@@ -159,9 +173,7 @@ class PostJobStepThree extends React.Component {
 
   updatePostedJob(params) {
     if (!this.state.pending) {
-      this.setState({
-        pending: true,
-      });
+      // await this.props.fetchUpdateJob(params);
       fetchUpdateJob(params)
         .then((data) => {
           this.setState({
@@ -333,5 +345,7 @@ const mapStateToProps = ({ clientPostjobReducer }) => {
 export default connect(mapStateToProps, {
   updateJob,
   updateStep,
+  fetchUpdateJob,
   fetchMatchVendorData,
+  fetchPostJob,
 })(PostJobStepThree);
