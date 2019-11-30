@@ -143,20 +143,15 @@ export const updateTeams = (payload) => {
 };
 
 export const fetchGetUserData = (payload) => async (dispatch, getState) => {
-  const { user } = getState().login;
-  let id = undefined;
-  if (user) {
-    console.log("test: ", user);
-    id = user.userObj._id;
-  }
   dispatch(clearError());
   dispatch(fetchRequest());
-  return await fetch(`${API_URL}/apis/${id}/get_user`, {
+  return await fetch(`${apiUrl.GET_USER}`, {
     method: "GET",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+    credentials: "include",
   })
     .then((response) => response.json())
     .then((result) => {

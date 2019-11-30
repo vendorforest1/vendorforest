@@ -78,7 +78,6 @@ export default function(passport) {
   };
 
   controllers.getUser = async (req, res, next) => {
-    // await User.findById(req.params.id)
     await User.findById(req.user._id)
       .populate({ path: "vendor" })
       .populate({ path: "client" })

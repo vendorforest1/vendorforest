@@ -1,34 +1,25 @@
 import Job from "@Models/job.model";
 import User from "@Models/user.model";
-import Chat from "@Models/chat.model";
 import Room from "@Models/chatRoom.model";
-import socketio from "socket.io";
-import http from "http";
 import express from "express";
 import getEnv, { constants } from "@Config/index";
-import { async } from "q";
-import { ObjectId } from "bson";
+// import { ObjectId } from "bson";
+import mongoose from "mongoose";
 
 //send notification
 const webpush = require("web-push");
-const dateTime = require("node-datetime");
-// const dt = dateTime.create();
-//Sending Email
-const fs = require("fs");
-const Hogan = require("hogan.js");
 const nodemailer = require("nodemailer");
 // const emailTemplate = fs.readFileSync("/public/emails/email_new_jobs_arround_area.hjs", "utf-8");
 // const compileTemplate = Hogan.compile(emailTemplate);
+const twilio = require("twilio");
 const env = getEnv();
 
-const app = express();
-const server = http.createServer(app);
 // const io = socketio(server);
 
 export default () => {
   const controllers = {};
 
-  controllers.getClientJobs = async (req, res, next) => {
+  controllers.getClientJobs = async (req, res) => {
     let query = {
       client: req.user._id,
     };
@@ -64,13 +55,12 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
 
-  controllers.get = async (req, res, next) => {
+  controllers.get = async (req, res) => {
     await Job.findById(req.query._id)
       .populate("service")
       .populate("category")
@@ -113,7 +103,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              process.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `Job ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -126,17 +116,25 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
 
-  controllers.create = async (req, res, next) => {
+  controllers.create = async (req, res) => {
     const newJob = new Job({ ...req.body, client: req.user._id });
     await newJob
       .save()
       .then(async (job) => {
+        if (!job) {
+          return res.status(401).json({
+            status: 401,
+            message:
+              env.MODE === "development"
+                ? `User ${constants.DEV_EMPTYDOC_MSG}`
+                : constants.PROD_COMMONERROR_MSG,
+          });
+        }
         return res.status(200).json({
           status: 200,
           data: job,
@@ -146,8 +144,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -157,7 +154,7 @@ export default () => {
     const myName = req.user.username;
     const vendorID = req.body.vendor;
     console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", vendorID);
-    await User.findOne({ _id: ObjectId(vendorID) }, function(err, result) {
+    await User.findOne({ _id: mongoose.Types.ObjectId(vendorID) }, function(err, result) {
       if (err) {
         throw err;
       }
@@ -197,7 +194,7 @@ export default () => {
     res.status(200).json({ success: true });
   };
 
-  controllers.sendEmail = async (req, res) => {
+  controllers.sendEmail = async (req) => {
     // create reusable transporter object using the default SMTP transport
     const country = req.body.location.country;
     const state = req.body.location.state;
@@ -259,7 +256,7 @@ export default () => {
   const sendingSms = async (phone, title, description) => {
     const accountSid = env.ACCOUNT_SID;
     const authToken = env.AUTH_TOKEN;
-    const client = require("twilio")(accountSid, authToken);
+    const client = twilio(accountSid, authToken);
     try {
       client.messages
         .create({
@@ -277,7 +274,7 @@ export default () => {
     }
   };
 
-  controllers.update = async (req, res, next) => {
+  controllers.update = async (req, res) => {
     await Job.findOneAndUpdate(
       {
         _id: req.body._id,
@@ -297,13 +294,12 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
 
-  controllers.find = async (req, res, next) => {
+  controllers.find = async (req, res) => {
     const statusQuery = req.body.status.map((st) => {
       return {
         status: st,
@@ -376,8 +372,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
