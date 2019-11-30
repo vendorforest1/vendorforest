@@ -15,19 +15,9 @@ RUN mkdir -p  /home/nodejs/app
 RUN chown -R nodejs:nodegroup /home/nodejs/app
 WORKDIR /home/nodejs/app
 
-ARG NODE_ENV=development
-ENV NODE_ENV=$NODE_ENV
+RUN echo $CONNSTR
 
-RUN set -ex; \
-  
-  if [ "$NODE_ENV" = "production" ]; then \
-    yarn install --no-cache --frozen-lockfile --production; \
-        yarn cache clean;       \
-  elif [ "$NODE_ENV" = "development" ]; then \
-    yarn install --no-cache --frozen-lockfile; 
-  fi;
-
-# ADD node_modules.tar.gz /home/nodejs/app
+ADD node_modules.tar.gz /home/nodejs/app
 COPY . /home/nodejs/app
 
 RUN yarn build
