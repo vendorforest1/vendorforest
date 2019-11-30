@@ -78,14 +78,14 @@ function getClientEnvironment(publicUrl) {
         STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
         STRIPE_PUBLISHABLE_KEY: process.env.STRIPE_PUBLISHABLE_KEY,
         CLIENT_ID: process.env.CLIENT_ID,
-        EMAIL_ADDRESS:process.env.EMAIL_ADDRESS,
-        EMAIL_PASSWORD:process.env.EMAIL_PASSWORD,
-        ACCOUNT_SID:process.env.ACCOUNT_SID,
-        AUTH_TOKEN:process.env.AUTH_TOKEN,
-        SERVER_TWILIO_NUMBER:process.env.SERVER_TWILIO_NUMBER,
-        WEB_PUSH_CONTACT:process.env.WEB_PUSH_CONTACT,
-        PUBLIC_VAPID_KEY:process.env.PUBLIC_VAPID_KEY,
-        PRIVATE_VAPID_KEY:process.env.PRIVATE_VAPID_KEY,
+        EMAIL_ADDRESS: process.env.EMAIL_ADDRESS,
+        EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
+        ACCOUNT_SID: process.env.ACCOUNT_SID,
+        AUTH_TOKEN: process.env.AUTH_TOKEN,
+        SERVER_TWILIO_NUMBER: process.env.SERVER_TWILIO_NUMBER,
+        WEB_PUSH_CONTACT: process.env.WEB_PUSH_CONTACT,
+        PUBLIC_VAPID_KEY: process.env.PUBLIC_VAPID_KEY,
+        PRIVATE_VAPID_KEY: process.env.PRIVATE_VAPID_KEY,
         // Useful for determining whether we’re running in production mode.
         // Most importantly, it switches React into the correct mode.
         NODE_ENV: process.env.NODE_ENV || "development",
@@ -95,6 +95,7 @@ function getClientEnvironment(publicUrl) {
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
         API_URL: process.env.API_URL,
+        GENERATE_SOURCEMAP: false,
       },
     );
   // Stringify all values so we can feed into Webpack DefinePlugin
