@@ -5,6 +5,9 @@ import Contract from "@Models/contract.model";
 import Notifi from "@Models/notification.model";
 import getEnv, { constants } from "@Config/index";
 import { async } from "q";
+import { ObjectId } from "bson";
+const nodemailer = require("nodemailer");
+const twilio = require("twilio");
 const env = getEnv();
 const stripe = require("stripe")(env.STRIPE_SECRET_KEY);
 export default () => {
@@ -12,41 +15,65 @@ export default () => {
 
   controllers.create = async (req, res, next) => {
     const newMilestone = new Milestone({ ...req.body });
+    const milestoneID = newMilestone.contract;
+    console.log("$$$$$$ newMilestone $$$$$$", newMilestone);
     const user = req.user.stripe_client_id;
     const price = newMilestone.price;
-    const paymentIntentID = await paymentIntent(user, price)
-      .then(() => {
-        newMilestone
-          .save()
-          .then(async (milestone) => {
-            await Contract.findOneAndUpdate(
-              {
-                _id: milestone.contract,
-              },
-              {
-                $inc: {
-                  escrowPrice: milestone.price,
-                },
-              },
-            )
-              .then(async (result) => {
-                const vendorId = result.vendor;
-                console.log("create milestone result", result);
-                saveNotification(vendorId, milestone.price);
+    await Contract.find({
+      _id: milestoneID,
+    })
+      .populate({
+        path: "vendor",
+        model: "user",
+      })
+      .then(async (vendorInfo) => {
+        const vendorEmail = vendorInfo[0].vendor.email;
+        const vendorPhone = vendorInfo[0].vendor.phone;
+        const paymentIntentID = await paymentIntent(user, price)
+          .then(() => {
+            newMilestone
+              .save()
+              .then(async (milestone) => {
+                await Contract.findOneAndUpdate(
+                  {
+                    _id: milestone.contract,
+                  },
+                  {
+                    $inc: {
+                      escrowPrice: milestone.price,
+                    },
+                  },
+                )
+                  .then(async (result) => {
+                    const vendorId = result.vendor;
+                    const emailTitle = "Milestone has been created.";
+                    const description = `You can start work on this job.<br> Your accepted budget is ${milestone.price} USD.`;
+                    const phoneDescription = `You can start work on this job.\n Your accepted budget is ${milestone.price} USD.`;
+                    console.log("create milestone result", result);
+                    saveNotification(vendorId, milestone.price);
+                    sendingEmail(vendorEmail, emailTitle, description);
+                    sendingSms(vendorPhone, emailTitle, phoneDescription);
+                  })
+                  .catch((error) => console.log("saving notification error", error));
+                console.log("milestone", milestone);
+                return res.status(200).json({
+                  status: 200,
+                  data: milestone,
+                  message: "Milestone has been created successfully.",
+                });
               })
-              .catch((error) => console.log("saving notification error", error));
-            console.log("milestone", milestone);
-            return res.status(200).json({
-              status: 200,
-              data: milestone,
-              message: "Milestone has been created successfully.",
-            });
+              .catch((error) => {
+                return res.status(500).json({
+                  status: 500,
+                  message:
+                    env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+                });
+              });
           })
           .catch((error) => {
             return res.status(500).json({
               status: 500,
-              message:
-                env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+              message: `Errors ${error}`,
             });
           });
       })
@@ -146,13 +173,15 @@ export default () => {
         })
         .then((milestone) => {
           const vendorStripeID = milestone[0].contract.vendor.connectedAccountId;
+          const vendorEmail = milestone[0].contract.vendor.email;
+          const vendorPhone = milestone[0].contract.vendor.phone;
           const vendorID = milestone[0].contract.vendor._id;
           const price = milestone[0].price;
           stripe.transfers
             .create({
               amount: price * 100 * 0.75,
               currency: "usd",
-              destination: vendorStripeID,
+              destination: "acct_1Fk7vdBfP3BuiHmP",
             })
             .then(async (transfer) => {
               const transferResult = transfer.amount;
@@ -178,7 +207,12 @@ export default () => {
                           : constants.PROD_COMMONERROR_MSG,
                     });
                   }
+                  const emailTitle = "Milestone has been released.";
+                  const description = `Milestone has been released.<br> Your client released the milestone. Amount is ${milestone.price * 0.75} USD.`;
+                  const phoneDescription = `Milestone has been released.\n Your client released the milestone. Amount is ${milestone.price * 0.75} USD.`;
                   await saveReleaseNotification(vendorID, milestone.price);
+                  await sendingEmail(vendorEmail, emailTitle, description);
+                  await sendingSms(vendorPhone, emailTitle, phoneDescription);
                   await Contract.findOneAndUpdate(
                     {
                       _id: milestone.contract,
@@ -235,6 +269,50 @@ export default () => {
         status: 500,
         message: `Errors ${error}`,
       });
+    }
+  };
+
+  const sendingEmail = async (emailAddress, title, description) => {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: env.EMAIL_ADDRESS,
+        pass: env.EMAIL_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    // send mail with defined transport object
+    const info = await transporter.sendMail({
+      from: '"VendorForest Support Team" <vendorforest@gmail.com>', // sender address
+      to: emailAddress, // list of receivers
+      subject: title,
+      text: "Vendorforest.com",
+      html: `<h1 style={color: blue; font-weight: bold;}>${title}</h1><div>${description}</div>`,
+    });
+
+    console.log("Message sent: %s", info.messageId);
+  };
+
+  const sendingSms = async (phone, title, description) => {
+    const accountSid = env.ACCOUNT_SID;
+    const authToken = env.AUTH_TOKEN;
+    const client = twilio(accountSid, authToken);
+    try {
+      client.messages
+        .create({
+          to: phone,
+          from: env.SERVER_TWILIO_NUMBER,
+          body: `${title} ${description}`,
+        })
+        .then((message) => console.log(message.sid));
+      console.log("end");
+    } catch (error) {
+      console.log(error);
     }
   };
 
