@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "contains 2 pod; back-end pod (resource container, api container), front-end pod ",
   "scripts": {
-    "start": "node dist",
+    "start": "node --max_old_space_size=4096 dist",
     "hot": "rm -rf dist && concurrently --kill-others \"yarn hot:start\" \"yarn hot:build\"",
     "hot:start": "mkdir dist && touch dist/index.js && nodemon dist",
     "hot:build": "NODE_ENV=development webpack-cli --watch --hot --progress --colors  --env development --mode development --config config/webpack.config.js ",
-    "build": "rm -rf dist && yarn lint:src:fix && node scripts/build.js",
+    "build": "rm -rf dist && node --max_old_space_size=4096 scripts/build.js",
     "clean:install": "rm -rf node_modules dist && yarn install",
     " ": "eslint -c .eslintrc.json './**/*.{js,jsx,ts,tsx}' --fix",
     "lint:src:fix": "eslint -c .eslintrc.json  './src/**/*.{js,ts,tsx}' --fix"
