@@ -9,11 +9,12 @@ docker rm vendorforest-demov1.0
 docker rmi -f vendorforest/demov1.0 
 
 #build
-echo "app dependencies."
-docker build -t vendorforestapp-build -f Dockerfile.build . 
+# echo "app dependencies."
+# docker build -t vendorforestapp-build -f Dockerfile.build . 
 
 #deploy app resources
-docker run vendorforestapp-build > node_modules.tar.gz
+# docker run vendorforestapp-build > node_modules.tar.gz
+# yarn install --frozen-lockfile --production;
 
 docker build -t vendorforest/demov1.0 -f Dockerfile.dist .
 

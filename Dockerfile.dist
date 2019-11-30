@@ -20,6 +20,8 @@ RUN echo $CONNSTR
 ADD node_modules.tar.gz /home/nodejs/app
 COPY . /home/nodejs/app
 
+RUN yarn install --frozen-lockfile --production
+
 RUN yarn build
 
 EXPOSE 4444
