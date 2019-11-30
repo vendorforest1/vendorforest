@@ -3,8 +3,8 @@ import User from "@Models/user.model";
 import Room from "@Models/chatRoom.model";
 import express from "express";
 import getEnv, { constants } from "@Config/index";
-// import { ObjectId } from "bson";
 import mongoose from "mongoose";
+import { ObjectId } from "bson";
 
 //send notification
 const webpush = require("web-push");
