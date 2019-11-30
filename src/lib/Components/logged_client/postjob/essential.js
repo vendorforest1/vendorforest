@@ -152,10 +152,10 @@ export const fetchInitialData = () => async (dispatch, getState) => {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+    credentials: "include",
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("essential ******** wtf ", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
@@ -209,13 +209,13 @@ export const fetchMatchVendorData = (payload) => async (dispatch, getState) => {
       dispatch(fetchMatchVendorSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
       dispatch(fetchError(err.message));
     });
 };
 
-export const fetchPostJob = async (payload) => {
-  console.log("post_information", payload);
+export const fetchPostJob = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
   return await fetch(apiUrl.CREATE_JOB, {
     method: "POST",
     headers: {
@@ -229,15 +229,18 @@ export const fetchPostJob = async (payload) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      return result;
+      //dispatch(updateJob(result.data));
+      dispatch(fetchPostSuccess(result.data));
     })
     .catch((err) => {
-      throw err.message;
+      dispatch(fetchError(err.message));
     });
 };
 
-export const sendEmail = async (payload) => {
-  sub.subscribeUser(payload);
+export const sendEmail = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
+  // sub.subscribeUser(payload);
   return await fetch(apiUrl.SEND_EMAIL, {
     method: "POST",
     headers: {
@@ -251,14 +254,16 @@ export const sendEmail = async (payload) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      return result;
+      dispatch(fetchPostSuccess(result.data));
     })
     .catch((err) => {
-      throw err.message;
+      dispatch(fetchError(err.message));
     });
 };
 
-export const fetchUpdateJob = async (payload) => {
+export const fetchUpdateJob = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
   return await fetch(apiUrl.UPDATE_JOB, {
     method: "POST",
     headers: {
@@ -272,14 +277,16 @@ export const fetchUpdateJob = async (payload) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      return result;
+      dispatch(updateJob(result.data));
     })
     .catch((err) => {
-      throw err.message;
+      dispatch(fetchError(err.message));
     });
 };
 
-export const fetchGetJob = async (payload) => {
+export const fetchGetJob = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
   let urlStr = "";
   Object.keys(payload).forEach((key, index) => {
     urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
@@ -296,14 +303,16 @@ export const fetchGetJob = async (payload) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      return result;
+      dispatch(updateJob(result.data));
     })
     .catch((err) => {
-      throw err.message;
+      dispatch(fetchError(err.message));
     });
 };
 // to test init chat
-export const initChat = async (payload) => {
+export const initChat = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
   return await fetch(apiUrl.INIT_CHAT, {
     method: "POST",
     headers: {
@@ -317,10 +326,9 @@ export const initChat = async (payload) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      console.log("kkkkkkkkkk", result);
-      return result;
+      dispatch(fetchServiceSuccess(result.data));
     })
     .catch((err) => {
-      throw err.message;
+      dispatch(fetchError(err.message));
     });
 };
