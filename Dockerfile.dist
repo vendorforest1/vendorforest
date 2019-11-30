@@ -15,12 +15,10 @@ RUN mkdir -p  /home/nodejs/app
 RUN chown -R nodejs:nodegroup /home/nodejs/app
 WORKDIR /home/nodejs/app
 
-RUN echo $CONNSTR
+RUN yarn install 
 
-ADD node_modules.tar.gz /home/nodejs/app
+# ADD node_modules.tar.gz /home/nodejs/app
 COPY . /home/nodejs/app
-
-RUN yarn install --frozen-lockfile --production
 
 RUN yarn build
 
