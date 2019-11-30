@@ -15,7 +15,7 @@ RUN mkdir -p  /home/nodejs/app
 RUN chown -R nodejs:nodegroup /home/nodejs/app
 WORKDIR /home/nodejs/app
 
-RUN yarn install 
+RUN yarn install --production 
 
 # ADD node_modules.tar.gz /home/nodejs/app
 COPY . /home/nodejs/app
