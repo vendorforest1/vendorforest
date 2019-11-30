@@ -2,55 +2,12 @@ import React from "react";
 import { Menu, Dropdown, Icon, Badge } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import style from "./index.scss";
-import store from "store";
 import rainbow from "@Components/images/header/pettran.jpg";
-import { async } from "q";
-import { apiUrl, constants } from "@Shared/constants";
-import { getNotification } from "./essential";
+import { getNotification, logout } from "./essential";
 import { connect } from "react-redux";
+import configureStore from "@Shared/configureStore";
 
-const helpMenu = (
-  <Menu>
-    <Menu.Item>
-      <a rel="noopener noreferrer" href="">
-        Help and Support
-      </a>
-    </Menu.Item>
-    <Menu.Item>
-      <a rel="noopener noreferrer" href="">
-        Community and Forums
-      </a>
-    </Menu.Item>
-    <Menu.Item>
-      <a rel="noopener noreferrer" href="">
-        Disputes
-      </a>
-    </Menu.Item>
-  </Menu>
-);
-
-const useriMenu = (
-  <Menu>
-    <Menu.Item>
-      <a rel="noopener noreferrer" href="/client/settings">
-        <Icon type="setting" />
-        &nbsp;&nbsp;Settings
-      </a>
-    </Menu.Item>
-    <Menu.Item>
-      <a
-        rel="noopener noreferrer"
-        onClick={() => {
-          store.clearAll();
-          window.location.href = "/logout";
-        }}
-      >
-        <Icon type="logout" />
-        &nbsp;&nbsp;Logout
-      </a>
-    </Menu.Item>
-  </Menu>
-);
+const { persistor } = configureStore();
 
 class VendorForestClientHeader extends React.Component {
   constructor(props) {
@@ -60,24 +17,67 @@ class VendorForestClientHeader extends React.Component {
       isOpen: false,
     };
     this.toggle = this.toggle.bind(this);
-    this.handleIcon = this.handleIcon.bind(this);
   }
 
   componentDidMount() {
     this.props.getNotification();
   }
-
-  handleIcon = () => {
-    // alert("ok");
-  };
-
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen,
     });
   }
-
+  handleIcon = () => {};
+  handleLogout = async () => {
+    await this.props.logout();
+    persistor.pause();
+    persistor
+      .purge()
+      .then(() => {
+        window.location.href = "/login";
+        return persistor.flush();
+      })
+      .then(() => {
+        persistor.pause();
+      });
+  };
   render() {
+    const helpMenu = (
+      <Menu>
+        <Menu.Item>
+          <a rel="noopener noreferrer" href="/#">
+            Help and Support
+          </a>
+        </Menu.Item>
+        <Menu.Item>
+          <a rel="noopener noreferrer" href="/#">
+            Community and Forums
+          </a>
+        </Menu.Item>
+        <Menu.Item>
+          <a rel="noopener noreferrer" href="/#">
+            Disputes
+          </a>
+        </Menu.Item>
+      </Menu>
+    );
+
+    const useriMenu = (
+      <Menu>
+        <Menu.Item>
+          <a rel="noopener noreferrer" href="/client/settings">
+            <Icon type="setting" />
+            &nbsp;&nbsp;Settings
+          </a>
+        </Menu.Item>
+        <Menu.Item>
+          <a onClick={() => this.handleLogout()} href="/#">
+            <Icon type="logout" />
+            &nbsp;&nbsp;LOGOUT
+          </a>
+        </Menu.Item>
+      </Menu>
+    );
     const notifiMenu = () => {
       if (!this.props.notification) {
         return "";
@@ -85,7 +85,7 @@ class VendorForestClientHeader extends React.Component {
       return this.props.notification.map((noti, index) => {
         return (
           <Menu.Item key={index}>
-            <a rel="noopener noreferrer" href="">
+            <a rel="noopener noreferrer" href="/#">
               <p style={{ maxWidth: "350px", wordWrap: "break-word" }}>
                 {noti.isRead === false ? (
                   <Badge dot>
@@ -132,7 +132,7 @@ class VendorForestClientHeader extends React.Component {
                     MESSAGES
                   </a>
                   <Dropdown overlay={helpMenu} className="mr-3">
-                    <a className="ant-dropdown-link" href="#">
+                    <a className="ant-dropdown-link" href="#/">
                       <Icon type="question-circle" />
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
@@ -142,14 +142,14 @@ class VendorForestClientHeader extends React.Component {
                     overlay={<Menu onClick={this.handleIcon}>{notifiMenu()}</Menu>}
                     className="mr-3"
                   >
-                    <a className="ant-dropdown-link" href="#">
+                    <a className="ant-dropdown-link" href="#/">
                       <Icon type="bell" />
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
                   </Dropdown>
                   <Dropdown overlay={useriMenu}>
-                    <a className="ant-dropdown-link" href="#">
+                    <a className="ant-dropdown-link" href="#/">
                       <Icon type="user" />
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
@@ -159,10 +159,10 @@ class VendorForestClientHeader extends React.Component {
                 <div className="menu-hamburger d-xl-none d-block">
                   <div onClick={this.toggle} className="text-right">
                     {this.state.isOpen ? (
-                      <img src="https://img.icons8.com/ios/40/000000/multiply.png" />
+                      <img src="https://img.icons8.com/ios/40/000000/multiply.png" alt="" />
                     ) : (
                       <i className="icon">
-                        <img src="https://img.icons8.com/ios/30/000000/menu.png" />
+                        <img src="https://img.icons8.com/ios/30/000000/menu.png" alt="" />
                       </i>
                     )}
                   </div>
@@ -176,22 +176,25 @@ class VendorForestClientHeader extends React.Component {
                         <a href="/client">DASHBOARD</a>
                       </p>
                       <p className=" text-center">
-                        <a href="">VENDORS</a>
+                        <a href="/findvendors">VENDORS</a>
                       </p>
                       <p className=" text-center">
-                        <a href="">MESSAGES</a>
+                        <a href="/messages/c">MESSAGES</a>
                       </p>
                       <p className=" text-center">
-                        <a href="">HELP</a>
+                        <a href="#/">HELP</a>
                       </p>
                       <p className=" text-center">
-                        <a href="">NOTIFICATION</a>
+                        <a href="#/">NOTIFICATION</a>
                       </p>
                       <p className=" text-center">
-                        <a href="">SETTINGS</a>
+                        <a href="/client/settings">SETTINGS</a>
                       </p>
                       <p className=" text-center">
-                        <a href="">LOGOUT</a>
+                        <a onClick={() => this.handleLogout()} href="/#">
+                          <Icon type="logout" />
+                          &nbsp;&nbsp;LOGOUT
+                        </a>
                       </p>
                     </div>
                   </div>
@@ -211,6 +214,6 @@ const mapStateToProps = ({ headerNotiReducer }) => {
   };
 };
 
-export default connect(mapStateToProps, { getNotification })(
+export default connect(mapStateToProps, { getNotification, logout })(
   withStyles(style)(VendorForestClientHeader),
 );

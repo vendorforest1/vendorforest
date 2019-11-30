@@ -5,7 +5,6 @@ const FETCH_LOGIN_REQUEST = "FETCH_LOGIN_REQUEST";
 const FETCH_LOGIN_SUCCESS = "FETCH_LOGIN_SUCCESS";
 const FETCH_LOGIN_FAILURE = "FETCH_LOGIN_FAILURE";
 const CLEAR_LOGIN_FAILURE = "CLEAR_LOGIN_FAILURE";
-
 // Reducer
 export default function reducer(
   state = {

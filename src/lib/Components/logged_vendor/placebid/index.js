@@ -3,8 +3,8 @@ import { Input, Icon, Radio, InputNumber, Checkbox, Tag, Form, message } from "a
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_VendorHeader from "@Components/inc/vendor_header";
-import VF_Footer from "@Components/inc/footer";
+import VendorHeader from "@Components/inc/vendor_header";
+import Footer from "@Components/inc/footer";
 import SelectTeamMember from "./SelectTeamMember";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
@@ -16,7 +16,7 @@ import {
   fetchProposalUpdate,
 } from "./essential";
 
-import { constants, getTimeFromTimezone } from "@Shared/constants";
+import { constants } from "@Shared/constants";
 import moment from "moment";
 const CheckboxGroup = Checkbox.Group;
 const { TextArea } = Input;
@@ -55,7 +55,7 @@ class PlaceBid extends React.Component {
     if (!state.success && props.success) {
       message.success(props.success);
       if (!props.match.params.proposal_id) {
-        state.history.push("/vendor/findjob");
+        props.history.push("/vendor/findjob");
       }
     }
     if (!state.error && props.error) {
@@ -228,7 +228,7 @@ class PlaceBid extends React.Component {
 
     return (
       <div className="vendor-job-details">
-        <VF_VendorHeader />
+        <VendorHeader />
         <div className="content">
           <div className="container">
             <div className="row">
@@ -445,7 +445,7 @@ class PlaceBid extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }

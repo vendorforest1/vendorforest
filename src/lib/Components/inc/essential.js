@@ -1,5 +1,5 @@
 import { apiUrl } from "@Shared/constants";
-import { async } from "q";
+import { PURGE } from "redux-persist";
 
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
@@ -72,6 +72,8 @@ export default function reducer(
         ...state,
         notification: action.payload,
       };
+    case PURGE:
+      return {};
     default:
       return state;
   }
@@ -95,11 +97,6 @@ const fetchProposalesSuccess = (proposalesInfo) => ({
 const fetchReviewsSuccess = (reviewsInfo) => ({
   type: FETCH_REVIEWS_SUCCESS,
   payload: reviewsInfo,
-});
-
-const fetchSuccessMsg = (success) => ({
-  type: FETCH_MSG_SUCCESS,
-  payload: success,
 });
 
 const fetchNotiSuccess = (data) => ({
@@ -130,7 +127,7 @@ export const updateProposal = (payload) => {
   };
 };
 
-export const getNotification = () => async (dispatch, getState) => {
+export const getNotification = () => async (dispatch) => {
   return await fetch(apiUrl.GET_NOTIFICATION, {
     method: "GET",
     headers: {
@@ -146,7 +143,11 @@ export const getNotification = () => async (dispatch, getState) => {
     .catch((err) => console.log("fetch error", err));
 };
 
-export const fetchGetJobData = (payload) => async (dispatch, getState) => {
+export const logout = () => async (dispatch, getState) => {
+  return fetch(`/logout`);
+};
+
+export const fetchGetJobData = (payload) => async (dispatch) => {
   dispatch(clearError());
   dispatch(fetchRequest());
   let urlStr = "";
@@ -170,7 +171,7 @@ export const fetchGetJobData = (payload) => async (dispatch, getState) => {
     .catch((err) => dispatch(fetchError(err.message)));
 };
 
-export const fetchGetProposalesData = (payload) => async (dispatch, getState) => {
+export const fetchGetProposalesData = (payload) => async (dispatch) => {
   dispatch(clearError());
   dispatch(fetchRequest());
   let urlStr = "";
@@ -194,7 +195,7 @@ export const fetchGetProposalesData = (payload) => async (dispatch, getState) =>
     .catch((err) => dispatch(fetchError(err.message)));
 };
 
-export const fetchGetReviewsData = (payload) => async (dispatch, getState) => {
+export const fetchGetReviewsData = (payload) => async (dispatch) => {
   dispatch(clearError());
   dispatch(fetchRequest());
   let urlStr = "";

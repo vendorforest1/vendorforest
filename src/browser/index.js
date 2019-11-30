@@ -17,15 +17,15 @@ import configureStore from "@Shared/configureStore";
 
 const evaluateString = eval;
 
-function deserialize(serializedJavascript) {
-  return evaluateString("(" + serializedJavascript + ")");
-}
+// function deserialize(serializedJavascript) {
+//   return evaluateString("(" + serializedJavascript + ")");
+// }
 
 async function hydrate() {
   const mountApp = document.getElementById("root");
 
   // @ts-ignore
-  const preloadedState = window.__PRELOADED_STATE__;
+  // const preloadedState = window.__PRELOADED_STATE__;
   // @ts-ignore
   delete window.__PRELOADED_STATE__;
 
@@ -35,7 +35,8 @@ async function hydrate() {
   };
 
   // change if a better way using --context is discovered
-  const { persistor, store } = await configureStore(deserialize(preloadedState));
+  const { persistor, store } = await configureStore(undefined);
+  // const { persistor, store } = await configureStore(deserialize(preloadedState));
   const jsx = (
     <StyleContext.Provider value={{ insertCss }}>
       <Provider store={store}>

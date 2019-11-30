@@ -3,7 +3,7 @@ import thunk from "redux-thunk";
 // import { createLogger } from "redux-logger";
 import { persistStore } from "redux-persist";
 
-import reducer from "./rootReducer";
+import appReducer from "./rootReducer";
 
 // const loggerMiddleware = createLogger();
 const middleware = [thunk];
@@ -12,30 +12,38 @@ const middleware = [thunk];
 const composeEnhancers =
   // @ts-ignore
   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? // @ts-ignore
-      window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
         // Specify extension’s options like name, actionsBlacklist, actionsCreators, serialize...
       })
     : compose;
 
-const enhancer = composeEnhancers(
-  applyMiddleware(...middleware),
-  // other store enhancers if any
-);
+const enhancer = composeEnhancers(applyMiddleware(...middleware));
 
-// eslint-disable-next-line no-process-env
-// if (process.env.NODE_ENV === "development" || (process.env.MODE === "development" && !isSSR)) {
-//   middleware.push(loggerMiddleware);
-// }
+// const INITIAL_STATE = {};
 
-// @ts-ignore
+const rootReducer = (state, action) => {
+  // const _state = () => {
+  //   switch (action.type) {
+  //     case PURGE:
+  //       return INITIAL_STATE;
+  //     case "USER_LOGOUT":
+  //       return undefined;
+  //     default:
+  //       return state;
+  //   }
+  // };
+
+  // state = _state();
+
+  return appReducer(state, action);
+};
+
 export default (initalState) => {
-  // let store = null;
-  let store = createStore(reducer /* preloadstate */, undefined, enhancer);
+  let store = createStore(rootReducer /* preloadstate */, undefined, enhancer);
   const persistor = persistStore(store, null, () => {
     store.getState(); //to get restoredState
   });
-  // const persistor = persistStore(store);
+
   return {
     store,
     persistor,

@@ -48,8 +48,9 @@ export default function(passport) {
 
   controllers.login = function(req, res, next) {
     try {
-      const geo = geoip.lookup("192.168.0.225");
-      console.log("getIp: ", getIp, " geo: ", geo);
+      const ipInfo = getIp(req);
+      const geo = geoip.lookup(ipInfo.clientIp);
+
       if (!req.isAuthenticated()) {
         passport.authenticate("local", (err, userObject) => {
           if (err) {
@@ -66,7 +67,7 @@ export default function(passport) {
             if (err) {
               return res.status(401).send(err);
             } //next(err);
-            return res.status(200).send(userObject);
+            return res.status(200).send(Object.assign({}, { userLocale: geo }, userObject));
           });
         })(req, res, next);
       } else {
