@@ -26,6 +26,8 @@ import vendorDashboardReducer from "@Components/logged_vendor/dashboard/essentia
 import vendorContractDetailsReducer from "@Components/logged_vendor/contractDetails/essential";
 import vendorReviewReducer from "@Components/logged_vendor/givefeedback/essential";
 
+import headerNotiReducer from "@Components/inc/essential";
+
 const reducers = {
   login: loginReducer,
   loginReducer,
@@ -47,6 +49,7 @@ const reducers = {
   vendorViewTeamReducer,
   vendorContractDetailsReducer,
   vendorReviewReducer,
+  headerNotiReducer,
 };
 const config = {
   key: "primary",

@@ -22,4 +22,6 @@ router.post(
   clientCtrl.updateNotifySettings,
 );
 
+router.get("/getnotifications", clientCtrl.getNotifications);
+
 export default router;

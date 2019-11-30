@@ -1,10 +1,12 @@
 import React from "react";
-import { Menu, Dropdown, Icon } from "antd";
+import { Menu, Dropdown, Icon, Badge } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import style from "./index.scss";
 import store from "store";
 import rainbow from "@Components/images/header/pettran.jpg";
 import io from "socket.io-client";
+import { getNotification } from "./essential";
+import { connect } from "react-redux";
 
 const helpMenu = (
   <Menu>
@@ -21,27 +23,6 @@ const helpMenu = (
     <Menu.Item>
       <a rel="noopener noreferrer" href="">
         Disputes
-      </a>
-    </Menu.Item>
-  </Menu>
-);
-
-const notifiMenu = (
-  <Menu>
-    <Menu.Item>
-      <a rel="noopener noreferrer" href="">
-        <p style={{ maxWidth: "250px", wordWrap: "break-word" }}>
-          A payment of $30.83 has been <br />
-          applied to your financial account.
-        </p>
-      </a>
-    </Menu.Item>
-    <Menu.Item>
-      <a rel="noopener noreferrer" href="">
-        <p style={{ maxWidth: "250px", wordWrap: "break-word" }}>
-          A payment of $30.83 has been <br />
-          applied to your financial account.
-        </p>
       </a>
     </Menu.Item>
   </Menu>
@@ -86,6 +67,10 @@ class VF_VendorHeader extends React.Component {
     this.toggle = this.toggle.bind(this);
   }
 
+  componentDidMount() {
+    this.props.getNotification();
+  }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen,
@@ -93,6 +78,32 @@ class VF_VendorHeader extends React.Component {
   }
 
   render() {
+    const notifiMenu = () => {
+      if (!this.props.notification) {
+        return "";
+      }
+      return this.props.notification.map((noti, index) => {
+        return (
+          <Menu.Item key={index}>
+            <a rel="noopener noreferrer" href="">
+              <p style={{ maxWidth: "350px", wordWrap: "break-word" }}>
+                {noti.isRead === false ? (
+                  <Badge dot>
+                    <Icon type="notification" />
+                  </Badge>
+                ) : (
+                  ""
+                )}
+                &nbsp;
+                {noti.notificationMsg} <br />
+                {noti.time}
+              </p>
+            </a>
+          </Menu.Item>
+        );
+      });
+    };
+
     return (
       <div className="top-header">
         <img src={rainbow} alt="" id="rainbow_top" />
@@ -128,7 +139,10 @@ class VF_VendorHeader extends React.Component {
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
                   </Dropdown>
-                  <Dropdown overlay={notifiMenu} className="mr-3">
+                  <Dropdown
+                    overlay={<Menu onClick={this.handleIcon}>{notifiMenu()}</Menu>}
+                    className="mr-3"
+                  >
                     <a className="ant-dropdown-link" href="#">
                       <Icon type="bell" />
                       &nbsp;
@@ -192,4 +206,11 @@ class VF_VendorHeader extends React.Component {
   }
 }
 
-export default withStyles(style)(VF_VendorHeader);
+const mapStateToProps = ({ headerNotiReducer }) => {
+  const { notification } = headerNotiReducer;
+  return {
+    notification,
+  };
+};
+
+export default connect(mapStateToProps, { getNotification })(withStyles(style)(VF_VendorHeader));

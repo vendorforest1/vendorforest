@@ -1,6 +1,8 @@
 // @ts-nocheck
 import Milestone from "@Models/milestone.model";
+import User from "@Models/user.model";
 import Contract from "@Models/contract.model";
+import Notifi from "@Models/notification.model";
 import getEnv, { constants } from "@Config/index";
 import { async } from "q";
 const env = getEnv();
@@ -26,7 +28,13 @@ export default () => {
                   escrowPrice: milestone.price,
                 },
               },
-            );
+            )
+              .then(async (result) => {
+                const vendorId = result.vendor;
+                console.log("create milestone result", result);
+                saveNotification(vendorId, milestone.price);
+              })
+              .catch((error) => console.log("saving notification error", error));
             console.log("milestone", milestone);
             return res.status(200).json({
               status: 200,
@@ -48,6 +56,17 @@ export default () => {
           message: `Errors ${error}`,
         });
       });
+  };
+
+  const saveNotification = async (vendorId, price) => {
+    const time = new Date().toLocaleString();
+    const query = new Notifi({
+      username: vendorId,
+      notificationMsg: `You created milestone. Amount is ${price}USD`,
+      time: time,
+    });
+    // console.log("milestone result", result);
+    await query.save();
   };
 
   const paymentIntent = async (clientID, price) => {
@@ -127,6 +146,7 @@ export default () => {
         })
         .then((milestone) => {
           const vendorStripeID = milestone[0].contract.vendor.connectedAccountId;
+          const vendorID = milestone[0].contract.vendor._id;
           const price = milestone[0].price;
           stripe.transfers
             .create({
@@ -158,6 +178,7 @@ export default () => {
                           : constants.PROD_COMMONERROR_MSG,
                     });
                   }
+                  await saveReleaseNotification(vendorID, milestone.price);
                   await Contract.findOneAndUpdate(
                     {
                       _id: milestone.contract,
@@ -198,7 +219,7 @@ export default () => {
             .catch((error) => {
               return res.status(500).json({
                 status: 500,
-                message: `Errors ${error}`,
+                message: `You and your vendor have to register the payment method. ${error}`,
               });
             });
         })
@@ -215,6 +236,16 @@ export default () => {
         message: `Errors ${error}`,
       });
     }
+  };
+
+  const saveReleaseNotification = async (vendorId, price) => {
+    const time = new Date().toLocaleString();
+    const query = new Notifi({
+      username: vendorId,
+      notificationMsg: `Milestone Released. Amount is ${price} USD`,
+      time: time,
+    });
+    await query.save();
   };
 
   controllers.reqRelease = async (req, res, next) => {
