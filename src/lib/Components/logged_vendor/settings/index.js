@@ -2,8 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Select, Icon, message } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_VendorHeader from "@Components/inc/vendor_header";
-import VF_Footer from "@Components/inc/footer";
+import Header from "@Components/inc/vendor_header";
+import Footer from "@Components/inc/footer";
 import VendorMyAccount from "./MyAccount";
 import VendorCompanyInfo from "./CompanyInfo";
 import VendorSecurity from "./Security";
@@ -47,13 +47,17 @@ class VendorSettings extends React.Component {
     this.props.fetchGetInitData();
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (!this.props.success && newProps.success) {
-      message.success(newProps.success);
+  static getDerivedStateFromProps(props, state) {
+    if (!state.success && props.success) {
+      message.success(props.success);
     }
-    if (!this.props.error && newProps.error) {
-      message.error(newProps.error);
+    if (!state.error && props.error) {
+      message.error(props.error);
     }
+    return {
+      success: props.success,
+      error: props.error,
+    };
   }
 
   selectMenu(index) {
@@ -65,7 +69,7 @@ class VendorSettings extends React.Component {
   render() {
     return (
       <div id="vendor-settings">
-        <VF_VendorHeader />
+        <Header />
         <div className="container">
           <div className="row">
             <div className="col-12">
@@ -151,7 +155,7 @@ class VendorSettings extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }

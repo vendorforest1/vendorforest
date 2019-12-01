@@ -14,6 +14,8 @@ export default () => {
   const controllers = {};
 
   controllers.get = async (req, res, next) => {
+    env.MODE === "development" && console.log("get should call this");
+
     await User.findById(req.user._id)
       .populate({
         path: "vendor",
@@ -107,6 +109,7 @@ export default () => {
   /******************* */
   //CAUTION THIS IS A PUBLIC ROUTE
   controllers.findVendorByUserName = async (req, res, next) => {
+    env.MODE === "development" && console.log("findVendorByUserName");
     await User.find({
       username: req.params.username,
       accountType: constants.ACCOUNT_TYPE.VENDOR,
@@ -271,7 +274,8 @@ export default () => {
               });
             }
             //user.vendor = vendor;
-            env.MODE === "development" && console.log("vendor profile upate: ", user, " OR: ", vendor);
+            env.MODE === "development" &&
+              console.log("vendor profile upate: ", user, " OR: ", vendor);
             return res.status(200).json({
               status: 200,
               data: user,

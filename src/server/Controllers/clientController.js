@@ -10,8 +10,6 @@ const stripe = require("stripe")(env.STRIPE_SECRET_KEY);
 
 export default () => {
   const controllers = {};
-  // const stripePayload = new stripe("sk_test_PHS0wV5HZJ41uaZDQsgqHKQp");
-
   //client deposits money into an escrow account
   controllers.depositMoney = async (req, res, next) => {
     await User.findById(req.user._id)

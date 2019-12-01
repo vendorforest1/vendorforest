@@ -38,7 +38,7 @@ export default function(app) {
       })();
     }
 
-    console.log(ip_location);
+    DEBUG && console.log(ip_location);
     ///if (req.cookies.user_sid && !req.session.user) {
     //    res.clearCookie('user_sid');
     //}

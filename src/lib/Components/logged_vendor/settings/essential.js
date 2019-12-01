@@ -77,6 +77,7 @@ const clearError = () => ({
 });
 
 export const fetchGetInitData = (payload) => async (dispatch, getState) => {
+  console.log("I get here");
   dispatch(clearError());
   dispatch(fetchRequest());
   return await fetch(apiUrl.VENDOR_GET, {
