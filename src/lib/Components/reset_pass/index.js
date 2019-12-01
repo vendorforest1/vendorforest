@@ -100,7 +100,9 @@ class ResetPass extends React.Component {
                       {this.state.captchaCode}
                     </div>
                     <div className="d-flex justify-content-center mt-5">
-                      <button className="button-primary" onClick={this.handleSendEmail} >Send reset email</button>
+                      <button className="button-primary" onClick={this.handleSendEmail}>
+                        Send reset email
+                      </button>
                     </div>
                   </Form>
                 </div>
@@ -120,4 +122,6 @@ const mapStateToProps = ({ loginReducer }) => {
 };
 
 const ResetPassForm = Form.create({ name: "forgot-pass-form" })(ResetPass);
-export default connect(mapStateToProps, { sendEmail })(withStyles(globalStyle, localStyle)(ResetPassForm));
+export default connect(mapStateToProps, { sendEmail })(
+  withStyles(globalStyle, localStyle)(ResetPassForm),
+);

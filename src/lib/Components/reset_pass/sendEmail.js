@@ -164,6 +164,8 @@ export const sendEmail = (payload) => async () => {
     body: JSON.stringify({ userEmail: payload }),
   })
     .then((response) => response.json())
-    .then((result) => {console.log("esindfdsf*&*&*", result)})
+    .then((result) => {
+      console.log("esindfdsf*&*&*", result);
+    })
     .catch((err) => console.log("#$###errors*****", err));
 };
