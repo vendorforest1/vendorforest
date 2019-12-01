@@ -86,6 +86,7 @@ export const constants = {
 
 export const apiUrl = {
   LOGIN: `${API_URL}/apis/login`,
+  RESET_EMAIL: `${API_URL}/apis/resetpw`,
   REGISTER: `${API_URL}/apis/register`,
   GET_USER: `${API_URL}/apis/get_user`,
   EMAILSENT: `${API_URL}/apis/emailsent`,

@@ -9,6 +9,7 @@ import geoip from "geoip-lite";
 import getEnv, { constants } from "@Config/index";
 import mongoose from "mongoose";
 
+const nodemailer = require("nodemailer");
 const getIp = require("ipware")().get_ip;
 
 const env = getEnv();
@@ -327,6 +328,47 @@ export default function(passport) {
         );
       },
     );
+  };
+
+  controllers.sendResetEmail = async (req, res) => {
+    const userEmail = req.body.userEmail;
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: env.EMAIL_ADDRESS,
+        pass: env.EMAIL_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    // send mail with defined transport object
+    const info = await transporter.sendMail({
+      from: userEmail, // sender address
+      to: env.EMAIL_ADDRESS, // list of receivers
+      subject: "Reset Password is required",
+      text: "Vendorforest.com",
+      html: `<h1 style={color: blue; font-weight: bold;}>
+                Dear vendorforest staffs.  
+            </h1>
+            <div>
+                I want to change the password. 
+                My email address is ${userEmail}.
+                Thanks.  
+            </div>
+            <div>
+                <img src="https://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png" style={width:200px; height: 80px}>
+            </div>`,
+    });
+
+    console.log("Message sent: %s", info.messageId);
+    return res.status(200).json({
+      status: 200,
+      message: "Email has been sent successfully.",
+    });
   };
 
   controllers.confirmationPost = async (req, res, next) => {

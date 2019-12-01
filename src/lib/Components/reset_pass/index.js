@@ -1,13 +1,14 @@
 import React from "react";
-import { Input, Form } from "antd";
-
+import { Input, Form, message } from "antd";
+import { apiUrl } from "@Shared/constants";
 import moment from "moment";
 import withStyles from "isomorphic-style-loader/withStyles";
 import VF_Header from "@Components/inc/header";
 import VF_Footer from "@Components/inc/footer";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
-
+import { sendEmail } from "./sendEmail";
+import { connect } from "react-redux";
 class ResetPass extends React.Component {
   constructor(props) {
     super(props);
@@ -18,12 +19,26 @@ class ResetPass extends React.Component {
         "H,1,y,D,F,C,6,0,I,6,1,K,a,M,O,p,Q,R,e,T,U,V,R,X,B,Z,a,T,c,t,5,r,G,8,j,9,0,P,m,T,o,L,8,r,s,T,u,V,w,x,9,z,0,1,c,L,4,0,3,P,v,l",
       captchaCode: "",
     };
+    this.handleSendEmail = this.handleSendEmail.bind(this);
   }
   componentDidMount() {
     this.setState({
-      captchaCode: this.state.captcha.split(',').splice(Math.floor(Math.random() * 53), 8)
+      captchaCode: this.state.captcha.split(",").splice(Math.floor(Math.random() * 53), 8),
     });
   }
+
+  handleSendEmail = () => {
+    const userEmail = this.state.email;
+    const code = this.state.code;
+    const captchaCodes = this.state.captchaCode;
+    const captchaCode = captchaCodes.join("");
+    console.log("email ==", userEmail, "captchaCode", captchaCode);
+    if (code !== captchaCode) {
+      message.warning("Please retype the captcha code");
+    } else {
+      this.props.sendEmail(userEmail);
+    }
+  };
 
   render() {
     const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
@@ -85,7 +100,7 @@ class ResetPass extends React.Component {
                       {this.state.captchaCode}
                     </div>
                     <div className="d-flex justify-content-center mt-5">
-                      <button className="button-primary">Send reset email</button>
+                      <button className="button-primary" onClick={this.handleSendEmail} >Send reset email</button>
                     </div>
                   </Form>
                 </div>
@@ -99,5 +114,10 @@ class ResetPass extends React.Component {
   }
 }
 
+const mapStateToProps = ({ loginReducer }) => {
+  const { user } = loginReducer;
+  return { user };
+};
+
 const ResetPassForm = Form.create({ name: "forgot-pass-form" })(ResetPass);
-export default withStyles(globalStyle, localStyle)(ResetPassForm);
+export default connect(mapStateToProps, { sendEmail })(withStyles(globalStyle, localStyle)(ResetPassForm));
