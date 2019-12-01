@@ -1,6 +1,6 @@
 import React from "react";
 import $ from "jquery";
-import { Icon } from "antd";
+import { Icon, Button } from "antd";
 // @ts-ignore
 import withStyles from "isomorphic-style-loader/withStyles";
 import { connect } from "react-redux";
@@ -16,6 +16,7 @@ import HomeCategories from "./HomeCategories";
 import ServicesCategory from "./ServicesCategory";
 import TopRatedVendors from "./TopRatedVendors";
 import HowItWorks from "./HowItWorks";
+import HowItWorksVendors from "./HowItWorksVendors";
 import NewPostedJobs from "./NewPostedJobs";
 import BuildTeamsBox from "./BuildTeamsBox";
 import Mask from "./Mask";
@@ -24,11 +25,27 @@ import { fetchInitData } from "./essential";
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      select: "client",
+    };
+    this.handleClient = this.handleClient.bind(this);
+    this.handleVendor = this.handleVendor.bind(this);
   }
 
   async componentDidMount() {
     await this.props.fetchInitData();
+  }
+
+  handleClient() {
+    this.setState({
+      select: "client",
+    });
+  }
+
+  handleVendor() {
+    this.setState({
+      select: "vendor",
+    });
   }
 
   render() {
@@ -43,7 +60,31 @@ class Home extends React.Component {
             <HomeCategories />
             <ServicesCategory services={this.props.homedata.services} />
             <TopRatedVendors vendors={this.props.homedata.vendors} />
-            <HowItWorks />
+            <div className="row">
+              <div className="col-md-4 col-2"></div>
+              <div className="col-md-4 col-8 button_group">
+                <Button.Group>
+                  <Button
+                    type="primary"
+                    className={this.state.select !== "client" ? "button_selected" : "group_button"}
+                    onClick={this.handleClient}
+                  >
+                    <Icon type="left" />
+                    Client
+                  </Button>
+                  <Button
+                    type="primary"
+                    className={this.state.select !== "vendor" ? "button_selected" : "group_button"}
+                    onClick={this.handleVendor}
+                  >
+                    Vendor
+                    <Icon type="right" />
+                  </Button>
+                </Button.Group>
+              </div>
+              <div className="col-md-4 col-2"></div>
+            </div>
+            {this.state.select === "client" ? <HowItWorks /> : <HowItWorksVendors />}
             <NewPostedJobs jobs={this.props.homedata.jobs} />
             <BuildTeamsBox />
             <VendorForestFooter />

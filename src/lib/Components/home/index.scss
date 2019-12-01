@@ -541,12 +541,15 @@ html {
 .build-team-box {
     padding: 80px 0;
     border-bottom: 1px solid #e1e1e1;
-    background: #07b107;
+    background-image: url("../images/hands-putting-puzzle-pieces-vector-22340101.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 
     h1 {
         color: white;
-        font-size: 30px;
+        font-size: 40px;
         font-weight: bolder;
+        text-shadow: 1px 1px 1px #000
     }
 
     button.button-white {
@@ -625,5 +628,19 @@ html {
 }
 
 .icon {
-    height: 40px;
+    height: 80px;
+}
+.button_group {
+    text-align: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.group_button {
+    // border-color: #e9eced!important;
+    // border-radius: 0px!important;
+    // size: 100px;
+}
+.button_selected {
+    background-color:white!important;
+    color:black;
 }
