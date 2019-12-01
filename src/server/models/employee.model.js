@@ -9,7 +9,7 @@ const employeeSchema = new mongoose.Schema(
 );
 
 employeeSchema.post("init", function(doc) {
-  // console.log("init hook", doc)
+  // env.MODE === "development" && console.log("init hook", doc)
 });
 
 export default mongoose.model("employee", employeeSchema);

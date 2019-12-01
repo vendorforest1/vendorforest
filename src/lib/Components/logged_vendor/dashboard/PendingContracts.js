@@ -24,7 +24,7 @@ class PendingContracts extends React.Component {
   }
 
   render() {
-    console.log(this.props.user);
+    process.env.NODE_ENV === "development" && console.log(this.props.user);
     return (
       <div className="pending-contracts shadow">
         <div className="head">
@@ -43,7 +43,7 @@ class PendingContracts extends React.Component {
                 size="large"
                 pagination={{
                   onChange: (page) => {
-                    console.log(page);
+                    process.env.NODE_ENV === "development" && console.log(page);
                   },
                   pageSize: 2,
                 }}

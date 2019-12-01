@@ -1,7 +1,8 @@
 import Team from "../models/team.model";
 import getEnv, { constants } from "@Config/index";
 
-const config = getEnv();
+const env = getEnv();
+
 export default () => {
   const controllers = {};
 
@@ -66,7 +67,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              config.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `Team ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -77,11 +78,10 @@ export default () => {
         });
       })
       .catch((error) => {
-        console.log(error);
+        env.MODE === "development" && console.log(error);
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -159,7 +159,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              config.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `Team ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -170,11 +170,10 @@ export default () => {
         });
       })
       .catch((error) => {
-        console.log(error);
+        env.MODE === "development" && console.log(error);
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -193,8 +192,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -269,7 +267,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              config.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `Team ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -283,8 +281,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -363,7 +360,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              config.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `Team ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -377,8 +374,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -460,7 +456,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              config.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `Team ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -474,8 +470,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -554,7 +549,7 @@ export default () => {
           return res.status(401).json({
             status: 401,
             message:
-              config.env.NODE_ENV === "development"
+              env.MODE === "development"
                 ? `Team ${constants.DEV_EMPTYDOC_MSG}`
                 : constants.PROD_COMMONERROR_MSG,
           });
@@ -568,8 +563,7 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message:
-            config.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };

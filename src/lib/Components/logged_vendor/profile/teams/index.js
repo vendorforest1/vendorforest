@@ -47,16 +47,23 @@ class VendorTeams extends React.Component {
   }
 
   render() {
+    let teams =
+      this.props.teams && this.props.user && this.props.user.accountType === 1
+        ? this.props.teams
+        : this.props.selectedVendor && this.props.selectedVendor.teams;
+    const isPublic = this.props.user ? false : true;
+
     const generateTeams = () => {
-      if (this.props.teams.length === 0) {
+      if (teams.length === 0) {
         return <h6 className="text-danger p-5 text-center w-100">No Teams</h6>;
       }
-      return this.props.teams.map((team, index) => {
+      return teams.map((team, index) => {
         return (
           <div className="col-md-4 mb-2" key={index}>
             <Card
               title={team.name}
-              extra={<a href={`/vendor/team/${team._id}`}>View</a>}
+              //cnahge this when /vendor/team/:id is implemented
+              extra={!isPublic && <a href={`/vendor/team/${team._id}`}>View</a>}
               className="w-100 h-100"
             >
               <p className="mb-3">{team.about}</p>
@@ -76,62 +83,66 @@ class VendorTeams extends React.Component {
           className="shadow"
           style={{ marginBottom: "50px" }}
           extra={
-            <div onClick={this.toggle} className="text-color" style={{ cursor: "pointer" }}>
-              <Icon type="plus" />
-            </div>
+            !isPublic && (
+              <div onClick={this.toggle} className="text-color" style={{ cursor: "pointer" }}>
+                <Icon type="plus" />
+              </div>
+            )
           }
         >
-          {!this.props.teams && this.props.pending && (
+          {!teams && this.props.pending && (
             <div className="w-100 p-5 text-center loading-small">
               <Icon type="sync" spin />
             </div>
           )}
-          {this.props.teams && <div className="row">{generateTeams()}</div>}
+          {teams && <div className="row">{generateTeams()}</div>}
         </Card>
-        <Modal
-          title="Add Team"
-          visible={this.state.isModal}
-          onOk={this.toggle}
-          onCancel={this.toggle}
-          width={"800px"}
-          footer={[null, null]}
-        >
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12">
-                <Steps size="large" current={this.state.currentStep}>
-                  {["About the team", "Members"].map((title, index) => (
-                    <Step key={index} title={title} />
-                  ))}
-                </Steps>
-                <div className="mt-5">
-                  {this.state.currentStep === 0 && (
-                    <AddStepOne
-                      team={this.state.newTeam}
-                      updateTeam={this.updateNewTeam}
-                      updateStep={this.updateStep}
-                    />
-                  )}
-                  {this.state.currentStep === 1 && (
-                    <AddStepTwo
-                      team={this.state.newTeam}
-                      updateStep={this.updateStep}
-                      toggle={this.toggle}
-                    />
-                  )}
+        {isPublic && (
+          <Modal
+            title="Add Team"
+            visible={this.state.isModal}
+            onOk={this.toggle}
+            onCancel={this.toggle}
+            width={"800px"}
+            footer={[null, null]}
+          >
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  <Steps size="large" current={this.state.currentStep}>
+                    {["About the team", "Members"].map((title, index) => (
+                      <Step key={index} title={title} />
+                    ))}
+                  </Steps>
+                  <div className="mt-5">
+                    {this.state.currentStep === 0 && (
+                      <AddStepOne
+                        team={this.state.newTeam}
+                        updateTeam={this.updateNewTeam}
+                        updateStep={this.updateStep}
+                      />
+                    )}
+                    {this.state.currentStep === 1 && (
+                      <AddStepTwo
+                        team={this.state.newTeam}
+                        updateStep={this.updateStep}
+                        toggle={this.toggle}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </Modal>
+          </Modal>
+        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ vendorProfileReducer, loginReducer }) => {
-  const { error, teams, pending } = vendorProfileReducer;
-  const { user } = loginReducer;
+  const { error, teams, pending, user } = vendorProfileReducer;
+  // const { user } = loginReducer;
   return {
     error,
     teams,

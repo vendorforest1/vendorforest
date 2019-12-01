@@ -1,12 +1,12 @@
 import User from "@Models/user.model";
 import Vendor from "@Models/vendor.model";
 import Portfolio from "@Models/portfolio.model";
+import Team from "../models/team.model";
 
 // import Team from "../models/team.model";
 import Company from "@Models/company.model";
 import { calculateDistance } from "@Utils/utils";
 import getEnv, { constants } from "@Config/index";
-import { object } from "twilio/lib/base/serialize";
 
 const env = getEnv();
 
@@ -127,11 +127,80 @@ export default () => {
           })
           .then((data) => {
             const result = Object.assign({}, { user: user }, data);
-
-            return res.status(200).json({
-              status: 200,
-              data: result,
-            });
+            Team.find({
+              $or: [
+                {
+                  admin: user._id,
+                },
+                {
+                  members: user._id,
+                },
+                {
+                  invitedUsers: user._id,
+                },
+              ],
+            })
+              .populate({
+                path: "admin",
+                model: "user",
+                populate: {
+                  path: "vendor",
+                  model: "vendor",
+                  populate: [
+                    {
+                      path: "service",
+                      model: "service",
+                    },
+                    {
+                      path: "category",
+                      model: "category",
+                    },
+                  ],
+                },
+              })
+              .populate({
+                path: "members",
+                model: "user",
+                populate: {
+                  path: "vendor",
+                  model: "vendor",
+                  populate: [
+                    {
+                      path: "service",
+                      model: "service",
+                    },
+                    {
+                      path: "category",
+                      model: "category",
+                    },
+                  ],
+                },
+              })
+              .populate({
+                path: "invitedUsers",
+                model: "user",
+                populate: {
+                  path: "vendor",
+                  model: "vendor",
+                  populate: [
+                    {
+                      path: "service",
+                      model: "service",
+                    },
+                    {
+                      path: "category",
+                      model: "category",
+                    },
+                  ],
+                },
+              })
+              .then(async (team) => {
+                let _result = Object.assign({}, { ...result }, { teams: team });
+                return res.status(200).json({
+                  status: 200,
+                  data: _result,
+                });
+              });
           });
       })
       .catch((error) => {
@@ -178,7 +247,7 @@ export default () => {
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
-        console.log(user);
+        env.MODE === "development" && console.log(user);
         await Vendor.updateOne(
           {
             _id: req.user.vendor,
@@ -202,7 +271,7 @@ export default () => {
               });
             }
             //user.vendor = vendor;
-            console.log("vendor profile upate: ", user, " OR: ", vendor);
+            env.MODE === "development" && console.log("vendor profile upate: ", user, " OR: ", vendor);
             return res.status(200).json({
               status: 200,
               data: user,

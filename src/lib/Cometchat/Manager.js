@@ -101,20 +101,20 @@ export class CCManager {
   }
 
   static addMessageListener(dispatch) {
-    console.log("ccmangr addMessageListener: ");
+    process.env.NODE_ENV === "development" && console.log("ccmangr addMessageListener: ");
 
     CometChat.addMessageListener(
       this.LISTENER_KEY_MESSAGE,
       new CometChat.MessageListener({
         onTextMessageReceived: (message) => {
-          console.log("Incoming Message Log", {
+          process.env.NODE_ENV === "development" && console.log("Incoming Message Log", {
             message,
           });
           this.handleMessage(message, dispatch);
         },
 
         onMediaMessageReceived: (message) => {
-          console.log("Incoming Message Log", {
+          process.env.NODE_ENV === "development" && console.log("Incoming Message Log", {
             message,
           });
           // handle media message
@@ -122,26 +122,26 @@ export class CCManager {
         },
 
         onMessageDelivered: (messageReceipt) => {
-          console.log("MessageDeliverd", {
+          process.env.NODE_ENV === "development" && console.log("MessageDeliverd", {
             messageReceipt,
           });
           this.handleMessageDelivered(messageReceipt, dispatch);
         },
 
         onMessageRead: (messageReceipt) => {
-          console.log("MessageRead", {
+          process.env.NODE_ENV === "development" && console.log("MessageRead", {
             messageReceipt,
           });
           this.handleMessageRead(messageReceipt, dispatch);
         },
 
         onTypingStarted: (typingIndicator) => {
-          console.log("Typing started :", typingIndicator);
+          process.env.NODE_ENV === "development" && console.log("Typing started :", typingIndicator);
           this.handleStartTyping(typingIndicator, dispatch);
         },
 
         onTypingEnded: (typingIndicator) => {
-          console.log("Typing ended :", typingIndicator);
+          process.env.NODE_ENV === "development" && console.log("Typing ended :", typingIndicator);
           this.handleEndTyping(typingIndicator, dispatch);
         },
 
@@ -162,14 +162,14 @@ export class CCManager {
         this.LISTENER_KEY_USER,
         new CometChat.UserListener({
           onUserOnline: (onlineUser) => {
-            console.log("On User Online :=>", {
+            process.env.NODE_ENV === "development" && console.log("On User Online :=>", {
               onlineUser,
             });
             //User came online
             this.handleOnUserOnline(onlineUser, dispatch);
           },
           onUserOffline: (offlineUser) => {
-            console.log("On User Offline :=>", {
+            process.env.NODE_ENV === "development" && console.log("On User Offline :=>", {
               offlineUser,
             });
             //User went offline
@@ -178,7 +178,7 @@ export class CCManager {
         }),
       );
     } catch (err) {
-      console.log("User event error ", {
+      process.env.NODE_ENV === "development" && console.log("User event error ", {
         err,
       });
     }
@@ -189,30 +189,30 @@ export class CCManager {
         this.LISTENER_KEY_CALL,
         new CometChat.CallListener({
           onIncomingCallReceived: (call) => {
-            console.log("Incoming call:", JSON.stringify(call));
+            process.env.NODE_ENV === "development" && console.log("Incoming call:", JSON.stringify(call));
             this.handleIncomingCall(call, dispatch);
           },
 
           onOutgoingCallAccepted: (call) => {
-            console.log("Outgoing call accepted:", call);
+            process.env.NODE_ENV === "development" && console.log("Outgoing call accepted:", call);
             // Outgoing Call Accepted
             this.handleOutgoinCallAccepted(call, dispatch);
           },
 
           onOutgoingCallRejected: (call) => {
-            console.log("Outgoing call rejected:", call);
+            process.env.NODE_ENV === "development" && console.log("Outgoing call rejected:", call);
             // Outgoing Call Rejected
             this.handleOutgoinCallRejected(call, dispatch);
           },
 
           onIncomingCallCancelled: (call) => {
-            console.log("Incoming call calcelled:", call);
+            process.env.NODE_ENV === "development" && console.log("Incoming call calcelled:", call);
             this.handleIncomingCancelled(call, dispatch);
           },
         }),
       );
     } catch (error) {
-      console.log("Call listener error ", {
+      process.env.NODE_ENV === "development" && console.log("Call listener error ", {
         error,
       });
     }
@@ -224,7 +224,7 @@ export class CCManager {
         this.LISTENER_KEY_GROUP,
         new CometChat.GroupListener({
           onUserJoined: (joinedUser, joinedGroup) => {
-            console.log("user joined", {
+            process.env.NODE_ENV === "development" && console.log("user joined", {
               joinedUser,
               joinedGroup,
             });
@@ -232,7 +232,7 @@ export class CCManager {
           },
 
           onUserLeft: (leavingUser, group) => {
-            console.log("user left", {
+            process.env.NODE_ENV === "development" && console.log("user left", {
               leavingUser,
               group,
             });
@@ -240,30 +240,30 @@ export class CCManager {
           },
 
           onUserKicked: (kickedUser, kickedBy, kickedFrom) => {
-            console.log("user kicked", kickedUser, kickedBy, kickedFrom);
+            process.env.NODE_ENV === "development" && console.log("user kicked", kickedUser, kickedBy, kickedFrom);
             // Handle Event : bannedUser banned from group by bannedBy
           },
 
           onUserBanned: (bannedUser, kickedBy, kickedFrom) => {
-            console.log("user banned", bannedUser, kickedBy, kickedFrom);
+            process.env.NODE_ENV === "development" && console.log("user banned", bannedUser, kickedBy, kickedFrom);
             // Handle Event : kickedUser kicked from group by kickedBy
           },
 
           onUserUnbanned: (unbannedUser, unbannedBy, unbannedFrom) => {
-            console.log("user unbanned", unbannedUser, unbannedBy, unbannedFrom);
+            process.env.NODE_ENV === "development" && console.log("user unbanned", unbannedUser, unbannedBy, unbannedFrom);
             // Handle event : unbannedUser unbanned from group by unbannedBy
           },
         }),
       );
     } catch (error) {
-      console.log("Group event error ", {
+      process.env.NODE_ENV === "development" && console.log("Group event error ", {
         error,
       });
     }
   }
 
   static handleMessage(message, dispatch) {
-    //console.log("ccmangr msg: " + JSON.stringify(message));
+    //process.env.NODE_ENV === "development" && console.log("ccmangr msg: " + JSON.stringify(message));
     actionCreator.handleMessage(message, dispatch);
   }
 
@@ -298,7 +298,7 @@ export class CCManager {
         .setLimit(limit)
         .build();
     }
-    console.log(
+    process.env.NODE_ENV === "development" && console.log(
       "mesagerequestbuilder : " +
         {
           messagesRequest,
@@ -312,7 +312,7 @@ export class CCManager {
   };
 
   static handleEditedMessage = (message, dispatch) => {
-    console.log("Edited Message", message);
+    process.env.NODE_ENV === "development" && console.log("Edited Message", message);
     dispatch(actionCreator.editMessageReceived(message));
   };
 

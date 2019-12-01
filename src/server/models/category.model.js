@@ -19,7 +19,7 @@ const CategorySchema = new mongoose.Schema(
 );
 
 CategorySchema.post("init", function(doc) {
-  // console.log("init hook", doc)
+  // env.MODE === "development" && console.log("init hook", doc)
 });
 
 export default mongoose.model("category", CategorySchema);

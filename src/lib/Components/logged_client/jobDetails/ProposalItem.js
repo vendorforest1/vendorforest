@@ -63,7 +63,7 @@ class ProposalItem extends React.Component {
         message.success("Proposal has been declined.");
       })
       .catch((error) => {
-        console.log(error);
+        process.env.NODE_ENV === "development" && console.log(error);
         this.setState({ pending: false });
         message.error(error.message);
       });

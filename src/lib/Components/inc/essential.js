@@ -137,10 +137,10 @@ export const getNotification = () => async (dispatch) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("getting notification is", result.data);
+      process.env.NODE_ENV === "development" && console.log("getting notification is", result.data);
       dispatch(fetchNotiSuccess(result.data));
     })
-    .catch((err) => console.log("fetch error", err));
+    .catch((err) => process.env.NODE_ENV === "development" && console.log("fetch error", err));
 };
 
 export const logout = () => async (dispatch, getState) => {

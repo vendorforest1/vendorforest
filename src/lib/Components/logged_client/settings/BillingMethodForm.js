@@ -48,14 +48,14 @@ class ClientBilling extends Component {
       this.props.stripe
         .createToken({ type: "card", name: this.state.firstName + this.state.lastName })
         .then((payload) => {
-          console.log("[token]", payload.token.id);
+          process.env.NODE_ENV === "development" && console.log("[token]", payload.token.id);
           getClientId(payload.token.id);
         });
       message.success("Your account is successfully registered.");
     } else {
       message.error("Stripe.js hasn't loaded yet.");
     }
-    console.log("sds");
+    process.env.NODE_ENV === "development" && console.log("sds");
     this.props.form.validateFields((err, value) => {
       if (!err && !this.props.pending) {
         const params = {

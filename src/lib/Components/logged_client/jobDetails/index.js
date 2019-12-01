@@ -22,7 +22,7 @@ class ClientJobDetails extends React.Component {
   }
 
   clickTab(key) {
-    console.log(key);
+    process.env.NODE_ENV === "development" && console.log(key);
   }
 
   componentDidMount() {
@@ -47,7 +47,7 @@ class ClientJobDetails extends React.Component {
 
   render() {
     if (this.props.job) {
-      console.log("hirevendors", this.props.job.hiredVendors);
+      process.env.NODE_ENV === "development" && console.log("hirevendors", this.props.job.hiredVendors);
     }
     return (
       <div className="job-details">

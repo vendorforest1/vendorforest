@@ -20,7 +20,7 @@ class SidebarSearch extends React.Component {
         <Search
           size={"large"}
           placeholder="Search"
-          onSearch={(value) => console.log(value)}
+          onSearch={(value) => process.env.NODE_ENV === "development" && console.log(value)}
           className="w-100"
         />
       </div>

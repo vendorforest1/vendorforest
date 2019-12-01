@@ -10,7 +10,7 @@ class TopRatedVendorCard extends React.Component {
     this.state = {};
     const username = this.props.user;
     if (username) {
-      console.log("LLLLLLLL&89876556789", username);
+      process.env.NODE_ENV === "development" && console.log("LLLLLLLL&89876556789", username);
     }
     this.handleClick = () => {
       if (!username) {

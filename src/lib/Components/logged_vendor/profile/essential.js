@@ -189,7 +189,7 @@ export const fetchGetUserData = (payload) => async (dispatch, getState) => {
 export const fetchUpdateData = (payload) => async (dispatch, getState) => {
   dispatch(clearError());
   dispatch(fetchRequest());
-  console.log("payload: ", payload);
+  process.env.NODE_ENV === "development" && console.log("payload: ", payload);
 
   return await fetch(apiUrl.VENDOR_UPDATE_PROFILE, {
     method: "POST",
@@ -201,7 +201,7 @@ export const fetchUpdateData = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("result: ", result);
+      process.env.NODE_ENV === "development" && console.log("result: ", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
@@ -229,7 +229,7 @@ export const fetchReviewsData = () => async (dispatch, getState) => {
       dispatch(fetchReviewsSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -246,14 +246,14 @@ export const fetchPortfoliosData = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("potfolio: ", result);
+      process.env.NODE_ENV === "development" && console.log("potfolio: ", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
       dispatch(fetchPortfoliosSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -270,14 +270,14 @@ export const fetchTeamsData = () => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("result", result);
+      process.env.NODE_ENV === "development" && console.log("result", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
       dispatch(fetchTeamsSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -322,7 +322,7 @@ export const fetchServiceData = () => async (dispatch, getState) => {
       dispatch(fetchServiceSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -332,7 +332,7 @@ export const fetchFindUser = async (payload) => {
   Object.keys(payload).forEach((key, index) => {
     urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
   });
-  console.log(urlStr);
+  process.env.NODE_ENV === "development" && console.log(urlStr);
   return await fetch(`${apiUrl.VENDOR_FIND}${urlStr}`, {
     method: "GET",
     headers: {
@@ -412,7 +412,7 @@ export const clientFetchVendorProfileByUsername = (payload) => async (dispatch, 
       if (!result || result.length === 0) {
         throw new Error("empty result");
       }
-      console.log("********* public information: ", result.data);
+      process.env.NODE_ENV === "development" && console.log("********* public information: ", result.data);
       dispatch(fetchvendor(result.data));
     })
     .catch((err) => dispatch(fetchError(err.message)));

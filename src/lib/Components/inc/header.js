@@ -141,7 +141,7 @@ class VendorForestHeader extends React.Component {
       return this.getUnSignedVenderForestHeader();
     } else {
       let { userObj } = this.props.user;
-      console.log("***** header: ", userObj.accountType);
+      process.env.NODE_ENV === "development" && console.log("***** header: ", userObj.accountType);
       if (userObj.accountType === 0) {
         return <ClientHeader />;
       }

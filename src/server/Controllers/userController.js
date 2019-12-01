@@ -74,7 +74,7 @@ export default function(passport) {
         return next();
       }
     } catch (e) {
-      console.log("Errror: ", e);
+      env.MODE === "development" && console.log("Errror: ", e);
     }
   };
 
@@ -147,7 +147,7 @@ export default function(passport) {
 
           token.save(async function(err) {
             if (err) {
-              console.log("TOKEN ERR: ", err);
+              env.MODE === "development" && console.log("TOKEN ERR: ", err);
               return res.status(500).json({
                 status: 500,
                 msg: err.message,
@@ -203,7 +203,7 @@ export default function(passport) {
 
           token.save(async function(err) {
             if (err) {
-              console.log("TOKEN ERR: ", err);
+              env.MODE === "development" && console.log("TOKEN ERR: ", err);
               return res.status(500).json({
                 status: 500,
                 msg: err.message,
@@ -297,7 +297,7 @@ export default function(passport) {
           });
         }
         const verifyCode = Math.floor(Math.random() * 8999) + 1000;
-        console.log(verifyCode);
+        env.MODE === "development" && console.log(verifyCode);
         await Token.findOneAndUpdate(
           {
             _userId: req.user._id,
@@ -437,7 +437,7 @@ export default function(passport) {
           }
         })
         .catch((error) => {
-          console.log(error);
+          env.MODE === "development" && console.log(error);
           return res.status(500).json({
             status: 500,
             message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,

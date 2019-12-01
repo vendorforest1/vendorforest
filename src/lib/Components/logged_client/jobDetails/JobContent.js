@@ -65,7 +65,7 @@ class JobContent extends React.Component {
         window.location.href = "/client";
       })
       .catch((error) => {
-        console.log(error);
+        process.env.NODE_ENV === "development" && console.log(error);
         this.setState({ pending: false });
         message.error(error.message);
       });

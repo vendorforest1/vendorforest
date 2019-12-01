@@ -156,14 +156,14 @@ export const fetchSubmittedProposalesData = (payload) => async (dispatch, getSta
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log(result);
+      process.env.NODE_ENV === "development" && console.log(result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
       dispatch(fetchSubmittedProposalesSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -184,14 +184,14 @@ export const fetchActiveProposalesData = (payload) => async (dispatch, getState)
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log(result);
+      process.env.NODE_ENV === "development" && console.log(result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
       dispatch(fetchActiveProposalesSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -212,14 +212,14 @@ export const fetchPastProposalesData = (payload) => async (dispatch, getState) =
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log(result);
+      process.env.NODE_ENV === "development" && console.log(result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
       dispatch(fetchPastProposalesSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -246,7 +246,7 @@ export const fetchPendingContractsData = (payload) => async (dispatch, getState)
       dispatch(fetchPendingContractsSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -267,7 +267,7 @@ export const fetchPastContractsData = (payload) => async (dispatch, getState) =>
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("contract result", result);
+      process.env.NODE_ENV === "development" && console.log("contract result", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }

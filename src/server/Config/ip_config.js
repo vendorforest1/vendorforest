@@ -14,10 +14,10 @@ export default function(app) {
     const DEBUG = false;
     const http = require("http"); //to use https need to upgrade
 
-    console.log(ip_v4);
+    // console.log(ip_v4);
     //=> '46.5.21.123'
 
-    console.log(ip_v6);
+    // console.log(ip_v6);
     //=> 'fe80::200:f8ff:fe21:67cf'
 
     if (DEBUG) {
@@ -44,4 +44,4 @@ export default function(app) {
     //}
     next();
   });
-};
+}

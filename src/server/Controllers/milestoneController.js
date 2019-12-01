@@ -16,7 +16,7 @@ export default () => {
   controllers.create = async (req, res, next) => {
     const newMilestone = new Milestone({ ...req.body });
     const milestoneID = newMilestone.contract;
-    console.log("$$$$$$ newMilestone $$$$$$", newMilestone);
+    env.MODE === "development" && console.log("$$$$$$ newMilestone $$$$$$", newMilestone);
     const user = req.user.stripe_client_id;
     const price = newMilestone.price;
     await Contract.find({
@@ -49,13 +49,13 @@ export default () => {
                     const emailTitle = "Milestone has been created.";
                     const description = `You can start work on this job.<br> Your accepted budget is ${milestone.price} USD.`;
                     const phoneDescription = `You can start work on this job.\n Your accepted budget is ${milestone.price} USD.`;
-                    console.log("create milestone result", result);
+                    env.MODE === "development" && console.log("create milestone result", result);
                     saveNotification(vendorId, milestone.price);
                     sendingEmail(vendorEmail, emailTitle, description);
                     sendingSms(vendorPhone, emailTitle, phoneDescription);
                   })
-                  .catch((error) => console.log("saving notification error", error));
-                console.log("milestone", milestone);
+                  .catch((error) => env.MODE === "development" && console.log("saving notification error", error));
+                env.MODE === "development" && console.log("milestone", milestone);
                 return res.status(200).json({
                   status: 200,
                   data: milestone,
@@ -92,7 +92,7 @@ export default () => {
       notificationMsg: `You created milestone. Amount is ${price}USD`,
       time: time,
     });
-    // console.log("milestone result", result);
+    // env.MODE === "development" && console.log("milestone result", result);
     await query.save();
   };
 
@@ -101,7 +101,7 @@ export default () => {
       customer: clientID,
       type: "card",
     });
-    console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntent.data[0].id);
+    env.MODE === "development" && console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntent.data[0].id);
     const paymentMethodId = paymentIntent.data[0].id;
     try {
       const paymentIntent = await stripe.paymentIntents.create({
@@ -111,13 +111,13 @@ export default () => {
         payment_method: paymentMethodId,
         confirm: true,
       });
-      console.log("##########paymentIntent@@@@@@@@@@@@", paymentIntent);
+      env.MODE === "development" && console.log("##########paymentIntent@@@@@@@@@@@@", paymentIntent);
     } catch (err) {
       // Error code will be authentication_required if authentication is needed
-      console.log("Error code is: ", err.code);
+      env.MODE === "development" && console.log("Error code is: ", err.code);
       payment_intent_id = err.raw.payment_intent.id;
       stripe.paymentIntents.retrieve(payment_intent_id, function(err, paymentIntentRetrieved) {
-        console.log("PI retrieved: ", paymentIntentRetrieved.id);
+        env.MODE === "development" && console.log("PI retrieved: ", paymentIntentRetrieved.id);
       });
     }
   };
@@ -185,7 +185,7 @@ export default () => {
             })
             .then(async (transfer) => {
               const transferResult = transfer.amount;
-              console.log("transfer result+++++===", transfer);
+              env.MODE === "development" && console.log("transfer result+++++===", transfer);
               await Milestone.findOneAndUpdate(
                 {
                   _id: milestoneID,
@@ -266,7 +266,7 @@ export default () => {
           });
         });
     } catch (error) {
-      console.log("err ocurred &&&&&", error);
+      env.MODE === "development" && console.log("err ocurred &&&&&", error);
       return res.status(500).json({
         status: 500,
         message: `Errors ${error}`,
@@ -297,7 +297,7 @@ export default () => {
       html: `<h1 style={color: blue; font-weight: bold;}>${title}</h1><div>${description}</div>`,
     });
 
-    console.log("Message sent: %s", info.messageId);
+    env.MODE === "development" && console.log("Message sent: %s", info.messageId);
   };
 
   const sendingSms = async (phone, title, description) => {
@@ -311,10 +311,10 @@ export default () => {
           from: env.SERVER_TWILIO_NUMBER,
           body: `${title} ${description}`,
         })
-        .then((message) => console.log(message.sid));
-      console.log("end");
+        .then((message) => env.MODE === "development" && console.log(message.sid));
+      env.MODE === "development" && console.log("end");
     } catch (error) {
-      console.log(error);
+      env.MODE === "development" && console.log(error);
     }
   };
 

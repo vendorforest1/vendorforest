@@ -22,7 +22,6 @@ export default () => {
 
   controllers.getPubKey = async (req, res) => {
     const stripePubKey = env.CLIENT_ID;
-    console.log(stripePubKey);
     return res.json({ pubKey: stripePubKey });
   };
 
@@ -32,14 +31,12 @@ export default () => {
   };
 
   controllers.getClientId = async (req, res) => {
-    console.log("Here is backend");
     await stripe.customers
       .create({
         source: req.body.token_id,
         email: req.user.email,
       })
       .then((result) => {
-        console.log(result.id);
         const stripe_client_id = {
           stripe_client_id: result.id,
         };
@@ -52,9 +49,9 @@ export default () => {
             {
               new: true,
             },
-          ).then(console.log("Your Stripe Client Id is saved."));
+          ).then((result) => result); //("Your Stripe Client Id is saved.")
         } catch (error) {
-          console.log(error);
+          env.MODE === "development" && console.log(error);
         }
       });
   };
@@ -99,7 +96,7 @@ export default () => {
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
-        console.log("updateBillingInformation ", req.body);
+        env.MODE === "development" && console.log("updateBillingInformation ", req.body);
         const _card = {
           card: {
             //TODO get this from user db.table
@@ -121,7 +118,8 @@ export default () => {
             },
           },
           async function(err, token) {
-            console.log("err: ", err, "token: ", token, " user ", user);
+            env.MODE === "development" &&
+              console.log("err: ", err, "token: ", token, " user ", user);
             if (err) {
               return res.status(400).json({
                 status: 400,
@@ -136,7 +134,7 @@ export default () => {
                 source: token.id,
               },
               (_err, customer) => {
-                console.log("customers: ", customer);
+                env.MODE === "development" && console.log("customers: ", customer);
               },
             );
           },
@@ -156,7 +154,7 @@ export default () => {
         //   },
         // )
         //   .then(async (client) => {
-        //     console.log("resolve client!!! ", client);
+        //     env.MODE === "development" && console.log("resolve client!!! ", client);
         //     if (!client) {
         //       return res.status(401).json({
         //         status: 401,
@@ -238,7 +236,7 @@ export default () => {
 
   controllers.getNotifications = async (req, res) => {
     const user = req.user._id;
-    console.log("user0bjectId");
+    env.MODE === "development" && console.log("user0bjectId");
     await Notification.find({ username: ObjectId(user) })
       .sort({ createdAt: -1 })
       .limit(5)
@@ -247,7 +245,7 @@ export default () => {
           data: result,
         });
       })
-      .catch((err) => console.log("err = ", err));
+      .catch((err) => env.MODE === "development" && console.log("err = ", err));
   };
 
   return controllers;

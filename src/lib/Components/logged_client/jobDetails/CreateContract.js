@@ -85,7 +85,7 @@ class CreateContract extends React.Component {
       })
       .catch((error) => {
         this.setState({ pending: false });
-        console.log(error);
+        process.env.NODE_ENV === "development" && console.log(error);
         message.error(error.message);
       });
   }

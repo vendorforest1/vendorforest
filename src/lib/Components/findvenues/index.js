@@ -229,7 +229,7 @@ class FindVenue extends React.Component {
                     <h6 className="pb-3 border-bottom mb-2">Availability</h6>
                     <DatePicker
                       onChange={(date, dateString) => {
-                        console.log(date, dateString);
+                        process.env.NODE_ENV === "development" && console.log(date, dateString);
                       }}
                     />
                   </div>
@@ -369,7 +369,7 @@ class FindVenue extends React.Component {
                     <div className="col-md-5">
                       <Search
                         placeholder="Where"
-                        onSearch={(value) => console.log(value)}
+                        onSearch={(value) => process.env.NODE_ENV === "development" && console.log(value)}
                         className="mb-4"
                         enterButton
                       />
@@ -382,7 +382,7 @@ class FindVenue extends React.Component {
                   className="venue-list"
                   pagination={{
                     onChange: (page) => {
-                      console.log(page);
+                      process.env.NODE_ENV === "development" && console.log(page);
                     },
                     pageSize: 20,
                   }}

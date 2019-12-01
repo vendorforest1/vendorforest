@@ -97,7 +97,7 @@ const ClientSchema = new mongoose.Schema(
 );
 
 ClientSchema.post("init", function(doc) {
-  // console.log("init hook", doc)
+  // env.MODE === "development" && console.log("init hook", doc)
 });
 
 export default mongoose.model("client", ClientSchema);

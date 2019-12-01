@@ -46,7 +46,7 @@ const CompanySchema = new mongoose.Schema(
 );
 
 CompanySchema.post("init", function(doc) {
-  // console.log("init hook", doc)
+  // env.MODE === "development" && console.log("init hook", doc)
 });
 
 export default mongoose.model("company", CompanySchema);

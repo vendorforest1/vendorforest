@@ -170,7 +170,7 @@ export default () => {
         });
       })
       .catch((error) => {
-        console.log(error);
+        env.MODE === "development" && console.log(error);
         return res.status(500).json({
           status: 500,
           message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
@@ -210,7 +210,7 @@ export default () => {
         });
       })
       .catch((error) => {
-        console.log(error);
+        env.MODE === "development" && console.log(error);
         return res.status(500).json({
           status: 500,
           message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,

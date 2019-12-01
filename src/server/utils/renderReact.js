@@ -25,12 +25,12 @@ function renderer(props) {
     styles.forEach((style) => {
       css.add(style._getCss());
     });
-  //console.log(store, history)
+  //env.MODE === "development" && console.log(store, history)
 
   //return
   const markup = ReactDOMServer.renderToString(app);
 
-  console.log(initialLocation.pathname, history.location.pathname);
+  env.MODE === "development" && console.log(initialLocation.pathname, history.location.pathname);
 
   if (initialLocation.pathname !== history.location.pathname) {
     response.status(302).setHeader("Location", history.location.pathname);

@@ -75,7 +75,7 @@ class JobItem extends React.Component {
             <button
               className="button-primary col"
               onClick={() => {
-                console.log(this.props.user);
+                process.env.NODE_ENV === "development" && console.log(this.props.user);
                 if (
                   this.props.user &&
                   this.props.user.userObj.accountType === constants.ACCOUNT_TYPE.VENDOR

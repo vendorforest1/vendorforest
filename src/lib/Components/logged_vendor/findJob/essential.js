@@ -110,14 +110,14 @@ export const fetchFindJobsData = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("fetchfindjobdata", result);
+      process.env.NODE_ENV === "development" && console.log("fetchfindjobdata", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
       if (result.status === 302) {
-        // console.log('getpersiste1', getState()._persist)
-        // console.log('getpersiste2', getState()._persist.persist())
-        // console.log('getpersiste3', getState()._persist.purge())
+        // process.env.NODE_ENV === "development" && console.log('getpersiste1', getState()._persist)
+        // process.env.NODE_ENV === "development" && console.log('getpersiste2', getState()._persist.persist())
+        // process.env.NODE_ENV === "development" && console.log('getpersiste3', getState()._persist.purge())
         dispatch(fetchError(result));
       }
       dispatch(fetchJobsSuccess(result.data));
@@ -143,7 +143,7 @@ export const fetchServiceData = () => async (dispatch, getState) => {
       dispatch(fetchServiceSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };

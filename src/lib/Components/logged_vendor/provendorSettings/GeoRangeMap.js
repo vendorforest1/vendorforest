@@ -35,7 +35,7 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker, Circle } from "react-go
 //                 refs.map = ref
 //             },
 //             drawCircle: (props) => () => {
-//                 console.log(props.radius)
+//                 process.env.NODE_ENV === "development" && console.log(props.radius)
 //                 return <div>
 //                     <Marker
 //                         map={refs.map}

@@ -149,7 +149,7 @@ export const fetchPostJobsData = () => async (dispatch, getState) => {
       dispatch(fetchPostedJobsSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -177,7 +177,7 @@ export const fetchPendingContractsData = (payload) => async (dispatch, getState)
       dispatch(fetchPendingContractsSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };

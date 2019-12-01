@@ -38,7 +38,7 @@ class PostJob extends React.Component {
   componentDidMount() {
     this.props.fetchInitialData();
     this.props.fetchServiceData();
-    console.log("id", this.props.match.params.id);
+    process.env.NODE_ENV === "development" && console.log("id", this.props.match.params.id);
     if (this.props.match.params.id) {
       // this.props.updateJob({
       //     service: '',
@@ -133,7 +133,7 @@ class PostJob extends React.Component {
   }
 
   render() {
-    console.log(this.props.services);
+    process.env.NODE_ENV === "development" && console.log(this.props.services);
 
     const generateServiceList = () => {
       if (!this.props.services) {

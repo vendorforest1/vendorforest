@@ -34,7 +34,7 @@ export default function(app, passport) {
   router.use("/chat", chat);
   router.use("/", user(app, passport));
   router.use((err, req, res, next) => {
-    console.log("router Error", err);
+    env.MODE === "development" && console.log("router Error", err);
     if (err && err.error && err.error.isJoi) {
       return res.status(400).json({
         status: 400,

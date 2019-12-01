@@ -40,14 +40,14 @@ class VendorOffers extends React.Component {
           message: values.message,
           offers: this.props.offers,
         };
-        console.log(params);
+        process.env.NODE_ENV === "development" && console.log(params);
         this.props.fetchOfferAccept(params);
       }
     });
   }
 
   decline(offerId) {
-    console.log(this.props.pending);
+    process.env.NODE_ENV === "development" && console.log(this.props.pending);
     if (this.props.pending) {
       return;
     }

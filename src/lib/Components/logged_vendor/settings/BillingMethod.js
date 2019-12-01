@@ -24,7 +24,7 @@ class VendorBillingMethod extends React.Component {
     // alert("stripe");
     // const userEmail = this.props.user.email;
     this.props.signupStripe();
-    // console.log("userEmail is " + userEmail);
+    // process.env.NODE_ENV === "development" && console.log("userEmail is " + userEmail);
   };
 
   render() {

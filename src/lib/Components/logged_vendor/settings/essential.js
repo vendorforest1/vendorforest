@@ -120,7 +120,7 @@ export const signupStripe = (payload) => async (dispatch, getState) => {
 export const fetchUpdateAccount = (payload) => async (dispatch, getState) => {
   dispatch(clearError());
   dispatch(fetchRequest());
-  console.log("update req: ", payload);
+  process.env.NODE_ENV === "development" && console.log("update req: ", payload);
 
   return await fetch(apiUrl.UPDATE_ACCOUNT, {
     method: "POST",
@@ -135,7 +135,7 @@ export const fetchUpdateAccount = (payload) => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      console.log("update response: ", result);
+      process.env.NODE_ENV === "development" && console.log("update response: ", result);
       dispatch(fetchSuccess(result.data));
       dispatch(fetchSuccessMsg(result.message));
     })
@@ -218,7 +218,7 @@ export const fetchUpdateCompany = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("company update", result);
+      process.env.NODE_ENV === "development" && console.log("company update", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }

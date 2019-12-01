@@ -34,8 +34,8 @@ class VendorItem extends React.Component {
   render() {
     const { user } = this.props;
     const { vendor } = user;
-    console.log("user: ", user);
-    console.log("vendor: ", vendor);
+    process.env.NODE_ENV === "development" && console.log("user: ", user);
+    process.env.NODE_ENV === "development" && console.log("vendor: ", vendor);
     return (
       <div className="vendor-item d-md-flex d-block justify-content-between">
         <div className="vendor-info d-flex mb-3 mb-md-0">

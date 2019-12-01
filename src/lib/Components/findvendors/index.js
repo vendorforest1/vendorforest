@@ -190,7 +190,7 @@ class FindVendors extends React.Component {
                 <div className="search-bar">
                   <Search
                     placeholder="Find Vendor"
-                    onSearch={(value) => console.log(value)}
+                    onSearch={(value) => process.env.NODE_ENV === "development" && console.log(value)}
                     className="mb-4"
                     enterButton
                   />
@@ -201,7 +201,7 @@ class FindVendors extends React.Component {
                   className="vendor-list"
                   pagination={{
                     onChange: (page) => {
-                      console.log(page);
+                      process.env.NODE_ENV === "development" && console.log(page);
                     },
                     pageSize: 20,
                   }}

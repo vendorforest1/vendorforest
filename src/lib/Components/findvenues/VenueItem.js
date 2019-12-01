@@ -159,7 +159,7 @@ class VenueItem extends React.Component {
                     placeholder="Event Start Date ~ End Date"
                     value={[this.state.eventStDate, this.state.eventEtDate]}
                     onChange={(date, dateString) => {
-                      console.log(date, dateString);
+                      process.env.NODE_ENV === "development" && console.log(date, dateString);
                     }}
                   />
                 </Form.Item>

@@ -41,7 +41,7 @@ class PastConstracts extends React.Component {
                 size="large"
                 pagination={{
                   onChange: (page) => {
-                    console.log(page);
+                    process.env.NODE_ENV === "development" && console.log(page);
                   },
                   pageSize: 2,
                 }}

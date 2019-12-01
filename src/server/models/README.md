@@ -42,10 +42,10 @@
     const ip_v4 = await publicIp.v4();
     const ip_v6 = await publicIp.v6();
 
-    console.log(ip_v4);
+    env.MODE === "development" && console.log(ip_v4);
     //=> '46.5.21.123'
 
-    console.log(ip_v6);
+    env.MODE === "development" && console.log(ip_v6);
     //=> 'fe80::200:f8ff:fe21:67cf'
     if (DEBUG) {
       http.get(`http://api.ipstack.com/${ip_v4}?access_key=81f1dc79ef5bb8c315467ae4bba4a68c`, function (resp) {

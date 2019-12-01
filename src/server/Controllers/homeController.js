@@ -9,7 +9,7 @@ export default () => {
   const controllers = {};
 
   controllers.get = async (req, res, next) => {
-    console.log("req.isAuthenticated() ", req.isAuthenticated());
+    env.MODE === "development" && console.log("req.isAuthenticated() ", req.isAuthenticated());
     try {
       const services = await Service.find({}).populate({
         path: "categories",

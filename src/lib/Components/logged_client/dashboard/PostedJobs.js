@@ -35,7 +35,7 @@ class PostedJobs extends Component {
           <div className="py-2">
             <Search
               placeholder="Find Jobs"
-              onSearch={(value) => console.log(value)}
+              onSearch={(value) => process.env.NODE_ENV === "development" && console.log(value)}
               style={{ maxWidth: "400px", height: "40px" }}
             />
           </div>
@@ -52,7 +52,7 @@ class PostedJobs extends Component {
                 size="large"
                 pagination={{
                   onChange: (page) => {
-                    console.log(page);
+                    process.env.NODE_ENV === "development" && console.log(page);
                   },
                   pageSize: 2,
                 }}
@@ -79,7 +79,7 @@ class PostedJobs extends Component {
 }
 
 const mapStateToProps = ({ clientDashboardReducer, loginReducer }) => {
-  console.log("wtf", clientDashboardReducer);
+  process.env.NODE_ENV === "development" && console.log("wtf", clientDashboardReducer);
   const {
     error,
     success,

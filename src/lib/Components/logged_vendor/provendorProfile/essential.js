@@ -169,7 +169,7 @@ export const fetchReviewsData = () => async (dispatch, getState) => {
       dispatch(fetchReviewsSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -192,7 +192,7 @@ export const fetchPortfoliosData = () => async (dispatch, getState) => {
       dispatch(fetchPortfoliosSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };

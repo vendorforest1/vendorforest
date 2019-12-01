@@ -153,15 +153,15 @@ export default () => {
     // const ObjectId = require("mongodb").ObjectID;
     const myName = req.user.username;
     const vendorID = req.body.vendor;
-    console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", vendorID);
+    env.MODE === "development" && console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", vendorID);
     await User.findOne({ _id: mongoose.Types.ObjectId(vendorID) }, function(err, result) {
       if (err) {
         throw err;
       }
-      console.log("TTTTTTTTTTTTTTTTTTTTTT", result.username);
+      env.MODE === "development" && console.log("TTTTTTTTTTTTTTTTTTTTTT", result.username);
     })
       .then((result) => {
-        console.log("KLLLLLLLLLLJKJKJL", result);
+        env.MODE === "development" && console.log("KLLLLLLLLLLJKJKJL", result);
         const senderRoomInfo = new Room({
           user: myName,
           roomName: result.username,
@@ -180,7 +180,7 @@ export default () => {
     const title = req.body.post.title;
     const subscription = req.body.subscription;
     webpush.setVapidDetails(env.WEB_PUSH_CONTACT, env.PUBLIC_VAPID_KEY, env.PRIVATE_VAPID_KEY);
-    console.log("SUBscription list", subscription);
+    env.MODE === "development" && console.log("SUBscription list", subscription);
 
     const payload = JSON.stringify({
       title: "New job posted in Vendorforest.com",
@@ -188,8 +188,8 @@ export default () => {
     });
     webpush
       .sendNotification(subscription, payload)
-      .then((result) => console.log("after sending notification", result))
-      .catch((e) => console.log(e.stack));
+      .then((result) => env.MODE === "development" && console.log("after sending notification", result))
+      .catch((e) => env.MODE === "development" && console.log(e.stack));
 
     res.status(200).json({ success: true });
   };
@@ -223,7 +223,7 @@ export default () => {
           sendingSms(result.phone, title, description);
         }),
       )
-      .catch((error) => console.log("error occured", error));
+      .catch((error) => env.MODE === "development" && console.log("error occured", error));
   };
 
   const sendingEmail = async (emailAddress, title, description) => {
@@ -250,7 +250,7 @@ export default () => {
       // html: compileTemplate.render({ title: title, description: description }),
     });
 
-    console.log("Message sent: %s", info.messageId);
+    env.MODE === "development" && console.log("Message sent: %s", info.messageId);
   };
 
   const sendingSms = async (phone, title, description) => {
@@ -267,10 +267,10 @@ export default () => {
                   Title:${title}
                   Description:${description}`,
         })
-        .then((message) => console.log(message.sid));
-      console.log("end");
+        .then((message) => env.MODE === "development" && console.log(message.sid));
+      env.MODE === "development" && console.log("end");
     } catch (error) {
-      console.log(error);
+      env.MODE === "development" && console.log(error);
     }
   };
 

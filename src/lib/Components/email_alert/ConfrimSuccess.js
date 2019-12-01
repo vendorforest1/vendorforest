@@ -29,7 +29,7 @@ class EmailConfirmRequire extends React.Component {
       })
         .then((response) => response.json())
         .then((result) => {
-          console.log(result);
+          process.env.NODE_ENV === "development" && console.log(result);
           this.setState({ isPending: false });
           if (result.status >= 400) {
             this.setState({

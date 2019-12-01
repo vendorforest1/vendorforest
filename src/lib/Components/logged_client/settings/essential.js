@@ -88,7 +88,7 @@ export const getPublicKey = () => {
     })
     .then((response) => response.json())
     .then((result) => {
-      console.log("public_key", result);
+      process.env.NODE_ENV === "development" && console.log("public_key", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       } else {
@@ -108,7 +108,7 @@ export const getSetupIntent = () => {
     })
     .then((response) => response.json())
     .then((result) => {
-      console.log("___setupintent___", result.client_secret);
+      process.env.NODE_ENV === "development" && console.log("___setupintent___", result.client_secret);
       return result.client_secret;
     });
 };
@@ -124,9 +124,9 @@ export const getClientId = (card) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("Client_ID:", result);
+      process.env.NODE_ENV === "development" && console.log("Client_ID:", result);
     })
-    .catch((err) => console.log("Client_ID", err));
+    .catch((err) => process.env.NODE_ENV === "development" && console.log("Client_ID", err));
 };
 //TODO encrypt Card information
 export const fetchUpdateBilling = (payload) => async (dispatch, getState) => {
@@ -142,7 +142,7 @@ export const fetchUpdateBilling = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("client result", result);
+      process.env.NODE_ENV === "development" && console.log("client result", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
@@ -164,7 +164,7 @@ export const fetchGetSettings = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("client result", result);
+      process.env.NODE_ENV === "development" && console.log("client result", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
@@ -186,7 +186,7 @@ export const fetchUpdateAccount = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("client result", result);
+      process.env.NODE_ENV === "development" && console.log("client result", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
@@ -209,7 +209,7 @@ export const fetchResetPass = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("client result", result);
+      process.env.NODE_ENV === "development" && console.log("client result", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
@@ -231,7 +231,7 @@ export const fetchUpdateNotifYSettings = (payload) => async (dispatch, getState)
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("client result", result);
+      process.env.NODE_ENV === "development" && console.log("client result", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
@@ -253,7 +253,7 @@ export const fetchSendCodeEmail = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("client result", result);
+      process.env.NODE_ENV === "development" && console.log("client result", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }

@@ -47,7 +47,7 @@ class Home extends React.Component {
   }
 
   render() {
-    console.log(this.props.pending, this.props.homedata);
+    process.env.NODE_ENV === "development" && console.log(this.props.pending, this.props.homedata);
     return (
       <div>
         {this.props.pending && <Mask />}

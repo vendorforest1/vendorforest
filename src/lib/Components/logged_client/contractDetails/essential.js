@@ -158,7 +158,7 @@ export const fetchGetMilestonesData = (payload) => async (dispatch, getState) =>
   Object.keys(payload).forEach((key, index) => {
     urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
   });
-  console.log(`${apiUrl.GET_MILESTONES}${urlStr}`);
+  process.env.NODE_ENV === "development" && console.log(`${apiUrl.GET_MILESTONES}${urlStr}`);
   return await fetch(`${apiUrl.GET_MILESTONES}${urlStr}`, {
     method: "GET",
     headers: {
@@ -177,7 +177,7 @@ export const fetchGetMilestonesData = (payload) => async (dispatch, getState) =>
 };
 
 export const fetchCreateMilestoneData = (payload) => async (dispatch, getState) => {
-  console.log("milestone payload", payload);
+  process.env.NODE_ENV === "development" && console.log("milestone payload", payload);
   dispatch(clearError());
   dispatch(fetchRequest());
   return await fetch(apiUrl.CREATE_MILESTONE, {
@@ -194,7 +194,7 @@ export const fetchCreateMilestoneData = (payload) => async (dispatch, getState) 
         throw new Error(result.message);
       }
       const newMilestones = [...getState().clientContractDetailsReducer.milestones];
-      console.log("newMilestone created+++++++++++", newMilestones);
+      process.env.NODE_ENV === "development" && console.log("newMilestone created+++++++++++", newMilestones);
       newMilestones.push(result.data);
       dispatch(fetchMilestonesSuccess(newMilestones));
       dispatch(fetchSuccessMsg(result.message));

@@ -23,7 +23,7 @@ export default function reducer(
       };
     case FETCH_LOGIN_SUCCESS:
       user = action.payload;
-      console.log("FETCH_LOGIN_SUCCESS: ", action.payload);
+      process.env.NODE_ENV === "development" && console.log("FETCH_LOGIN_SUCCESS: ", action.payload);
       return Object.assign({}, state, {
         user,
         pending: false,

@@ -24,7 +24,7 @@ class ContactItem extends React.PureComponent {
     this.setState({
       accountType: userAccountType,
     });
-    console.log("********did mount*********");
+    process.env.NODE_ENV === "development" && console.log("********did mount*********");
     this.props.fetchContactedUser();
   }
 
@@ -35,7 +35,7 @@ class ContactItem extends React.PureComponent {
       }
       return this.props.connectedUser.map((member, index) => {
         const { user } = this.props;
-        console.log(
+        process.env.NODE_ENV === "development" && console.log(
           "ddddddddddd",
           member.user,
           "sdsds",

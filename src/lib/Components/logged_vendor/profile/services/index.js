@@ -1,11 +1,10 @@
 import React from "react";
-import { Card, Icon, Steps, Tag } from "antd";
+import { Card, Icon, Tag } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import style from "./index.scss";
 import { connect } from "react-redux";
 
 import { fetchServiceData, fetchUpdateData } from "../essential";
-const Step = Steps.Step;
 
 const icons = ["home", "bell", "usergroup-add", "money-collect", "dribbble-square"];
 
@@ -14,59 +13,56 @@ class VendorServices extends React.Component {
     super(props);
 
     this.state = {
-      pending: false,
       currentStep: 0,
       selectedService: undefined,
       selectedCategory: undefined,
       selectedSubCategories: [],
       isEdit: false,
+      user: {},
     };
     this.save = this.save.bind(this);
   }
 
-  // static async fetchInitialData(store) {
-  //   return await store.dispatch(fetchServiceData());
-  // }
-
   componentDidMount() {
-    this.props.user &&
-      this.setState({
-        key: this.props.user._id,
-        selectedService: this.props.user.service,
-        selectedCategory: this.props.user.category,
-        selectedSubCategories: this.props.user.subCategories,
-      });
-    !this.props.user.service && this.props.fetchServiceData();
+    let vendor =
+      this.props.user && this.props.user.vendor && this.props.user.accountType === 1
+        ? this.props.user.vendor
+        : this.props.selectedVendor && this.props.selectedVendor.user.vendor;
+    this.setState({
+      selectedService: vendor.service,
+      selectedCategory: vendor.category,
+      selectedSubCategories: vendor.subCategories,
+    });
+    this.props.fetchServiceData();
   }
 
   static getDerivedStateFromProps(props, state) {
-    console.log("props: ", props, " state: ", state);
-    // Any time the current user changes,
-    // Reset any parts of state that are tied to that user.
-    // In this simple example, that's just the email.
-    if (props.pending !== state.pending) {
+    let vendor =
+      props.user && props.user.vendor && props.user.accountType === 1
+        ? props.user.vendor
+        : props.selectedVendor && props.selectedVendor.user.vendor;
+    if (
+      JSON.stringify(vendor.subCategories) !==
+      JSON.stringify(state.user.vendor && state.user.vendor.subCategories)
+    ) {
       return {
+        user: { ...props.user },
         isEdit: false,
-        key: props.user._id,
-        pending: props.pending,
-        selectedService: props.user.service,
-        selectedCategory: props.user.category,
-        selectedSubCategories: props.user.subCategories,
       };
     }
     return null;
   }
+
   save() {
     if (
       this.props.pending ||
       !this.state.selectedService ||
       !this.state.selectedCategory ||
-      !this.state.selectedSubCategories
+      this.state.selectedSubCategories.length === 0
     ) {
       return;
     }
     const params = {
-      key: this.state.id,
       service: this.state.selectedService,
       category: this.state.selectedCategory,
       subCategories: this.state.selectedSubCategories,
@@ -125,11 +121,17 @@ class VendorServices extends React.Component {
   }
 
   render() {
+    let user =
+      this.props.user && this.props.user.accountType === 1
+        ? this.props.user
+        : this.props.selectedVendor && this.props.selectedVendor.user;
+    const isPublic = this.props.user ? false : true;
+
     const generateMyServices = () => {
-      if (!this.props.user.subCategories) {
+      if (user.vendor.subCategories.length === 0) {
         return <h6 className="p-3 w-100 text-center text-danger">No Service</h6>;
       }
-      return this.props.user.subCategories.map((subCategory, index) => {
+      return user.vendor.subCategories.map((subCategory, index) => {
         return (
           <Tag color="#07b107" className="mb-2 p-2 text-white" key={index}>
             {subCategory}
@@ -139,7 +141,7 @@ class VendorServices extends React.Component {
     };
 
     const generateMyTempServices = () => {
-      if (!this.state.selectedSubCategories) {
+      if (this.state.selectedSubCategories.length === 0) {
         return <h6 className="p-3 w-100 text-center text-danger">No Service</h6>;
       }
       return this.state.selectedSubCategories.map((subCategory, index) => {
@@ -152,29 +154,26 @@ class VendorServices extends React.Component {
     };
 
     const generateServiceList = () => {
-      return (
-        this.props.services &&
-        this.props.services.map((service, index) => {
-          return (
-            <div key={index} className="col-md-2 col-sm-12 mb-2">
-              <div
-                className="shadow px-2 py-2 py-md-3 text-center text-grey service-type pointer"
-                onClick={() => {
-                  this.selectService(service._id);
-                }}
+      return this.props.services.map((service, index) => {
+        return (
+          <div key={index} className="col-md-2 col-sm-12 mb-2">
+            <div
+              className="shadow px-2 py-2 py-md-3 text-center text-grey service-type pointer"
+              onClick={() => {
+                this.selectService(service._id);
+              }}
+            >
+              <span
+                className={`inline-block ${
+                  this.state.selectedService === service._id ? "text-color" : ""
+                }`}
               >
-                <span
-                  className={`inline-block ${
-                    this.state.selectedService === service._id ? "text-color" : ""
-                  }`}
-                >
-                  <Icon type={icons[index]} className="h3 mr-2" /> {service.name}
-                </span>
-              </div>
+                <Icon type={icons[index]} className="h3 mr-2" /> {service.name}
+              </span>
             </div>
-          );
-        })
-      );
+          </div>
+        );
+      });
     };
 
     const generateCategoryList = () => {
@@ -200,14 +199,8 @@ class VendorServices extends React.Component {
       return this.getSubCategoryList().map((subCategory, index) => {
         return (
           <Tag
-            color={
-              this.state.selectedSubCategories &&
-              this.state.selectedSubCategories.indexOf(subCategory) > -1
-                ? "#07b107"
-                : "#eee"
-            }
+            color={this.state.selectedSubCategories.indexOf(subCategory) > -1 ? "#07b107" : "#eee"}
             className={`mb-2 p-2 ${
-              this.state.selectedSubCategories &&
               this.state.selectedSubCategories.indexOf(subCategory) > -1
                 ? "text-white"
                 : "text-dark"
@@ -230,7 +223,8 @@ class VendorServices extends React.Component {
           className="shadow"
           style={{ marginBottom: "50px" }}
           extra={
-            !this.state.isEdit && (
+            !this.state.isEdit &&
+            !isPublic && (
               <div
                 onClick={() => {
                   this.setState({
@@ -265,7 +259,7 @@ class VendorServices extends React.Component {
                   {generateMyServices()}
                 </div>
               )}
-              {this.state.isEdit && (
+              {this.state.isEdit && !isPublic && (
                 <div className="col-md-12">
                   <div className="row">
                     <div className="col-md-12 mb-5">
@@ -290,9 +284,9 @@ class VendorServices extends React.Component {
                         onClick={() => {
                           this.setState({
                             isEdit: false,
-                            selectedService: this.props.user.service,
-                            selectedCategory: this.props.user.category,
-                            selectedSubCategories: this.props.subCategories,
+                            selectedService: user.vendor.service,
+                            selectedCategory: user.vendor.category,
+                            selectedSubCategories: user.vendor.subCategories,
                           });
                         }}
                       >
@@ -302,7 +296,8 @@ class VendorServices extends React.Component {
                         className={`button-primary ${
                           this.props.pending ||
                           !this.state.selectedService ||
-                          !this.state.selectedCategory
+                          !this.state.selectedCategory ||
+                          this.state.selectedSubCategories.length === 0
                             ? "disable"
                             : ""
                         }`}

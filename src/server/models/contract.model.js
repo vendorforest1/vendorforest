@@ -76,7 +76,7 @@ const JobSchema = new mongoose.Schema(
 );
 
 JobSchema.post("init", function(doc) {
-  // console.log("init hook", doc)
+  // env.MODE === "development" && console.log("init hook", doc)
 });
 
 export default mongoose.model("contract", JobSchema);

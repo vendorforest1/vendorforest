@@ -124,11 +124,11 @@ class PostJobStepTwo extends React.Component {
   };
 
   handleNoResult = () => {
-    console.log("No results for ", this.state.search);
+    process.env.NODE_ENV === "development" && console.log("No results for ", this.state.search);
   };
 
   handleStatusUpdate = (status) => {
-    console.log("handleStatusUpdate", status);
+    process.env.NODE_ENV === "development" && console.log("handleStatusUpdate", status);
   };
 
   next = async (e) => {
@@ -364,7 +364,7 @@ class PostJobStepTwo extends React.Component {
               <button
                 className="button-white"
                 onClick={() => {
-                  console.log("prev");
+                  process.env.NODE_ENV === "development" && console.log("prev");
                   this.props.updateStep(this.props.currentStep - 1);
                 }}
               >

@@ -165,7 +165,7 @@ class PostJobStepThree extends React.Component {
           this.setState({
             pending: false,
           });
-          console.log(error);
+          process.env.NODE_ENV === "development" && console.log(error);
           message.success(error.message);
         });
     }
@@ -187,7 +187,7 @@ class PostJobStepThree extends React.Component {
           this.setState({
             pending: false,
           });
-          console.log(error);
+          process.env.NODE_ENV === "development" && console.log(error);
           message.success(error.message);
         });
     }
@@ -281,7 +281,7 @@ class PostJobStepThree extends React.Component {
                 className="vendor-list border mb-5"
                 pagination={{
                   onChange: (page) => {
-                    console.log(page);
+                    process.env.NODE_ENV === "development" && console.log(page);
                   },
                   pageSize: 5,
                 }}

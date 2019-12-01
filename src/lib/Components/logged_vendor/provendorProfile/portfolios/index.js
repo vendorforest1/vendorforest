@@ -37,7 +37,7 @@ class VendorPortfolios extends React.Component {
   }
 
   render() {
-    console.log("portfolios", this.props.portfolios);
+    process.env.NODE_ENV === "development" && console.log("portfolios", this.props.portfolios);
 
     const generateCards = () => {
       if (this.props.portfolios.length === 0) {

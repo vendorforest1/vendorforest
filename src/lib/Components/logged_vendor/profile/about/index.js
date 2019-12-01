@@ -47,7 +47,8 @@ class VendorAbout extends React.Component {
         ? this.props.user
         : this.props.selectedVendor;
     const vendor = user ? user : undefined;
-    const isPublicView = this.props.user === undefined;
+    const isPublic = this.props.user ? false : true;
+
     return vendor ? (
       <div className="vendor-about">
         <Card
@@ -95,19 +96,21 @@ class VendorAbout extends React.Component {
               <div className="row">
                 <div className="col-md-3 text-center">
                   <div className="d-flex justify-content-center align-items-center">
-                    <h3>{vendor ? vendor.hourlyRate || 30 : 30}</h3>
-                    <div
-                      className="h4 text-color ml-2 mb-0 pointer price-edit editable"
-                      onClick={() => {
-                        this.toggle();
-                      }}
-                    >
-                      <Icon type="edit" />
-                    </div>
+                    <h3>${vendor ? vendor.hourlyRate || 30 : 30}</h3>
+                    {!isPublic && (
+                      <div
+                        className="h4 text-color ml-2 mb-0 pointer price-edit editable"
+                        onClick={() => {
+                          this.toggle();
+                        }}
+                      >
+                        <Icon type="edit" />
+                      </div>
+                    )}
                   </div>
                   <h6>Hourly Rate</h6>
                 </div>
-                {!isPublicView && (
+                {!isPublic && (
                   <div className="col-md-3 text-center">
                     <h3>${vendor.totalEarning}</h3>
                     <h6>Total Earning</h6>
@@ -144,7 +147,7 @@ class VendorAbout extends React.Component {
                   className="review-list"
                   pagination={{
                     onChange: (page) => {
-                      console.log(page);
+                      process.env.NODE_ENV === "development" && console.log(page);
                     },
                     pageSize: 5,
                   }}
@@ -160,16 +163,18 @@ class VendorAbout extends React.Component {
             </div>
           </div>
         </Card>
-        <Modal
-          title="Edit Hourly Rate"
-          visible={this.state.isModal}
-          onOk={this.toggle}
-          onCancel={this.toggle}
-          width={"500px"}
-          footer={null}
-        >
-          <EditHourlyRate rate={vendor ? vendor.hourlyRate || 30 : 30} toggle={this.toggle} />
-        </Modal>
+        {!isPublic && (
+          <Modal
+            title="Edit Hourly Rate"
+            visible={this.state.isModal}
+            onOk={this.toggle}
+            onCancel={this.toggle}
+            width={"500px"}
+            footer={null}
+          >
+            <EditHourlyRate rate={vendor ? vendor.hourlyRate || 30 : 30} toggle={this.toggle} />
+          </Modal>
+        )}
       </div>
     ) : (
       <div></div>

@@ -30,9 +30,10 @@ class VendorPortfolios extends React.Component {
   }
 
   selectPortfolio(index) {
-    let portfolios = this.props.portfolios
-      ? this.props.portfolios
-      : this.props.selectedVendor.portfolios;
+    let portfolios =
+      this.props.portfolios && this.props.user && this.props.user.accountType === 1
+        ? this.props.portfolios
+        : this.props.selectedVendor.portfolios;
     this.setState({
       selectedPortfolio: portfolios[index],
     });
@@ -40,9 +41,11 @@ class VendorPortfolios extends React.Component {
   }
 
   render() {
-    let portfolios = this.props.portfolios
-      ? this.props.portfolios
-      : this.props.selectedVendor.portfolios;
+    let portfolios =
+      this.props.user && this.props.portfolios && this.props.user.accountType === 1
+        ? this.props.portfolios
+        : this.props.selectedVendor && this.props.selectedVendor.portfolios;
+    const isPublic = this.props.user ? false : true;
 
     const generateCards = () => {
       if (portfolios.length === 0) {
@@ -79,18 +82,20 @@ class VendorPortfolios extends React.Component {
           className="shadow"
           style={{ marginBottom: "50px" }}
           extra={
-            <div
-              onClick={() => {
-                this.setState({
-                  selectedPortfolio: undefined,
-                });
-                this.toggle();
-              }}
-              className="text-color"
-              style={{ cursor: "pointer" }}
-            >
-              <Icon type="plus" />
-            </div>
+            !isPublic && (
+              <div
+                onClick={() => {
+                  this.setState({
+                    selectedPortfolio: undefined,
+                  });
+                  this.toggle();
+                }}
+                className="text-color"
+                style={{ cursor: "pointer" }}
+              >
+                <Icon type="plus" />
+              </div>
+            )
           }
         >
           {!portfolios && this.props.pending && (
@@ -100,27 +105,30 @@ class VendorPortfolios extends React.Component {
           )}
           {portfolios && <div className="row">{generateCards()}</div>}
         </Card>
-        <Modal
-          title="Add Portfolio"
-          visible={this.state.isModal}
-          onOk={this.toggle}
-          onCancel={this.toggle}
-          width={"800px"}
-          footer={[null, null]}
-        >
-          <AddPortfolio toggle={this.toggle} portfolio={this.state.selectedPortfolio} />
-        </Modal>
+        {!isPublic && (
+          <Modal
+            title="Add Portfolio"
+            visible={this.state.isModal}
+            onOk={this.toggle}
+            onCancel={this.toggle}
+            width={"800px"}
+            footer={[null, null]}
+          >
+            <AddPortfolio toggle={this.toggle} portfolio={this.state.selectedPortfolio} />
+          </Modal>
+        )}
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ vendorProfileReducer }) => {
-  const { error, portfolios, pending } = vendorProfileReducer;
+  const { error, portfolios, user, pending } = vendorProfileReducer;
   return {
     error,
     portfolios,
     pending,
+    user,
   };
 };
 

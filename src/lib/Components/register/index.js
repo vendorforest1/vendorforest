@@ -38,7 +38,7 @@ class MainRegister extends React.Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    console.log("nextprops user", nextProps.user);
+    process.env.NODE_ENV === "development" && console.log("nextprops user", nextProps.user);
     if (nextProps.user && nextProps.user.id) {
       this.props.history.push(`/emailsent/${nextProps.user.id}`, nextState);
     }
@@ -47,7 +47,7 @@ class MainRegister extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
-      console.log(values);
+      process.env.NODE_ENV === "development" && console.log(values);
       if (!err && !this.props.pending && this.state.confirmDirty) {
         this.props.fetchRegister(values);
       }

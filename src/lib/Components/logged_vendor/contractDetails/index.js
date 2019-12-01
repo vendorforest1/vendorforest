@@ -25,7 +25,7 @@ class VendorContractDetails extends React.Component {
   }
 
   clickTab(key) {
-    console.log(key);
+    process.env.NODE_ENV === "development" && console.log(key);
   }
 
   componentDidMount() {
@@ -186,7 +186,7 @@ class VendorContractDetails extends React.Component {
 }
 
 const mapStateToProps = ({ vendorContractDetailsReducer, loginReducer, persistorReducer }) => {
-  console.log(persistorReducer, " <---------------");
+  process.env.NODE_ENV === "development" && console.log(persistorReducer, " <---------------");
   const { error, contract, success, pending } = vendorContractDetailsReducer;
 
   const { user } = loginReducer;

@@ -19,7 +19,7 @@ const ServiceSchema = new mongoose.Schema(
 );
 
 ServiceSchema.post("init", function(doc) {
-  // console.log("init hook", doc)
+  // env.MODE === "development" && console.log("init hook", doc)
 });
 
 export default mongoose.model("service", ServiceSchema);

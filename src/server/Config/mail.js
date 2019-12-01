@@ -48,7 +48,6 @@ export default (oauth) => {
   });
 
   mailObject.welcome = async (req, user, token) => {
-    console.log("welcome protocol");
     try {
       const fileName = user.accountType === constants.ACCOUNT_TYPE.CLIENT ? clientFile : vendorFile;
 
@@ -104,15 +103,16 @@ export default (oauth) => {
 
               // send mail with defined transport object
               await transporter.sendMail(mailOptions, (error, response) => {
-                error ? console.log(error) : console.log(response);
+                if (error) {
+                }
                 transporter.close();
               });
 
               // That last brace is to close off our async function
             })
-            .catch((err) => console.log(err));
+            .catch((err) => err);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => err);
     } catch (err) {
       console.error(err);
     }

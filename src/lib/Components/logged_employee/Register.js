@@ -34,7 +34,7 @@ function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some((field) => fieldsError[field]);
 }
 function onChange(value) {
-  console.log("changed", value);
+  process.env.NODE_ENV === "development" && console.log("changed", value);
 }
 
 class RegisterEmployee extends React.Component {
@@ -55,7 +55,7 @@ class RegisterEmployee extends React.Component {
   handleServiceChange = (value) => {
     //if home then select
     const selectedCategory = this.getCategories(value);
-    console.log("change ", value);
+    process.env.NODE_ENV === "development" && console.log("change ", value);
     this.setState({
       category: selectedCategory,
     });
@@ -92,7 +92,7 @@ class RegisterEmployee extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
+        process.env.NODE_ENV === "development" && console.log("Received values of form: ", values);
       }
     });
   };

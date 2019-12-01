@@ -166,11 +166,11 @@ export const fetchContactedUser = () => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      console.log("@@@@@@@@@@result.data ===", result.data);
+      process.env.NODE_ENV === "development" && console.log("@@@@@@@@@@result.data ===", result.data);
       dispatch(fetchGetConnectedUserSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -190,11 +190,11 @@ export const fetchOldMsg = (payload) => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      console.log("&&&&&&&&&All old messages&&&&&&&&& ===", result.data);
+      process.env.NODE_ENV === "development" && console.log("&&&&&&&&&All old messages&&&&&&&&& ===", result.data);
       dispatch(fetchOldMsgSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -218,7 +218,7 @@ export const fetchPostJobsData = () => async (dispatch, getState) => {
       dispatch(fetchPostedJobsSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -246,7 +246,7 @@ export const fetchPendingContractsData = (payload) => async (dispatch, getState)
       dispatch(fetchPendingContractsSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };

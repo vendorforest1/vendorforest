@@ -12,7 +12,7 @@ describe("Login SignUp API", function() {
 
     it("redirects to the right component return OK", function() {
       request(HOST + "/test", function(error, response, body) {
-        console.log(body);
+        env.MODE === "development" && console.log(body);
         expect(body).to.equal("OK");
       });
     });

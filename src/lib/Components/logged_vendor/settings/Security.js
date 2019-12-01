@@ -18,7 +18,7 @@ class VendorSecurity extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err && !this.props.pending) {
-        console.log(values);
+        process.env.NODE_ENV === "development" && console.log(values);
         this.props.fetchResetPass(values);
       }
     });

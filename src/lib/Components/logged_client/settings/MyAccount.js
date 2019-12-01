@@ -68,7 +68,7 @@ class ClientMyAccount extends React.Component {
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      console.log("info result&&&&&&", info.file.response.url);
+      process.env.NODE_ENV === "development" && console.log("info result&&&&&&", info.file.response.url);
       getBase64(info.file.originFileObj, (photoUrl) =>
         this.setState({
           photoUrl: photoUrl,
@@ -105,7 +105,7 @@ class ClientMyAccount extends React.Component {
           },
           timeZone: values.timeZone,
         };
-        console.log(params);
+        process.env.NODE_ENV === "development" && console.log(params);
         this.props.fetchUpdateAccount(params);
       }
     });
@@ -115,7 +115,7 @@ class ClientMyAccount extends React.Component {
     this._btnIndex = 1;
     this.props.form.validateFields(["email"], (error, values) => {
       if (!error && !this.props.pending) {
-        console.log(values);
+        process.env.NODE_ENV === "development" && console.log(values);
         this.props.fetchSendCodeEmail(values);
       }
     });
@@ -140,18 +140,18 @@ class ClientMyAccount extends React.Component {
   };
 
   handleNoResult = () => {
-    console.log("No results for ", this.state.search);
+    process.env.NODE_ENV === "development" && console.log("No results for ", this.state.search);
   };
 
   handleStatusUpdate = (status) => {
-    console.log("handleStatusUpdate", status);
+    process.env.NODE_ENV === "development" && console.log("handleStatusUpdate", status);
   };
 
   render() {
     const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
 
     const photoUrl = this.state.photoUrl;
-    console.log("image url &&&&&&&&", photoUrl);
+    process.env.NODE_ENV === "development" && console.log("image url &&&&&&&&", photoUrl);
     const uploadButton = (
       <div>
         <Icon type={this.state.loading ? "loading" : "plus"} />

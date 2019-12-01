@@ -18,7 +18,7 @@ export default function(passport) {
   const controllers = {};
   // const stripePayload = new stripe("sk_test_PHS0wV5HZJ41uaZDQsgqHKQp");
 
-  console.log("stripePayload");
+  env.MODE === "development" && console.log("stripePayload");
 
   controllers.getAccountId = (req, res) => {
     req.session.state = Math.random()
@@ -29,7 +29,7 @@ export default function(passport) {
       client_id: "ca_G69qhU4bRaQUrWwoYPRNlzu50gvOEgEy",
       state: req.session.state,
     };
-    console.log(parameters);
+    env.MODE === "development" && console.log(parameters);
     return res.status(200).json({
       status: 200,
       message: parameters,
@@ -45,7 +45,7 @@ export default function(passport) {
         code: code,
       })
       .then(function(response) {
-        // console.log(response);
+        // env.MODE === "development" && console.log(response);
         const connected_account_id = {
           connectedAccountId: response.stripe_user_id,
         };
@@ -60,11 +60,11 @@ export default function(passport) {
               new: true,
             },
           ).then(
-            console.log("Your Stripe account Id is saved."),
+            env.MODE === "development" && console.log("Your Stripe account Id is saved."),
             res.redirect(`/${constants.ACCOUNTTYPES[req.user.accountType]}/settings`),
           );
         } catch (error) {
-          console.log(error);
+          env.MODE === "development" && console.log(error);
         }
         // newAccountID.save();
       });
@@ -73,7 +73,7 @@ export default function(passport) {
   // @ts-ignore
   controllers.createStripeCharges = async (req, res, next) => {
     const charges = req.param("charges");
-    console.log("before stripe: ", charges);
+    env.MODE === "development" && console.log("before stripe: ", charges);
     // @ts-ignore
     const status = await stripePayload.charges.create({
       amount: charges,
@@ -99,10 +99,10 @@ export default function(passport) {
       async function(err, token) {
         // asynchronously called
         if (err) {
-          console.log("Error happened while creating a Stripe Token: ", err);
+          env.MODE === "development" && console.log("Error happened while creating a Stripe Token: ", err);
         }
 
-        console.log("Token: ", token);
+        env.MODE === "development" && console.log("Token: ", token);
 
         res.status(200).send(token.id);
       },
@@ -126,7 +126,7 @@ export default function(passport) {
         // asynchronously called
         //TODO: get customer if exists otherwise
         // create customer
-        console.log("token: ", token);
+        env.MODE === "development" && console.log("token: ", token);
         // @ts-ignore
         const customer = await stripePayload.customers.create(
           {
@@ -135,7 +135,7 @@ export default function(passport) {
           },
           // @ts-ignore
           (err, customer) => {
-            console.log("customers: ", customer);
+            env.MODE === "development" && console.log("customers: ", customer);
           },
         );
       },

@@ -115,7 +115,7 @@ export const fetchTeamData = (payload) => async (dispatch, getState) => {
       dispatch(fetchTeamSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -142,7 +142,7 @@ export const fetchOffersData = (payload) => async (dispatch, getState) => {
       dispatch(fetchOffersSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -171,7 +171,7 @@ export const fetchOfferDecline = (payload) => async (dispatch, getState) => {
       dispatch(fetchSuccessMsg(result.message));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -200,7 +200,7 @@ export const fetchOfferAccept = (payload) => async (dispatch, getState) => {
       dispatch(fetchSuccessMsg(result.message));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -225,7 +225,7 @@ export const fetchInviteAccept = (payload) => async (dispatch, getState) => {
       dispatch(fetchSuccessMsg(result.message));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };

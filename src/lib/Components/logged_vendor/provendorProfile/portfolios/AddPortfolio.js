@@ -93,7 +93,7 @@ class AddPortfolio extends React.Component {
   };
 
   imgRemove = (file) => {
-    console.log(file);
+    process.env.NODE_ENV === "development" && console.log(file);
   };
 
   vidPreviewCancel = () => this.setState({ previewVidVisible: false });
@@ -138,7 +138,7 @@ class AddPortfolio extends React.Component {
           })),
           (data.coverImage = data.attachImgFiles.length > 0 ? data.attachImgFiles[0] : undefined);
         data._id = this.state.portfolioId ? this.state.portfolioId : undefined;
-        console.log(data);
+        process.env.NODE_ENV === "development" && console.log(data);
         this.setState({ pending: true });
         await fetch(this.state.portfolioId ? apiUrl.UPDATE_PORTFOLIO : apiUrl.CREATE_PORTFOLIO, {
           method: "POST",
@@ -167,7 +167,7 @@ class AddPortfolio extends React.Component {
           })
           .catch((err) => {
             this.setState({ pending: false });
-            console.log(err);
+            process.env.NODE_ENV === "development" && console.log(err);
             message.error(err.message);
           });
       }

@@ -24,7 +24,8 @@ const MongoStore = connectMongo(session);
 
 const PORT = env.PORT;
 
-console.log(env);
+env.MODE === "development" && console.log(env);
+
 //this is Development demo for production. in real production see below
 //set cookie to sess.cookie.secure = true;
 if (env.MODE === "production") {
@@ -56,9 +57,9 @@ connect(env.CONNSTR, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-  .then(() => console.log("Connected"))
+  .then(() => env.MODE === "development" && console.log("Connected"))
   .catch((error) => {
-    console.log("Connection failed with - ", error);
+    env.MODE === "development" && console.log("Connection failed with - ", error);
   });
 
 //DB connection
@@ -87,17 +88,6 @@ app.use(passport.session());
 
 app.use("/", routes(app, passport));
 
-//TODO use prefetchData the right way. SPIKE
-// async function prefetchData(url, store) {
-//   const promises = appRoutes
-//     .map((route) => ({ route, match: matchPath(url, route) }))
-//     .filter(({ route, match }) => match && route.component.fetchInitialData)
-//     .map(async ({ match, route }) => {
-//       return await route.component.fetchInitialData(store);
-//     });
-//   return Promise.all(promises);
-// }
-
 app.get("*", (req, res, next) => {
   //file request are not processed here
   if (/[.]/.exec(req.url)) {
@@ -105,9 +95,6 @@ app.get("*", (req, res, next) => {
   }
 
   const { store } = configureStore();
-  // const promises = prefetchData(req.url, store);
-
-  // promises.then(() => {
   let context;
   const css = new Set(); // CSS for all rendered React components
 
@@ -117,7 +104,6 @@ app.get("*", (req, res, next) => {
     });
 
   context = {};
-  // context = store.getState();
 
   const markup = ReactDOMServer.renderToString(createApp(req.url, store, context, insertCss));
 
@@ -142,7 +128,7 @@ env.MODE === "development" &&
       // Reload started
       app
         .listen(PORT, () => {
-          console.log(`App listening on port ${PORT}!`);
+          env.MODE === "development" && console.log(`App listening on port ${PORT}!`);
         })
         .on("error", (error) => {
           if (error.syscall !== "listen") {
@@ -167,13 +153,13 @@ env.MODE === "development" &&
     })
     .catch(function() {
       // Reload did not start correctly, handle error
-      console.log("Reload error!");
+      env.MODE === "development" && console.log("Reload error!");
     });
 
 env.MODE === "production" &&
   app
     .listen(PORT, () => {
-      console.log(`App listening on port ${PORT}!`);
+      env.MODE === "development" && console.log(`App listening on port ${PORT}!`);
     })
     .on("error", (error) => {
       if (error.syscall !== "listen") {

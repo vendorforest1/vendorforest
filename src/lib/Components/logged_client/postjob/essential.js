@@ -155,14 +155,14 @@ export const fetchInitialData = () => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("essential ******** wtf ", result);
+      process.env.NODE_ENV === "development" && console.log("essential ******** wtf ", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
       dispatch(fetchInitSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -185,7 +185,7 @@ export const fetchServiceData = () => async (dispatch, getState) => {
       dispatch(fetchServiceSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
@@ -209,13 +209,13 @@ export const fetchMatchVendorData = (payload) => async (dispatch, getState) => {
       dispatch(fetchMatchVendorSuccess(result.data));
     })
     .catch((err) => {
-      console.log(err);
+      process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
 };
 
 export const fetchPostJob = async (payload) => {
-  console.log("post_information", payload);
+  process.env.NODE_ENV === "development" && console.log("post_information", payload);
   return await fetch(apiUrl.CREATE_JOB, {
     method: "POST",
     headers: {
@@ -317,7 +317,7 @@ export const initChat = async (payload) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      console.log("kkkkkkkkkk", result);
+      process.env.NODE_ENV === "development" && console.log("kkkkkkkkkk", result);
       return result;
     })
     .catch((err) => {
