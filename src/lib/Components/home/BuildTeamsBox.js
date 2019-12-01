@@ -7,7 +7,7 @@ class BuildTeamsBox extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-12 text-center">
-              <h1 className="mb-5">Build your team online</h1>
+              <h1 className="mb-5">Build a team of vendors just like you online</h1>
               <button
                 className="button-white"
                 onClick={() => {

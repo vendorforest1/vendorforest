@@ -7,8 +7,11 @@ class VendorForestFooter extends React.Component {
       <div className="mb_m20">
         <div className="footer mb_m20">
           <div className="container">
-            <div className="row">
-              <div className="col-12 mb-4">
+            <div className="row logo">
+              <div className="col-md-3 col-6">&copy; 2019 Vendorforest.com, inc.</div>
+              <div className="col-md-3 col-6"></div>
+              <div className="col-md-3 col-6"></div>
+              <div className="col-md-3 col-6">
                 <img
                   className="footer-logo"
                   src="https://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png"
@@ -16,66 +19,40 @@ class VendorForestFooter extends React.Component {
                   width="300"
                 />
               </div>
+            </div>
+            <div className="row">
               <div className="col-md-3 col-6">
                 <h3>Company</h3>
                 <ul>
-                  <li>
-                    <a href="">About Us</a>
-                  </li>
-                  <li>
-                    <a href="">Careers</a>
-                  </li>
-                  <li>
-                    <a href="">Press</a>
-                  </li>
-                  <li>
-                    <a href="">Blog</a>
-                  </li>
+                  <li>About Us</li>
+                  <li>Careers</li>
+                  <li>Press</li>
+                  <li>Blog</li>
                 </ul>
               </div>
               <div className="col-md-3 col-6">
                 <h3>Clients</h3>
                 <ul>
-                  <li>
-                    <a href="">How it works</a>
-                  </li>
-                  <li>
-                    <a href="">Sign up</a>
-                  </li>
-                  <li>
-                    <a href="">Services near you</a>
-                  </li>
+                  <li>How it works</li>
+                  <li>Sign up</li>
+                  <li>Services near you</li>
                 </ul>
               </div>
               <div className="col-md-3 col-6">
                 <h3>Vendors</h3>
                 <ul>
-                  <li>
-                    <a href="">How it works</a>
-                  </li>
-                  <li>
-                    <a href="">Sign up</a>
-                  </li>
-                  <li>
-                    <a href="">Community</a>
-                  </li>
+                  <li>How it works</li>
+                  <li>Sign up</li>
+                  <li>Community</li>
                 </ul>
               </div>
               <div className="col-md-3 col-6">
                 <h3>Supports</h3>
                 <ul>
-                  <li>
-                    <a href="">Help</a>
-                  </li>
-                  <li>
-                    <a href="">Safety</a>
-                  </li>
-                  <li>
-                    <a href="">Term of Use</a>
-                  </li>
-                  <li>
-                    <a href="">Privacy Policy</a>
-                  </li>
+                  <li>Help</li>
+                  <li>Safety</li>
+                  <li>Term of Use</li>
+                  <li>Privacy Policy</li>
                 </ul>
               </div>
             </div>

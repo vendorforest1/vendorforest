@@ -208,8 +208,10 @@ export default () => {
                     });
                   }
                   const emailTitle = "Milestone has been released.";
-                  const description = `Milestone has been released.<br> Your client released the milestone. Amount is ${milestone.price * 0.75} USD.`;
-                  const phoneDescription = `Milestone has been released.\n Your client released the milestone. Amount is ${milestone.price * 0.75} USD.`;
+                  const description = `Milestone has been released.<br> Your client released the milestone. Amount is ${milestone.price *
+                    0.75} USD.`;
+                  const phoneDescription = `Milestone has been released.\n Your client released the milestone. Amount is ${milestone.price *
+                    0.75} USD.`;
                   await saveReleaseNotification(vendorID, milestone.price);
                   await sendingEmail(vendorEmail, emailTitle, description);
                   await sendingSms(vendorPhone, emailTitle, phoneDescription);
