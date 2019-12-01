@@ -1,9 +1,31 @@
 import React from "react";
-import { Rate, Avatar } from "antd";
+import { Rate, Avatar, message } from "antd";
 import { constants } from "@Shared/constants";
 import defaultProfileImage from "@Components/images/profileplace.png";
+import { connect } from "react-redux";
 
 class TopRatedVendorCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    const username = this.props.user;
+    if (username) {
+      console.log("LLLLLLLL&89876556789", username);
+    }
+    this.handleClick = () => {
+      if (!username) {
+        window.location.href = "/login";
+      } else {
+        const userStatus = username.userObj.accountType;
+        if (userStatus === 0) {
+          window.location.href = `/findvendors?vendor=${this.props.vendor.username}`;
+        } else {
+          message.warning("You are not a employer.");
+        }
+      }
+    };
+  }
+
   render() {
     return (
       <div className="toprate-card">
@@ -32,9 +54,10 @@ class TopRatedVendorCard extends React.Component {
         <button
           type="button"
           name="button"
-          onClick={() => {
-            window.location.href = "/findvendors?vendor='Gerard Kasemba'";
-          }}
+          onClick={
+            // window.location.href = "/findvendors?vendor='Gerard Kasemba'";
+            this.handleClick
+          }
         >
           Hire Vendor
         </button>
@@ -43,4 +66,9 @@ class TopRatedVendorCard extends React.Component {
   }
 }
 
-export default TopRatedVendorCard;
+const mapStateToProps = ({ loginReducer }) => {
+  const { user } = loginReducer;
+  return { user };
+};
+
+export default connect(mapStateToProps, {})(TopRatedVendorCard);

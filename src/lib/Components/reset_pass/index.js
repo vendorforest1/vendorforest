@@ -14,7 +14,15 @@ class ResetPass extends React.Component {
     this.state = {
       email: "",
       code: "",
+      captcha:
+        "H,1,y,D,F,C,6,0,I,6,1,K,a,M,O,p,Q,R,e,T,U,V,R,X,B,Z,a,T,c,t,5,r,G,8,j,9,0,P,m,T,o,L,8,r,s,T,u,V,w,x,9,z,0,1,c,L,4,0,3,P,v,l",
+      captchaCode: "",
     };
+  }
+  componentDidMount() {
+    this.setState({
+      captchaCode: this.state.captcha.split(',').splice(Math.floor(Math.random() * 53), 8)
+    });
   }
 
   render() {
@@ -73,7 +81,9 @@ class ResetPass extends React.Component {
                         />,
                       )}
                     </Form.Item>
-                    <div className=" border w-100 h1 text-center font-italic bg-light">AFcGkm</div>
+                    <div className=" border w-100 h1 text-center font-italic bg-light">
+                      {this.state.captchaCode}
+                    </div>
                     <div className="d-flex justify-content-center mt-5">
                       <button className="button-primary">Send reset email</button>
                     </div>
