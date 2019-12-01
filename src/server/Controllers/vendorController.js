@@ -1,9 +1,12 @@
 import User from "@Models/user.model";
 import Vendor from "@Models/vendor.model";
+import Portfolio from "@Models/portfolio.model";
+
 // import Team from "../models/team.model";
 import Company from "@Models/company.model";
 import { calculateDistance } from "@Utils/utils";
 import getEnv, { constants } from "@Config/index";
+import { object } from "twilio/lib/base/serialize";
 
 const env = getEnv();
 
@@ -44,10 +47,7 @@ export default () => {
   };
   //**********************.. */
   controllers.getVendor = async (req, res, next) => {
-    let query = req.params.username
-      ? Vendor.findById(req.params.username)
-      : Vendor.findById(req.user.vendor._id);
-    await query
+    await Vendor.findById(req.user.vendor._id)
       .populate("vendor")
       .then(async (user) => {
         if (!user) {
@@ -105,6 +105,42 @@ export default () => {
   };
 
   /******************* */
+  //CAUTION THIS IS A PUBLIC ROUTE
+  controllers.findVendorByUserName = async (req, res, next) => {
+    await User.find({
+      username: req.params.username,
+      accountType: constants.ACCOUNT_TYPE.VENDOR,
+    })
+      .populate("vendor")
+      .then(async (users) => {
+        if (users.length === 0) {
+          throw Error("Username not found");
+        }
+        const user = users[0],
+          results = [];
+        results.push(user);
+        Portfolio.find({
+          user: user._id,
+        })
+          .then(async (portfolios) => {
+            return { portfolios: portfolios };
+          })
+          .then((data) => {
+            const result = Object.assign({}, { user: user }, data);
+
+            return res.status(200).json({
+              status: 200,
+              data: result,
+            });
+          });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
   controllers.find = async (req, res, next) => {
     await User.find({
       email: req.query.email,
@@ -112,10 +148,13 @@ export default () => {
     })
       .populate("client")
       .populate("vendor")
-      .then(async (users) => {
+      .then(async (results) => {
+        if (results.length === 0) {
+          throw new Error("not found");
+        }
         return res.status(200).json({
           status: 200,
-          data: users,
+          data: results[0],
         });
       })
       .catch((error) => {

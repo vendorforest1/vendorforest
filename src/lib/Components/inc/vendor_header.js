@@ -7,6 +7,7 @@ import { getNotification, logout } from "./essential";
 import { connect } from "react-redux";
 
 import configureStore from "@Shared/configureStore";
+import { withRouter } from "react-router";
 
 const { persistor } = configureStore();
 
@@ -30,13 +31,12 @@ class VendorHeader extends React.Component {
     });
   }
   handleIcon = () => {};
-  handleLogout = async () => {
-    await this.props.logout();
+  handleLogout = () => {
+    this.props.logout();
     persistor.pause();
     persistor
       .purge()
       .then(() => {
-        window.location.href = "/login";
         return persistor.flush();
       })
       .then(() => {
@@ -45,7 +45,6 @@ class VendorHeader extends React.Component {
   };
 
   render() {
-    const { user } = this.props;
     const helpMenu = (
       <Menu>
         <Menu.Item>
@@ -75,15 +74,13 @@ class VendorHeader extends React.Component {
           </a>
         </Menu.Item>
         <Menu.Item>
-          {user && (
-            <a rel="noopener noreferrer" href={`/vendor/profile/${user.userObj.username}`}>
-              <Icon type="user" />
-              &nbsp;&nbsp;Profile
-            </a>
-          )}
+          <a rel="noopener noreferrer" href={`/vendor/profile`}>
+            <Icon type="user" />
+            &nbsp;&nbsp;Profile
+          </a>
         </Menu.Item>
         <Menu.Item>
-          <a onClick={() => this.handleLogout()} href="/#">
+          <a onClick={() => this.handleLogout()} href="/login">
             <Icon type="logout" />
             &nbsp;&nbsp;Logout
           </a>
@@ -204,7 +201,7 @@ class VendorHeader extends React.Component {
                         <a href="/vendor/settings">SETTINGS</a>
                       </p>
                       <p className=" text-center">
-                        <a onClick={() => this.handleLogout()} href="/#">
+                        <a onClick={() => this.handleLogout()} href="/login">
                           <Icon type="logout" />
                           &nbsp;&nbsp;LOGOUT
                         </a>
@@ -221,15 +218,13 @@ class VendorHeader extends React.Component {
   }
 }
 
-const mapStateToProps = ({ headerNotiReducer, loginReducer }) => {
-  const { user } = loginReducer;
+const mapStateToProps = ({ headerNotiReducer }) => {
   const { notification } = headerNotiReducer;
   return {
     notification,
-    user,
   };
 };
 
 export default connect(mapStateToProps, { getNotification, logout })(
-  withStyles(style)(VendorHeader),
+  withStyles(style)(withRouter(VendorHeader)),
 );

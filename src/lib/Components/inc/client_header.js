@@ -6,6 +6,7 @@ import rainbow from "@Components/images/header/pettran.jpg";
 import { getNotification, logout } from "./essential";
 import { connect } from "react-redux";
 import configureStore from "@Shared/configureStore";
+import { withRouter } from "react-router";
 
 const { persistor } = configureStore();
 
@@ -28,13 +29,12 @@ class VendorForestClientHeader extends React.Component {
     });
   }
   handleIcon = () => {};
-  handleLogout = async () => {
-    await this.props.logout();
+  handleLogout = () => {
+    this.props.logout();
     persistor.pause();
     persistor
       .purge()
       .then(() => {
-        window.location.href = "/login";
         return persistor.flush();
       })
       .then(() => {
@@ -71,7 +71,7 @@ class VendorForestClientHeader extends React.Component {
           </a>
         </Menu.Item>
         <Menu.Item>
-          <a onClick={() => this.handleLogout()} href="/#">
+          <a onClick={() => this.handleLogout()} href="/login">
             <Icon type="logout" />
             &nbsp;&nbsp;LOGOUT
           </a>
@@ -191,7 +191,7 @@ class VendorForestClientHeader extends React.Component {
                         <a href="/client/settings">SETTINGS</a>
                       </p>
                       <p className=" text-center">
-                        <a onClick={() => this.handleLogout()} href="/#">
+                        <a onClick={() => this.handleLogout()} href="/login">
                           <Icon type="logout" />
                           &nbsp;&nbsp;LOGOUT
                         </a>
@@ -215,5 +215,5 @@ const mapStateToProps = ({ headerNotiReducer }) => {
 };
 
 export default connect(mapStateToProps, { getNotification, logout })(
-  withStyles(style)(VendorForestClientHeader),
+  withStyles(style)(withRouter(VendorForestClientHeader)),
 );

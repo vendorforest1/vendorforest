@@ -108,7 +108,7 @@ export const apiUrl = {
   GET_PUB_KEY: `${API_URL}/apis/client/getpubkey`,
   GET_SETUP_INTENT: `${API_URL}/apis/client/getsetupintent`,
   GET_CLIENT_ID: `${API_URL}/apis/client/getclientid`,
-  GET_VENDOR_PROFILE: `${API_URL}/apis/vendor/:username`,
+  GET_VENDOR_PROFILE: `${API_URL}/apis/vendor`,
 
   VENDOR_GET: `${API_URL}/apis/vendor/get`,
   VENDOR_FIND: `${API_URL}/apis/vendor/find`,
@@ -124,6 +124,7 @@ export const apiUrl = {
   UPDATE_REVIEW: `${API_URL}/apis/review/update`,
 
   GET_MYPORTFOLIOS: `${API_URL}/apis/portfolio/get_myportfolios`,
+  GET_PORTFOLIOS: `${API_URL}/apis/portfolio/get_portfolios`,
   CREATE_PORTFOLIO: `${API_URL}/apis/portfolio/create`,
   UPDATE_PORTFOLIO: `${API_URL}/apis/portfolio/update`,
 

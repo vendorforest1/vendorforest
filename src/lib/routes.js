@@ -35,6 +35,7 @@ import ServiceCategories from "@Components/service_categories";
 import Messages from "@Components/messages";
 
 import Milestones from "@Components/logged_client/contractDetails/Milestones";
+import { VendorPublicProfile } from "./Components/logged_vendor/profile/publicProfile";
 
 export default [
   {
@@ -127,6 +128,11 @@ export default [
   /*================================== VENDOR LINKS ==========================*/
   {
     path: "/vendor/profile/:username",
+    exact: true,
+    component: VendorPublicProfile,
+  },
+  {
+    path: "/vendor/profile",
     exact: true,
     component: VendorProfile,
   },

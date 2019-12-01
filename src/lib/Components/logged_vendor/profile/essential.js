@@ -1,4 +1,4 @@
-import { apiUrl, API_URL } from "@Shared/constants";
+import { apiUrl } from "@Shared/constants";
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
 const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
@@ -9,6 +9,8 @@ const FETCH_SERVICE_SUCCESS = "FETCH_SERVICE_SUCCESS";
 const FETCH_MSG_SUCCESS = "FETCH_MSG_SUCCESS";
 const FETCH_FAILURE = "FETCH_FAILURE";
 const CLEAR_FAILURE = "CLEAR_FAILURE";
+const FETCH_VENDOR_PUBLIC_RECORD = "FETCH_VENDOR_PUBLIC_RECORD";
+const CLEAR_VENDOR_PUBLIC_RECORD = "CLEAR_VENDOR_PUBLIC_RECORD";
 
 // Reducer
 export default function reducer(
@@ -16,6 +18,7 @@ export default function reducer(
     error: undefined,
     success: undefined,
     user: undefined,
+    selectedVendor: undefined,
     reviews: undefined,
     portfolios: undefined,
     teams: undefined,
@@ -40,6 +43,18 @@ export default function reducer(
       return {
         ...state,
         reviews: action.payload,
+        pending: false,
+      };
+    case FETCH_VENDOR_PUBLIC_RECORD:
+      return {
+        ...state,
+        selectedVendor: action.payload,
+        pending: false,
+      };
+    case CLEAR_VENDOR_PUBLIC_RECORD:
+      return {
+        ...state,
+        selectedVendor: undefined,
         pending: false,
       };
     case FETCH_PORTFOLIO_SUCCESS:
@@ -128,6 +143,14 @@ const clearError = () => ({
   type: CLEAR_FAILURE,
 });
 
+const fetchvendor = (payload) => ({
+  type: FETCH_VENDOR_PUBLIC_RECORD,
+  payload: payload,
+});
+const clearVendorPublicSearch = () => ({
+  type: CLEAR_VENDOR_PUBLIC_RECORD,
+});
+
 export const updatePortfolios = (payload) => {
   return {
     type: FETCH_PORTFOLIO_SUCCESS,
@@ -211,7 +234,7 @@ export const fetchReviewsData = () => async (dispatch, getState) => {
     });
 };
 
-export const fetchPortfoliosData = () => async (dispatch, getState) => {
+export const fetchPortfoliosData = (payload) => async (dispatch, getState) => {
   dispatch(clearError());
   dispatch(fetchRequest());
   return await fetch(apiUrl.GET_MYPORTFOLIOS, {
@@ -223,6 +246,7 @@ export const fetchPortfoliosData = () => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
+      console.log("potfolio: ", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
@@ -295,7 +319,6 @@ export const fetchServiceData = () => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      console.log(result.data);
       dispatch(fetchServiceSuccess(result.data));
     })
     .catch((err) => {
@@ -361,7 +384,6 @@ export const fetchUpdateVendorProfile = async (payload) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("fetchUpdateVendorProfile: ", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
@@ -372,34 +394,10 @@ export const fetchUpdateVendorProfile = async (payload) => {
     });
 };
 
-// export const fetchFindUser = async (payload) => {
-//   let urlStr = "";
-//   Object.keys(payload).forEach((key, index) => {
-//     urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
-//   });
-//   console.log(urlStr);
-//   return await fetch(`${apiUrl.VENDOR_FIND}${urlStr}`, {
-//     method: "GET",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//     },
-//   })
-//     .then((response) => response.json())
-//     .then((result) => {
-//       if (result.status >= 400) {
-//         throw new Error(result.message);
-//       }
-//       return result;
-//     })
-//     .catch((err) => {
-//       throw err.message;
-//     });
-// };
 export const clientFetchVendorProfileByUsername = (payload) => async (dispatch, getState) => {
   dispatch(clearError());
-  dispatch(fetchRequest());
-  return await fetch(apiUrl.GET_VENDOR_PROFILE, {
+  dispatch(clearVendorPublicSearch());
+  return await fetch(`${apiUrl.GET_VENDOR_PROFILE}/${payload.username}`, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -411,7 +409,11 @@ export const clientFetchVendorProfileByUsername = (payload) => async (dispatch, 
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      dispatch(fetchSuccessMsg(result.data));
+      if (!result || result.length === 0) {
+        throw new Error("empty result");
+      }
+      console.log("********* public information: ", result.data);
+      dispatch(fetchvendor(result.data));
     })
     .catch((err) => dispatch(fetchError(err.message)));
 };

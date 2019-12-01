@@ -5,7 +5,7 @@ import ClientHeader from "./client_header";
 import VendorHeader from "./vendor_header";
 import { connect } from "react-redux";
 import rainbow from "@Components/images/header/pettran.jpg";
-import io from "socket.io-client";
+
 class VendorForestHeader extends React.Component {
   constructor(props) {
     super(props);
@@ -112,7 +112,7 @@ class VendorForestHeader extends React.Component {
                         <a href="#how-it-works">HOW IT WORKS</a>
                       </p>
                       <p className=" text-center">
-                        <a href="">POST A JOB</a>
+                        <a href="#/">POST A JOB</a>
                       </p>
                       <a role="button" href="/registration" className="button-primary">
                         <i className="icon">
@@ -141,6 +141,7 @@ class VendorForestHeader extends React.Component {
       return this.getUnSignedVenderForestHeader();
     } else {
       let { userObj } = this.props.user;
+      console.log("***** header: ", userObj.accountType);
       if (userObj.accountType === 0) {
         return <ClientHeader />;
       }

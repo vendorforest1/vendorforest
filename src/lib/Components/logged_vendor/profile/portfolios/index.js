@@ -2,9 +2,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import withStyles from "isomorphic-style-loader/withStyles";
-import { Card, Modal, Button, Icon } from "antd";
+import { Card, Modal, Icon } from "antd";
 import AddPortfolio from "./AddPortfolio";
-import moment from "moment";
 import style from "./index.scss";
 import { fetchPortfoliosData } from "../essential";
 const { Meta } = Card;
@@ -31,18 +30,25 @@ class VendorPortfolios extends React.Component {
   }
 
   selectPortfolio(index) {
+    let portfolios = this.props.portfolios
+      ? this.props.portfolios
+      : this.props.selectedVendor.portfolios;
     this.setState({
-      selectedPortfolio: this.props.portfolios[index],
+      selectedPortfolio: portfolios[index],
     });
     this.toggle();
   }
 
   render() {
+    let portfolios = this.props.portfolios
+      ? this.props.portfolios
+      : this.props.selectedVendor.portfolios;
+
     const generateCards = () => {
-      if (this.props.portfolios.length === 0) {
+      if (portfolios.length === 0) {
         return <h6 className="text-danger p-5 text-center w-100">No Portfolio</h6>;
       }
-      return this.props.portfolios.map((portfolio, index) => {
+      return portfolios.map((portfolio, index) => {
         return (
           <div className="col-md-4 portfolio-card" key={index}>
             <Card
@@ -87,12 +93,12 @@ class VendorPortfolios extends React.Component {
             </div>
           }
         >
-          {!this.props.portfolios && this.props.pending && (
+          {!portfolios && this.props.pending && (
             <div className="w-100 p-5 text-center loading-small">
               <Icon type="sync" spin />
             </div>
           )}
-          {this.props.portfolios && <div className="row">{generateCards()}</div>}
+          {portfolios && <div className="row">{generateCards()}</div>}
         </Card>
         <Modal
           title="Add Portfolio"
@@ -110,10 +116,9 @@ class VendorPortfolios extends React.Component {
 }
 
 const mapStateToProps = ({ vendorProfileReducer }) => {
-  const { error, user, portfolios, pending } = vendorProfileReducer;
+  const { error, portfolios, pending } = vendorProfileReducer;
   return {
     error,
-    user,
     portfolios,
     pending,
   };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Input, Form, Divider, InputNumber } from "antd";
+import { Icon, Form, Divider } from "antd";
 import { connect } from "react-redux";
 import moment from "moment";
 import { constants } from "@Shared/constants";
@@ -60,8 +60,6 @@ class Milestones extends React.Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
-
     const generateMilestone = () => {
       return this.props.milestones.map((milestone, index) => {
         if (milestone.status === constants.MILESTONE_STATUS.RELEASED) {
@@ -102,6 +100,7 @@ class Milestones extends React.Component {
                     onClick={() => {
                       this.cancelMilestone(index);
                     }}
+                    href={"#/"}
                   >
                     Cancel
                   </a>
@@ -129,6 +128,7 @@ class Milestones extends React.Component {
                     onClick={() => {
                       this.reqReleaseMilestone(index);
                     }}
+                    href={"#/"}
                   >
                     Request Release
                   </a>
@@ -138,6 +138,7 @@ class Milestones extends React.Component {
                     onClick={() => {
                       this.cancelMilestone(index);
                     }}
+                    href={"#/"}
                   >
                     Cancel
                   </a>

@@ -1,6 +1,4 @@
 import Team from "../models/team.model";
-// const Vendor = require("../models/vendor.model");
-// const User = require("../models/user.model");
 import getEnv, { constants } from "@Config/index";
 
 const config = getEnv();

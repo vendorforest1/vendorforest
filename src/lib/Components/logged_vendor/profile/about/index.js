@@ -2,7 +2,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { List, Rate, Card, Icon, Progress, message, Modal } from "antd";
-import { fetchReviewsData, clientFetchVendorProfileByUsername } from "../essential";
+import { fetchReviewsData } from "../essential";
 import ReviewItem from "./ReviewItem";
 import EditHourlyRate from "./EditHourlyRate";
 import defaultProfileImage from "@Components/images/profileplace.png";
@@ -19,12 +19,7 @@ class VendorAbout extends React.Component {
   }
 
   componentDidMount() {
-    const { user, match } = this.props;
     this.props.fetchReviewsData();
-    if (user && user.accountType === 0) {
-      console.log("params.....", match.params.username);
-      this.props.clientFetchVendorProfileByUsername(match.params.username);
-    }
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -47,7 +42,12 @@ class VendorAbout extends React.Component {
   }
 
   render() {
-    const { vendor } = this.props.user;
+    let user =
+      this.props.user && this.props.user.accountType === 1
+        ? this.props.user
+        : this.props.selectedVendor;
+    const vendor = user ? user : undefined;
+    const isPublicView = this.props.user === undefined;
     return vendor ? (
       <div className="vendor-about">
         <Card
@@ -60,24 +60,21 @@ class VendorAbout extends React.Component {
               <div className="d-flex flex-md-row flex-column justify-content-between">
                 <div className="account-info d-flex mb-3">
                   <div className="photo-wrap">
-                    <img
-                      src={this.props.user.profileImage || defaultProfileImage}
-                      alt={"profile"}
-                    />
+                    <img src={user.profileImage || defaultProfileImage} alt={"profile"} />
                   </div>
                   <div className="ml-3">
                     <h3>
-                      {this.props.user.firstName && this.props.user.lastName
-                        ? `${this.props.user.firstName} ${this.props.user.lastName}`
-                        : this.props.user.username}
+                      {user.firstName && user.lastName
+                        ? `${user.firstName} ${user.lastName}`
+                        : user.username}
                     </h3>
-                    {this.props.user.bsLocation && (
+                    {user.bsLocation && (
                       <p>
                         <Icon type="global" />
                         <span className="ml-1">
-                          {this.props.user.bsLocation
-                            ? `${this.props.user.bsLocation.city}, 
-                                        ${this.props.user.bsLocation.state} ${this.props.user.bsLocation.country}`
+                          {user.bsLocation
+                            ? `${user.bsLocation.city}, 
+                                        ${user.bsLocation.state} ${user.bsLocation.country}`
                             : ""}
                         </span>
                       </p>
@@ -90,7 +87,7 @@ class VendorAbout extends React.Component {
                   <p>Job Complated Rate</p>
                   <Progress percent={vendor.jobCompletedRate} size="small" status="active" />
                   <p>Profile Status</p>
-                  <Progress percent={this.props.user.profilePercent} size="small" status="active" />
+                  <Progress percent={user.profilePercent} size="small" status="active" />
                 </div>
               </div>
             </div>
@@ -110,10 +107,12 @@ class VendorAbout extends React.Component {
                   </div>
                   <h6>Hourly Rate</h6>
                 </div>
-                <div className="col-md-3 text-center">
-                  <h3>${vendor.totalEarning}</h3>
-                  <h6>Total Earning</h6>
-                </div>
+                {!isPublicView && (
+                  <div className="col-md-3 text-center">
+                    <h3>${vendor.totalEarning}</h3>
+                    <h6>Total Earning</h6>
+                  </div>
+                )}
                 <div className="col-md-3 text-center">
                   <h3>{vendor.jobs}</h3>
                   <h6>jobs</h6>
@@ -190,5 +189,4 @@ const mapStateToProps = ({ vendorProfileReducer }) => {
 
 export default connect(mapStateToProps, {
   fetchReviewsData,
-  clientFetchVendorProfileByUsername,
 })(withRouter(VendorAbout));

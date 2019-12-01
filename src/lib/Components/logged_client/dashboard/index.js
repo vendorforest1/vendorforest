@@ -1,6 +1,6 @@
 import React from "react";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VendorForestClientHeader from "@Components/inc/client_header";
+import Header from "@Components/inc/header";
 import VendorForestFooter from "@Components/inc/footer";
 
 import PostedJobs from "./PostedJobs";
@@ -22,7 +22,7 @@ class ClientDashboard extends React.Component {
   render() {
     return (
       <div className="client-dashboard">
-        <VendorForestClientHeader />
+        <Header />
         <div className="content">
           <div className="container">
             <div className="row">

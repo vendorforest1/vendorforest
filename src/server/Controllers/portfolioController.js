@@ -32,24 +32,24 @@ export default () => {
       });
   };
 
-  controllers.getPortfolios = async (req, res, next) => {
-    await Portfolio.find({
-      user: req.query.user,
-    })
-      .populate("user")
-      .then(async (portfolios) => {
-        return res.status(200).json({
-          status: 200,
-          data: portfolios,
-        });
-      })
-      .catch((error) => {
-        return res.status(500).json({
-          status: 500,
-          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
-        });
-      });
-  };
+  // controllers.getPortfolios = async (req, res, next) => {
+  //   await Portfolio.find({
+  //     user: req.query.user,
+  //   })
+  //     .populate("user")
+  //     .then(async (portfolios) => {
+  //       return res.status(200).json({
+  //         status: 200,
+  //         data: portfolios,
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       return res.status(500).json({
+  //         status: 500,
+  //         message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+  //       });
+  //     });
+  // };
 
   controllers.getMyPortfolios = async (req, res, next) => {
     await Portfolio.find({
