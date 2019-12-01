@@ -36,5 +36,6 @@ export default function(app, passport) {
     validator.body(resetPass.body),
     userCtr.resetPass,
   );
+  router.post("/resetpw", userCtr.sendResetEmail);
   return router;
 }
