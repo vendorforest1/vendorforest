@@ -37,13 +37,17 @@ class ClientContractDetails extends React.Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(newProps) {
-    if (!this.props.success && newProps.success) {
-      message.success(newProps.success);
+  static getDerivedStateFromProps(props, state) {
+    if (!state.success && props.success) {
+      message.success(props.success);
     }
-    if (!this.props.error && newProps.error) {
-      message.error(newProps.error);
+    if (!state.error && props.error) {
+      message.error(props.error);
     }
+    return {
+      success: props.success,
+      error: props.error,
+    };
   }
 
   jobComplete() {
@@ -101,7 +105,7 @@ class ClientContractDetails extends React.Component {
                           />
                           <div className="info ml-2">
                             <h6>
-                              <a href="" className="text-color font-weight-bold">
+                              <a href="#/" className="text-color font-weight-bold">
                                 {this.props.contract.vendor.username}
                               </a>
                             </h6>

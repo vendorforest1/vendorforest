@@ -1,24 +1,10 @@
 import React from "react";
-import {
-  Button,
-  Icon,
-  Avatar,
-  Progress,
-  Rate,
-  InputNumber,
-  Form,
-  DatePicker,
-  Select,
-  Input,
-  message,
-  Modal,
-} from "antd";
+import { Icon, Avatar, Progress, Rate, InputNumber, Form, DatePicker, message } from "antd";
 import { constants } from "@Shared/constants";
 import moment from "moment";
 import { connect } from "react-redux";
 import { fetchCreateContract, updateJob, updateProposal } from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
-const { confirm } = Modal;
 
 class CreateContract extends React.Component {
   constructor(props) {
@@ -105,7 +91,7 @@ class CreateContract extends React.Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
+    // const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
 
     return (
       <div className="create-contact">

@@ -19,6 +19,8 @@ class SendInvite extends React.Component {
   }
 
   render() {
+    const { user } = this.props;
+
     const generateJobOptions = () => {
       return jobs.map((job, index) => {
         return (
@@ -31,7 +33,9 @@ class SendInvite extends React.Component {
 
     return (
       <div className="send-invite">
-        <h5 className="mb-4">Hire Gerard Kasemba for:</h5>
+        <h5 className="mb-4">
+          {user.lastName},&nbsp; {user.firstName}
+        </h5>
         <div className="row">
           <div className="col-md-8">
             <div className="mb-3">

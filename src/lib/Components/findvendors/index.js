@@ -1,13 +1,17 @@
 import React from "react";
-import { Input, Radio, Icon, List, Checkbox, DatePicker, Select } from "antd";
+import { Input, Radio, Icon, List, Checkbox, Select } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
-import moment from "moment";
 
-import VF_Header from "@Components/inc/header";
-import VF_Footer from "@Components/inc/footer";
+import Header from "@Components/inc/header";
+import Footer from "@Components/inc/footer";
 import VendorItem from "./VendorItem";
+
+import { connect } from "react-redux";
+import { fetchInitData } from "./essential";
+
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
+
 const { Option } = Select;
 const CheckboxGroup = Checkbox.Group;
 
@@ -46,25 +50,14 @@ class FindVendors extends React.Component {
     };
   }
 
-  componentDidMount() {
-    let vendors = [];
-    for (let i = 0; i < 20; i++) {
-      vendors.push({
-        name: `Vendor Name ${i}`,
-        rate: 5.0,
-        reviews: 144,
-        jobCompletedRate: 100,
-        vendorType: i % 2,
-        location: "Altamont, NY",
-        hourlyRate: 100,
-        skills: ["Photographer", "Wedding Photographer"],
-      });
+  static getDerivedStateFromProps(props, state) {
+    if (props.homedata) {
+      return {
+        vendors: props.homedata.vendors,
+      };
     }
-    this.setState({
-      vendors: vendors,
-    });
+    return null;
   }
-
   render() {
     const generateFilterCategoryOptions = () => {
       return filterCategoryList.map((category, index) => {
@@ -88,7 +81,7 @@ class FindVendors extends React.Component {
 
     return (
       <div className="find-vendor">
-        <VF_Header />
+        <Header />
         <div className="content">
           <div className="container">
             <div className="row">
@@ -216,7 +209,7 @@ class FindVendors extends React.Component {
                   footer={<div></div>}
                   renderItem={(item, index) => (
                     <List.Item key={index} style={{ cursor: "pointer" }}>
-                      <VendorItem vendor={item} />
+                      <VendorItem user={item} />
                     </List.Item>
                   )}
                 />
@@ -224,10 +217,20 @@ class FindVendors extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }
 }
 
-export default withStyles(globalStyle, localStyle)(FindVendors);
+const mapStateToProps = ({ homeReducer, loginReducer }) => {
+  const { error, homedata, success, pending } = homeReducer;
+
+  const { user } = loginReducer;
+
+  return { error, homedata, success, pending, user };
+};
+
+export default connect(mapStateToProps, {
+  fetchInitData,
+})(withStyles(globalStyle, localStyle)(FindVendors));

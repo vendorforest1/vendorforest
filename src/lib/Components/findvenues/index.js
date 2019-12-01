@@ -3,8 +3,8 @@ import { Input, Radio, Icon, List, Checkbox, DatePicker } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import moment from "moment";
 
-import VF_Header from "@Components/inc/header";
-import VF_Footer from "@Components/inc/footer";
+import Header from "@Components/inc/header";
+import Footer from "@Components/inc/footer";
 import VenueItem from "./VenueItem";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
@@ -181,7 +181,7 @@ class FindVenue extends React.Component {
 
     return (
       <div className="find-venue">
-        <VF_Header />
+        <Header />
         <div className="content">
           <div className="container">
             <div className="row">
@@ -398,7 +398,7 @@ class FindVenue extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }

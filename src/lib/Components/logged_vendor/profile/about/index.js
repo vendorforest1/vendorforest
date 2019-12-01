@@ -2,10 +2,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import { List, Rate, Card, Icon, Progress, message, Modal } from "antd";
-import { fetchReviewsData } from "../essential";
+import { fetchReviewsData, clientFetchVendorProfileByUsername } from "../essential";
 import ReviewItem from "./ReviewItem";
 import EditHourlyRate from "./EditHourlyRate";
 import defaultProfileImage from "@Components/images/profileplace.png";
+import { withRouter } from "react-router";
 
 class VendorAbout extends React.Component {
   constructor(props) {
@@ -18,16 +19,25 @@ class VendorAbout extends React.Component {
   }
 
   componentDidMount() {
+    const { user, match } = this.props;
     this.props.fetchReviewsData();
+    if (user && user.accountType === 0) {
+      console.log("params.....", match.params.username);
+      this.props.clientFetchVendorProfileByUsername(match.params.username);
+    }
   }
 
-  componentWillReceiveProps(newProps) {
-    if (!this.props.success && newProps.success) {
-      message.success(newProps.success);
+  static getDerivedStateFromProps(props, state) {
+    if (!state.success && props.success) {
+      message.success(props.success);
     }
-    if (!this.props.error && newProps.error) {
-      message.error(newProps.error);
+    if (!state.error && props.error) {
+      message.error(props.error);
     }
+    return {
+      success: props.success,
+      error: props.error,
+    };
   }
 
   toggle() {
@@ -37,7 +47,8 @@ class VendorAbout extends React.Component {
   }
 
   render() {
-    return (
+    const { vendor } = this.props.user;
+    return vendor ? (
       <div className="vendor-about">
         <Card
           title={<span className="h5 font-weight-bold">About</span>}
@@ -66,22 +77,18 @@ class VendorAbout extends React.Component {
                         <span className="ml-1">
                           {this.props.user.bsLocation
                             ? `${this.props.user.bsLocation.city}, 
-                                            ${this.props.user.bsLocation.state} ${this.props.user.bsLocation.country}`
+                                        ${this.props.user.bsLocation.state} ${this.props.user.bsLocation.country}`
                             : ""}
                         </span>
                       </p>
                     )}
-                    <Rate value={this.props.user.vendor.rate} disabled allowHalf />
-                    <span className="h6">{this.props.user.vendor.rate}</span>
+                    <Rate value={vendor.rate} disabled allowHalf />
+                    <span className="h6">{vendor.rate}</span>
                   </div>
                 </div>
                 <div className="status">
                   <p>Job Complated Rate</p>
-                  <Progress
-                    percent={this.props.user.vendor.jobCompletedRate}
-                    size="small"
-                    status="active"
-                  />
+                  <Progress percent={vendor.jobCompletedRate} size="small" status="active" />
                   <p>Profile Status</p>
                   <Progress percent={this.props.user.profilePercent} size="small" status="active" />
                 </div>
@@ -91,7 +98,7 @@ class VendorAbout extends React.Component {
               <div className="row">
                 <div className="col-md-3 text-center">
                   <div className="d-flex justify-content-center align-items-center">
-                    <h3>{this.props.user.vendor ? this.props.user.vendor.hourlyRate || 30 : 30}</h3>
+                    <h3>{vendor ? vendor.hourlyRate || 30 : 30}</h3>
                     <div
                       className="h4 text-color ml-2 mb-0 pointer price-edit editable"
                       onClick={() => {
@@ -104,15 +111,15 @@ class VendorAbout extends React.Component {
                   <h6>Hourly Rate</h6>
                 </div>
                 <div className="col-md-3 text-center">
-                  <h3>${this.props.user.vendor.totalEarning}</h3>
+                  <h3>${vendor.totalEarning}</h3>
                   <h6>Total Earning</h6>
                 </div>
                 <div className="col-md-3 text-center">
-                  <h3>{this.props.user.vendor.jobs}</h3>
+                  <h3>{vendor.jobs}</h3>
                   <h6>jobs</h6>
                 </div>
                 <div className="col-md-3 text-center">
-                  <h3>{this.props.user.vendor.hoursWorked}</h3>
+                  <h3>{vendor.hoursWorked}</h3>
                   <h6>Hours Worked</h6>
                 </div>
               </div>
@@ -162,12 +169,11 @@ class VendorAbout extends React.Component {
           width={"500px"}
           footer={null}
         >
-          <EditHourlyRate
-            rate={this.props.user.vendor ? this.props.user.vendor.hourlyRate || 30 : 30}
-            toggle={this.toggle}
-          />
+          <EditHourlyRate rate={vendor ? vendor.hourlyRate || 30 : 30} toggle={this.toggle} />
         </Modal>
       </div>
+    ) : (
+      <div></div>
     );
   }
 }
@@ -184,4 +190,5 @@ const mapStateToProps = ({ vendorProfileReducer }) => {
 
 export default connect(mapStateToProps, {
   fetchReviewsData,
-})(VendorAbout);
+  clientFetchVendorProfileByUsername,
+})(withRouter(VendorAbout));

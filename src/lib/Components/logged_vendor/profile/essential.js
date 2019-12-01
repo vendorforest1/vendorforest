@@ -371,3 +371,47 @@ export const fetchUpdateVendorProfile = async (payload) => {
       throw err.message;
     });
 };
+
+// export const fetchFindUser = async (payload) => {
+//   let urlStr = "";
+//   Object.keys(payload).forEach((key, index) => {
+//     urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
+//   });
+//   console.log(urlStr);
+//   return await fetch(`${apiUrl.VENDOR_FIND}${urlStr}`, {
+//     method: "GET",
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((response) => response.json())
+//     .then((result) => {
+//       if (result.status >= 400) {
+//         throw new Error(result.message);
+//       }
+//       return result;
+//     })
+//     .catch((err) => {
+//       throw err.message;
+//     });
+// };
+export const clientFetchVendorProfileByUsername = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
+  return await fetch(apiUrl.GET_VENDOR_PROFILE, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      dispatch(fetchSuccessMsg(result.data));
+    })
+    .catch((err) => dispatch(fetchError(err.message)));
+};

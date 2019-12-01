@@ -126,7 +126,7 @@ export default [
   },
   /*================================== VENDOR LINKS ==========================*/
   {
-    path: "/vendor/profile",
+    path: "/vendor/profile/:username",
     exact: true,
     component: VendorProfile,
   },

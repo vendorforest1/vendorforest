@@ -44,7 +44,10 @@ export default () => {
   };
   //**********************.. */
   controllers.getVendor = async (req, res, next) => {
-    await Vendor.findById(req.user.vendor._id)
+    let query = req.params.username
+      ? Vendor.findById(req.params.username)
+      : Vendor.findById(req.user.vendor._id);
+    await query
       .populate("vendor")
       .then(async (user) => {
         if (!user) {
@@ -100,6 +103,7 @@ export default () => {
         });
       });
   };
+
   /******************* */
   controllers.find = async (req, res, next) => {
     await User.find({

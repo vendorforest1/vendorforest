@@ -1,14 +1,10 @@
 import React from "react";
-import $ from "jquery";
-import { Icon } from "antd";
-// @ts-ignore
-import withStyles from "isomorphic-style-loader/withStyles";
 import { connect } from "react-redux";
+import withStyles from "isomorphic-style-loader/withStyles";
+
 import VendorForestHeader from "@Components/inc/header";
 import VendorForestFooter from "@Components/inc/footer";
 
-// @ts-ignore
-// import "./index.scss";
 import styles from "./index.scss";
 
 import HeaderForm from "./HeaderForm";
@@ -19,6 +15,7 @@ import HowItWorks from "./HowItWorks";
 import NewPostedJobs from "./NewPostedJobs";
 import BuildTeamsBox from "./BuildTeamsBox";
 import Mask from "./Mask";
+
 import { fetchInitData } from "./essential";
 
 class Home extends React.Component {

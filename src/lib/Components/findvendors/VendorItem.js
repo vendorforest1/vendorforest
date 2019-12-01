@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Icon, Avatar, Rate, Modal, Progress } from "antd";
 import SendInvite from "./SendInvite";
 
-const vendorType = ["Vendor", "Provendor"];
+import { constants } from "@Shared/constants";
 
 class VendorItem extends React.Component {
   constructor(props) {
@@ -32,6 +32,10 @@ class VendorItem extends React.Component {
   }
 
   render() {
+    const { user } = this.props;
+    const { vendor } = user;
+    console.log("user: ", user);
+    console.log("vendor: ", vendor);
     return (
       <div className="vendor-item d-md-flex d-block justify-content-between">
         <div className="vendor-info d-flex mb-3 mb-md-0">
@@ -46,33 +50,37 @@ class VendorItem extends React.Component {
             <h5
               className="vendor-name"
               onClick={() => {
-                window.location.href = "/vendorprofile";
+                window.location.href = "/vendor/profile/" + user.username;
               }}
             >
-              {this.props.vendor.name}
+              {user.username}
             </h5>
-            <p>{this.displaySkills()}</p>
-            <h6 className="text-blue">{vendorType[this.props.vendor.vendorType]}</h6>
+            {/* <p>{this.displaySkills()}</p> */}
+            <h6 className="text-blue">{constants.ACCOUNTTYPES[user.accountType]}</h6>
             <p className="text-grey">
               <Icon type="global" />
-              <span className="ml-1">{this.props.vendor.location}</span>
+              {user.bsLocation && (
+                <span className="ml-1">
+                  {`${user.bsLocation.city}`}, &nbsp; {`${user.bsLocation.state}`}
+                </span>
+              )}
             </p>
             <Progress
-              percent={this.props.vendor.jobCompletedRate}
+              percent={vendor.jobCompletedRate}
               size="small"
               status="active"
               className="job-progress"
             />
             <div className="text-grey">
-              <span className="mr-2">{this.props.vendor.rate}</span>
-              <Rate disabled defaultValue={this.props.vendor.rate} />
-              <span className="mx-2">{this.props.vendor.reviews} Reviews</span>
+              <span className="mr-2">{vendor.rate}</span>
+              <Rate disabled defaultValue={vendor.rate} />
+              <span className="mx-2">{vendor.reviewCount} Reviews</span>
             </div>
           </div>
         </div>
         <div className="vendor-action d-flex flex-md-column flex-row align-items-center">
           <h6 className="vendor-subinfo text-color text-md-right text-center col">
-            ${this.props.vendor.hourlyRate}/hr
+            ${vendor.hourlyRate}/hr
           </h6>
           <div className="col">
             <button className="button-primary" onClick={this.toggle}>
@@ -92,7 +100,7 @@ class VendorItem extends React.Component {
             </Button>
           }
         >
-          <SendInvite vendor={this.props.vendor} />
+          <SendInvite user={user} />
         </Modal>
       </div>
     );

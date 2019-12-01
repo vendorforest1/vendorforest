@@ -45,6 +45,7 @@ class VendorHeader extends React.Component {
   };
 
   render() {
+    const { user } = this.props;
     const helpMenu = (
       <Menu>
         <Menu.Item>
@@ -74,10 +75,12 @@ class VendorHeader extends React.Component {
           </a>
         </Menu.Item>
         <Menu.Item>
-          <a rel="noopener noreferrer" href="/vendor/profile">
-            <Icon type="user" />
-            &nbsp;&nbsp;Profile
-          </a>
+          {user && (
+            <a rel="noopener noreferrer" href={`/vendor/profile/${user.userObj.username}`}>
+              <Icon type="user" />
+              &nbsp;&nbsp;Profile
+            </a>
+          )}
         </Menu.Item>
         <Menu.Item>
           <a onClick={() => this.handleLogout()} href="/#">
@@ -94,7 +97,7 @@ class VendorHeader extends React.Component {
       return this.props.notification.map((noti, index) => {
         return (
           <Menu.Item key={index}>
-            <a rel="noopener noreferrer" href="">
+            <a rel="noopener noreferrer" href="#/">
               <p style={{ maxWidth: "350px", wordWrap: "break-word" }}>
                 {noti.isRead === false ? (
                   <Badge dot>
@@ -218,10 +221,12 @@ class VendorHeader extends React.Component {
   }
 }
 
-const mapStateToProps = ({ headerNotiReducer }) => {
+const mapStateToProps = ({ headerNotiReducer, loginReducer }) => {
+  const { user } = loginReducer;
   const { notification } = headerNotiReducer;
   return {
     notification,
+    user,
   };
 };
 
