@@ -7,6 +7,7 @@ import { constants } from "@Shared/constants";
 import GoogleMapLoader from "react-google-maps-loader";
 import GooglePlacesSuggest from "react-google-places-suggest";
 import countryData from "../../../country_state.json";
+import { timeZone } from "@Shared/timezone.json";
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -105,6 +106,7 @@ class VendorMyAccount extends React.Component {
             lng: this.state.lng,
             placeId: this.state.placeId,
           },
+          timeZone: values.timeZone,
         };
         this.props.fetchUpdateAccount(params);
       }
@@ -166,6 +168,16 @@ class VendorMyAccount extends React.Component {
         return (
           <Select.Option value={state} key={index}>
             {state}
+          </Select.Option>
+        );
+      });
+    };
+
+    const generateTimeZoneOptions = () => {
+      return timeZone.map((timeZone, index) => {
+        return (
+          <Select.Option value={timeZone} key={index}>
+            {timeZone}
           </Select.Option>
         );
       });
@@ -326,7 +338,7 @@ class VendorMyAccount extends React.Component {
                   })(<Input placeholder="City" size={"large"} />)}
                 </Form.Item>
               </div>
-              <div className="col-md-8">
+              <div className="col-md-6">
                 <GoogleMapLoader
                   params={{
                     key: constants.GOOGLEMAP_API,
@@ -368,6 +380,26 @@ class VendorMyAccount extends React.Component {
                     )
                   }
                 />
+              </div>
+              <div className="col-md-6">
+                <Form.Item label="Time Zone">
+                  {getFieldDecorator("timeZone", {
+                    initialValue: this.props.user.timeZone,
+                    rules: [{ required: true, message: "Please select timezone." }],
+                  })(
+                    <Select
+                      showSearch
+                      placeholder="Select timezone"
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      size={"large"}
+                    >
+                      {generateTimeZoneOptions()}
+                    </Select>,
+                  )}
+                </Form.Item>
               </div>
             </div>
           </Form>
