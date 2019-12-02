@@ -129,7 +129,12 @@ class VendorTeamSettings extends React.Component {
             onCancel={this.toggle}
             width={"650px"}
             footer={
-              <Button key="next" type="primary" onClick={this.toggle} style={{ width: "100px" }}>
+              <Button
+                key="next"
+                type="primary"
+                onClick={this.toggle}
+                style={{ width: "100px" }}
+              >
                 Save
               </Button>
             }

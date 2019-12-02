@@ -51,7 +51,11 @@ class VenueItem extends React.Component {
     return (
       <div className="venue-item ">
         <div className="venue-photo mr-3">
-          <img src="https://via.placeholder.com/165" className="mb-md-0 mb-2" alt="venue-photo" />
+          <img
+            src="https://via.placeholder.com/165"
+            className="mb-md-0 mb-2"
+            alt="venue-photo"
+          />
         </div>
         <div className="venue-summary">
           <div className="d-flex justify-content-between">

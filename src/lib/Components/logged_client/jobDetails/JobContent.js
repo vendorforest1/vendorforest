@@ -117,7 +117,9 @@ class JobContent extends React.Component {
                     {moment(this.props.job.stDateTime).format("YYYY/MM/DD")}-
                   </span>
                   <Icon type="clock-circle" />
-                  <span className="ml-1">{moment(this.props.job.stDateTime).format("HH:mm")}</span>
+                  <span className="ml-1">
+                    {moment(this.props.job.stDateTime).format("HH:mm")}
+                  </span>
                 </p>
                 <p>
                   <span className=" font-weight-bold">End date & time: </span>
@@ -126,7 +128,9 @@ class JobContent extends React.Component {
                     {moment(this.props.job.endDateTime).format("YYYY/MM/DD")}-
                   </span>
                   <Icon type="clock-circle" />
-                  <span className="ml-1">{moment(this.props.job.endDateTime).format("HH:mm")}</span>
+                  <span className="ml-1">
+                    {moment(this.props.job.endDateTime).format("HH:mm")}
+                  </span>
                 </p>
                 <p>
                   <span className=" font-weight-bold">Location: </span>

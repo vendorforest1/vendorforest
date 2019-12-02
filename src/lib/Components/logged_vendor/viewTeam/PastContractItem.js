@@ -30,7 +30,8 @@ class VendorPastContractItem extends React.Component {
             <p>
               <b>Completed date & time:</b> <Icon type="calendar" />{" "}
               {moment(this.props.contract.completedDate).format("MMMM DD, YYYY")} -{" "}
-              <Icon type="clock-circle" /> {moment(this.props.contract.startDate).format("HH:mm A")}
+              <Icon type="clock-circle" />{" "}
+              {moment(this.props.contract.startDate).format("HH:mm A")}
             </p>
             <p>
               <b>Complete Budget:</b> <Icon type="dollar" />{" "}

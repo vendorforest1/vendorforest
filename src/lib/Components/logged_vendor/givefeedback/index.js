@@ -64,7 +64,8 @@ class VendorGiveFeedBack extends React.Component {
                       <div className="ml-2">
                         <h5>Feedback to client</h5>
                         <p>
-                          This feedback will be shared with your vendor and left on their profile.
+                          This feedback will be shared with your vendor and left on their
+                          profile.
                         </p>
                       </div>
                     </div>
@@ -83,7 +84,8 @@ class VendorGiveFeedBack extends React.Component {
                     </div>
                     <div className="feedback-content mb-4">
                       <p className="mb-2">
-                        Share your experience with this vendor to the VendorForest.com community :
+                        Share your experience with this vendor to the VendorForest.com community
+                        :
                       </p>
                       <Form.Item label="">
                         {getFieldDecorator("feedback", {

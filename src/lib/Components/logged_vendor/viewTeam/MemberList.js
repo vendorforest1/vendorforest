@@ -28,8 +28,9 @@ class VendorMemberList extends React.Component {
 
   isInviatedUser() {
     return (
-      this.props.team.invitedUsers.findIndex((user) => user._id === this.props.user.userObj._id) >
-      -1
+      this.props.team.invitedUsers.findIndex(
+        (user) => user._id === this.props.user.userObj._id,
+      ) > -1
     );
   }
 

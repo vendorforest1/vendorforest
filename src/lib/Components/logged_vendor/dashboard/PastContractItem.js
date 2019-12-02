@@ -64,7 +64,9 @@ class PastContractItem extends React.Component {
               &nbsp;
               <span className="text-color">
                 ${this.props.contract.budget}
-                {this.props.contract.job.budgetType === constants.BUDGET_TYPE.HOURLY ? "/hr" : ""}
+                {this.props.contract.job.budgetType === constants.BUDGET_TYPE.HOURLY
+                  ? "/hr"
+                  : ""}
               </span>
             </p>
           </div>

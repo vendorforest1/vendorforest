@@ -150,7 +150,9 @@ class VendorFindJob extends React.Component {
                   <div>{this.state.showFilter ? <Icon type="up" /> : <Icon type="down" />}</div>
                 </div>
                 <div
-                  className={`filter ${this.state.showFilter ? "d-block" : "d-none d-md-block"}`}
+                  className={`filter ${
+                    this.state.showFilter ? "d-block" : "d-none d-md-block"
+                  }`}
                 >
                   <div className="service mb-4">
                     <h6 className="pb-3 border-bottom mb-2">Service</h6>
@@ -254,7 +256,9 @@ class VendorFindJob extends React.Component {
                           filterCity: "",
                         });
                       }}
-                      className={`pointer mb-2 ${this.state.filterAnyLocation ? "text-color" : ""}`}
+                      className={`pointer mb-2 ${
+                        this.state.filterAnyLocation ? "text-color" : ""
+                      }`}
                     >
                       Any Location
                     </p>

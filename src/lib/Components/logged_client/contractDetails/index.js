@@ -10,7 +10,11 @@ import Milestones from "./Milestones";
 import AttachFiles from "./AttachFiles";
 import Review from "./Review";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
-import { fetchUpdateContractData, fetchEndContractData, fetchGetContractData } from "./essential";
+import {
+  fetchUpdateContractData,
+  fetchEndContractData,
+  fetchGetContractData,
+} from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
 const { TabPane } = Tabs;
 

@@ -36,7 +36,8 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -67,7 +68,8 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -100,7 +102,8 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -131,7 +134,9 @@ export default () => {
           }
           if (!req.body.to) {
             req.body.to =
-              String(contract.client) === String(req.body.from) ? contract.vendor : contract.client;
+              String(contract.client) === String(req.body.from)
+                ? contract.vendor
+                : contract.client;
           }
           const reviewDoc = new Review({
             ...req.body,
@@ -158,7 +163,8 @@ export default () => {
     } catch (error) {
       return res.status(500).json({
         status: 500,
-        message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        message:
+          env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
       });
     }
   };
@@ -193,7 +199,8 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };

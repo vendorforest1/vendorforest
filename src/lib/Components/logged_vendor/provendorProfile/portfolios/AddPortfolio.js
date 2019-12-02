@@ -136,18 +136,22 @@ class AddPortfolio extends React.Component {
               url: file.url || file.response.url,
             };
           })),
-          (data.coverImage = data.attachImgFiles.length > 0 ? data.attachImgFiles[0] : undefined);
+          (data.coverImage =
+            data.attachImgFiles.length > 0 ? data.attachImgFiles[0] : undefined);
         data._id = this.state.portfolioId ? this.state.portfolioId : undefined;
         process.env.NODE_ENV === "development" && console.log(data);
         this.setState({ pending: true });
-        await fetch(this.state.portfolioId ? apiUrl.UPDATE_PORTFOLIO : apiUrl.CREATE_PORTFOLIO, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+        await fetch(
+          this.state.portfolioId ? apiUrl.UPDATE_PORTFOLIO : apiUrl.CREATE_PORTFOLIO,
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
           },
-          body: JSON.stringify(data),
-        })
+        )
           .then((response) => response.json())
           .then((result) => {
             this.setState({ pending: false });
@@ -210,7 +214,11 @@ class AddPortfolio extends React.Component {
                 >
                   {attachImgFiles.length >= 5 ? null : uploadButton}
                 </Upload>
-                <Modal visible={previewImgVisible} footer={null} onCancel={this.imgPreviewCancel}>
+                <Modal
+                  visible={previewImgVisible}
+                  footer={null}
+                  onCancel={this.imgPreviewCancel}
+                >
                   <img alt="example" style={{ width: "100%" }} src={previewImage} />
                 </Modal>
               </div>
@@ -227,7 +235,11 @@ class AddPortfolio extends React.Component {
                 >
                   {attachVidFiles.length >= 5 ? null : uploadButton}
                 </Upload>
-                <Modal visible={previewVidVisible} footer={null} onCancel={this.vidPreviewCancel}>
+                <Modal
+                  visible={previewVidVisible}
+                  footer={null}
+                  onCancel={this.vidPreviewCancel}
+                >
                   <img alt="example" style={{ width: "100%" }} src={previewVideo} />
                 </Modal>
               </div>

@@ -18,7 +18,12 @@ class RegisterVenueStepOne extends React.Component {
   componentDidMount() {}
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
+    const {
+      getFieldDecorator,
+      getFieldError,
+      isFieldTouched,
+      isSelectOptGroup,
+    } = this.props.form;
 
     const businessNameError = isFieldTouched("businessName") && getFieldError("businessName");
     const firstNameError = isFieldTouched("firstName") && getFieldError("firstName");
@@ -126,7 +131,9 @@ class RegisterVenueStepOne extends React.Component {
                     <div className="d-flex w-100">
                       <InputNumber
                         defaultValue={1}
-                        formatter={(value) => `+ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        formatter={(value) =>
+                          `+ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
                         parser={(value) => value.replace(/\+\s?|(,*)/g, "")}
                         className="mr-2"
                         onChange={(value) => {

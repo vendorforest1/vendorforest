@@ -43,7 +43,10 @@ class VendorJobDetails extends React.Component {
       return "Less than 5";
     } else if (this.props.job.proposales.length >= 5 && this.props.job.proposales.length < 10) {
       return "5 to 10";
-    } else if (this.props.job.proposales.length >= 10 && this.props.job.proposales.length < 20) {
+    } else if (
+      this.props.job.proposales.length >= 10 &&
+      this.props.job.proposales.length < 20
+    ) {
       return "10 to 20";
     } else {
       return "More that 20";
@@ -204,7 +207,9 @@ class VendorJobDetails extends React.Component {
                                     }`,
                                   );
                                 } else {
-                                  this.props.history.push(`/vendor/placebid/${this.props.job._id}`);
+                                  this.props.history.push(
+                                    `/vendor/placebid/${this.props.job._id}`,
+                                  );
                                 }
                               }}
                             >
@@ -221,8 +226,14 @@ class VendorJobDetails extends React.Component {
                               {" "}
                               <div className="client-info mb-2">
                                 <img
-                                  src={this.props.job.client.profileImage || defaultProfileImage}
-                                  style={{ height: "55px", width: "55px", borderRadius: "100%" }}
+                                  src={
+                                    this.props.job.client.profileImage || defaultProfileImage
+                                  }
+                                  style={{
+                                    height: "55px",
+                                    width: "55px",
+                                    borderRadius: "100%",
+                                  }}
                                   alt="profileimage"
                                 />
                                 <div className="info ml-2">
@@ -277,8 +288,8 @@ class VendorJobDetails extends React.Component {
                               <hr />
                               <div className="client-history">
                                 <p>
-                                  <span className=" font-weight-bold mr-2">Amount Spent: </span>$
-                                  {this.props.job.client.client.totalSpent}
+                                  <span className=" font-weight-bold mr-2">Amount Spent: </span>
+                                  ${this.props.job.client.client.totalSpent}
                                 </p>
                                 <p>
                                   <span className=" font-weight-bold mr-2">Posted Jobs: </span>
@@ -322,8 +333,8 @@ class VendorJobDetails extends React.Component {
                     <h5 className="mb-4">Similar Jobs</h5>
                     <p>
                       <a href="" className="text-color">
-                        Motivated front end developer (with design sense) needed to join a growing
-                        team.
+                        Motivated front end developer (with design sense) needed to join a
+                        growing team.
                       </a>
                     </p>
                     <p>

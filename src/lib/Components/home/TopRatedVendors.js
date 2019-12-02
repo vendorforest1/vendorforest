@@ -32,7 +32,10 @@ class TopRatedVendors extends React.Component {
     const generateVendors = () => {
       return this.state.vendorGroup.map((group, index) => {
         return (
-          <div key={index} className={`carousel-item px-2 active ${index === 0 ? "active" : ""}`}>
+          <div
+            key={index}
+            className={`carousel-item px-2 active ${index === 0 ? "active" : ""}`}
+          >
             <div className="row">{generateCard(group)}</div>
           </div>
         );

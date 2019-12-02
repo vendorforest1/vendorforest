@@ -91,7 +91,12 @@ class VenueInfo extends React.Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
+    const {
+      getFieldDecorator,
+      getFieldError,
+      isFieldTouched,
+      isSelectOptGroup,
+    } = this.props.form;
 
     const venueNameError = isFieldTouched("venueName") && getFieldError("venueName");
     const locationError = isFieldTouched("location") && getFieldError("location");

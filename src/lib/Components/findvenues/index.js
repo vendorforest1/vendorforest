@@ -199,7 +199,9 @@ class FindVenue extends React.Component {
                   <div>{this.state.showFilter ? <Icon type="up" /> : <Icon type="down" />}</div>
                 </div>
                 <div
-                  className={`filter ${this.state.showFilter ? "d-block" : "d-none d-md-block"}`}
+                  className={`filter ${
+                    this.state.showFilter ? "d-block" : "d-none d-md-block"
+                  }`}
                 >
                   <h4 className="my-5 d-none d-md-block">Filter</h4>
                   <div className="filter-items mb-4">
@@ -336,7 +338,9 @@ class FindVenue extends React.Component {
                     <CheckboxGroup
                       value={this.state.filterServices}
                       options={
-                        this.state.lessService ? filterServiceTypes.slice(0, 3) : filterServiceTypes
+                        this.state.lessService
+                          ? filterServiceTypes.slice(0, 3)
+                          : filterServiceTypes
                       }
                       onChange={(checkList) => {
                         this.setState({

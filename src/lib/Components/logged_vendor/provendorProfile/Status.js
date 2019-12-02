@@ -17,8 +17,8 @@ class VendorStatus extends React.Component {
               <h5 className="mb-2">
                 Jeremy Rose{" "}
                 <span>
-                  <img src="https://img.icons8.com/ios-glyphs/20/999999/marker.png" /> Brooklyne,
-                  New York, USA
+                  <img src="https://img.icons8.com/ios-glyphs/20/999999/marker.png" />{" "}
+                  Brooklyne, New York, USA
                 </span>
               </h5>
               <h6 className="mb-3">Photographer</h6>

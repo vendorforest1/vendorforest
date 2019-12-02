@@ -186,7 +186,10 @@ class PostJobStepTwo extends React.Component {
               <div className="row">
                 <div className="col-md-12 mb-4">
                   <p className=" font-weight-bold mb-3">Who can see your job</p>
-                  <Radio.Group onChange={this.selectJobVisibility} value={this.state.visibility}>
+                  <Radio.Group
+                    onChange={this.selectJobVisibility}
+                    value={this.state.visibility}
+                  >
                     <Radio value={0} className="d-block mb-3">
                       Anyone
                     </Radio>
@@ -295,7 +298,9 @@ class PostJobStepTwo extends React.Component {
                           <Form.Item label="Vendor Location">
                             {getFieldDecorator("fullAddress", {
                               initialValue: this.state.fullAddress, //solution
-                              rules: [{ required: true, message: "Please input vendor location" }],
+                              rules: [
+                                { required: true, message: "Please input vendor location" },
+                              ],
                             })(
                               <Input
                                 placeholder="Vendor Location"
@@ -329,7 +334,9 @@ class PostJobStepTwo extends React.Component {
                     })(
                       <InputNumber
                         className="w-100"
-                        formatter={(value) => `${value}km`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        formatter={(value) =>
+                          `${value}km`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
                         parser={(value) => value.replace(/\km\s?|(,*)/g, "")}
                         step={0.1}
                         size={"large"}
@@ -404,7 +411,9 @@ const mapStateToProps = ({ clientPostjobReducer }) => {
   };
 };
 
-const ClientPostJobStepTwoForm = Form.create({ name: "client_postjob_steptwo" })(PostJobStepTwo);
+const ClientPostJobStepTwoForm = Form.create({ name: "client_postjob_steptwo" })(
+  PostJobStepTwo,
+);
 
 export default connect(mapStateToProps, {
   updateJob,

@@ -16,7 +16,12 @@ class VenueCompanyInfo extends React.Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
+    const {
+      getFieldDecorator,
+      getFieldError,
+      isFieldTouched,
+      isSelectOptGroup,
+    } = this.props.form;
 
     const businessNameError = isFieldTouched("businessName") && getFieldError("businessName");
     const firstNameError = isFieldTouched("firstName") && getFieldError("firstName");
@@ -157,6 +162,8 @@ class VenueCompanyInfo extends React.Component {
   }
 }
 
-const VenueCompanyInfoForm = Form.create({ name: "venue_setting_companyinfo" })(VenueCompanyInfo);
+const VenueCompanyInfoForm = Form.create({ name: "venue_setting_companyinfo" })(
+  VenueCompanyInfo,
+);
 
 export default VenueCompanyInfoForm;

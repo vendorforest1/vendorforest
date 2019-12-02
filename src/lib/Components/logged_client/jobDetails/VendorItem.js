@@ -9,7 +9,10 @@ class VendorItem extends React.Component {
       <div className="propposal-item ">
         <div className="row">
           <div className="col-lg-7 col-md-6 vendor-profile-content d-flex">
-            <Avatar src={this.props.vendor.profileImage || defaultProfileImage} className="photo" />
+            <Avatar
+              src={this.props.vendor.profileImage || defaultProfileImage}
+              className="photo"
+            />
             <div className="ml-2">
               <h6 className="text-dark font-weight-bold">{this.props.vendor.username}</h6>
               <p>

@@ -186,7 +186,9 @@ class PostJob extends React.Component {
           <Tag
             color={this.props.job.subCategories.indexOf(subCategory) > -1 ? "#07b107" : "#eee"}
             className={`mb-2 p-2 ${
-              this.props.job.subCategories.indexOf(subCategory) > -1 ? "text-white" : "text-dark"
+              this.props.job.subCategories.indexOf(subCategory) > -1
+                ? "text-white"
+                : "text-dark"
             }`}
             key={index}
             onClick={() => {

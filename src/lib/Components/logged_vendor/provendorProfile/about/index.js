@@ -108,7 +108,11 @@ class VendorAbout extends React.Component {
                     status="active"
                   />
                   <p>Profile Status</p>
-                  <Progress percent={this.props.user.profilePercent} size="small" status="active" />
+                  <Progress
+                    percent={this.props.user.profilePercent}
+                    size="small"
+                    status="active"
+                  />
                 </div>
               </div>
             </div>

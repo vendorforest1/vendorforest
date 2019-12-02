@@ -31,7 +31,9 @@ export default () => {
         return res.status(500).json({
           status: 500,
           message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+            process.env.NODE_ENV === "development"
+              ? error.message
+              : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -55,7 +57,9 @@ export default () => {
         return res.status(500).json({
           status: 500,
           message:
-            process.env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+            process.env.NODE_ENV === "development"
+              ? error.message
+              : constants.PROD_COMMONERROR_MSG,
         });
       });
   };

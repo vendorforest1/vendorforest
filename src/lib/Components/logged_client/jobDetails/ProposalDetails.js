@@ -58,7 +58,8 @@ class ProposalDetails extends React.Component {
                   />
                   <div className="ml-2">
                     <h6 className="text-dark font-weight-bold">
-                      {this.props.proposal.vendor.firstName && this.props.proposal.vendor.lastName
+                      {this.props.proposal.vendor.firstName &&
+                      this.props.proposal.vendor.lastName
                         ? `${this.props.proposal.vendor.firstName} ${this.props.proposal.vendor.lastName}`
                         : this.props.proposal.vendor.username}
                     </h6>

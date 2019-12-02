@@ -49,14 +49,16 @@ export default () => {
                     const emailTitle = "Milestone has been created.";
                     const description = `You can start work on this job.<br> Your accepted budget is ${milestone.price} USD.`;
                     const phoneDescription = `You can start work on this job.\n Your accepted budget is ${milestone.price} USD.`;
-                    env.MODE === "development" && console.log("create milestone result", result);
+                    env.MODE === "development" &&
+                      console.log("create milestone result", result);
                     saveNotification(vendorId, milestone.price);
                     sendingEmail(vendorEmail, emailTitle, description);
                     sendingSms(vendorPhone, emailTitle, phoneDescription);
                   })
                   .catch(
                     (error) =>
-                      env.MODE === "development" && console.log("saving notification error", error),
+                      env.MODE === "development" &&
+                      console.log("saving notification error", error),
                   );
                 env.MODE === "development" && console.log("milestone", milestone);
                 return res.status(200).json({
@@ -69,7 +71,9 @@ export default () => {
                 return res.status(500).json({
                   status: 500,
                   message:
-                    env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+                    env.NODE_ENV === "development"
+                      ? error.message
+                      : constants.PROD_COMMONERROR_MSG,
                 });
               });
           })
@@ -156,7 +160,8 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -364,7 +369,8 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -392,7 +398,8 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -421,7 +428,8 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -437,7 +445,8 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };

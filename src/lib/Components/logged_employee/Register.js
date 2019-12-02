@@ -92,7 +92,8 @@ class RegisterEmployee extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        process.env.NODE_ENV === "development" && console.log("Received values of form: ", values);
+        process.env.NODE_ENV === "development" &&
+          console.log("Received values of form: ", values);
       }
     });
   };
@@ -216,7 +217,11 @@ class RegisterEmployee extends React.Component {
                 label="Category"
                 validateStatus={categoryError ? "error" : ""}
                 help={categoryError || ""}
-                style={{ display: "inline-block", width: "calc(50% - 12px)", margin: "0 19px 0 0" }}
+                style={{
+                  display: "inline-block",
+                  width: "calc(50% - 12px)",
+                  margin: "0 19px 0 0",
+                }}
               >
                 {getFieldDecorator("category", {
                   rules: [{ required: true, message: "Please select your gender!" }],
@@ -238,7 +243,11 @@ class RegisterEmployee extends React.Component {
                 label="Sub-Category"
                 validateStatus={subcategoryError ? "error" : ""}
                 help={subcategoryError || ""}
-                style={{ display: "inline-block", width: "calc(50% - 12px)", margin: "0 0 0 5px" }}
+                style={{
+                  display: "inline-block",
+                  width: "calc(50% - 12px)",
+                  margin: "0 0 0 5px",
+                }}
               >
                 {getFieldDecorator("category", {
                   rules: [{ required: true, message: "Please select your gender!" }],
@@ -322,7 +331,12 @@ class RegisterEmployee extends React.Component {
                     defaultValue={0.0}
                     formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                    style={{ height: "42px", borderRadius: "1px", lineHeight: "2em", width: "50%" }}
+                    style={{
+                      height: "42px",
+                      borderRadius: "1px",
+                      lineHeight: "2em",
+                      width: "50%",
+                    }}
                     onChange={onChange}
                   />,
                 )}
@@ -405,6 +419,8 @@ class RegisterEmployee extends React.Component {
   }
 }
 
-const WrappedHorizontalLoginForm = Form.create({ name: "vendor_registration" })(RegisterEmployee);
+const WrappedHorizontalLoginForm = Form.create({ name: "vendor_registration" })(
+  RegisterEmployee,
+);
 
 export default withStyles(globalStyle, localStyle)(WrappedHorizontalLoginForm);

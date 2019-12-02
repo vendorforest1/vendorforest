@@ -140,7 +140,9 @@ class CreateContract extends React.Component {
                 allowHalf={true}
                 className="like-rate"
               />
-              <span className="ml-1">{this.props.proposal.vendor.vendor.reviewCount} Reviews</span>
+              <span className="ml-1">
+                {this.props.proposal.vendor.vendor.reviewCount} Reviews
+              </span>
             </div>
           </div>
           <hr className="mb-4" />

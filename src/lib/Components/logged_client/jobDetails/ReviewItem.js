@@ -60,7 +60,12 @@ class ReviewItem extends React.Component {
         </div>
         <div className="d-flex justify-content-between align-items-center">
           <div>
-            <Rate disabled value={this.props.review.rate} allowHalf={true} className="like-rate" />
+            <Rate
+              disabled
+              value={this.props.review.rate}
+              allowHalf={true}
+              className="like-rate"
+            />
             <span className="mr-2">{this.props.review.rate}</span>
             <small>{moment(this.props.review.createdAt).format("MMM DD, YYYY")}</small>
           </div>

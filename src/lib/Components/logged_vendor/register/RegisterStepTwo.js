@@ -16,7 +16,12 @@ class RegisterVendorStepTwo extends React.Component {
   componentDidMount() {}
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
+    const {
+      getFieldDecorator,
+      getFieldError,
+      isFieldTouched,
+      isSelectOptGroup,
+    } = this.props.form;
 
     const overviewError = isFieldTouched("overview") && getFieldError("overview");
 

@@ -41,11 +41,15 @@ class PostedJobItem extends React.Component {
           <div className="col-lg-4 d-flex justify-content-between text-grey">
             <div className="col text-center">
               <h6>Bids</h6>
-              <p className="text-color font-weight-bold">({this.props.job.proposales.length})</p>
+              <p className="text-color font-weight-bold">
+                ({this.props.job.proposales.length})
+              </p>
             </div>
             <div className="col text-center">
               <h6>Hire</h6>
-              <p className="text-color font-weight-bold">({this.props.job.hiredVendors.length})</p>
+              <p className="text-color font-weight-bold">
+                ({this.props.job.hiredVendors.length})
+              </p>
             </div>
           </div>
         </div>

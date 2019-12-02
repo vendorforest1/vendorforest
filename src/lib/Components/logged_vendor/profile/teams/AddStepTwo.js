@@ -31,7 +31,9 @@ class AddStepTwo extends React.Component {
             this.setState({ pending: false });
             if (data.data.length > 0) {
               let newMembers = [...this.state.members];
-              if (newMembers.findIndex((member) => member.vendor._id === data.data[0]._id) > -1) {
+              if (
+                newMembers.findIndex((member) => member.vendor._id === data.data[0]._id) > -1
+              ) {
                 message.warning("This vendor added already.");
                 return;
               }
@@ -98,7 +100,8 @@ class AddStepTwo extends React.Component {
             <div className="col-md-9 d-flex py-2 align-items-center">
               <Avatar
                 src={
-                  member.profileImage || "https://semantic-ui.com/images/avatar2/large/kristy.png"
+                  member.profileImage ||
+                  "https://semantic-ui.com/images/avatar2/large/kristy.png"
                 }
               />
               <div className="ml-3">

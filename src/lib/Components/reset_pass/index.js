@@ -41,7 +41,12 @@ class ResetPass extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
+    const {
+      getFieldDecorator,
+      getFieldError,
+      isFieldTouched,
+      isSelectOptGroup,
+    } = this.props.form;
 
     const emailError = isFieldTouched("email") && getFieldError("email");
     const codeError = isFieldTouched("code") && getFieldError("code");
@@ -83,7 +88,9 @@ class ResetPass extends React.Component {
                     >
                       {getFieldDecorator("code", {
                         initialValue: this.state.code,
-                        rules: [{ required: true, message: "Please enter the Code Shown Below." }],
+                        rules: [
+                          { required: true, message: "Please enter the Code Shown Below." },
+                        ],
                       })(
                         <Input
                           placeholder="Validation Code"

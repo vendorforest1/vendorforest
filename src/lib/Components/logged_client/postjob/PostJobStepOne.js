@@ -279,7 +279,9 @@ const mapStateToProps = ({ clientPostjobReducer }) => {
     pending,
   };
 };
-const ClientPostJobStepOneForm = Form.create({ name: "client_postjob_stepone" })(PostJobStepOne);
+const ClientPostJobStepOneForm = Form.create({ name: "client_postjob_stepone" })(
+  PostJobStepOne,
+);
 export default connect(mapStateToProps, {
   updateJob,
   updateStep,

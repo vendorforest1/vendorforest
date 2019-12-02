@@ -116,7 +116,8 @@ class VendorCompanyInfo extends React.Component {
 
     const businessNameError = isFieldTouched("businessName") && getFieldError("businessName");
     const yearFoundedError = isFieldTouched("yearFounded") && getFieldError("yearFounded");
-    const employeeCountError = isFieldTouched("employeeCount") && getFieldError("employeeCount");
+    const employeeCountError =
+      isFieldTouched("employeeCount") && getFieldError("employeeCount");
     const overviewError = isFieldTouched("overview") && getFieldError("overview");
     const firstNameError = isFieldTouched("firstName") && getFieldError("firstName");
     const lastNameError = isFieldTouched("lastName") && getFieldError("lastName");

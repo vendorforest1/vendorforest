@@ -72,7 +72,12 @@ class ClientBilling extends Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
+    const {
+      getFieldDecorator,
+      getFieldError,
+      isFieldTouched,
+      isSelectOptGroup,
+    } = this.props.form;
 
     const cardNumberError = isFieldTouched("cardNumber") && getFieldError("cardNumber");
     const firstNameError = isFieldTouched("firstName") && getFieldError("firstName");

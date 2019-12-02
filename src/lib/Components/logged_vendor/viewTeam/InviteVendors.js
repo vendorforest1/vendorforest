@@ -37,7 +37,9 @@ class InviteVendors extends React.Component {
             this.setState({ pending: false });
             if (data.data.length > 0) {
               let newInvitedUsers = [...this.state.invitedUsers];
-              if (newInvitedUsers.findIndex((user) => user.vendor._id === data.data[0]._id) > -1) {
+              if (
+                newInvitedUsers.findIndex((user) => user.vendor._id === data.data[0]._id) > -1
+              ) {
                 message.warning("This vendor added already.");
                 return;
               }
@@ -97,7 +99,9 @@ class InviteVendors extends React.Component {
           <div className="row border-bottom" key={index}>
             <div className="col-md-9 d-flex py-2 align-items-center">
               <Avatar
-                src={user.profileImage || "https://semantic-ui.com/images/avatar2/large/kristy.png"}
+                src={
+                  user.profileImage || "https://semantic-ui.com/images/avatar2/large/kristy.png"
+                }
               />
               <div className="ml-3">
                 <h6>{user.email}</h6>

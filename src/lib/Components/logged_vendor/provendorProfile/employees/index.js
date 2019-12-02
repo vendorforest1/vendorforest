@@ -87,7 +87,9 @@ class VendorEmployees extends React.Component {
             <div className="col-md-4 col-sm-6 mb-2">
               <Card className="w-100 h-100">
                 <Meta
-                  avatar={<Avatar src="https://semantic-ui.com/images/avatar2/large/kristy.png" />}
+                  avatar={
+                    <Avatar src="https://semantic-ui.com/images/avatar2/large/kristy.png" />
+                  }
                   title="Talik"
                   description="Co-founder"
                 />
@@ -97,7 +99,9 @@ class VendorEmployees extends React.Component {
             <div className="col-md-4 col-sm-6 mb-2">
               <Card className="w-100 h-100">
                 <Meta
-                  avatar={<Avatar src="https://semantic-ui.com/images/avatar2/large/kristy.png" />}
+                  avatar={
+                    <Avatar src="https://semantic-ui.com/images/avatar2/large/kristy.png" />
+                  }
                   title="Talik"
                   description="Co-founder"
                 />
@@ -107,7 +111,9 @@ class VendorEmployees extends React.Component {
             <div className="col-md-4 col-sm-6 mb-2">
               <Card className="w-100 h-100">
                 <Meta
-                  avatar={<Avatar src="https://semantic-ui.com/images/avatar2/large/kristy.png" />}
+                  avatar={
+                    <Avatar src="https://semantic-ui.com/images/avatar2/large/kristy.png" />
+                  }
                   title="Talik"
                   description="Co-founder"
                 />

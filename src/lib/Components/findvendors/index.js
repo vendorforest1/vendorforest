@@ -99,7 +99,9 @@ class FindVendors extends React.Component {
                   <div>{this.state.showFilter ? <Icon type="up" /> : <Icon type="down" />}</div>
                 </div>
                 <div
-                  className={`filter ${this.state.showFilter ? "d-block" : "d-none d-md-block"}`}
+                  className={`filter ${
+                    this.state.showFilter ? "d-block" : "d-none d-md-block"
+                  }`}
                 >
                   <div className="city mb-4">
                     <Input

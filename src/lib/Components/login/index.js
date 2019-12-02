@@ -91,7 +91,9 @@ class MainLogin extends React.Component {
                     </Form.Item>
                     <div className="d-flex justify-content-center mb-3">
                       <button
-                        className={`button-primary w-100 ${this.props.pending ? "disable" : ""}`}
+                        className={`button-primary w-100 ${
+                          this.props.pending ? "disable" : ""
+                        }`}
                         type="submit"
                       >
                         Login

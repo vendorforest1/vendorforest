@@ -74,9 +74,9 @@ class EmailConfirmRequire extends React.Component {
                     <Icon type="exclamation-circle" />
                   </div>
                   <div className="text-center text-grey">
-                    We just sent an email to gerardkasemba@gmail.com with instructions for resetting
-                    your account password. If you don’t see an email, be sure to check your spam
-                    folder.
+                    We just sent an email to gerardkasemba@gmail.com with instructions for
+                    resetting your account password. If you don’t see an email, be sure to check
+                    your spam folder.
                     <span
                       className={`ml-4 inline-block text-color pointer d-inline-block ${
                         this.state.isPending ? "text-grey" : ""

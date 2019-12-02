@@ -215,7 +215,9 @@ class PlaceBid extends React.Component {
             <p className="mb-2">{question}</p>
             <Form.Item>
               {getFieldDecorator(`answer${index}`, {
-                initialValue: this.props.proposal ? this.props.proposal.answers[index].answer : "",
+                initialValue: this.props.proposal
+                  ? this.props.proposal.answers[index].answer
+                  : "",
                 rules: [{ required: true, message: "Please input answer" }],
               })(<TextArea className="w-100" rows={4}></TextArea>)}
             </Form.Item>
@@ -294,7 +296,8 @@ class PlaceBid extends React.Component {
                                   <span className=" font-weight-bold">Location: </span>
                                   <Icon type="global" />
                                   <span className="ml-1">
-                                    {this.props.job.location.city}/{this.props.job.location.country}{" "}
+                                    {this.props.job.location.city}/
+                                    {this.props.job.location.country}{" "}
                                   </span>
                                 </p>
                               </div>
@@ -432,7 +435,9 @@ class PlaceBid extends React.Component {
                       </div>
                       <div className="d-flex justify-content-end">
                         <button
-                          className={`button-primary mb-3 ${this.props.pending ? "disable" : ""}`}
+                          className={`button-primary mb-3 ${
+                            this.props.pending ? "disable" : ""
+                          }`}
                           type="submit"
                         >
                           {this.isUpdate() ? "Update" : "Submit"}

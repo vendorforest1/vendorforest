@@ -81,7 +81,9 @@ class VendorOffers extends React.Component {
                 {moment(record.proposal.job.stDateTime).format("YYYY/MM/DD")}-
               </span>
               <Icon type="clock-circle" />
-              <span className="ml-1">{moment(record.proposal.job.stDateTime).format("HH:mm")}</span>
+              <span className="ml-1">
+                {moment(record.proposal.job.stDateTime).format("HH:mm")}
+              </span>
 
               <span className="mx-2 font-weight-bold">To</span>
 

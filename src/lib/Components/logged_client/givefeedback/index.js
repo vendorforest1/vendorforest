@@ -292,7 +292,8 @@ class ClientGiveFeedBack extends React.Component {
                     </div>
                     <div className="feedback-content mb-4">
                       <p className="mb-2">
-                        Share your experience with this vendor to the VendorForest.com community :
+                        Share your experience with this vendor to the VendorForest.com community
+                        :
                       </p>
                       <Form.Item label="">
                         {getFieldDecorator("feedback", {
@@ -302,8 +303,8 @@ class ClientGiveFeedBack extends React.Component {
                       </Form.Item>
                       <p className="mt-2">
                         Keep in mind that ending this contract will lock your vendor's dairy for
-                        this work. We'll le your vendor know that the job is done and send you the
-                        final statement with any remaining balance.
+                        this work. We'll le your vendor know that the job is done and send you
+                        the final statement with any remaining balance.
                       </p>
                     </div>
                     <button

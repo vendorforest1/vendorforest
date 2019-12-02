@@ -12,7 +12,9 @@ class InvitedNotApplied extends React.Component {
 
   render() {
     const notAppliedVendors = this.props.job.invitedVendors.filter((user) => {
-      return this.props.proposales.findIndex((proposal) => user._id === proposal.vendor._id) === -1;
+      return (
+        this.props.proposales.findIndex((proposal) => user._id === proposal.vendor._id) === -1
+      );
     });
 
     return (

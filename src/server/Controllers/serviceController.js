@@ -20,7 +20,8 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
@@ -42,7 +43,8 @@ export default () => {
     } catch (error) {
       return res.status(500).json({
         status: 500,
-        message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        message:
+          env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
       });
     }
   };
@@ -76,7 +78,8 @@ export default () => {
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };

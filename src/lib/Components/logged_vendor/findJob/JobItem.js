@@ -115,7 +115,8 @@ class JobItem extends React.Component {
                   {this.props.job.client.bsLocation
                     ? this.props.job.client.bsLocation.country
                     : this.props.job.location.country}{" "}
-                  | ${this.props.job.client.client && this.props.job.client.client.totalSpent} spent
+                  | ${this.props.job.client.client && this.props.job.client.client.totalSpent}{" "}
+                  spent
                 </span>
               </h6>
             </div>

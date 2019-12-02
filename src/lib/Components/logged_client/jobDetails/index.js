@@ -38,7 +38,8 @@ class ClientJobDetails extends React.Component {
     if (this.props.job && this.props.proposales) {
       return this.props.proposales.filter((proposal) => {
         return (
-          this.props.job.invitedVendors.findIndex((user) => user._id === proposal.vendor._id) > -1
+          this.props.job.invitedVendors.findIndex((user) => user._id === proposal.vendor._id) >
+          -1
         );
       }).length;
     }
@@ -74,7 +75,10 @@ class ClientJobDetails extends React.Component {
                       >
                         <Proposals />
                       </TabPane>
-                      <TabPane tab={`INIVTED VENDORS (${this.getInvitedProposalCount()})`} key="3">
+                      <TabPane
+                        tab={`INIVTED VENDORS (${this.getInvitedProposalCount()})`}
+                        key="3"
+                      >
                         <InvitedProposals />
                       </TabPane>
                       <TabPane tab={`HIRE (${this.props.job.hiredVendors.length})`} key="4">

@@ -30,7 +30,8 @@ function renderer(props) {
   //return
   const markup = ReactDOMServer.renderToString(app);
 
-  env.MODE === "development" && console.log(initialLocation.pathname, history.location.pathname);
+  env.MODE === "development" &&
+    console.log(initialLocation.pathname, history.location.pathname);
 
   if (initialLocation.pathname !== history.location.pathname) {
     response.status(302).setHeader("Location", history.location.pathname);

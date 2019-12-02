@@ -44,7 +44,10 @@ class Milestones extends React.Component {
                   <div className="ms-descrption mr-md-2 mr-0 mb-2 mb-md-0">
                     <Form.Item label="Description"></Form.Item>
                   </div>
-                  <div className="ms-price mr-md-2 mr-0 mb-2 mb-md-0" style={{ maxWidth: "150px" }}>
+                  <div
+                    className="ms-price mr-md-2 mr-0 mb-2 mb-md-0"
+                    style={{ maxWidth: "150px" }}
+                  >
                     <Form.Item label="Price"></Form.Item>
                   </div>
                   <button className="button-primary">Withdraw</button>

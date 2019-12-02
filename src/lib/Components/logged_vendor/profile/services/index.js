@@ -199,7 +199,9 @@ class VendorServices extends React.Component {
       return this.getSubCategoryList().map((subCategory, index) => {
         return (
           <Tag
-            color={this.state.selectedSubCategories.indexOf(subCategory) > -1 ? "#07b107" : "#eee"}
+            color={
+              this.state.selectedSubCategories.indexOf(subCategory) > -1 ? "#07b107" : "#eee"
+            }
             className={`mb-2 p-2 ${
               this.state.selectedSubCategories.indexOf(subCategory) > -1
                 ? "text-white"

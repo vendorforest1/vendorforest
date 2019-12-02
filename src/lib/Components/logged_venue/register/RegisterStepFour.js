@@ -21,7 +21,12 @@ class RegisterVenueStepFour extends React.Component {
   componentDidMount() {}
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
+    const {
+      getFieldDecorator,
+      getFieldError,
+      isFieldTouched,
+      isSelectOptGroup,
+    } = this.props.form;
 
     const cardNumberError = isFieldTouched("cardNumber") && getFieldError("cardNumber");
     const firstNameError = isFieldTouched("firstName") && getFieldError("firstName");
@@ -201,7 +206,9 @@ class RegisterVenueStepFour extends React.Component {
                     >
                       {getFieldDecorator("lastName", {
                         initialValue: this.state.securityCode,
-                        rules: [{ required: true, message: "Please input your security code." }],
+                        rules: [
+                          { required: true, message: "Please input your security code." },
+                        ],
                       })(
                         <Input
                           placeholder="Security Code"

@@ -256,7 +256,8 @@ class VendorMyAccount extends React.Component {
                       })(<Input placeholder="Email Address" size={"large"} />)}
                     </Form.Item>
                   </div>
-                  {this.props.form.getFieldsValue(["email"]).email !== this.props.user.email && (
+                  {this.props.form.getFieldsValue(["email"]).email !==
+                    this.props.user.email && (
                     <div className="col-md-2 mt-md-1 mt-0">
                       <Button
                         className={`w-100 mt-md-4 mt-0 mb-3`}
@@ -268,7 +269,8 @@ class VendorMyAccount extends React.Component {
                       </Button>
                     </div>
                   )}
-                  {this.props.form.getFieldsValue(["email"]).email !== this.props.user.email && (
+                  {this.props.form.getFieldsValue(["email"]).email !==
+                    this.props.user.email && (
                     <div className="col-md-4">
                       <Form.Item label="Verify Code">
                         {getFieldDecorator("verifyCode", {

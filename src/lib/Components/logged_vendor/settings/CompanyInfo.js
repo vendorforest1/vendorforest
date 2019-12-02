@@ -98,7 +98,12 @@ class VendorCompanyInfo extends React.Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
+    const {
+      getFieldDecorator,
+      getFieldError,
+      isFieldTouched,
+      isSelectOptGroup,
+    } = this.props.form;
 
     const generateFoundedYear = () => {
       return new Array(150).fill(1900).map((value, index) => {
@@ -239,8 +244,12 @@ class VendorCompanyInfo extends React.Component {
                   <GeoRangeMap
                     radius={this.state.geoRange * 1000}
                     center={{
-                      lat: this.props.user.bsLocation ? this.props.user.bsLocation.lat : -34.397,
-                      lng: this.props.user.bsLocation ? this.props.user.bsLocation.lng : 150.644,
+                      lat: this.props.user.bsLocation
+                        ? this.props.user.bsLocation.lat
+                        : -34.397,
+                      lng: this.props.user.bsLocation
+                        ? this.props.user.bsLocation.lng
+                        : 150.644,
                     }}
                   />
                 </div>

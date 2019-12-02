@@ -46,8 +46,8 @@ class HowItWorks extends React.Component {
                         </div>
                         <p>
                           {" "}
-                          Get qualified proposals within 24 hours. Compare bids, reviews, and prior
-                          work. Interview favorites and hire the best fit.
+                          Get qualified proposals within 24 hours. Compare bids, reviews, and
+                          prior work. Interview favorites and hire the best fit.
                         </p>
                       </div>
                     </div>
@@ -68,8 +68,8 @@ class HowItWorks extends React.Component {
                           <img src={interactiveWork} alt="Find vendor" />
                         </div>
                         <p>
-                          Use Vendorforest to chat with the vendors, share files, and track project
-                          milestones from your desktop or mobile.
+                          Use Vendorforest to chat with the vendors, share files, and track
+                          project milestones from your desktop or mobile.
                         </p>
                       </div>
                     </div>
@@ -85,8 +85,8 @@ class HowItWorks extends React.Component {
                         </div>
                         <p>
                           {" "}
-                          Pay fixed-price and receive invoices through Vendorforest. Only pay for
-                          work you authorize.
+                          Pay fixed-price and receive invoices through Vendorforest. Only pay
+                          for work you authorize.
                         </p>
                       </div>
                     </div>

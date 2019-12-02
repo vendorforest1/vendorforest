@@ -20,7 +20,8 @@ class HeaderForm extends React.Component {
                 <div className="header-search">
                   <h1>World’s Largest Verified Vendors</h1>
                   <p>
-                    Find And Hire Local Vendors or Pro Vendors For The Most Unforgettable Moments.
+                    Find And Hire Local Vendors or Pro Vendors For The Most Unforgettable
+                    Moments.
                   </p>
                   <div className="search-box mt-4">
                     <HomeSearchBar {...this.props} />

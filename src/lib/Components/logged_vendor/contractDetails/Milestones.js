@@ -187,7 +187,9 @@ class Milestones extends React.Component {
               </div>
               <div className="col-md-3 col-sm-6 col-12 text-center mb-3 mb-md-0">
                 <h6 className="mb-2">Total Payments</h6>
-                <h6 className="font-weight-normal text-color">$ {this.props.contract.paidPrice}</h6>
+                <h6 className="font-weight-normal text-color">
+                  $ {this.props.contract.paidPrice}
+                </h6>
               </div>
             </div>
             <hr />

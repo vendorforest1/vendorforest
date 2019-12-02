@@ -29,8 +29,8 @@ class HowItWorks extends React.Component {
                           <img src={iteractivePost} alt="Find vendor" />
                         </div>
                         <p>
-                          Vendorforest is a great place to find more clients, and to run and grow
-                          your own business.
+                          Vendorforest is a great place to find more clients, and to run and
+                          grow your own business.
                         </p>
                       </div>
                     </div>
@@ -46,8 +46,8 @@ class HowItWorks extends React.Component {
                         </div>
                         <p>
                           {" "}
-                          Vendorforest makes it easy to connect with clients and begin doing great
-                          work.
+                          Vendorforest makes it easy to connect with clients and begin doing
+                          great work.
                         </p>
                       </div>
                     </div>
@@ -69,8 +69,8 @@ class HowItWorks extends React.Component {
                         </div>
                         <p>
                           First call the client 1h before the event to confirm the location and
-                          time, when arrive make sure to look for the client to check in with them
-                          before starting to work.
+                          time, when arrive make sure to look for the client to check in with
+                          them before starting to work.
                         </p>
                       </div>
                     </div>
@@ -86,8 +86,9 @@ class HowItWorks extends React.Component {
                         </div>
                         <p>
                           {" "}
-                          All projects include Vendorforest Payment Protection-helping ensure that
-                          you get paid for all work successfully completed through Vendorforest.
+                          All projects include Vendorforest Payment Protection-helping ensure
+                          that you get paid for all work successfully completed through
+                          Vendorforest.
                         </p>
                       </div>
                     </div>

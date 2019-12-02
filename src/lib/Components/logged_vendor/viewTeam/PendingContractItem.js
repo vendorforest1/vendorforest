@@ -30,7 +30,8 @@ class VendorPendingContractItem extends React.Component {
             <p>
               <b>Begin date & time:</b> <Icon type="calendar" />{" "}
               {moment(this.props.contract.startDate).format("MMMM DD, YYYY")} -{" "}
-              <Icon type="clock-circle" /> {moment(this.props.contract.startDate).format("HH:mm A")}
+              <Icon type="clock-circle" />{" "}
+              {moment(this.props.contract.startDate).format("HH:mm A")}
             </p>
             <p>
               <b>Estimated End date & time:</b> <Icon type="calendar" />{" "}

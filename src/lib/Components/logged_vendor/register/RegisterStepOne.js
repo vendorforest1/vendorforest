@@ -60,11 +60,17 @@ class RegisterVendorStepOne extends React.Component {
   }
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
+    const {
+      getFieldDecorator,
+      getFieldError,
+      isFieldTouched,
+      isSelectOptGroup,
+    } = this.props.form;
 
     const businessNameError = isFieldTouched("businessName") && getFieldError("businessName");
     const yearFoundedError = isFieldTouched("yearFounded") && getFieldError("yearFounded");
-    const employeeCountError = isFieldTouched("employeeCount") && getFieldError("employeeCount");
+    const employeeCountError =
+      isFieldTouched("employeeCount") && getFieldError("employeeCount");
     const firstNameError = isFieldTouched("firstName") && getFieldError("firstName");
     const lastNameError = isFieldTouched("lastName") && getFieldError("lastName");
     const websiteError = isFieldTouched("website") && getFieldError("website");
@@ -203,7 +209,9 @@ class RegisterVendorStepOne extends React.Component {
                     <div className="d-flex w-100">
                       <InputNumber
                         defaultValue={1}
-                        formatter={(value) => `+ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                        formatter={(value) =>
+                          `+ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
                         parser={(value) => value.replace(/\+\s?|(,*)/g, "")}
                         className="mr-2"
                         onChange={(value) => {

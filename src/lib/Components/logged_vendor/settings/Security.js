@@ -40,7 +40,9 @@ class VendorSecurity extends React.Component {
                   {getFieldDecorator("oldPass", {
                     initialValue: this.state.oldPass, //solution
                     rules: [{ required: true, message: "Please input Old Password" }],
-                  })(<Input.Password placeholder="Old Password" name="oldPass" size={"large"} />)}
+                  })(
+                    <Input.Password placeholder="Old Password" name="oldPass" size={"large"} />,
+                  )}
                 </Form.Item>
               </div>
               <div className="col-md-6"></div>
@@ -49,7 +51,9 @@ class VendorSecurity extends React.Component {
                   {getFieldDecorator("newPass", {
                     initialValue: this.state.newPass, //solution
                     rules: [{ required: true, message: "Please input New Password" }],
-                  })(<Input.Password placeholder="New Password" name="newPass" size={"large"} />)}
+                  })(
+                    <Input.Password placeholder="New Password" name="newPass" size={"large"} />,
+                  )}
                 </Form.Item>
               </div>
               <div className="col-md-6"></div>

@@ -108,7 +108,11 @@ class VendorTeams extends React.Component {
       return this.state.teams.map((team, index) => {
         return (
           <div className="col-md-4 mb-2" key={index}>
-            <Card title={team.name} extra={<a href="/viewteam">View</a>} className="w-100 h-100">
+            <Card
+              title={team.name}
+              extra={<a href="/viewteam">View</a>}
+              className="w-100 h-100"
+            >
               <p className="mb-3">{team.about}</p>
               <p>
                 Member Count: <span className="text-color">{team.members.length}</span>

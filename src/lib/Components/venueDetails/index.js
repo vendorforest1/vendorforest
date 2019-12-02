@@ -213,11 +213,11 @@ class VenueDetails extends React.Component {
                       <span className="text-grey">{this.state.venue.location}</span>
                     </div>
                     <p className="mb-3">
-                      Altamont Manor, an historic wedding venue in the Albany, New York area, is an
-                      1894 Victorian Manor with elegant indoor and outdoor spaces. Couples can marry
-                      among lush gardens and antique accents. Facilities and Capacity The venue
-                      hosts up to 150 guests in its indoor and outdoor spaces. Couples can...
-                      (Garden Weddings Altamont)
+                      Altamont Manor, an historic wedding venue in the Albany, New York area, is
+                      an 1894 Victorian Manor with elegant indoor and outdoor spaces. Couples
+                      can marry among lush gardens and antique accents. Facilities and Capacity
+                      The venue hosts up to 150 guests in its indoor and outdoor spaces. Couples
+                      can... (Garden Weddings Altamont)
                     </p>
                     <div className="mb-3">
                       <h5>

@@ -43,7 +43,10 @@ class RegisterVendorStepThree extends React.Component {
             </p>
           </div>
           <div className="col-12">
-            <div className="map-content w-100" style={{ height: "300px", position: "relative" }}>
+            <div
+              className="map-content w-100"
+              style={{ height: "300px", position: "relative" }}
+            >
               <GeoRangeMap radius={this.state.geoRange} />
             </div>
           </div>
