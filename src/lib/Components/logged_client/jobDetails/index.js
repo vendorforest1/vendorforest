@@ -47,7 +47,8 @@ class ClientJobDetails extends React.Component {
 
   render() {
     if (this.props.job) {
-      process.env.NODE_ENV === "development" && console.log("hirevendors", this.props.job.hiredVendors);
+      process.env.NODE_ENV === "development" &&
+        console.log("hirevendors", this.props.job.hiredVendors);
     }
     return (
       <div className="job-details">

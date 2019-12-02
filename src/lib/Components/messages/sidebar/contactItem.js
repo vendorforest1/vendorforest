@@ -35,14 +35,15 @@ class ContactItem extends React.PureComponent {
       }
       return this.props.connectedUser.map((member, index) => {
         const { user } = this.props;
-        process.env.NODE_ENV === "development" && console.log(
-          "ddddddddddd",
-          member.user,
-          "sdsds",
-          member.roomName,
-          "uwrtypefds",
-          user.userObj.accoutType,
-        );
+        process.env.NODE_ENV === "development" &&
+          console.log(
+            "ddddddddddd",
+            member.user,
+            "sdsds",
+            member.roomName,
+            "uwrtypefds",
+            user.userObj.accoutType,
+          );
         return (
           <div
             key={index}

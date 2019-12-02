@@ -68,7 +68,8 @@ class ClientMyAccount extends React.Component {
     }
     if (info.file.status === "done") {
       // Get this url from response in real world.
-      process.env.NODE_ENV === "development" && console.log("info result&&&&&&", info.file.response.url);
+      process.env.NODE_ENV === "development" &&
+        console.log("info result&&&&&&", info.file.response.url);
       getBase64(info.file.originFileObj, (photoUrl) =>
         this.setState({
           photoUrl: photoUrl,

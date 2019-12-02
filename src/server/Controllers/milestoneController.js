@@ -54,7 +54,10 @@ export default () => {
                     sendingEmail(vendorEmail, emailTitle, description);
                     sendingSms(vendorPhone, emailTitle, phoneDescription);
                   })
-                  .catch((error) => env.MODE === "development" && console.log("saving notification error", error));
+                  .catch(
+                    (error) =>
+                      env.MODE === "development" && console.log("saving notification error", error),
+                  );
                 env.MODE === "development" && console.log("milestone", milestone);
                 return res.status(200).json({
                   status: 200,
@@ -101,7 +104,8 @@ export default () => {
       customer: clientID,
       type: "card",
     });
-    env.MODE === "development" && console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntent.data[0].id);
+    env.MODE === "development" &&
+      console.log("paymentMethodId&&&&&&&&&&&&&&&&", paymentIntent.data[0].id);
     const paymentMethodId = paymentIntent.data[0].id;
     try {
       const paymentIntent = await stripe.paymentIntents.create({
@@ -111,7 +115,8 @@ export default () => {
         payment_method: paymentMethodId,
         confirm: true,
       });
-      env.MODE === "development" && console.log("##########paymentIntent@@@@@@@@@@@@", paymentIntent);
+      env.MODE === "development" &&
+        console.log("##########paymentIntent@@@@@@@@@@@@", paymentIntent);
     } catch (err) {
       // Error code will be authentication_required if authentication is needed
       env.MODE === "development" && console.log("Error code is: ", err.code);

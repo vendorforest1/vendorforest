@@ -99,7 +99,8 @@ export default function(passport) {
       async function(err, token) {
         // asynchronously called
         if (err) {
-          env.MODE === "development" && console.log("Error happened while creating a Stripe Token: ", err);
+          env.MODE === "development" &&
+            console.log("Error happened while creating a Stripe Token: ", err);
         }
 
         env.MODE === "development" && console.log("Token: ", token);

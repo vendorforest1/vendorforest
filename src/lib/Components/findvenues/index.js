@@ -369,7 +369,9 @@ class FindVenue extends React.Component {
                     <div className="col-md-5">
                       <Search
                         placeholder="Where"
-                        onSearch={(value) => process.env.NODE_ENV === "development" && console.log(value)}
+                        onSearch={(value) =>
+                          process.env.NODE_ENV === "development" && console.log(value)
+                        }
                         className="mb-4"
                         enterButton
                       />

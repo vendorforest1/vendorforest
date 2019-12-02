@@ -31,7 +31,8 @@ class Messages extends React.Component {
         users[i] = accountType === 0 ? friends[i].roomName : friends[i].user;
       }
     }
-    process.env.NODE_ENV === "development" && console.log("accountType === ", accountType, "friend ======", users.toString());
+    process.env.NODE_ENV === "development" &&
+      console.log("accountType === ", accountType, "friend ======", users.toString());
     const userID = this.props.user.userObj._id;
     const userName = this.props.user.userObj.username;
     const profileImage = this.props.user.userObj.profileImage;
