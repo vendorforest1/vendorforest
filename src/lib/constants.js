@@ -1,6 +1,6 @@
 import moment from "moment";
-// eslint-disable-next-line no-process-env
-export const API_URL = process.env.API_URL;
+const _process = process;
+export const API_URL = _process.env.API_URL;
 
 export const constants = {
   GOOGLEMAP_API: "AIzaSyB7XtSfuHtmsmPBIYW4WzGS_QrwJ7DrX54",

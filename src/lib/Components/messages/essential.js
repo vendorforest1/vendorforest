@@ -166,7 +166,8 @@ export const fetchContactedUser = () => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      process.env.NODE_ENV === "development" && console.log("@@@@@@@@@@result.data ===", result.data);
+      process.env.NODE_ENV === "development" &&
+        console.log("@@@@@@@@@@result.data ===", result.data);
       dispatch(fetchGetConnectedUserSuccess(result.data));
     })
     .catch((err) => {
@@ -190,7 +191,8 @@ export const fetchOldMsg = (payload) => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      process.env.NODE_ENV === "development" && console.log("&&&&&&&&&All old messages&&&&&&&&& ===", result.data);
+      process.env.NODE_ENV === "development" &&
+        console.log("&&&&&&&&&All old messages&&&&&&&&& ===", result.data);
       dispatch(fetchOldMsgSuccess(result.data));
     })
     .catch((err) => {

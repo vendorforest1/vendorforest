@@ -194,7 +194,8 @@ export const fetchCreateMilestoneData = (payload) => async (dispatch, getState) 
         throw new Error(result.message);
       }
       const newMilestones = [...getState().clientContractDetailsReducer.milestones];
-      process.env.NODE_ENV === "development" && console.log("newMilestone created+++++++++++", newMilestones);
+      process.env.NODE_ENV === "development" &&
+        console.log("newMilestone created+++++++++++", newMilestones);
       newMilestones.push(result.data);
       dispatch(fetchMilestonesSuccess(newMilestones));
       dispatch(fetchSuccessMsg(result.message));

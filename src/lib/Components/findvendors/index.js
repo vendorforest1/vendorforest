@@ -190,7 +190,9 @@ class FindVendors extends React.Component {
                 <div className="search-bar">
                   <Search
                     placeholder="Find Vendor"
-                    onSearch={(value) => process.env.NODE_ENV === "development" && console.log(value)}
+                    onSearch={(value) =>
+                      process.env.NODE_ENV === "development" && console.log(value)
+                    }
                     className="mb-4"
                     enterButton
                   />

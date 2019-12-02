@@ -21,7 +21,8 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 export function sendSubscription(subscription, data) {
-  process.env.NODE_ENV === "development" && console.log("@@@@@@@@*******helloworld", subscription, data);
+  process.env.NODE_ENV === "development" &&
+    console.log("@@@@@@@@*******helloworld", subscription, data);
   return fetch(apiUrl.SEND_NOTIFICATION, {
     method: "POST",
     headers: {
@@ -43,7 +44,8 @@ export function subscribeUser(basis) {
 
         registration.pushManager.getSubscription().then(function(existedSubscription) {
           if (existedSubscription === null) {
-            process.env.NODE_ENV === "development" && console.log("No subscription detected, make a request.");
+            process.env.NODE_ENV === "development" &&
+              console.log("No subscription detected, make a request.");
             registration.pushManager
               .subscribe({
                 applicationServerKey: convertedVapidKey,
@@ -54,7 +56,8 @@ export function subscribeUser(basis) {
               })
               .catch(function(e) {
                 if (Notification.permission !== "granted") {
-                  process.env.NODE_ENV === "development" && console.log("Permission was not granted.");
+                  process.env.NODE_ENV === "development" &&
+                    console.log("Permission was not granted.");
                 } else {
                   console.error("An error ocurred during the subscription process.", e);
                 }

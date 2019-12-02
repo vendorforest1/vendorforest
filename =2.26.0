@@ -1,4 +1,0 @@
-+ html-webpack-plugin@4.0.0-beta.8
-updated 1 package and audited 923940 packages in 14.049s
-found 5 moderate severity vulnerabilities
-  run `npm audit fix` to fix them, or `npm audit` for details

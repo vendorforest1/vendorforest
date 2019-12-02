@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "contains 2 pod; back-end pod (resource container, api container), front-end pod ",
   "scripts": {
-    "deploy:to:docker": "./deploy_to_docker.sh 4444",
+    "deploy:to:docker": "./deploy_to_docker.sh 8081",
     "start": "node --max_old_space_size=4096 dist",
     "hot": "rm -rf dist && concurrently --kill-others \"yarn hot:start\" \"yarn hot:build\"",
     "hot:start": "mkdir dist && touch dist/index.js && nodemon dist",
@@ -15,7 +15,7 @@
   },
   "author": "talik.aziizi@gmail.com",
   "license": "ISC",
-  "homepage": "http://localhost:4444",
+  "homepage": ".",
   "devDependencies": {
     "@babel/plugin-transform-react-jsx": "^7.3.0",
     "@babel/plugin-transform-runtime": "^7.6.0",

@@ -188,7 +188,9 @@ export default () => {
     });
     webpush
       .sendNotification(subscription, payload)
-      .then((result) => env.MODE === "development" && console.log("after sending notification", result))
+      .then(
+        (result) => env.MODE === "development" && console.log("after sending notification", result),
+      )
       .catch((e) => env.MODE === "development" && console.log(e.stack));
 
     res.status(200).json({ success: true });

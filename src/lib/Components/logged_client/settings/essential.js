@@ -108,7 +108,8 @@ export const getSetupIntent = () => {
     })
     .then((response) => response.json())
     .then((result) => {
-      process.env.NODE_ENV === "development" && console.log("___setupintent___", result.client_secret);
+      process.env.NODE_ENV === "development" &&
+        console.log("___setupintent___", result.client_secret);
       return result.client_secret;
     });
 };

@@ -412,7 +412,8 @@ export const clientFetchVendorProfileByUsername = (payload) => async (dispatch, 
       if (!result || result.length === 0) {
         throw new Error("empty result");
       }
-      process.env.NODE_ENV === "development" && console.log("********* public information: ", result.data);
+      process.env.NODE_ENV === "development" &&
+        console.log("********* public information: ", result.data);
       dispatch(fetchvendor(result.data));
     })
     .catch((err) => dispatch(fetchError(err.message)));
