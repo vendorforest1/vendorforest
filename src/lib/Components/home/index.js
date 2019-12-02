@@ -20,7 +20,7 @@ import Mask from "./Mask";
 
 import { fetchInitData } from "./essential";
 
-class Home extends React.Component {
+class HomeComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,7 +47,6 @@ class Home extends React.Component {
   }
 
   render() {
-    process.env.NODE_ENV === "development" && console.log(this.props.pending, this.props.homedata);
     return (
       <div>
         {this.props.pending && <Mask />}
@@ -64,7 +63,9 @@ class Home extends React.Component {
                 <Button.Group>
                   <Button
                     type="primary"
-                    className={this.state.select !== "client" ? "button_selected" : "group_button"}
+                    className={
+                      this.state.select !== "client" ? "button_selected" : "group_button"
+                    }
                     onClick={this.handleClient}
                   >
                     <Icon type="left" />
@@ -72,7 +73,9 @@ class Home extends React.Component {
                   </Button>
                   <Button
                     type="primary"
-                    className={this.state.select !== "vendor" ? "button_selected" : "group_button"}
+                    className={
+                      this.state.select !== "vendor" ? "button_selected" : "group_button"
+                    }
                     onClick={this.handleVendor}
                   >
                     Vendor
@@ -101,6 +104,6 @@ const mapStateToProps = ({ homeReducer, loginReducer }) => {
   return { error, homedata, success, pending, user };
 };
 
-export default connect(mapStateToProps, {
+export const Home = connect(mapStateToProps, {
   fetchInitData,
-})(withStyles(styles)(Home));
+})(withStyles(styles)(HomeComponent));

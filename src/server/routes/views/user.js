@@ -3,7 +3,6 @@ import { constants } from "@Config/index";
 // import userController from "@Controllers/userController";
 
 const router = express.Router();
-
 router.get("/register", function(req, res, next) {
   if (!req.user) {
     return next();

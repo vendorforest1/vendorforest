@@ -1,5 +1,4 @@
 import NoMatch from "@Components/NoMatch";
-import Home from "@Components/home";
 import MainLogin from "@Components/login";
 import MainRegister from "@Components/register";
 import ResetPass from "@Components/reset_pass";
@@ -36,6 +35,7 @@ import Messages from "@Components/messages";
 
 import Milestones from "@Components/logged_client/contractDetails/Milestones";
 import { VendorPublicProfile } from "./Components/logged_vendor/profile/publicProfile";
+import { Home } from "./Components/home";
 
 export default [
   {
