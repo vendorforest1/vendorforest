@@ -37,7 +37,7 @@ const useNpm = fs.existsSync(paths.packageLockFile);
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
 const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
-const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 4444;
+const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 8081;
 const HOST = process.env.HOST || "0.0.0.0"; //SET ENV in .env file
 
 const isInteractive = process.stdout.isTTY;
@@ -80,7 +80,9 @@ checkBrowsers(paths.appPath, isInteractive)
             " to learn more about each warning.",
         );
         console.log(
-          "To ignore, add " + chalk.cyan("// eslint-disable-next-line") + " to the line before.\n",
+          "To ignore, add " +
+            chalk.cyan("// eslint-disable-next-line") +
+            " to the line before.\n",
         );
       } else {
         console.log(chalk.green("Compiled successfully.\n"));
@@ -147,7 +149,9 @@ function build(previousFileSizes) {
           warnings: [],
         });
       } else {
-        messages = formatWebpackMessages(stats.toJson({ all: true, warnings: true, errors: true }));
+        messages = formatWebpackMessages(
+          stats.toJson({ all: true, warnings: true, errors: true }),
+        );
       }
       if (messages.errors.length) {
         // Only keep the first error. Others are often indicative

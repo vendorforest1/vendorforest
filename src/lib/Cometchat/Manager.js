@@ -146,7 +146,8 @@ export class CCManager {
         },
 
         onTypingEnded: (typingIndicator) => {
-          process.env.NODE_ENV === "development" && console.log("Typing ended :", typingIndicator);
+          process.env.NODE_ENV === "development" &&
+            console.log("Typing ended :", typingIndicator);
           this.handleEndTyping(typingIndicator, dispatch);
         },
 
@@ -203,19 +204,22 @@ export class CCManager {
           },
 
           onOutgoingCallAccepted: (call) => {
-            process.env.NODE_ENV === "development" && console.log("Outgoing call accepted:", call);
+            process.env.NODE_ENV === "development" &&
+              console.log("Outgoing call accepted:", call);
             // Outgoing Call Accepted
             this.handleOutgoinCallAccepted(call, dispatch);
           },
 
           onOutgoingCallRejected: (call) => {
-            process.env.NODE_ENV === "development" && console.log("Outgoing call rejected:", call);
+            process.env.NODE_ENV === "development" &&
+              console.log("Outgoing call rejected:", call);
             // Outgoing Call Rejected
             this.handleOutgoinCallRejected(call, dispatch);
           },
 
           onIncomingCallCancelled: (call) => {
-            process.env.NODE_ENV === "development" && console.log("Incoming call calcelled:", call);
+            process.env.NODE_ENV === "development" &&
+              console.log("Incoming call calcelled:", call);
             this.handleIncomingCancelled(call, dispatch);
           },
         }),
