@@ -1,9 +1,10 @@
 import React from "react";
-import { Input, Form, Radio, Select, Card, Row, Col } from "antd";
-import stripeImage from "@Components/images/stripe/stripe.png";
+import { Form, Card, Row } from "antd";
 import stripeLinkButton from "@Components/images/stripe/str_link_button.png";
 import { signupStripe } from "./essential";
 import { connect } from "react-redux";
+
+const _process = process;
 
 class VendorBillingMethod extends React.Component {
   constructor(props) {
@@ -28,33 +29,8 @@ class VendorBillingMethod extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched, isSelectOptGroup } = this.props.form;
-
-    const cardNumberError = isFieldTouched("cardNumber") && getFieldError("cardNumber");
-    const firstNameError = isFieldTouched("firstName") && getFieldError("firstName");
-    const lastNameError = isFieldTouched("lastName") && getFieldError("lastName");
-    const securityCodeError = isFieldTouched("securityCode") && getFieldError("securityCode");
-
-    const generateExpireMonthOptions = () => {
-      return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((month, index) => {
-        return (
-          <Select.Option key={index} value={`0${month}`.slice(-2)}>
-            {`0${month}`.slice(-2)}
-          </Select.Option>
-        );
-      });
-    };
-
-    const generateExpireYearOptions = () => {
-      const years = new Array(30).fill(0);
-      return years.map((year, index) => {
-        return (
-          <Select.Option key={index} value={2019 + index}>
-            {2019 + index}
-          </Select.Option>
-        );
-      });
-    };
+    const API_URL = _process.env.API_URL;
+    const { getFieldError, isFieldTouched } = this.props.form;
 
     return (
       <div className="vendor-billingmethod">
@@ -65,9 +41,11 @@ class VendorBillingMethod extends React.Component {
         >
           <div>
             <Row style={{ textAlign: "center" }}>
-              <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=http://localhost:4444/vendor/settings&client_id=ca_G69qhU4bRaQUrWwoYPRNlzu50gvOEgEy">
+              <a
+                href={`https://connect.stripe.com/express/oauth/authorize?redirect_uri=${API_URL}/vendor/settings&client_id=ca_G69qhU4bRaQUrWwoYPRNlzu50gvOEgEy`}
+              >
                 <button>
-                  <img src={stripeLinkButton} />
+                  <img src={stripeLinkButton} alt="" />
                 </button>
               </a>
               {/* <button onClick={ this.goToStripe }>
