@@ -186,7 +186,7 @@ export default () => {
             .create({
               amount: price * 100 * 0.75,
               currency: "usd",
-              destination: "acct_1Fk7vdBfP3BuiHmP",
+              destination: vendorStripeID,
             })
             .then(async (transfer) => {
               const transferResult = transfer.amount;
