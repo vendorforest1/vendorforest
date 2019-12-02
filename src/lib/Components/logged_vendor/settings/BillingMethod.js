@@ -4,7 +4,7 @@ import stripeLinkButton from "@Components/images/stripe/str_link_button.png";
 import { signupStripe } from "./essential";
 import { connect } from "react-redux";
 
-const _process = process;
+const _process = process ? process : null;
 
 class VendorBillingMethod extends React.Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class VendorBillingMethod extends React.Component {
   };
 
   render() {
-    const API_URL = _process.env.API_URL;
+    const API_URL = _process && _process.env.API_URL;
     const { getFieldError, isFieldTouched } = this.props.form;
 
     return (
