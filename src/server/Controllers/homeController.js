@@ -66,14 +66,6 @@ export default () => {
                 .limit(3)
                 .then(async (jobResult) => {
                   const jobs = jobResult;
-                  console.log(
-                    "jobs=====",
-                    jobs,
-                    "services======",
-                    services,
-                    "vendors=====",
-                    vendors,
-                  );
                   return res.status(200).json({
                     status: 200,
                     data: {

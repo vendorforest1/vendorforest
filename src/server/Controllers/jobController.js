@@ -1,10 +1,8 @@
 import Job from "@Models/job.model";
 import User from "@Models/user.model";
 import Room from "@Models/chatRoom.model";
-import express from "express";
 import getEnv, { constants } from "@Config/index";
 import mongoose from "mongoose";
-import { ObjectId } from "bson";
 
 //send notification
 const webpush = require("web-push");
@@ -189,7 +187,8 @@ export default () => {
     webpush
       .sendNotification(subscription, payload)
       .then(
-        (result) => env.MODE === "development" && console.log("after sending notification", result),
+        (result) =>
+          env.MODE === "development" && console.log("after sending notification", result),
       )
       .catch((e) => env.MODE === "development" && console.log(e.stack));
 

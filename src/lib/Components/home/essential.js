@@ -79,7 +79,8 @@ export const fetchInitData = (payload) => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      console.log("homedata result++++++++++++++======", result.data);
+      process.env.NODE_ENV === "development" &&
+        console.log("homedata result++++++++++++++======", result.data);
       dispatch(fetchInitSuccess(result.data));
     })
     .catch((err) => dispatch(fetchError(err.message)));
