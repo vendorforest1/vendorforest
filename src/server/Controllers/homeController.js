@@ -2,6 +2,7 @@ import Service from "@Models/service.model";
 import User from "@Models/user.model";
 import Job from "@Models/job.model";
 import getEnv, { constants } from "@Config/index";
+import { async } from "q";
 
 const env = getEnv();
 
@@ -11,62 +12,83 @@ export default () => {
   controllers.get = async (req, res, next) => {
     env.MODE === "development" && console.log("req.isAuthenticated() ", req.isAuthenticated());
     try {
-      const services = await Service.find({}).populate({
-        path: "categories",
-        model: "category",
-      });
-      const vendors = await User.find({
-        accountType: constants.ACCOUNT_TYPE.VENDOR,
-        vendor: {
-          $exists: true,
-        },
-      })
+      await Service.find({})
         .populate({
-          path: "vendor",
-          model: "vendor",
-          populate: [
-            {
-              path: "service",
-              model: "service",
+          path: "categories",
+          model: "category",
+        })
+        .then(async (serviceResult) => {
+          const services = serviceResult;
+          await User.find({
+            accountType: constants.ACCOUNT_TYPE.VENDOR,
+            vendor: {
+              $exists: true,
             },
-            {
-              path: "category",
-              model: "category",
-            },
-          ],
+          })
+            .populate({
+              path: "vendor",
+              model: "vendor",
+              populate: [
+                {
+                  path: "service",
+                  model: "service",
+                },
+                {
+                  path: "category",
+                  model: "category",
+                },
+              ],
+            })
+            .lean()
+            .sort({
+              "vendor.rate": 1,
+            })
+            .limit(9)
+            .then(async (userResult) => {
+              const vendors = userResult;
+              await Job.find({
+                status: 0,
+              })
+                .populate("service")
+                .populate("category")
+                .populate({
+                  path: "client",
+                  model: "user",
+                  populate: {
+                    path: "client",
+                    model: "client",
+                  },
+                })
+                .lean()
+                .sort({
+                  createdAt: -1,
+                })
+                .limit(3)
+                .then(async (jobResult) => {
+                  const jobs = jobResult;
+                  console.log(
+                    "jobs=====",
+                    jobs,
+                    "services======",
+                    services,
+                    "vendors=====",
+                    vendors,
+                  );
+                  return res.status(200).json({
+                    status: 200,
+                    data: {
+                      user: req.user,
+                      services: services,
+                      vendors: vendors,
+                      jobs: jobs,
+                    },
+                  });
+                })
+                .catch((error) => console.log(error));
+            })
+            .catch((error) => console.log(error));
         })
-        .lean()
-        .sort({
-          "vendor.rate": 1,
-        })
-        .limit(9);
-      const jobs = await Job.find({
-        status: constants.JOB_STATUS.POSTED,
-      })
-        .populate("service")
-        .populate("category")
-        .populate({
-          path: "client",
-          model: "user",
-          populate: {
-            path: "client",
-            model: "client",
-          },
-        })
-        .lean()
-        .sort({
-          createdAt: -1,
-        })
-        .limit(3);
-      return res.status(200).json({
-        status: 200,
-        data: {
-          user: req.user,
-          services: services,
-          vendors: vendors,
-          jobs: jobs,
-        },
-      });
+        .catch((error) => console.log(error));
     } catch (error) {
       return res.status(500).json({
         status: 500,

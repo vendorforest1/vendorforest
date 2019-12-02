@@ -16,7 +16,7 @@ class VendorPayment extends React.Component {
         <Card title="Payment" style={{ boxShadow: "0 1px 6px rgba(57,73,76,.35)" }}>
           <div className="row">
             <div className="col-md-12 ">
-              <MilestonesForm />
+              {/* <MilestonesForm /> */}
             </div>
           </div>
         </Card>
