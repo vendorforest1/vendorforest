@@ -22,7 +22,7 @@ COPY . /home/nodejs/app
 
 RUN yarn build
 
-EXPOSE 4444
+EXPOSE 8081
 
 #To investigate 
 #docker run -it --entrypoint sh vendorforest/demov1.0
