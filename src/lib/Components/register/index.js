@@ -3,22 +3,9 @@ import React from "react";
 import withStyles from "isomorphic-style-loader/withStyles";
 import { connect } from "react-redux";
 import { constants } from "@Shared/constants";
-import {
-  Form,
-  Input,
-  Tooltip,
-  Icon,
-  Cascader,
-  Select,
-  Row,
-  Col,
-  Checkbox,
-  Button,
-  AutoComplete,
-} from "antd";
+import { Form, Input, Select, Checkbox } from "antd";
 
-import VF_Header from "@Components/inc/header";
-import VF_Footer from "@Components/inc/footer";
+import { Header, Footer } from "@Components/inc";
 
 import { fetchRegister } from "./essential";
 
@@ -26,7 +13,6 @@ import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 
 const { Option } = Select;
-const AutoCompleteOption = AutoComplete.Option;
 
 class MainRegister extends React.Component {
   constructor(props) {
@@ -78,11 +64,10 @@ class MainRegister extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { autoCompleteResult } = this.state;
 
     return (
       <div className="register-section">
-        <VF_Header />
+        <Header />
         <div className="content">
           <div className="container">
             <div className="row">
@@ -204,7 +189,7 @@ class MainRegister extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }
