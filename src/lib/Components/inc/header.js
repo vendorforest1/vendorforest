@@ -31,12 +31,12 @@ class VendorForestHeader extends React.Component {
           <div className="container">
             <div className="row">
               <div className="col-8 d-flex justify-content-start">
-                <small className="mr-4">
+                {/* <small className="mr-4">
                   <i className="icon">
                     <img src="https://img.icons8.com/ios-glyphs/15/000000/marker.png" alt="" />
                   </i>
-                  {/* Lynn,Massachusetts,US{" "} */}
-                </small>
+                  Lynn,Massachusetts,US{" "}
+                </small> */}
                 <small>
                   <i className="icon">
                     <img
