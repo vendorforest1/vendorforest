@@ -144,8 +144,6 @@ class VendorForestHeader extends React.Component {
       return this.getUnSignedVenderForestHeader();
     } else {
       let { userObj } = this.props.user;
-      process.env.NODE_ENV === "development" &&
-        console.log("***** header: ", userObj.accountType);
       if (userObj.accountType === 0) {
         return <ClientHeader />;
       }
@@ -159,6 +157,8 @@ const mapStateToProps = ({ loginReducer }) => {
 
   return { user };
 };
+
+export const Header = connect(mapStateToProps, {})(withStyles(styles)(VendorForestHeader));
 
 export default connect(mapStateToProps, {})(withStyles(styles)(VendorForestHeader));
 

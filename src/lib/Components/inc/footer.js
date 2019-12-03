@@ -1,18 +1,15 @@
 import React from "react";
 import rainbow from "@Components/images/header/pettran.jpg";
 
-
 class VendorForestFooter extends React.Component {
   render() {
     return (
-      <div className="mb_m20">
+      <div className="mb_m20" style={{ position: "absolute", bottom: "0" }}>
         <div className="footer mb_m20">
           <div className="container">
             <div className="row logo">
               <div className="col-md-3 col-6">
-                <p className="copyright">
-                  &copy; 2019 Vendorforest.com, inc.
-                </p> 
+                <p className="copyright">&copy; 2019 Vendorforest.com, inc.</p>
               </div>
               <div className="col-md-3 col-6"></div>
               <div className="col-md-3 col-6"></div>
@@ -32,5 +29,7 @@ class VendorForestFooter extends React.Component {
     );
   }
 }
+
+export const Footer = VendorForestFooter;
 
 export default VendorForestFooter;

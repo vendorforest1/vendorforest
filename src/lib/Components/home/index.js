@@ -51,7 +51,7 @@ class HomeComponent extends React.Component {
       <div>
         {this.props.pending && <Mask />}
         {!this.props.pending && this.props.homedata && (
-          <div>
+          <div style={{ position: "relative", overflow: "hidden" }}>
             <VendorForestHeader />
             <HeaderForm {...this.props} />
             <HomeCategories />
