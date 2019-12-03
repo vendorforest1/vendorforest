@@ -10,6 +10,10 @@ export default () => {
   const controllers = {};
 
   controllers.get = async (req, res, next) => {
+    const country = req.body.country;
+    const state = req.body.state;
+    const city = req.body.state;
+    console.log("country = ", country, "state = ", state, "city = ", city);
     env.MODE === "development" && console.log("req.isAuthenticated() ", req.isAuthenticated());
     try {
       await Service.find({})
@@ -48,6 +52,9 @@ export default () => {
               const vendors = userResult;
               await Job.find({
                 status: 0,
+                "location.country": country,
+                "location.state": state,
+                "location.city": city,
               })
                 .populate("service")
                 .populate("category")

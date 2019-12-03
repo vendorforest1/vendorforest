@@ -1,6 +1,7 @@
 import React from "react";
 import rainbow from "@Components/images/header/pettran.jpg";
 
+
 class VendorForestFooter extends React.Component {
   render() {
     return (
@@ -8,7 +9,11 @@ class VendorForestFooter extends React.Component {
         <div className="footer mb_m20">
           <div className="container">
             <div className="row logo">
-              <div className="col-md-3 col-6">&copy; 2019 Vendorforest.com, inc.</div>
+              <div className="col-md-3 col-6">
+                <p className="copyright">
+                  &copy; 2019 Vendorforest.com, inc.
+                </p> 
+              </div>
               <div className="col-md-3 col-6"></div>
               <div className="col-md-3 col-6"></div>
               <div className="col-md-3 col-6">
@@ -18,42 +23,6 @@ class VendorForestFooter extends React.Component {
                   alt=" footer"
                   width="300"
                 />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-md-3 col-6">
-                <h3>Company</h3>
-                <ul>
-                  <li>About Us</li>
-                  <li>Careers</li>
-                  <li>Press</li>
-                  <li>Blog</li>
-                </ul>
-              </div>
-              <div className="col-md-3 col-6">
-                <h3>Clients</h3>
-                <ul>
-                  <li>How it works</li>
-                  <li>Sign up</li>
-                  <li>Services near you</li>
-                </ul>
-              </div>
-              <div className="col-md-3 col-6">
-                <h3>Vendors</h3>
-                <ul>
-                  <li>How it works</li>
-                  <li>Sign up</li>
-                  <li>Community</li>
-                </ul>
-              </div>
-              <div className="col-md-3 col-6">
-                <h3>Supports</h3>
-                <ul>
-                  <li>Help</li>
-                  <li>Safety</li>
-                  <li>Term of Use</li>
-                  <li>Privacy Policy</li>
-                </ul>
               </div>
             </div>
           </div>

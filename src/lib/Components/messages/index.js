@@ -2,6 +2,7 @@ import React from "react";
 import io from "socket.io-client";
 import VF_ClientHeader from "@Components/inc/client_header";
 import VF_VendorHeader from "@Components/inc/vendor_header";
+import VF_Footer from "@Components/inc/footer";
 import withStyles from "isomorphic-style-loader/withStyles";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
@@ -39,7 +40,7 @@ class Messages extends React.Component {
     window.chat_id = userID;
     window.chat_name = userName;
     window.chat_avatar = profileImage;
-    window.chat_link = "Tom, chen, gerardvendor";
+    window.chat_link = "";
 
     var js = document.createElement("script");
     js.type = "text/javascript";
@@ -85,6 +86,7 @@ class Messages extends React.Component {
             </div>
           </div>
         </div>
+        <VF_Footer />
       </div>
     );
   }
