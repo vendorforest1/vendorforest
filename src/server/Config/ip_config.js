@@ -23,7 +23,7 @@ export default function(app) {
     if (DEBUG) {
       require("isomorphic-fetch")(async () => {
         http.get(
-          `http://api.ipstack.com/${ip_v4}?access_key=81f1dc79ef5bb8c315467ae4bba4a68c`,
+          `https://api.ipstack.com/${ip_v4}?access_key=81f1dc79ef5bb8c315467ae4bba4a68c`,
           function(resp) {
             var body = "";
             resp.on("data", function(data) {

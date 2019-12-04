@@ -2,8 +2,8 @@ import React from "react";
 import { Input, Icon, Tag } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import { connect } from "react-redux";
-import VF_VendorHeader from "@Components/inc/vendor_header";
-import VF_Footer from "@Components/inc/footer";
+import VendorHeader from "@Components/inc/vendor_header";
+import { Footer } from "@Components/inc";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import { fetchGetJobData } from "./essential";
@@ -86,7 +86,7 @@ class VendorJobDetails extends React.Component {
 
     return (
       <div className="vendor-job-details">
-        <VF_VendorHeader />
+        <VendorHeader />
         <div className="content">
           <div className="container">
             <div className="row">
@@ -322,7 +322,7 @@ class VendorJobDetails extends React.Component {
                             <p className=" font-weight-bold">Job Link</p>
                             <Input
                               disabled={true}
-                              value={`http://vendorforest.com/vendor/job/${this.props.job._id}`}
+                              value={`https://vendorforest.com/vendor/job/${this.props.job._id}`}
                             ></Input>
                           </div>
                         </div>
@@ -332,23 +332,23 @@ class VendorJobDetails extends React.Component {
                   <div className="similar-jobs shadow">
                     <h5 className="mb-4">Similar Jobs</h5>
                     <p>
-                      <a href="" className="text-color">
+                      <a href="#/" className="text-color">
                         Motivated front end developer (with design sense) needed to join a
                         growing team.
                       </a>
                     </p>
                     <p>
-                      <a href="" className="text-color">
+                      <a href="#/" className="text-color">
                         Seeking developer to convert web designs into Bootstrap responsive site.
                       </a>
                     </p>
                     <p>
-                      <a href="" className="text-color">
+                      <a href="#/" className="text-color">
                         React and React Native Developer.
                       </a>
                     </p>
                     <p>
-                      <a href="" className="text-color">
+                      <a href="#/" className="text-color">
                         Full stack developer needed for short job
                       </a>
                     </p>
@@ -358,7 +358,7 @@ class VendorJobDetails extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }

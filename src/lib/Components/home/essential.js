@@ -1,5 +1,4 @@
 import { apiUrl } from "@Shared/constants";
-import { async } from "q";
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
 const FETCH_INIT_SUCCESS = "FETCH_INIT_SUCCESS";
@@ -65,10 +64,10 @@ const clearError = () => ({
   type: CLEAR_FAILURE,
 });
 
-export const fetchInitData = (payload) => async (dispatch, getState) => {
+export const fetchInitData = () => async (dispatch) => {
   dispatch(clearError());
   dispatch(fetchRequest());
-  await fetch("http://ip-api.com/json", {
+  await fetch("https://ip-api.com/json", {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -100,8 +99,8 @@ export const fetchInitData = (payload) => async (dispatch, getState) => {
     .catch((err) => console.log("err =======", err));
 };
 
-export const fetchIpLookUp = () => async (dispatch, getState) => {
-  return await fetch("http://ip-api.com/json", {
+export const fetchIpLookUp = () => async () => {
+  return await fetch("https://ip-api.com/json", {
     method: "GET",
     headers: {
       Accept: "application/json",
