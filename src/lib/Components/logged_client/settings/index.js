@@ -3,14 +3,13 @@ import { Select, Icon, message } from "antd";
 import { connect } from "react-redux";
 import withStyles from "isomorphic-style-loader/withStyles";
 import VF_ClientHeader from "@Components/inc/client_header";
-import VF_Footer from "@Components/inc/footer";
+import { Footer } from "@Components/inc";
 import ClientMyAccount from "./MyAccount";
 import ClientSecurity from "./Security";
 import ClientBillingMethod from "./BillingMethod";
 import ClientNotification from "./Notification";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
-import { StripeProvider } from "react-stripe-elements";
 
 import { fetchGetSettings } from "./essential";
 const { Option } = Select;
@@ -143,7 +142,7 @@ class ClientSettings extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }

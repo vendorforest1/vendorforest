@@ -3,7 +3,7 @@ import { Icon, Select, Rate, Radio, Input } from "antd";
 
 import withStyles from "isomorphic-style-loader/withStyles";
 import VF_ClientHeader from "@Components/inc/client_header";
-import VF_Footer from "@Components/inc/footer";
+import { Footer } from "@Components/inc";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 const { Option } = Select;
@@ -90,7 +90,7 @@ class ClientDispute extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }

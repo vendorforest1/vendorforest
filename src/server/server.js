@@ -52,7 +52,7 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 //create the server
 //initializing connections
-connect(env.CONNSTR, {
+connect(env.DATABASE_CONNECTION, {
   useFindAndModify: false,
   useNewUrlParser: true,
   useUnifiedTopology: true,

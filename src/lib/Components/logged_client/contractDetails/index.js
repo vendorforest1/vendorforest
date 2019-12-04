@@ -3,7 +3,7 @@ import { Avatar, Progress, Icon, Tabs, message } from "antd";
 import { connect } from "react-redux";
 import withStyles from "isomorphic-style-loader/withStyles";
 import ClientHeader from "@Components/inc/client_header";
-import Footer from "@Components/inc/footer";
+import { Footer } from "@Components/inc";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import Milestones from "./Milestones";

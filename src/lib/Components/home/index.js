@@ -3,8 +3,7 @@ import { Icon, Button } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import { connect } from "react-redux";
 
-import VendorForestHeader from "@Components/inc/header";
-import VendorForestFooter from "@Components/inc/footer";
+import { Header, Footer } from "@Components/inc";
 
 import styles from "./index.scss";
 
@@ -48,11 +47,11 @@ class HomeComponent extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{ position: "relative" }}>
         {this.props.pending && <Mask />}
         {!this.props.pending && this.props.homedata && (
           <div style={{ position: "relative", overflow: "hidden" }}>
-            <VendorForestHeader />
+            <Header />
             <HeaderForm {...this.props} />
             <HomeCategories />
             <ServicesCategory services={this.props.homedata.services} />
@@ -88,9 +87,9 @@ class HomeComponent extends React.Component {
             {this.state.select === "client" ? <HowItWorks /> : <HowItWorksVendors />}
             <NewPostedJobs jobs={this.props.homedata.jobs} />
             <BuildTeamsBox />
-            <VendorForestFooter />
           </div>
         )}
+        {this.props.homedata && <Footer />}
       </div>
     );
   }

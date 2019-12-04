@@ -14,18 +14,20 @@ const getIp = require("ipware")().get_ip;
 
 const env = getEnv();
 
+console.log("env.SUPPORT_EMAIL: ", env.SUPPORT_EMAIL);
 export default function(passport) {
   const controllers = {};
   const mail = mailService({
-    user: "helpdesk@sequentialflow.com",
-    clientId: "505933082658-hcp57en4mu7rg2af3ril32a1mdtiuso5.apps.googleusercontent.com",
-    clientSecret: "DS3ROvZkscENoanNLzZc-9VF",
+    user: env.SUPPORT_EMAIL,
+    clientId: "407408718192.apps.googleusercontent.com",
+    clientSecret: "************",
     accessToken:
-      "ya29.GlslB9eXbQ3KQXDzHIZSnB8RR2JXArQRcQzxC2MbLMENoUAET0Omz1ZcAvfkIDCwsS6jwwAyoWDsSaH1BAoSaf8T-O5SKzEJ3ZgEuWCULpOGhgZSKGxFqj0xPkTM",
+      "ya29.Il-zB9gblyh0Ys1YdhS9ueHfvQMeIxFALgN8e-zA1u0vWZcQld8_RfgGnTWV425FTwCZ-q7m9hXHXi-dKzKGEo44lZnyVS7XPzUeoQZLubink_yWyc9xKG90BQICRotemw",
     scope: "https://mail.google.com/",
     tokenType: "Bearer",
     expiresIn: 3600,
-    refreshToken: "1/4nir3cGlLFiq_lYvygcSn9WLJBea9mK6IoIxo74FcFM",
+    refreshToken:
+      "1//04rlURIIZA8jhCgYIARAAGAQSNwF-L9IrShseGktIrs-_OjHBqT10d1FGs6DYc5i-YIVYlpYt5yp47S7viiqRqEdR0sf1aoTIFwc",
   });
 
   controllers.getAllUsers = function(req, res, rext) {
@@ -337,8 +339,8 @@ export default function(passport) {
       port: 587,
       secure: false,
       auth: {
-        user: env.EMAIL_ADDRESS,
-        pass: env.EMAIL_PASSWORD,
+        user: env.SUPPORT_EMAIL,
+        pass: env.SUPPORT_SECRET,
       },
       tls: {
         rejectUnauthorized: false,
@@ -348,7 +350,7 @@ export default function(passport) {
     // send mail with defined transport object
     const info = await transporter.sendMail({
       from: userEmail, // sender address
-      to: env.EMAIL_ADDRESS, // list of receivers
+      to: env.SUPPORT_EMAIL, // list of receivers
       subject: "Reset Password is required",
       text: "Vendorforest.com",
       html: `<h1 style={color: blue; font-weight: bold;}>

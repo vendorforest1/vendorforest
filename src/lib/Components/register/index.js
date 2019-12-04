@@ -144,7 +144,7 @@ class MainRegister extends React.Component {
                         >
                           <Option value={constants.ACCOUNT_TYPE.CLIENT}>Client</Option>
                           <Option value={constants.ACCOUNT_TYPE.VENDOR}>Vendor</Option>
-                          <Option value={constants.ACCOUNT_TYPE.PROVENDOR}>Pro Vendor</Option>
+                          {/* <Option value={constants.ACCOUNT_TYPE.PROVENDOR}>Pro Vendor</Option> */}
                         </Select>,
                       )}
                     </Form.Item>
@@ -156,7 +156,7 @@ class MainRegister extends React.Component {
                       })(
                         <Checkbox>
                           I have read the{" "}
-                          <a href="" className="text-color">
+                          <a href="#/" className="text-color">
                             agreement
                           </a>
                         </Checkbox>,

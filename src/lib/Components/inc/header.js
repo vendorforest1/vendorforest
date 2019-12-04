@@ -5,6 +5,7 @@ import ClientHeader from "./client_header";
 import VendorHeader from "./vendor_header";
 import { connect } from "react-redux";
 import rainbow from "@Components/images/header/pettran.jpg";
+import logo from "@Components/images/logo.svg";
 
 class VendorForestHeader extends React.Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class VendorForestHeader extends React.Component {
                   <i className="icon">
                     <img src="https://img.icons8.com/ios-glyphs/15/000000/marker.png" alt="" />
                   </i>
-                  Lynn,Massachusetts,US{" "}
+                  {/* Lynn,Massachusetts,US{" "} */}
                 </small>
                 <small>
                   <i className="icon">
@@ -43,7 +44,10 @@ class VendorForestHeader extends React.Component {
                       alt=""
                     />
                   </i>
-                  Info@Vendorforest.Com
+                  {
+                    // eslint-disable-next-line no-process-env
+                    process.env.SUPPORT_EMAIL
+                  }
                 </small>
               </div>
               <div className="col-4 d-flex justify-content-end">
@@ -65,10 +69,11 @@ class VendorForestHeader extends React.Component {
                 <div className="mr-auto">
                   <div className="top-nav-logo">
                     <a href="/">
-                      <img
+                      {/* <img
                         src="https://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png"
                         alt="vendorforest.com"
-                      />
+                      /> */}{" "}
+                      <img className="footer-logo" src={logo} alt=" footer" width="300" />
                     </a>
                   </div>
                 </div>

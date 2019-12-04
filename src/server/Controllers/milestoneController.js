@@ -290,8 +290,8 @@ export default () => {
       port: 587,
       secure: false,
       auth: {
-        user: env.EMAIL_ADDRESS,
-        pass: env.EMAIL_PASSWORD,
+        user: env.SUPPORT_EMAIL,
+        pass: env.SUPPORT_SECRET,
       },
       tls: {
         rejectUnauthorized: false,
@@ -311,8 +311,8 @@ export default () => {
   };
 
   const sendingSms = async (phone, title, description) => {
-    const accountSid = env.ACCOUNT_SID;
-    const authToken = env.AUTH_TOKEN;
+    const accountSid = env.TWILIO_ACCOUNT_SID;
+    const authToken = env.TWILIO_AUTH_TOKEN;
     const client = twilio(accountSid, authToken);
     try {
       client.messages

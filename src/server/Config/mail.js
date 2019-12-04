@@ -22,9 +22,7 @@ export default (oauth) => {
   const uncPath = baseDir.replace(/.*DevTC/gi, uncDrive);
 
   const oauth2Client = new OAuth2(
-    //clientId
     oauth.client_id,
-    // Client Secret
     oauth.client_secret,
     "https://developers.google.com/oauthplayground", // Redirect URL
   );
@@ -49,7 +47,8 @@ export default (oauth) => {
 
   mailObject.welcome = async (req, user, token) => {
     try {
-      const fileName = user.accountType === constants.ACCOUNT_TYPE.CLIENT ? clientFile : vendorFile;
+      const fileName =
+        user.accountType === constants.ACCOUNT_TYPE.CLIENT ? clientFile : vendorFile;
 
       oauth2Client.setCredentials({
         refresh_token: oauth.refresh_token,
@@ -86,9 +85,9 @@ export default (oauth) => {
             .then(async (source) => {
               const userNamePattern = /{user}/i;
               const cofirmationUrlPattern = /{confirmUrl}/i;
-              const href = `${req.connection && req.connection.encrypted ? "https" : "http"}://${
-                req.headers.host
-              }/confirmation/${token}`;
+              const href = `${
+                req.connection && req.connection.encrypted ? "https" : "http"
+              }://${req.headers.host}/confirmation/${token}`;
 
               source = source.replace(
                 cofirmationUrlPattern,
@@ -108,7 +107,7 @@ export default (oauth) => {
                 transporter.close();
               });
 
-              // That last brace is to close off our async function
+              // That last brace is to close off async function
             })
             .catch((err) => err);
         })

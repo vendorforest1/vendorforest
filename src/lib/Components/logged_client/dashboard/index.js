@@ -1,7 +1,7 @@
 import React from "react";
 import withStyles from "isomorphic-style-loader/withStyles";
 import Header from "@Components/inc/header";
-import VendorForestFooter from "@Components/inc/footer";
+import { Footer } from "@Components/inc";
 
 import PostedJobs from "./PostedJobs";
 import PendingContracts from "./PendingContracts";
@@ -38,7 +38,7 @@ class ClientDashboard extends React.Component {
             </div>
           </div>
         </div>
-        <VendorForestFooter />
+        <Footer />
       </div>
     );
   }

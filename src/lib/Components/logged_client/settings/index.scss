@@ -1,7 +1,9 @@
 .client-settings{
-    margin: 120px 0 0 0;
+    position: relative;
+    min-height: 100vh;
+    margin: 2% 0 0 0;
     @media screen and (max-width:1200px){
-        margin-top: 100px;
+        margin-top: 70px;
     }
     .content-wrap{
         @media screen and (max-width:1200px){

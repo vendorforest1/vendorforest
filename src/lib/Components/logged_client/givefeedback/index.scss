@@ -1,6 +1,8 @@
 .givefeedback{
+    position: relative;
+    min-height: 100vh;
     .content{
-        margin: 130px 0 50px 0;
+        margin: 2% 0 50px 0;
         @media screen and (max-width:1200px){
             margin-top: 80px 0 30px 0;
         }

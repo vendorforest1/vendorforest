@@ -30,6 +30,8 @@ class VendorBillingMethod extends React.Component {
 
   render() {
     const API_URL = _process && _process.env.API_URL;
+    const STRIPE_CLIENT = _process && _process.env.STRIPE_CLIENT;
+
     const { getFieldError, isFieldTouched } = this.props.form;
 
     return (
@@ -42,7 +44,7 @@ class VendorBillingMethod extends React.Component {
           <div>
             <Row style={{ textAlign: "center" }}>
               <a
-                href={`https://connect.stripe.com/express/oauth/authorize?redirect_uri=${API_URL}/vendor/settings&client_id=ca_G69qhU4bRaQUrWwoYPRNlzu50gvOEgEy`}
+                href={`https://connect.stripe.com/express/oauth/authorize?redirect_uri=${API_URL}/vendor/settings&client_id=${STRIPE_CLIENT}`}
               >
                 <button>
                   <img src={stripeLinkButton} alt="" />

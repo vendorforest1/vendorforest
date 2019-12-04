@@ -177,7 +177,11 @@ export default () => {
   controllers.sendingNotification = (req, res) => {
     const title = req.body.post.title;
     const subscription = req.body.subscription;
-    webpush.setVapidDetails(env.WEB_PUSH_CONTACT, env.PUBLIC_VAPID_KEY, env.PRIVATE_VAPID_KEY);
+    webpush.setVapidDetails(
+      env.COMET_WEB_PUSH_CONTACT,
+      env.COMET_PUBLIC_VAPID_KEY,
+      env.COMET_PRIVATE_VAPID_KEY,
+    );
     env.MODE === "development" && console.log("SUBscription list", subscription);
 
     const payload = JSON.stringify({
@@ -233,8 +237,8 @@ export default () => {
       port: 587,
       secure: false,
       auth: {
-        user: env.EMAIL_ADDRESS,
-        pass: env.EMAIL_PASSWORD,
+        user: env.SUPPORT_EMAIL,
+        pass: env.SUPPORT_SECRET,
       },
       tls: {
         rejectUnauthorized: false,
@@ -255,8 +259,8 @@ export default () => {
   };
 
   const sendingSms = async (phone, title, description) => {
-    const accountSid = env.ACCOUNT_SID;
-    const authToken = env.AUTH_TOKEN;
+    const accountSid = env.TWILIO_ACCOUNT_SID;
+    const authToken = env.TWILIO_AUTH_TOKEN;
     const client = twilio(accountSid, authToken);
     try {
       client.messages

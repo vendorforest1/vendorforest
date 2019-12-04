@@ -1,6 +1,6 @@
 import React from "react";
 import VendorForestHeader from "@Components/inc/header";
-import VendorForestFooter from "@Components/inc/footer";
+import { Footer } from "@Components/inc";
 
 import { Form, Icon, Input, Checkbox } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
@@ -9,31 +9,32 @@ import { constants } from "@Shared/constants";
 
 import { fetchLogin } from "./essential";
 
-// @ts-ignore
 import globalStyle from "@Components/sass/index.scss";
-// @ts-ignore
 import localStyle from "./index.scss";
 
 class MainLogin extends React.Component {
-  _isButton = false;
+  // _isButton = false;
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      enableButton: false,
+    };
   }
-  UNSAFE_componentWillReceiveProps(nextProps, nextState) {
-    if (nextProps.user && nextProps.user.userObj && this._isButton) {
-      if (nextProps.user.userObj.accountType === constants.ACCOUNT_TYPE.VENDOR) {
-        this.props.history.push(
-          `/${constants.ACCOUNTTYPES[nextProps.user.userObj.accountType]}/findjob`,
-          nextProps.user.userObj,
+  static getDerivedStateFromProps(props, state) {
+    if (props.user && props.user.userObj && state.enableButton) {
+      if (props.user.userObj.accountType === constants.ACCOUNT_TYPE.VENDOR) {
+        props.history.push(
+          `/${constants.ACCOUNTTYPES[props.user.userObj.accountType]}/findjob`,
+          props.user.userObj,
         );
       } else {
-        this.props.history.push(
-          `/${constants.ACCOUNTTYPES[nextProps.user.userObj.accountType]}`,
-          nextProps.user.userObj,
+        props.history.push(
+          `/${constants.ACCOUNTTYPES[props.user.userObj.accountType]}`,
+          props.user.userObj,
         );
       }
     }
+    return null;
   }
   // @ts-ignore
   handleSubmit = async (e) => {
@@ -41,7 +42,10 @@ class MainLogin extends React.Component {
     this.props.form.validateFields((err, values) => {
       // if (!err && !this.props.user && !this.props.pending) {
       if (!err && !this.props.pending) {
-        this._isButton = true;
+        this.setState({
+          enableButton: true,
+        });
+        // this._isButton = true;
         this.props.fetchLogin(values);
       }
     });
@@ -121,7 +125,7 @@ class MainLogin extends React.Component {
             </div>
           </div>
         </div>
-        <VendorForestFooter />
+        <Footer />
       </div>
     );
   }

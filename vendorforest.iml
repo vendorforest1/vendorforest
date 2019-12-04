@@ -621,7 +621,7 @@ module.export const = (webpackEnv) => {
       //         SESS_DB_KEY: JSON.stringify(`developerteam09`),
       //         SESS_DB_USER: JSON.stringify(`devcaptain`),
       //         SESS_COLLECTION: JSON.stringify(`sessions`),
-      //         CONNSTR: JSON.stringify(`mongodb://vendorfo_dev_team:vendorfo_dev_team01@mongodb.vendorforest.com/vendorfo_staging_vf`),
+      //         DATABASE_CONNECTION: JSON.stringify(`mongodb://vendorfo_dev_team:vendorfo_dev_team01@mongodb.vendorforest.com/vendorfo_staging_vf`),
       //         PORT: 4444
       //     }
       // })

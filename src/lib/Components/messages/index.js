@@ -1,18 +1,12 @@
 import React from "react";
-import io from "socket.io-client";
-import VF_ClientHeader from "@Components/inc/client_header";
-import VF_VendorHeader from "@Components/inc/vendor_header";
-import VF_Footer from "@Components/inc/footer";
+import ClientHeader from "@Components/inc/client_header";
+import VendorHeader from "@Components/inc/vendor_header";
+import { Footer } from "@Components/inc";
 import withStyles from "isomorphic-style-loader/withStyles";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import { connect } from "react-redux";
 import { fetchContactedUser } from "./essential";
-import ChatRoom from "./chatroom";
-
-import {} from "./essential";
-
-const socket = io();
 
 class Messages extends React.Component {
   constructor(props) {
@@ -76,17 +70,19 @@ class Messages extends React.Component {
 
   render() {
     return (
-      <div className="chat-section">
-        {this.state.actype === "c" && <VF_ClientHeader />}
-        {this.state.actype === "v" && <VF_VendorHeader />}
-        <div className="container-fluid">
-          <div className="row">
-            <div className="col-md-12">
-              <div id="cometchat_embed_synergy_container"></div>
+      <div style={{ position: "relative", minHeight: "100vh" }}>
+        {this.state.actype === "c" && <ClientHeader />}
+        {this.state.actype === "v" && <VendorHeader />}
+        <div className="chat-section">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-md-12">
+                <div id="cometchat_embed_synergy_container"></div>
+              </div>
             </div>
           </div>
         </div>
-        <VF_Footer />
+        {/* <Footer /> */}
       </div>
     );
   }
