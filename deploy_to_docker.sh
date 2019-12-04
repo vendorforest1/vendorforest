@@ -12,6 +12,8 @@ docker stop vendorforestapp-build
 docker rm vendorforestapp-build
 docker rmi -f vendorforestapp-build 
 
+docker rm -f  $(docker ps -a -q)
+
 #build
 # echo "app dependencies."
 docker build -t vendorforestapp-build -f Dockerfile.build . 

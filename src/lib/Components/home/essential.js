@@ -96,10 +96,14 @@ export const fetchInitData = () => async (dispatch) => {
         })
         .catch((err) => dispatch(fetchError(err.message)));
     })
-    .catch((err) => console.log("err =======", err));
+    .catch((err) => {
+      if (err) {
+        dispatch(fetchError("failed to load location"));
+      }
+    });
 };
 
-export const fetchIpLookUp = () => async () => {
+export const fetchIpLookUp = () => async (dispatch) => {
   return await fetch("https://ip-api.com/json", {
     method: "GET",
     headers: {
@@ -112,5 +116,9 @@ export const fetchIpLookUp = () => async () => {
         throw new Error(result.message);
       }
     })
-    .catch((err) => console.log("err =======", err));
+    .catch((err) => {
+      if (err) {
+        dispatch(fetchError("failed to load location"));
+      }
+    });
 };
