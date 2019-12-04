@@ -11,6 +11,7 @@ import { fetchRegister } from "./essential";
 
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
+import { Redirect } from "react-router-dom";
 
 const { Option } = Select;
 
@@ -23,17 +24,16 @@ class MainRegister extends React.Component {
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    process.env.NODE_ENV === "development" && console.log("nextprops user", nextProps.user);
-    if (nextProps.user && nextProps.user.id) {
-      this.props.history.push(`/emailsent/${nextProps.user.id}`, nextState);
+  static getDerivedStateFromProps(props, state) {
+    if (props.user && props.user.id) {
+      return <Redirect to={`/emailsent/${props.user.id}`} />;
     }
+    return null;
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
-      process.env.NODE_ENV === "development" && console.log(values);
       if (!err && !this.props.pending && this.state.confirmDirty) {
         this.props.fetchRegister(values);
       }

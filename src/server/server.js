@@ -24,8 +24,7 @@ const MongoStore = connectMongo(session);
 
 const PORT = env.PORT;
 
-env.MODE === "development" && console.log(env);
-
+console.log(env);
 //this is Development demo for production. in real production see below
 //set cookie to sess.cookie.secure = true;
 if (env.MODE === "production") {

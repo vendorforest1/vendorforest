@@ -8,6 +8,8 @@ import VendorForestFooter from "@Components/inc/footer";
 
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 class EmailConfirmRequire extends React.Component {
   constructor(props) {
@@ -41,15 +43,13 @@ class EmailConfirmRequire extends React.Component {
             });
           }
           if (result.status === 401) {
-            let that = this;
             setTimeout(() => {
-              that.props.history.push("/register");
+              return <Redirect to={"/register"} />;
             }, 3000);
           }
           if (result.status === 402) {
-            let that = this;
             setTimeout(() => {
-              that.props.history.push("/login");
+              return <Redirect to={"/login"} />;
             }, 3000);
           }
         })
@@ -62,6 +62,8 @@ class EmailConfirmRequire extends React.Component {
   }
 
   render() {
+    const { user } = this.props;
+    const msg = user ? user.msg : undefined;
     return (
       <div className="emailconfirmrequire-section">
         <VendorForestHeader />
@@ -74,9 +76,8 @@ class EmailConfirmRequire extends React.Component {
                     <Icon type="exclamation-circle" />
                   </div>
                   <div className="text-center text-grey">
-                    We just sent an email to gerardkasemba@gmail.com with instructions for
-                    resetting your account password. If you don’t see an email, be sure to check
-                    your spam folder.
+                    {msg} with instructions for resetting your account password. If you don’t
+                    see an email, be sure to check your spam folder.
                     <span
                       className={`ml-4 inline-block text-color pointer d-inline-block ${
                         this.state.isPending ? "text-grey" : ""
@@ -94,10 +95,19 @@ class EmailConfirmRequire extends React.Component {
             </div>
           </div>
         </div>
+        {/* !email && <Redirect to={"/404"} /> */}
         <VendorForestFooter />
       </div>
     );
   }
 }
 
-export default withStyles(globalStyle, localStyle)(EmailConfirmRequire);
+const mapStateToProps = (state) => {
+  const { user } = state.registerReducer;
+  return { user };
+};
+
+export default connect(
+  mapStateToProps,
+  {},
+)(withStyles(globalStyle, localStyle)(EmailConfirmRequire));

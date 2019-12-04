@@ -72,7 +72,6 @@ function getClientEnvironment(publicUrl) {
         PORT: process.env.PORT,
         DB_CONN: process.env.DB_CONN,
         SESS_DB: process.env.SESS_DB,
-        SESS_DB_USER: process.env.SESS_DB_USER,
         SESS_COLLECTION: process.env.SESS_COLLECTION,
         DATABASE_CONNECTION: process.env.DATABASE_CONNECTION,
         STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
@@ -86,6 +85,11 @@ function getClientEnvironment(publicUrl) {
         COMET_WEB_PUSH_CONTACT: process.env.COMET_WEB_PUSH_CONTACT,
         COMET_PUBLIC_VAPID_KEY: process.env.COMET_PUBLIC_VAPID_KEY,
         COMET_PRIVATE_VAPID_KEY: process.env.COMET_PRIVATE_VAPID_KEY,
+        OAUTH_CLIENT_ID: process.env.OAUTH_CLIENT_ID,
+        OAUTH_SECRET: process.env.OAUTH_SECRET,
+        OAUTH_SCOPE: process.env.OAUTH_SCOPE,
+        OAUTH_REFRESH_TOKEN: process.env.OAUTH_REFRESH_TOKEN,
+        OAUTH_TOKEN: process.env.OAUTH_TOKEN,
         // Useful for determining whether we’re running in production mode.
         // Most importantly, it switches React into the correct mode.
         NODE_ENV: process.env.NODE_ENV || "development",

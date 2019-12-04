@@ -151,15 +151,12 @@ export default () => {
     // const ObjectId = require("mongodb").ObjectID;
     const myName = req.user.username;
     const vendorID = req.body.vendor;
-    env.MODE === "development" && console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$", vendorID);
     await User.findOne({ _id: mongoose.Types.ObjectId(vendorID) }, function(err, result) {
       if (err) {
         throw err;
       }
-      env.MODE === "development" && console.log("TTTTTTTTTTTTTTTTTTTTTT", result.username);
     })
       .then((result) => {
-        env.MODE === "development" && console.log("KLLLLLLLLLLJKJKJL", result);
         const senderRoomInfo = new Room({
           user: myName,
           roomName: result.username,
@@ -247,7 +244,7 @@ export default () => {
 
     // send mail with defined transport object
     const info = await transporter.sendMail({
-      from: '"VendorForest Support Team" <vendorforest@gmail.com>', // sender address
+      from: `"VendorForest Support Team" <${env.SUPPORT_EMAIL}>`, // sender address
       to: emailAddress, // list of receivers
       subject: "Hello ✔",
       text: "Hello world?",

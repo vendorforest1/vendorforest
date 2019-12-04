@@ -4,7 +4,7 @@ import User from "@Models/user.model";
 import Token from "@Models/token.model";
 import Client from "@Models/client.model";
 import Vendor from "@Models/vendor.model";
-import mailService from "@Config/mail";
+import { mail } from "@Config/mail";
 import geoip from "geoip-lite";
 import getEnv, { constants } from "@Config/index";
 import mongoose from "mongoose";
@@ -14,21 +14,8 @@ const getIp = require("ipware")().get_ip;
 
 const env = getEnv();
 
-console.log("env.SUPPORT_EMAIL: ", env.SUPPORT_EMAIL);
 export default function(passport) {
   const controllers = {};
-  const mail = mailService({
-    user: env.SUPPORT_EMAIL,
-    clientId: "407408718192.apps.googleusercontent.com",
-    clientSecret: "************",
-    accessToken:
-      "ya29.Il-zB9gblyh0Ys1YdhS9ueHfvQMeIxFALgN8e-zA1u0vWZcQld8_RfgGnTWV425FTwCZ-q7m9hXHXi-dKzKGEo44lZnyVS7XPzUeoQZLubink_yWyc9xKG90BQICRotemw",
-    scope: "https://mail.google.com/",
-    tokenType: "Bearer",
-    expiresIn: 3600,
-    refreshToken:
-      "1//04rlURIIZA8jhCgYIARAAGAQSNwF-L9IrShseGktIrs-_OjHBqT10d1FGs6DYc5i-YIVYlpYt5yp47S7viiqRqEdR0sf1aoTIFwc",
-  });
 
   controllers.getAllUsers = function(req, res, rext) {
     let query = User.find({});
@@ -109,121 +96,50 @@ export default function(passport) {
   };
 
   controllers.register = async function(req, res, next) {
+    const userData = {
+      email: req.body.email,
+      username: req.body.username,
+      password: req.body.password,
+      accountType: req.body.accountType,
+    };
+
     //use schema.create to insert data into the db
-    if (req.body.accountType === 1) {
-      const vendor = new Vendor({
-        _id: new mongoose.Types.ObjectId(),
+    const newUser = new User(userData);
+
+    await newUser.save(async function(err, user) {
+      if (err) {
+        return res.status(500).json({
+          status: 500,
+          type: err.name,
+          msg: err.message,
+          errors: err.errors,
+        });
+      }
+      // Create a verification token for this user
+      const token = new Token({
+        _userId: user._id,
+        email: user.email,
+        token: crypto.randomBytes(16).toString("hex"),
       });
 
-      vendor.save(function(err) {
+      await token.save(async function(err) {
         if (err) {
+          env.MODE === "development" && console.log("TOKEN ERR: ", err);
           return res.status(500).json({
             status: 500,
-            type: err.name,
             msg: err.message,
-            errors: err.errors,
           });
         }
-        const user = new User({
-          _id: new mongoose.Types.ObjectId(),
-          email: req.body.email,
-          username: req.body.username,
-          password: req.body.password,
-          accountType: req.body.accountType,
-          vendor: vendor._id,
-        });
 
-        user.save(function(err, user) {
-          if (err) {
-            return res.status(500).json({
-              status: 500,
-              type: err.name,
-              msg: err.message,
-              errors: err.errors,
-            });
-          }
-          const token = new Token({
-            _userId: user._id,
-            email: user.email,
-            token: crypto.randomBytes(16).toString("hex"),
-          });
+        await mail.welcome(req, user, token.token);
 
-          token.save(async function(err) {
-            if (err) {
-              env.MODE === "development" && console.log("TOKEN ERR: ", err);
-              return res.status(500).json({
-                status: 500,
-                msg: err.message,
-              });
-            }
-
-            mail.welcome(req, user, token.token);
-
-            return res.status(200).json({
-              status: 200,
-              id: user._id,
-              msg: "A verification email has been sent to " + user.email + ".",
-            });
-          });
+        return res.status(200).json({
+          status: 200,
+          id: user._id,
+          msg: "A verification email has been sent to " + user.email + ".",
         });
       });
-    } else {
-      const client = new Client({
-        _id: new mongoose.Types.ObjectId(),
-      });
-      client.save(function(err) {
-        if (err) {
-          return res.status(500).json({
-            status: 500,
-            type: err.name,
-            msg: err.message,
-            errors: err.errors,
-          });
-        }
-        const user = new User({
-          _id: new mongoose.Types.ObjectId(),
-          email: req.body.email,
-          username: req.body.username,
-          password: req.body.password,
-          accountType: req.body.accountType,
-          client: client._id,
-        });
-
-        user.save(function(err, user) {
-          if (err) {
-            return res.status(500).json({
-              status: 500,
-              type: err.name,
-              msg: err.message,
-              errors: err.errors,
-            });
-          }
-          const token = new Token({
-            _userId: user._id,
-            email: user.email,
-            token: crypto.randomBytes(16).toString("hex"),
-          });
-
-          token.save(async function(err) {
-            if (err) {
-              env.MODE === "development" && console.log("TOKEN ERR: ", err);
-              return res.status(500).json({
-                status: 500,
-                msg: err.message,
-              });
-            }
-
-            mail.welcome(req, user, token.token);
-
-            return res.status(200).json({
-              status: 200,
-              id: user._id,
-              msg: "A verification email has been sent to " + user.email + ".",
-            });
-          });
-        });
-      });
-    }
+    });
   };
 
   controllers.emailSent = async (req, res, next) => {
@@ -263,7 +179,7 @@ export default function(passport) {
             upsert: true,
             new: true,
           },
-          async (error, token) => {
+          (error, token) => {
             if (error) {
               return res.status(500).json({
                 status: 500,
@@ -334,42 +250,30 @@ export default function(passport) {
 
   controllers.sendResetEmail = async (req, res) => {
     const userEmail = req.body.userEmail;
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      auth: {
-        user: env.SUPPORT_EMAIL,
-        pass: env.SUPPORT_SECRET,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
+    const subject = "Reset Password is required";
+    const body = `<h1 style={color: blue; font-weight: bold;}>
+    Dear vendorforest staffs.  
+</h1>
+<div>
+    I want to change the password. 
+    My email address is ${userEmail}.
+    Thanks.  
+</div>
+<div>
+    <img src="https://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png" style={width:200px; height: 80px}>
+</div>`;
 
-    // send mail with defined transport object
-    const info = await transporter.sendMail({
-      from: userEmail, // sender address
-      to: env.SUPPORT_EMAIL, // list of receivers
-      subject: "Reset Password is required",
-      text: "Vendorforest.com",
-      html: `<h1 style={color: blue; font-weight: bold;}>
-                Dear vendorforest staffs.  
-            </h1>
-            <div>
-                I want to change the password. 
-                My email address is ${userEmail}.
-                Thanks.  
-            </div>
-            <div>
-                <img src="https://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png" style={width:200px; height: 80px}>
-            </div>`,
-    });
-
-    console.log("Message sent: %s", info.messageId);
-    return res.status(200).json({
-      status: 200,
-      message: "Email has been sent successfully.",
+    mail.sendEmail(userEmail, subject, body, (err, message) => {
+      if (err) {
+        return res.status(404).json({
+          status: 404,
+          message: "Email was not sent something went wrong!",
+        });
+      }
+      return res.status(200).json({
+        status: 200,
+        message: "Email has been sent successfully.",
+      });
     });
   };
 
@@ -379,7 +283,7 @@ export default function(passport) {
       {
         token: req.params.token,
       },
-      async (err, token) => {
+      (err, token) => {
         if (err) {
           return res.status(500).json({
             status: 500,
@@ -394,11 +298,11 @@ export default function(passport) {
           });
         }
         // If we found a token, find a matching user
-        await User.findOne(
+        User.findOne(
           {
             _id: token._userId,
           },
-          async (err, user) => {
+          (err, user) => {
             if (err) {
               return res.status(500).json({
                 status: 500,
@@ -413,7 +317,7 @@ export default function(passport) {
             }
 
             // Verify and save the user
-            await Token.findOneAndRemove(
+            Token.findOneAndRemove(
               {
                 _id: token._id,
               },
@@ -428,30 +332,77 @@ export default function(passport) {
                   isVerified: true,
                   isConfirmed: true,
                 };
+
                 if (user.accountType === constants.ACCOUNT_TYPE.CLIENT) {
-                  const client = await Client.create({});
-                  updateData.client = client._id;
-                } else if (user.accountType === constants.ACCOUNT_TYPE.VENDOR) {
-                  const vendor = await Vendor.create({});
-                  updateData.vendor = vendor._id;
-                }
-                await User.findOneAndUpdate(
-                  {
-                    _id: user._id,
-                  },
-                  updateData,
-                  async (err, user) => {
+                  const client = new Client({
+                    _id: new mongoose.Types.ObjectId(),
+                  });
+
+                  client.save(function(err) {
                     if (err) {
-                      return res.status(500).send({
+                      return res.status(500).json({
                         status: 500,
+                        type: err.name,
                         msg: err.message,
+                        errors: err.errors,
                       });
                     }
-                    return res.status(200).send({
-                      status: 200,
-                    });
-                  },
-                );
+
+                    updateData.client = client._id;
+
+                    User.findOneAndUpdate(
+                      {
+                        _id: user._id,
+                      },
+                      updateData,
+                      (err, user) => {
+                        if (err) {
+                          return res.status(500).send({
+                            status: 500,
+                            msg: err.message,
+                          });
+                        }
+                        return res.status(200).send({
+                          status: 200,
+                        });
+                      },
+                    );
+                  });
+                } else if (user.accountType === constants.ACCOUNT_TYPE.VENDOR) {
+                  const vendor = new Vendor({
+                    _id: new mongoose.Types.ObjectId(),
+                  });
+                  vendor.save(function(err) {
+                    if (err) {
+                      return res.status(500).json({
+                        status: 500,
+                        type: err.name,
+                        msg: err.message,
+                        errors: err.errors,
+                      });
+                    }
+
+                    updateData.vendor = vendor._id;
+
+                    User.findOneAndUpdate(
+                      {
+                        _id: user._id,
+                      },
+                      updateData,
+                      (err, user) => {
+                        if (err) {
+                          return res.status(500).send({
+                            status: 500,
+                            msg: err.message,
+                          });
+                        }
+                        return res.status(200).send({
+                          status: 200,
+                        });
+                      },
+                    );
+                  });
+                }
               },
             );
           },

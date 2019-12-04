@@ -619,7 +619,6 @@ module.export const = (webpackEnv) => {
       //         DB_CONN: JSON.stringify(`mongodb.vendorforest.com`), //without port?
       //         SESS_DB: JSON.stringify(`mongodb_session`),
       //         SESS_DB_KEY: JSON.stringify(`developerteam09`),
-      //         SESS_DB_USER: JSON.stringify(`devcaptain`),
       //         SESS_COLLECTION: JSON.stringify(`sessions`),
       //         DATABASE_CONNECTION: JSON.stringify(`mongodb://vendorfo_dev_team:vendorfo_dev_team01@mongodb.vendorforest.com/vendorfo_staging_vf`),
       //         PORT: 4444
