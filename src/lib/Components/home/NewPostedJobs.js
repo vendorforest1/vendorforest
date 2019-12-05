@@ -20,7 +20,7 @@ class NewPostedJobs extends React.Component {
           <div className="row">
             <div className="col-12">
               <h1 className="mb-5">
-                Latest Posted Jobs <span className="text-color">Near You</span>
+                Browse top jobs <span className="text-color">Near You</span>
               </h1>
               <div className="content">{generateJobs()}</div>
             </div>

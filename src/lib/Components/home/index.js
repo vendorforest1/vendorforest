@@ -15,6 +15,7 @@ import HowItWorks from "./HowItWorks";
 import HowItWorksVendors from "./HowItWorksVendors";
 import NewPostedJobs from "./NewPostedJobs";
 import BuildTeamsBox from "./BuildTeamsBox";
+import WhatIsGreat from "./HomeWhatIsGreat";
 import Mask from "./Mask";
 
 import { fetchInitData } from "./essential";
@@ -56,7 +57,7 @@ class HomeComponent extends React.Component {
             <HomeCategories />
             <ServicesCategory services={this.props.homedata.services} />
             <TopRatedVendors vendors={this.props.homedata.vendors} />
-            <div className="row">
+            {/* <div className="row">
               <div className="col-md-4 col-2"></div>
               <div className="col-md-4 col-8 button_group">
                 <Button.Group>
@@ -84,7 +85,8 @@ class HomeComponent extends React.Component {
               </div>
               <div className="col-md-4 col-2"></div>
             </div>
-            {this.state.select === "client" ? <HowItWorks /> : <HowItWorksVendors />}
+            {this.state.select === "client" ? <HowItWorks /> : <HowItWorksVendors />} */}
+            <WhatIsGreat />
             <NewPostedJobs jobs={this.props.homedata.jobs} />
             <BuildTeamsBox />
           </div>
