@@ -9,7 +9,6 @@ import geoip from "geoip-lite";
 import getEnv, { constants } from "@Config/index";
 import mongoose from "mongoose";
 
-const nodemailer = require("nodemailer");
 const getIp = require("ipware")().get_ip;
 
 const env = getEnv();
@@ -17,7 +16,7 @@ const env = getEnv();
 export default function(passport) {
   const controllers = {};
 
-  controllers.getAllUsers = function(req, res, rext) {
+  controllers.getAllUsers = function(req, res) {
     let query = User.find({});
     query.exec((err, users) => {
       if (err) {
@@ -29,12 +28,12 @@ export default function(passport) {
     });
   };
 
-  controllers.resendTokenPost = function(req, res, next) {};
+  controllers.resendTokenPost = function() {};
 
-  controllers.updateUser = function(req, res, next) {};
+  controllers.updateUser = function() {};
 
   //deactivate not delete
-  controllers.deActivateUser = function(req, res, next) {};
+  controllers.deActivateUser = function() {};
 
   controllers.login = function(req, res, next) {
     try {
@@ -68,7 +67,7 @@ export default function(passport) {
     }
   };
 
-  controllers.getUser = async (req, res, next) => {
+  controllers.getUser = async (req, res) => {
     await User.findById(req.user._id)
       .populate({ path: "vendor" })
       .populate({ path: "client" })
@@ -95,7 +94,7 @@ export default function(passport) {
       });
   };
 
-  controllers.register = async function(req, res, next) {
+  controllers.register = async function(req, res) {
     const userData = {
       email: req.body.email,
       username: req.body.username,
@@ -131,18 +130,25 @@ export default function(passport) {
           });
         }
 
-        await mail.welcome(req, user, token.token);
-
-        return res.status(200).json({
-          status: 200,
-          id: user._id,
-          msg: "A verification email has been sent to " + user.email + ".",
+        mail.welcome(user, token.token, (err, message) => {
+          if (err) {
+            env.MODE === "development" && console.log("email failed to send: ", err);
+            return res.status(424).json({
+              status: 424,
+              msg: err.message,
+            });
+          }
+          return res.status(200).json({
+            status: 200,
+            id: user._id,
+            msg: "A verification email has been sent to " + user.email + ".",
+          });
         });
       });
     });
   };
 
-  controllers.emailSent = async (req, res, next) => {
+  controllers.emailSent = async (req, res) => {
     await User.findById(
       {
         _id: req.params.id,
@@ -186,10 +192,20 @@ export default function(passport) {
                 message: error.message,
               });
             }
-            mail.welcome(req, user, token.token);
-            return res.status(200).json({
-              status: 200,
-              message: "A verification email has been sent to " + user.email + ".",
+
+            mail.welcome(user, token.token, (err, message) => {
+              if (err) {
+                env.MODE === "development" && console.log("email failed to send: ", err);
+                return res.status(424).json({
+                  status: 424,
+                  msg: err.message,
+                });
+              }
+              return res.status(200).json({
+                status: 200,
+                id: user._id,
+                msg: "A verification email has been sent to " + user.email + ".",
+              });
             });
           },
         );
@@ -197,7 +213,7 @@ export default function(passport) {
     );
   };
 
-  controllers.sendCodeEmail = async (req, res, next) => {
+  controllers.sendCodeEmail = async (req, res) => {
     await User.findOne(
       {
         email: req.params.email,
@@ -230,7 +246,7 @@ export default function(passport) {
             upsert: true,
             new: true,
           },
-          async (error, token) => {
+          async (error) => {
             if (error) {
               return res.status(500).json({
                 status: 500,
@@ -251,19 +267,8 @@ export default function(passport) {
   controllers.sendResetEmail = async (req, res) => {
     const userEmail = req.body.userEmail;
     const subject = "Reset Password is required";
-    const body = `<h1 style={color: blue; font-weight: bold;}>
-    Dear vendorforest staffs.  
-</h1>
-<div>
-    I want to change the password. 
-    My email address is ${userEmail}.
-    Thanks.  
-</div>
-<div>
-    <img src="https://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png" style={width:200px; height: 80px}>
-</div>`;
-
-    mail.sendEmail(userEmail, subject, body, (err, message) => {
+    const user = { email: userEmail };
+    mail.sendResetEmail(user, subject, (err, msg) => {
       if (err) {
         return res.status(404).json({
           status: 404,
@@ -277,7 +282,7 @@ export default function(passport) {
     });
   };
 
-  controllers.confirmationPost = async (req, res, next) => {
+  controllers.confirmationPost = async (req, res) => {
     // Find a matching token
     await Token.findOne(
       {
@@ -321,7 +326,7 @@ export default function(passport) {
               {
                 _id: token._id,
               },
-              async (error, token) => {
+              async () => {
                 if (err) {
                   return res.status(500).json({
                     status: 500,
@@ -355,7 +360,7 @@ export default function(passport) {
                         _id: user._id,
                       },
                       updateData,
-                      (err, user) => {
+                      (err) => {
                         if (err) {
                           return res.status(500).send({
                             status: 500,
@@ -389,7 +394,7 @@ export default function(passport) {
                         _id: user._id,
                       },
                       updateData,
-                      (err, user) => {
+                      (err) => {
                         if (err) {
                           return res.status(500).send({
                             status: 500,
@@ -411,7 +416,7 @@ export default function(passport) {
     );
   };
 
-  controllers.updateAccount = async (req, res, next) => {
+  controllers.updateAccount = async (req, res) => {
     if (req.body.verifyCode) {
       await Token.findOne({
         email: req.body.email,
@@ -482,7 +487,7 @@ export default function(passport) {
       });
   };
 
-  controllers.resetPass = async (req, res, next) => {
+  controllers.resetPass = async (req, res) => {
     await User.findById({
       _id: req.user._id,
     })

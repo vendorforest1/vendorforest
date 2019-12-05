@@ -30,8 +30,11 @@ const mailService = () => {
   const mailObject = {};
   const hostname = os.hostname();
 
+  env.MODE === "production" && console.log("production hostname: ", hostname);
+
   const clientFile = "email_client_welcome.html";
   const vendorFile = "email_vendor_welcome.html";
+
   const baseDir = "./public";
   const uncDrive = "\\\\" + hostname + "\\DevTC";
   const uncPath = baseDir.replace(/.*DevTC/gi, uncDrive);
@@ -50,19 +53,7 @@ const mailService = () => {
     }, // Redirect URL
   );
 
-  console.log("befpre: ", oauth);
-  const authObject = {
-    service: "gmail",
-    auth: {
-      type: "OAuth2",
-      user: oauth.user,
-      clientId: oauth.client_id,
-      clientSecret: oauth.client_secret,
-      refreshToken: oauth.refresh_token,
-      accessToken: "",
-    },
-  };
-  let transporter, accessToken;
+  let transporter;
 
   // prependUNCPath is a function called by Styliner for every
   // link that is found in the HTML.
@@ -103,105 +94,98 @@ const mailService = () => {
     }
   };
 
-  const transportMail = (mailOptions, callback) => {
-    return getNewToken(oauth2Client, async (accessToken) => {
-      authObject.auth.accessToken = accessToken;
-
-      console.log("**** access: ", authObject);
-      try {
-        transporter = nodemailer.createTransport({ ...authObject });
-        await transporter.sendMail(mailOptions, (error, response) => {
-          if (error) {
-            return callback(error, error.message);
-          }
-
-          transporter.close();
-        });
-
-        return callback(undefined, "mail sent");
-      } catch (e) {
-        return callback(e, e.message);
-      }
-    });
-  };
-  mailObject.sendEmail = async (userEmail, subject, body, callback) => {
+  const getMailOptions = (user, mailHeader) => {
     const mailOptions = {
       from: `${oauth.user}`, // sender address
-      to: `${userEmail}`, // list of receivers
+      to: `${user.email}`, // list of receivers
       //generateTextFromHTML: true,
-      subject: subject, // Subject line
-      html: body,
+      subject: "", // Subject line
+      html: "",
     };
-    console.log("1**** access: ", authObject);
-
-    transportMail(mailOptions, callback);
+    if (mailHeader) {
+      mailOptions.subject = mailHeader.subject;
+      mailOptions.html = mailHeader.html;
+    }
+    return mailOptions;
   };
-  mailObject.welcome = async (req, user, token) => {
-    try {
-      const fileName =
-        user.accountType === constants.ACCOUNT_TYPE.CLIENT ? clientFile : vendorFile;
 
-      const callback = (accessToken) => {
-        transporter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-            type: "OAuth2",
-            user: oauth.user,
-            clientId: oauth.client_id,
-            clientSecret: oauth.client_secret,
-            refreshToken: oauth.refresh_token,
-            accessToken: accessToken,
-          },
-        });
+  const sendEmail = (user, fileName, mailHeader, callback) => {
+    const mailOptions = getMailOptions(user, mailHeader);
 
-        const mailOptions = {
-          from: `${oauth.user}`, // sender address
-          to: `${user.email}`, // list of receivers
-          //generateTextFromHTML: true,
-          subject: `Welcome to Vendorforest`, // Subject line
-          html: ``,
-        };
+    const emailTransporter = (accessToken) => {
+      transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          type: "OAuth2",
+          user: oauth.user,
+          clientId: oauth.client_id,
+          clientSecret: oauth.client_secret,
+          refreshToken: oauth.refresh_token,
+          accessToken: accessToken,
+        },
+      });
+      read(fileName)
+        .then((data) => {
+          styliner
+            .processHTML(data)
+            .then(async (source) => {
+              const userNamePattern = /{user}/i;
+              const cofirmationUrlPattern = /{confirmUrl}/i;
+              const href = mailHeader.href;
 
-        read(fileName)
-          .then((data) => {
-            styliner
-              .processHTML(data)
-              .then(async (source) => {
-                const userNamePattern = /{user}/i;
-                const cofirmationUrlPattern = /{confirmUrl}/i;
-                const href = `${
-                  req.connection && req.connection.encrypted ? "https" : "http"
-                }://${req.headers.host}/confirmation/${token}`;
-
+              if (href) {
                 source = source.replace(
                   cofirmationUrlPattern,
                   `<a href=${href} target="_blank">${href}</a>`,
                 );
+              }
 
+              if (user) {
                 source = user.firstName
                   ? source.replace(userNamePattern, user.firstName)
                   : source.replace(userNamePattern, user.username);
+              }
 
-                mailOptions.html = source;
+              mailOptions.html = source;
 
-                // send mail with defined transport object
-                await transporter.sendMail(mailOptions, (error, response) => {
-                  if (error) {
-                  }
-                  transporter.close();
-                });
+              console.log(">>>>>> ", source);
+              // send mail with defined transport object
+              await transporter.sendMail(mailOptions, (error, response) => {
+                if (error) {
+                  callback(error, error.message);
+                }
+                transporter.close();
+                callback(undefined, "email sent");
+              });
 
-                // That last brace is to close off async function
-              })
-              .catch((err) => err);
-          })
-          .catch((err) => err);
-      };
-
-      getNewToken(oauth2Client, callback);
-    } catch (err) {
-      console.error(err);
+              // That last brace is to close off async function
+            })
+            .catch((e) => callback(e, e.message));
+        })
+        .catch((e) => callback(e, e.message));
+    };
+    try {
+      getNewToken(oauth2Client, emailTransporter);
+    } catch (e) {
+      callback(e, e.message);
     }
+  };
+
+  mailObject.sendResetEmail = async (user, subject, callback) => {
+    const mailOptions = {
+      subject: subject, // Subject line
+    };
+    sendEmail(user, "email_template.html", mailOptions, callback);
+  };
+
+  mailObject.welcome = async (user, token, callback) => {
+    const fileName =
+      user.accountType === constants.ACCOUNT_TYPE.CLIENT ? clientFile : vendorFile;
+    const mailHeader = {
+      href: `${env.API_URL}/confirmation/${token}`,
+      subject: "Welcome to VendorForest!",
+    };
+    sendEmail(user, fileName, mailHeader, callback);
     // setup e-mail data with unicode symbols
   };
 

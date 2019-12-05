@@ -7,7 +7,7 @@ import { Form, Input, Select, Checkbox } from "antd";
 
 import { Header, Footer } from "@Components/inc";
 
-import { fetchRegister } from "./essential";
+import { fetchRegister, restRegisterState } from "./essential";
 
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
@@ -24,11 +24,8 @@ class MainRegister extends React.Component {
     };
   }
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.user && props.user.id) {
-      return <Redirect to={`/emailsent/${props.user.id}`} />;
-    }
-    return null;
+  async componentDidMount() {
+    await this.props.restRegisterState();
   }
 
   handleSubmit = (e) => {
@@ -64,7 +61,9 @@ class MainRegister extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-
+    if (this.props.user && this.props.user.id) {
+      return <Redirect to={`/emailsent/${this.props.user.id}`} />;
+    }
     return (
       <div className="register-section">
         <Header />
@@ -207,6 +206,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchRegister: (payload) => dispatch(fetchRegister(payload)),
+    restRegisterState: () => dispatch(restRegisterState()),
   };
 };
 

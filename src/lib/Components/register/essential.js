@@ -4,7 +4,7 @@ const FETCH_REGISTER_REQUEST = "FETCH_REGISTER_REQUEST";
 const FETCH_REGISTER_SUCCESS = "FETCH_REGISTER_SUCCESS";
 const FETCH_REGISTER_FAILURE = "FETCH_REGISTER_FAILURE";
 const CLEAR_REGISTER_FAILURE = "CLEAR_REGISTER_FAILURE";
-
+const CLEAR_REGISTER_RESULTS = "CLEAR_REGISTER_RESULTS";
 // Reducer
 export default function reducer(
   state = {
@@ -38,6 +38,12 @@ export default function reducer(
         pending: false,
         user: undefined,
       };
+    case CLEAR_REGISTER_RESULTS:
+      return {
+        error: false,
+        pending: false,
+        user: undefined,
+      };
     default:
       return state;
   }
@@ -60,6 +66,10 @@ const clearRegisterError = () => ({
   type: CLEAR_REGISTER_FAILURE,
 });
 
+const clearRegisterResults = () => ({
+  type: CLEAR_REGISTER_RESULTS,
+});
+
 export const fetchRegister = (payload) => async (dispatch, getState) => {
   dispatch(clearRegisterError());
   dispatch(requestRegister());
@@ -79,4 +89,9 @@ export const fetchRegister = (payload) => async (dispatch, getState) => {
       dispatch(receivedRegister(result));
     })
     .catch((err) => dispatch(RegisterError(err.message)));
+};
+
+export const restRegisterState = (payload) => async (dispatch, getState) => {
+  await dispatch(clearRegisterError());
+  await dispatch(clearRegisterResults());
 };

@@ -69,6 +69,10 @@ class EmailConfirmRequire extends React.Component {
                   <div className="icon mb-3 text-center text-color">
                     {this.state.isPending ? (
                       <Icon type="sync" spin />
+                    ) : this.state.errorMsg ? (
+                      <span className="text-danger">
+                        <Icon type="close-circle" />
+                      </span>
                     ) : (
                       <Icon type="check-circle" />
                     )}

@@ -70,6 +70,7 @@ function getClientEnvironment(publicUrl) {
         //if Continuos integration is true, warnings will be treated as erros
         CI: false,
         PORT: process.env.PORT,
+        API_URL: process.env.API_URL,
         DB_CONN: process.env.DB_CONN,
         SESS_DB: process.env.SESS_DB,
         SESS_COLLECTION: process.env.SESS_COLLECTION,

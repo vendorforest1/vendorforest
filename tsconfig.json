@@ -30,6 +30,6 @@
     "jsx": "react",
     "allowJs": true
   },
-  "include": ["src", "declarations.d.ts"],
+  "include": ["src", "declarations.d.ts", "public/mail.js"],
   "exclude": ["scripts", "config"]
 }

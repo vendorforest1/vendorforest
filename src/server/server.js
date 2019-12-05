@@ -24,7 +24,7 @@ const MongoStore = connectMongo(session);
 
 const PORT = env.PORT;
 
-console.log(env);
+env.MODE === "development" && console.log(env);
 //this is Development demo for production. in real production see below
 //set cookie to sess.cookie.secure = true;
 if (env.MODE === "production") {
@@ -62,7 +62,7 @@ connect(env.DATABASE_CONNECTION, {
   });
 
 //DB connection
-const DBCONN = connection;
+const DB_CONNECTION = connection;
 
 const sess = {
   genid: () => {
@@ -72,7 +72,7 @@ const sess = {
   saveUninitialized: false, // don't create session until something stored
   resave: false, //don't save session if unmodified
   store: new MongoStore({
-    mongooseConnection: DBCONN,
+    mongooseConnection: DB_CONNECTION,
     ttl: 14 * 24 * 60 * 60, // = 14 days. Default
     autoRemove: "interval",
     autoRemoveInterval: 10, // In minutes. Default

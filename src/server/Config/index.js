@@ -5,11 +5,14 @@ export default function() {
   const env = process.env;
   return {
     PORT: env.PORT,
+    API_URL: process.env.API_URL,
     MODE: env.NODE_ENV,
+
     DB_CONN: env.DB_CONN,
     SESS_DB: env.SESS_DB,
     SESS_COLLECTION: env.SESS_COLLECTION,
     DATABASE_CONNECTION: env.DATABASE_CONNECTION,
+
     STRIPE_SECRET_KEY: env.STRIPE_SECRET_KEY,
     STRIPE_PUBLISHABLE_KEY: env.STRIPE_PUBLISHABLE_KEY,
     STRIPE_CLIENT: env.STRIPE_CLIENT,
