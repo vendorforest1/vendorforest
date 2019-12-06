@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Select, Icon, message } from "antd";
+import { Select, Icon, message, Badge, Tooltip } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import Header from "@Components/inc/vendor_header";
 import Footer from "@Components/inc/footer";

@@ -79,7 +79,7 @@ export const fetchInitData = (payload) => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      console.log(result.data);
+      console.log("category list == ", result.data);
       dispatch(fetchInitSuccess(result.data));
     })
     .catch((err) => dispatch(fetchError(err.message)));

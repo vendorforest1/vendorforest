@@ -107,6 +107,7 @@ class VendorMyAccount extends React.Component {
             placeId: this.state.placeId,
           },
           timeZone: values.timeZone,
+          isCompletedSettings: true,
         };
         this.props.fetchUpdateAccount(params);
       }

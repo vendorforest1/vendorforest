@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Dropdown, Icon, Badge } from "antd";
+import { Menu, Dropdown, Icon, Badge, Tooltip } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import style from "./index.scss";
 import rainbow from "@Components/images/header/pettran.jpg";
@@ -16,12 +16,20 @@ class VendorForestClientHeader extends React.Component {
 
     this.state = {
       isOpen: false,
+      completed: false,
     };
     this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
     this.props.getNotification();
+    if (this.props.user) {
+      if (this.props.user.userObj.bsLocation) {
+        this.setState({
+          completed: true,
+        });
+      }
+    }
   }
   toggle() {
     this.setState({
@@ -155,6 +163,13 @@ class VendorForestClientHeader extends React.Component {
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
                   </Dropdown>
+                  &nbsp;&nbsp;&nbsp;
+                  {this.state.completed === false ?
+                    <Tooltip title="You must complete your profile and setting.">
+                      <Badge count={<Icon type="info-circle" style={{ color: '#f5222d', fontSize: '20px' }} />}>
+                      </Badge>
+                    </Tooltip>:""
+                  } 
                 </div>
                 <div className="menu-hamburger d-xl-none d-block">
                   <div onClick={this.toggle} className="text-right">
@@ -207,10 +222,12 @@ class VendorForestClientHeader extends React.Component {
     );
   }
 }
-const mapStateToProps = ({ headerNotiReducer }) => {
+const mapStateToProps = ({ headerNotiReducer, loginReducer }) => {
   const { notification } = headerNotiReducer;
+  const { user } = loginReducer;
   return {
     notification,
+    user,
   };
 };
 

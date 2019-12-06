@@ -417,6 +417,7 @@ export default function(passport) {
   };
 
   controllers.updateAccount = async (req, res) => {
+    console.log("is setting completed?", req.body);
     if (req.body.verifyCode) {
       await Token.findOne({
         email: req.body.email,
