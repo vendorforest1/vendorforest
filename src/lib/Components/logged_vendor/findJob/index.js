@@ -7,13 +7,14 @@ import withStyles from "isomorphic-style-loader/withStyles";
 import VendorHeader from "@Components/inc/vendor_header";
 import Footer from "@Components/inc/footer";
 import JobItem from "./JobItem";
+import Warning from "./warning";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import { constants } from "@Shared/constants";
 import countryData from "@Shared/country_state.json";
 import store from "store";
 
-import { fetchFindJobsData, fetchServiceData } from "./essential";
+import { fetchFindJobsData, fetchServiceData, fetchUserInfo } from "./essential";
 const { Option } = Select;
 
 const Search = Input.Search;
@@ -35,6 +36,10 @@ class VendorFindJob extends React.Component {
       filterCity: "",
       filterVendorType: 0,
       showFilter: true,
+      // account: undefined,
+      // company: undefined,
+      // bill: undefined,
+      // service: undefined,
     };
   }
 
@@ -45,6 +50,19 @@ class VendorFindJob extends React.Component {
       status: [constants.JOB_STATUS.POSTED, constants.JOB_STATUS.HIRED],
     });
     this.props.fetchServiceData();
+    this.props.fetchUserInfo();
+    // if (this.props.userInfo) {
+    //   const account = this.props.userInfo.bsLocation ? true : undefined;
+    //   const billingMethod = this.props.userInfo.connectedAccountId ? true : undefined;
+    //   const company = this.props.userInfo.vendor.company ? true : undefined;
+    //   const service = this.props.userInfo.vendor.service ? true : undefined;
+    //   this.setState({
+    //     account: account,
+    //     company: company,
+    //     bill: billingMethod,
+    //     service: service,
+    //   });
+    // }
   }
 
   // UNSAFE_componentWillReceiveProps(newProps) {
@@ -135,6 +153,7 @@ class VendorFindJob extends React.Component {
         <VendorHeader />
         <div className="content">
           <div className="container">
+            {this.props.userInfo !== undefined ? <Warning data={this.props.userInfo} /> : null}
             <div className="row">
               <div className="col-md-3 mb-4">
                 <div
@@ -399,7 +418,7 @@ class VendorFindJob extends React.Component {
 }
 
 const mapStateToProps = ({ vendorFindJobReducer, loginReducer }) => {
-  const { error, success, jobs, services, pending } = vendorFindJobReducer;
+  const { error, success, jobs, services, pending, userInfo } = vendorFindJobReducer;
   const { user } = loginReducer;
   return {
     error,
@@ -408,10 +427,12 @@ const mapStateToProps = ({ vendorFindJobReducer, loginReducer }) => {
     services,
     pending,
     user,
+    userInfo,
   };
 };
 
 export default connect(mapStateToProps, {
   fetchFindJobsData,
   fetchServiceData,
+  fetchUserInfo,
 })(withStyles(globalStyle, localStyle)(VendorFindJob));

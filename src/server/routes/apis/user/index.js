@@ -49,5 +49,7 @@ export default function(app, passport) {
     userCtr.resetPass,
   );
   router.post("/resetpw", userCtr.sendResetEmail);
+  router.get("/userinfo", userCtr.userInfo);
+  router.get("/clientinfo", userCtr.clientInfo);
   return router;
 }

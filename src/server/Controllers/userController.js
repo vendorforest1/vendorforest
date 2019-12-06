@@ -282,6 +282,48 @@ export default function(passport) {
     });
   };
 
+  controllers.userInfo = async (req, res) => {
+    await User.findOne({
+      _id: req.user._id,
+    })
+      .populate({
+        path: "vendor",
+        model: "vendor",
+      })
+      .then((result) => {
+        console.log("fetch result = ", result);
+        return res.status(200).send({
+          status: 200,
+          body: result,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: error.message,
+        });
+      });
+  };
+
+  controllers.clientInfo = async (req, res) => {
+    await User.findOne({
+      _id: req.user._id,
+    })
+      .then((result) => {
+        console.log("fetch result = ", result);
+        return res.status(200).send({
+          status: 200,
+          data: result,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: error.message,
+        });
+      });
+  };
+
   controllers.confirmationPost = async (req, res) => {
     // Find a matching token
     await Token.findOne(

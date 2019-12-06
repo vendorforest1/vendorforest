@@ -10,6 +10,7 @@ const FETCH_PASTCONTRACT_SUCCESS = "FETCH_PASTCONTRACT_SUCCESS";
 const FETCH_PENDINGCONTRACT_SUCCESS = "FETCH_PENDINGCONTRACT_SUCCESS";
 const FETCH_FAILURE = "FETCH_FAILURE";
 const CLEAR_FAILURE = "CLEAR_FAILURE";
+const FETCH_CLIENT_INFO_SUCCESS = "FETCH_CLIENT_INFO_SUCCESS";
 
 // Reducer
 export default function reducer(
@@ -20,6 +21,7 @@ export default function reducer(
     pendingContracts: undefined,
     pastContracts: undefined,
     pending: false,
+    clientInfo: undefined,
   },
   action,
 ) {
@@ -40,6 +42,11 @@ export default function reducer(
         ...state,
         postedJobs: action.payload,
         pending: false,
+      };
+    case FETCH_CLIENT_INFO_SUCCESS:
+      return {
+        ...state,
+        clientInfo: action.payload,
       };
     case FETCH_PASTCONTRACT_SUCCESS:
       return {
@@ -107,6 +114,10 @@ const fetchSuccessMsg = (success) => ({
   payload: success,
 });
 
+const fetchClientInfoSuccess = (payload) => ({
+  type: FETCH_CLIENT_INFO_SUCCESS,
+  payload: payload,
+});
 const fetchError = (err) => ({
   type: FETCH_FAILURE,
   payload: err,
@@ -243,6 +254,29 @@ export const fetchEndContract = async (payload) => {
         throw new Error(result.message);
       }
       return result;
+    })
+    .catch((err) => {
+      throw err.message;
+    });
+};
+
+export const fetchClient = () => async (dispatch) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
+  return await fetch(apiUrl.GET_CLIENT_INFO, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      console.log("fetch client result === ", result.data);
+      dispatch(fetchClientInfoSuccess(result.data));
     })
     .catch((err) => {
       throw err.message;

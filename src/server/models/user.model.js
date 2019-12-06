@@ -43,10 +43,6 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    isCompletedSettings: {
-      type: Boolean,
-      default: false,
-    },
     rememberToken: String,
     profilePercent: {
       type: Number,

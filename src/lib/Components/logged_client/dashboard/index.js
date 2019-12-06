@@ -2,6 +2,8 @@ import React from "react";
 import withStyles from "isomorphic-style-loader/withStyles";
 import Header from "@Components/inc/header";
 import { Footer } from "@Components/inc";
+import Warning from "./warning";
+import { connect } from "react-redux";
 
 import PostedJobs from "./PostedJobs";
 import PendingContracts from "./PendingContracts";
@@ -9,6 +11,7 @@ import PastContracts from "./PastContracts";
 
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
+import { fetchClient } from "./essential";
 
 class ClientDashboard extends React.Component {
   constructor(props) {
@@ -19,12 +22,20 @@ class ClientDashboard extends React.Component {
       pastContracts: [],
     };
   }
+  componentDidMount() {
+    this.props.fetchClient();
+    console.log("user naem isff == ", this.props.clientInfo);
+  }
+
   render() {
     return (
       <div className="client-dashboard">
         <Header />
         <div className="content">
           <div className="container">
+            {this.props.clientInfo !== undefined ? (
+              <Warning data={this.props.clientInfo} />
+            ) : null}
             <div className="row">
               <div className="col-12 mb-md-4 mb-3">
                 <PostedJobs />
@@ -43,4 +54,16 @@ class ClientDashboard extends React.Component {
     );
   }
 }
-export default withStyles(globalStyle, localStyle)(ClientDashboard);
+
+const mapStateToProps = ({ loginReducer, clientDashboardReducer }) => {
+  const { user } = loginReducer;
+  const { clientInfo } = clientDashboardReducer;
+  return {
+    user,
+    clientInfo,
+  };
+};
+
+export default connect(mapStateToProps, {
+  fetchClient,
+})(withStyles(globalStyle, localStyle)(ClientDashboard));

@@ -24,9 +24,15 @@ class VendorForestFooter extends React.Component {
               </div> */}
               <div className="row">
                 <ul className="info">
-                  <li><a href="" >About Us</a></li>
-                  <li><a href="" >Feedback</a></li>
-                  <li><a href="" >Term&Privacy</a></li>
+                  <li>
+                    <a href="">About Us</a>
+                  </li>
+                  <li>
+                    <a href="">Feedback</a>
+                  </li>
+                  <li>
+                    <a href="">Term&Privacy</a>
+                  </li>
                 </ul>
               </div>
               <div className="row">
@@ -34,13 +40,17 @@ class VendorForestFooter extends React.Component {
                 <div className="col-md-4">
                   <ul>
                     <li className="social">
-                     <span className="image-margin"><img src={facebook} alt="facebook" width="40" /></span>
-                     <span className="image-margin"><img src={twitter} alt="twitter" width="40" /></span> 
-                     <span className="image-margin"><img src={instagram} alt="instagram" width="40" /></span>
+                      <span className="image-margin">
+                        <img src={facebook} alt="facebook" width="40" />
+                      </span>
+                      <span className="image-margin">
+                        <img src={twitter} alt="twitter" width="40" />
+                      </span>
+                      <span className="image-margin">
+                        <img src={instagram} alt="instagram" width="40" />
+                      </span>
                     </li>
-                    <li className="social">
-                     (a)2019 VendorForest.com, inc.
-                    </li>
+                    <li className="social">(a)2019 VendorForest.com, inc.</li>
                   </ul>
                 </div>
                 <div className="col-md-4"></div>

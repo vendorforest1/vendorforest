@@ -65,3 +65,40 @@
         }
     }
 }
+.warning {
+    border:1px solid red;
+    margin: 20px 0px;
+    padding: 20px;
+    div {
+        .icon {
+            font-size:50px;
+        }
+    }
+    .warning-icon {
+        @media screen and (max-width:768px){
+            text-align: center;
+        }
+    }
+    .warning-text {
+        h6 {
+            font-size: 16px;
+            font-weight: bolder;
+        }
+        ol {
+            padding-left: 15px;
+            padding-top: 15px;
+            font-size: 16px;
+            li {
+                padding-left: 15px 0px;
+                span {
+                    a {
+                        color: blue;
+                    }
+                }
+                .check {
+                    color: #07b107;
+                }
+            }
+        }       
+    }
+}
