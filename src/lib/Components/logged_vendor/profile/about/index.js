@@ -20,7 +20,6 @@ class VendorAbout extends React.Component {
 
   componentDidMount() {
     this.props.fetchReviewsData();
-    console.log("user info ====== ", this.props.user);
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -49,7 +48,6 @@ class VendorAbout extends React.Component {
         : this.props.selectedVendor;
     const vendor = user ? user : undefined;
     const isPublic = this.props.user ? false : true;
-    console.log("vendor job completed === ", vendor.vendor.jobComplatedReate);
     return vendor ? (
       <div className="vendor-about">
         <Card
@@ -81,13 +79,13 @@ class VendorAbout extends React.Component {
                         </span>
                       </p>
                     )}
-                    <Rate value={vendor.vendor.rate} disabled allowHalf />
-                    <span className="h6">{vendor.rate}</span>
+                    <Rate value={vendor.vendor ? vendor.vendor.rate : 0} disabled allowHalf />
+                    <span className="h6">{vendor.vendor ? vendor.vendor.rate : ""}</span>
                   </div>
                 </div>
                 <div className="status">
                   <p>Job Complated Rate</p>
-                  <Progress percent={vendor.vendor.jobComplatedReate} size="small" status="active" />
+                  <Progress percent={vendor.vendor ? vendor.vendor.jobComplatedReate : 0} size="small" status="active" />
                   <p>Profile Status</p>
                   <Progress percent={user.profilePercent} size="small" status="active" />
                 </div>
@@ -97,7 +95,7 @@ class VendorAbout extends React.Component {
               <div className="row">
                 <div className="col-md-3 text-center">
                   <div className="d-flex justify-content-center align-items-center">
-                    <h3>${vendor ? vendor.vendor.hourlyRate || 30 : 30}</h3>
+                    <h3>${vendor.vendor ? vendor.vendor.hourlyRate || 30 : 30}</h3>
                     {!isPublic && (
                       <div
                         className="h4 text-color ml-2 mb-0 pointer price-edit editable"
@@ -113,16 +111,16 @@ class VendorAbout extends React.Component {
                 </div>
                 {!isPublic && (
                   <div className="col-md-3 text-center">
-                    <h3>${vendor.vendor.totalEarning}</h3>
+                    <h3>${vendor.vendor ? vendor.vendor.totalEarning : 0}</h3>
                     <h6>Total Earning</h6>
                   </div>
                 )}
                 <div className="col-md-3 text-center">
-                  <h3>{vendor.vendor.jobs}</h3>
+                  <h3>{vendor.vendor ? vendor.vendor.jobs : 0}</h3>
                   <h6>jobs</h6>
                 </div>
                 <div className="col-md-3 text-center">
-                  <h3>{vendor.vendor.hoursWorked}</h3>
+                  <h3>{vendor.vendor ? vendor.vendor.hoursWorked : 0}</h3>
                   <h6>Hours Worked</h6>
                 </div>
               </div>
