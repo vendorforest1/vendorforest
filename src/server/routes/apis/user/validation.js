@@ -53,7 +53,6 @@ export const updateAccount = {
       placeId: Joi.string(),
     },
     timeZone: Joi.string(),
-    isCompletedSettings: Joi.boolean(),
   }),
 };
 
