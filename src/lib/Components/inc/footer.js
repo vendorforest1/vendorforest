@@ -31,7 +31,11 @@ class VendorForestFooter extends React.Component {
                     <a href="">Feedback</a>
                   </li>
                   <li>
-                    <a href="">Term&Privacy</a>
+                    <a href="term">Term</a>
+                    <span>&</span>
+                    <span>
+                      <a href="privacy">Privacy</a>
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -41,13 +45,19 @@ class VendorForestFooter extends React.Component {
                   <ul>
                     <li className="social">
                       <span className="image-margin">
-                        <img src={facebook} alt="facebook" width="40" />
+                        <a href="https://www.facebook.com/">
+                          <img src={facebook} alt="facebook" width="40" />
+                        </a>
                       </span>
                       <span className="image-margin">
-                        <img src={twitter} alt="twitter" width="40" />
+                        <a href="https://twitter.com/">
+                          <img src={twitter} alt="twitter" width="40" />
+                        </a>
                       </span>
                       <span className="image-margin">
-                        <img src={instagram} alt="instagram" width="40" />
+                        <a href="https://www.instagram.com/">
+                          <img src={instagram} alt="instagram" width="40" />
+                        </a>
                       </span>
                     </li>
                     <li className="social">(a)2019 VendorForest.com, inc.</li>

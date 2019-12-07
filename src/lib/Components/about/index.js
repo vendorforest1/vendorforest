@@ -77,7 +77,9 @@ class About extends React.Component {
             </div>
             <div className="col-sm-12 padding-0">
               <p className="content_letter">
-                <button>How it works</button>
+                <a href="/howitworks">
+                  <button>How it works</button>
+                </a>
               </p>
             </div>
           </div>

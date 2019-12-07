@@ -78,7 +78,7 @@ class VendorForestHeader extends React.Component {
                   </div>
                 </div>
                 <div className="menu-content d-none d-xl-flex justify-content-end align-items-center">
-                  <a href="#how_it_works" className="mr-4">
+                  <a href="/howitworks" className="mr-4">
                     HOW IT WORKS
                   </a>
                   <a href="/login" className="mr-4">

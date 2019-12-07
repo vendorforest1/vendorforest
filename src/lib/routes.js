@@ -38,6 +38,9 @@ import { VendorPublicProfile } from "./Components/logged_vendor/profile/publicPr
 import { Home } from "./Components/home";
 
 import About from "@Components/about";
+import HowItWorks from "@Components/how_it_works";
+import Term from "@Components/terms";
+import Privacy from "@Components/privacy";
 
 export default [
   {
@@ -203,6 +206,21 @@ export default [
     path: "/about",
     exact: true,
     component: About,
+  },
+  {
+    path: "/howitworks",
+    exact: true,
+    component: HowItWorks,
+  },
+  {
+    path: "/term",
+    exact: true,
+    component: Term,
+  },
+  {
+    path: "/privacy",
+    exact: true,
+    component: Privacy,
   },
   /*================================ Venue ====================================*/
   {
