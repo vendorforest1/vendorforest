@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from "react";
-import { Icon } from "antd";
+import { Icon, Alert } from "antd";
 
 class Warning extends React.Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class Warning extends React.Component {
   }
   componentDidMount() {
     if (this.props.data) {
+      console.log("data ===== ", this.props.data);
       const account = this.props.data.bsLocation ? true : undefined;
       const billingMethod = this.props.data.connectedAccountId ? true : undefined;
       const company = this.props.data.vendor.company ? true : undefined;
@@ -37,12 +38,10 @@ class Warning extends React.Component {
         this.state.service === true ? (
           ""
         ) : (
-          <div className="row warning">
-            <div className="col-md-2 col-sm-12 warning-icon">
-              <Icon type="warning" className="icon" theme="filled" />
-            </div>
-            <div className="col-md-10 col-sm-12 warning-text">
-              <h6>The next thing that you need to do after loging in is to:</h6>
+          <Alert
+            className="warning-text"
+            message="The next thing that you need to do after loging in is to:"
+            description={
               <ol>
                 <li>
                   Complete your{" "}
@@ -101,8 +100,10 @@ class Warning extends React.Component {
                   </ul>
                 </li>
               </ol>
-            </div>
-          </div>
+            }
+            type="warning"
+            showIcon
+          />
         )}
       </div>
     );

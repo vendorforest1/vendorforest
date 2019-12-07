@@ -198,6 +198,12 @@ export default [
     exact: true,
     component: VendorDashboard,
   },
+  /*================================ SERVICE LINKS ==============================*/
+  {
+    path: "/about",
+    exact: true,
+    component: About,
+  },
   /*================================ Venue ====================================*/
   {
     path: `/venue`,
@@ -229,10 +235,5 @@ export default [
   {
     path: "*",
     component: NoMatch,
-  },
-  /*================================ SERVICE LINKS ==============================*/
-  {
-    path: "/about",
-    component: About,
   },
 ];

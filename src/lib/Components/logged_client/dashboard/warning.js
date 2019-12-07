@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from "react";
-import { Icon } from "antd";
+import { Icon, Alert } from "antd";
 
 class Warning extends React.Component {
   constructor(props) {
@@ -29,12 +29,10 @@ class Warning extends React.Component {
         {this.state.account === true && this.state.bill === true ? (
           ""
         ) : (
-          <div className="row warning">
-            <div className="col-md-2 col-sm-12 warning-icon">
-              <Icon type="warning" className="icon" theme="filled" />
-            </div>
-            <div className="col-md-10 col-sm-12 warning-text">
-              <h6>The next thing that you need to do after loging in is to:</h6>
+          <Alert
+            className="warning-text"
+            message="The next thing that you need to do after loging in is to:"
+            description={
               <ul style={{ listStyleType: "none" }}>
                 <li>
                   Complete your{" "}
@@ -65,8 +63,10 @@ class Warning extends React.Component {
                   </ul>
                 </li>
               </ul>
-            </div>
-          </div>
+            }
+            type="warning"
+            showIcon
+          />
         )}
       </div>
     );

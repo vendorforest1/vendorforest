@@ -6,7 +6,7 @@ import VendorHeader from "./vendor_header";
 import { connect } from "react-redux";
 import rainbow from "@Components/images/header/pettran.jpg";
 import logo from "@Components/images/logo.svg";
-
+import { Button } from "antd";
 class VendorForestHeader extends React.Component {
   constructor(props) {
     super(props);
@@ -84,14 +84,8 @@ class VendorForestHeader extends React.Component {
                   <a href="/login" className="mr-4">
                     POST A JOB
                   </a>
-                  <a role="button" href="/register" className="button-primary">
-                    <i className="icon">
-                      <img
-                        src="https://img.icons8.com/ios-glyphs/15/ffffff/bookmark-ribbon.png"
-                        alt=""
-                      />
-                    </i>
-                    JOIN AS A VENDOR
+                  <a role="button" href="/register">
+                    <Button type="primary">Become a vendor</Button>
                   </a>
                 </div>
                 <div className="menu-hamburger d-xl-none d-block">
