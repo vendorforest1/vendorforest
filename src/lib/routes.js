@@ -37,6 +37,8 @@ import Milestones from "@Components/logged_client/contractDetails/Milestones";
 import { VendorPublicProfile } from "./Components/logged_vendor/profile/publicProfile";
 import { Home } from "./Components/home";
 
+import About from "@Components/about";
+
 export default [
   {
     path: `/`,
@@ -227,5 +229,10 @@ export default [
   {
     path: "*",
     component: NoMatch,
+  },
+  /*================================ SERVICE LINKS ==============================*/
+  {
+    path: "/about",
+    component: About,
   },
 ];

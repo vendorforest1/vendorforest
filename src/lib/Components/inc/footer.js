@@ -25,7 +25,7 @@ class VendorForestFooter extends React.Component {
               <div className="row">
                 <ul className="info">
                   <li>
-                    <a href="">About Us</a>
+                    <a href="/about">About Us</a>
                   </li>
                   <li>
                     <a href="">Feedback</a>
