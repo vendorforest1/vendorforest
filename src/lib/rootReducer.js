@@ -5,7 +5,7 @@ import storage from "redux-persist/lib/storage"; // or whatever storage you are 
 
 import loginReducer from "@Components/login/essential";
 import registerReducer from "@Components/register/essential";
-import { ForgotPasswordReducer } from "@Components/logged_client/settings/ForgotPassword";
+import { ForgotPasswordReducer } from "@Components/ForgotPassword/essential";
 
 import messagesReducer from "@Components/messages/essential";
 import homeReducer from "@Components/home/essential";

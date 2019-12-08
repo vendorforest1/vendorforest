@@ -24,26 +24,6 @@ const MongoStore = connectMongo(session);
 
 const PORT = env.PORT;
 
-// add & configure middleware
-// set morgan to log info about our requests for development use.
-// app.use(morgan(env.MODE));
-
-//TODO why do I use this, is there a better way?
-app.use(cors());
-app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  }),
-);
-app.use("/static", express.static("dist/static"));
-// app.use("/static", express.static("./public"));
-// app.set("views", path.resolve("public"));
-app.set("views", path.resolve("dist/static"));
-app.set("view engine", "ejs");
-app.use(express.static("public"));
-//create the server
-//initializing connections
 connect(env.DATABASE_CONNECTION, {
   useFindAndModify: false,
   useNewUrlParser: true,
@@ -78,6 +58,20 @@ if (env.MODE === "production") {
 }
 
 app.use(session(sess));
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  }),
+);
+app.use("/static", express.static("dist/static"));
+// app.use("/static", express.static("./public"));
+// app.set("views", path.resolve("public"));
+app.set("views", path.resolve("dist/static"));
+app.set("view engine", "ejs");
+app.use(express.static("public"));
 
 passportConfig(passport);
 

@@ -36,7 +36,7 @@ import Messages from "@Components/messages";
 import Milestones from "@Components/logged_client/contractDetails/Milestones";
 import { VendorPublicProfile } from "./Components/logged_vendor/profile/publicProfile";
 import { Home } from "./Components/home";
-import { ForgotPassword } from "./Components/logged_client/settings/ForgotPassword/ForgotPassword";
+import { ForgotPassword } from "@Components/ForgotPassword";
 
 import About from "@Components/about";
 import HowItWorks from "@Components/how_it_works";
