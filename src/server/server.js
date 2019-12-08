@@ -50,6 +50,7 @@ const sess = {
     autoRemove: "interval",
     autoRemoveInterval: 10, // In minutes. Default
   }),
+  cookie: {},
 };
 
 if (env.MODE === "production") {
