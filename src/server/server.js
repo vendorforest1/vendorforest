@@ -24,13 +24,6 @@ const MongoStore = connectMongo(session);
 
 const PORT = env.PORT;
 
-env.MODE === "development" && console.log(env);
-//this is Development demo for production. in real production see below
-//set cookie to sess.cookie.secure = true;
-if (env.MODE === "production") {
-  app.set("trust proxy", 1); // trust first proxy
-}
-
 // add & configure middleware
 // set morgan to log info about our requests for development use.
 // app.use(morgan(env.MODE));
@@ -78,6 +71,12 @@ const sess = {
     autoRemoveInterval: 10, // In minutes. Default
   }),
 };
+
+if (env.MODE === "production") {
+  app.set("trust proxy", 1); // trust first proxy
+  sess.cookie.secure = true; // serve secure cookies
+}
+
 app.use(session(sess));
 
 passportConfig(passport);
