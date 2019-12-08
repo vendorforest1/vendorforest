@@ -191,6 +191,15 @@ const mailService = () => {
     // setup e-mail data with unicode symbols
   };
 
+  mailObject.sendVendorEmail = async (job, subject, callback) => {
+    const mailOptions = {
+      subject: subject, // Subject line
+      //href: `${env.API_URL}/reset/${user.token}`,
+    };
+
+    sendEmail(job, "email_invite.html", mailOptions, callback);
+  };
+
   return mailObject;
 };
 

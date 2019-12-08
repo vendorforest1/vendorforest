@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import ClientBillingMethodForm from "./BillingMethodForm";
-import { getPublicKey } from "./essential";
 
 class ClientBillingMethod extends Component {
   render() {

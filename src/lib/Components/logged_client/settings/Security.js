@@ -24,11 +24,7 @@ class ClientSecurity extends React.Component {
     });
   };
 
-  static getDerivedStateFromProps(props, state) {
-    if (props.match.params) {
-      console.log("this.props.match.params ", props.match.params);
-    }
-  }
+  static getDerivedStateFromProps(props, state) {}
 
   render() {
     const { getFieldDecorator } = this.props.form;

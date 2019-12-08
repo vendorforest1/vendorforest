@@ -3,6 +3,7 @@ import User from "@Models/user.model";
 import Room from "@Models/chatRoom.model";
 import getEnv, { constants } from "@Config/index";
 import mongoose from "mongoose";
+import { mail } from "@Config/mail";
 
 //send notification
 const webpush = require("web-push");
@@ -196,7 +197,7 @@ export default () => {
     res.status(200).json({ success: true });
   };
 
-  controllers.sendEmail = async (req) => {
+  controllers.sendEmail = async (req, res) => {
     // create reusable transporter object using the default SMTP transport
     const country = req.body.location.country;
     const state = req.body.location.state;
@@ -220,8 +221,19 @@ export default () => {
       },
     )
       .then((data) =>
-        data.map((result) => {
-          sendingEmail(result.email, title, description);
+        data.map(async (result) => {
+          await mail.sendVendorEmail(result, "VendorForest information!", (err, msg) => {
+            if (err) {
+              return res.status(404).json({
+                status: 404,
+                message: "Email was not sent something went wrong!",
+              });
+            }
+            return res.status(200).json({
+              status: 200,
+              message: "Email about this has been sent to vendors successfully.",
+            });
+          });
           sendingSms(result.phone, title, description);
         }),
       )
