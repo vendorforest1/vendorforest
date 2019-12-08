@@ -94,6 +94,8 @@ export const apiUrl = {
   UPDATE_ACCOUNT: `${API_URL}/apis/account`,
   RESETPASS: `${API_URL}/apis/resetpass`,
   GET_HOMEDATA: `${API_URL}/apis/home`,
+  GET_USER_INFO: `${API_URL}/apis/userinfo`,
+  GET_CLIENT_INFO: `${API_URL}/apis/clientinfo`,
 
   GET_SERVICE: `${API_URL}/apis/service/get_services`,
 

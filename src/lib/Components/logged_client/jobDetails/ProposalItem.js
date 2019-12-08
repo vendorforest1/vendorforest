@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import CreateContract from "./CreateContract";
 import ProposalDetails from "./ProposalDetails";
-import { fetchDeclineProposal, initChat } from "./essential";
+import { fetchDeclineProposal } from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
 
 const io = require("socket.io-client");
@@ -25,15 +25,9 @@ class ProposalItem extends React.Component {
     this.chat = this.chat.bind(this);
     this.toggleProposal = this.toggleProposal.bind(this);
     this.toggleContract = this.toggleContract.bind(this);
-    this.connectChat = this.connectChat.bind(this);
   }
 
   componentDidMount() {}
-
-  connectChat() {
-    const vendorID = this.props.proposal.vendor;
-    this.props.initChat(vendorID);
-  }
 
   toggleProposal() {
     this.setState({
@@ -205,7 +199,6 @@ class ProposalItem extends React.Component {
                 onClick={() => {
                   this.toggleProposal();
                   this.toggleContract();
-                  this.connectChat();
                 }}
               >
                 Hire
@@ -228,4 +221,4 @@ const mapStateToProps = ({ clientJobDetailsReducer, loginReducer }) => {
   return { error, job, success, pending, user };
 };
 
-export default connect(mapStateToProps, { fetchDeclineProposal, initChat })(ProposalItem);
+export default connect(mapStateToProps, { fetchDeclineProposal })(ProposalItem);

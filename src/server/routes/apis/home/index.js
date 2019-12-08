@@ -9,6 +9,6 @@ const router = express.Router();
 const homeCtr = getHomeCtr();
 const validator = expressValidation.createValidator({ passError: true });
 
-router.post("/", validator.query(get.query), homeCtr.get);
+router.get("/", validator.query(get.query), homeCtr.get);
 
 export default router;

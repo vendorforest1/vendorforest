@@ -51,5 +51,7 @@ export default function(app, passport) {
   );
   router.post("/forgotPassword", validator.body(resetPass.body), userCtr.forgotPassword);
   router.post("/resetpw", userCtr.sendResetPasswordEmail);
+  router.get("/userinfo", userCtr.userInfo);
+  router.get("/clientinfo", userCtr.clientInfo);
   return router;
 }

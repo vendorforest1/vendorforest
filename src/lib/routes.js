@@ -38,6 +38,11 @@ import { VendorPublicProfile } from "./Components/logged_vendor/profile/publicPr
 import { Home } from "./Components/home";
 import { ForgotPassword } from "./Components/logged_client/settings/ForgotPassword/ForgotPassword";
 
+import About from "@Components/about";
+import HowItWorks from "@Components/how_it_works";
+import Term from "@Components/terms";
+import Privacy from "@Components/privacy";
+
 export default [
   {
     path: `/`,
@@ -201,6 +206,27 @@ export default [
     path: "/vendor",
     exact: true,
     component: VendorDashboard,
+  },
+  /*================================ SERVICE LINKS ==============================*/
+  {
+    path: "/about",
+    exact: true,
+    component: About,
+  },
+  {
+    path: "/howitworks",
+    exact: true,
+    component: HowItWorks,
+  },
+  {
+    path: "/term",
+    exact: true,
+    component: Term,
+  },
+  {
+    path: "/privacy",
+    exact: true,
+    component: Privacy,
   },
   /*================================ Venue ====================================*/
   {

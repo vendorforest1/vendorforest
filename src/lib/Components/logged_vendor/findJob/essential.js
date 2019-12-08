@@ -7,6 +7,7 @@ const FETCH_SERVICE_SUCCESS = "FETCH_SERVICE_SUCCESS";
 const FETCH_MSG_SUCCESS = "FETCH_MSG_SUCCESS";
 const FETCH_FAILURE = "FETCH_FAILURE";
 const CLEAR_FAILURE = "CLEAR_FAILURE";
+const FETCH_USERINFO_SUCCESS = "FETCH_USERINFO_SUCCESS";
 
 // Reducer
 export default function reducer(
@@ -16,6 +17,7 @@ export default function reducer(
     jobs: undefined,
     services: undefined,
     pending: false,
+    userInfo: undefined,
   },
   action,
 ) {
@@ -42,6 +44,11 @@ export default function reducer(
         ...state,
         pending: false,
         success: action.payload,
+      };
+    case FETCH_USERINFO_SUCCESS:
+      return {
+        ...state,
+        userInfo: action.payload,
       };
     case FETCH_FAILURE:
       return {
@@ -88,6 +95,11 @@ const fetchError = (err) => ({
 
 const clearError = () => ({
   type: CLEAR_FAILURE,
+});
+
+const fetchUserInfoSuccess = (userData) => ({
+  type: FETCH_USERINFO_SUCCESS,
+  payload: userData,
 });
 
 // export const updatePortfolios = (payload) => {
@@ -141,6 +153,30 @@ export const fetchServiceData = () => async (dispatch, getState) => {
         throw new Error(result.message);
       }
       dispatch(fetchServiceSuccess(result.data));
+    })
+    .catch((err) => {
+      process.env.NODE_ENV === "development" && console.log(err);
+      dispatch(fetchError(err.message));
+    });
+};
+
+export const fetchUserInfo = () => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
+  return await fetch(apiUrl.GET_USER_INFO, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      dispatch(fetchUserInfoSuccess(result.body));
+      console.log("this user's info ======", result.body);
     })
     .catch((err) => {
       process.env.NODE_ENV === "development" && console.log(err);

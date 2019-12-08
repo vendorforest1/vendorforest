@@ -479,10 +479,71 @@ html {
     }
 }
 
+.what-is-great {
+    padding: 80px 0;
+    border-bottom: 1px solid #e1e1e1;
+
+    h1 {
+        font-size: 30px;
+        font-weight: bolder;
+    }
+
+    .title {
+        font-size: 16px;
+        font-weight: bolder;
+    }
+
+    .content {
+        font-size: 16px;
+        padding: 0px 15px;
+    }
+
+    .margin-bottom-20 {
+        margin-bottom: 20px;
+    }
+
+    @media screen and(max-width : 1000px) {
+        padding: 50px 0;
+
+        h1 {
+            font-size: 26px;
+            margin-bottom: 20px !important
+        }
+    }
+
+    @media screen and(max-width : 768px) {
+        padding: 30px 0;
+
+        h1 {
+            font-size: 22px;
+            font-weight: 700
+        }
+        .title {
+            text-align: center;
+        }
+    }
+
+    @media screen and(max-width : 575px) {
+        h1 {
+            font-size: 18px;
+            font-weight: 700
+        }
+        
+        .center {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .text-center{
+            text-align: center!important;
+        }
+    }
+}
+
 .newposted-jobs {
     padding: 80px 0;
     border-bottom: 1px solid #e1e1e1;
-    background-color: white!important;
+    // background-color: white!important;
     h1 {
         font-size: 30px;
         font-weight: bolder;
@@ -496,6 +557,10 @@ html {
             width: 100px;
             line-height: 100px;
             text-align: center;
+            background: white;
+        }
+
+        .p-3 {
             background: white;
         }
 

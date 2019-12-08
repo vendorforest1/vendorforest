@@ -64,50 +64,14 @@ const clearError = () => ({
   type: CLEAR_FAILURE,
 });
 
-export const fetchInitData = () => async (dispatch) => {
+export const fetchInitData = (payload) => async (dispatch, getState) => {
   dispatch(clearError());
   dispatch(fetchRequest());
-  await fetch("https://ip-api.com/json", {
+  return await fetch(apiUrl.GET_HOMEDATA, {
     method: "GET",
     headers: {
       Accept: "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then(async (result) => {
-      const country = result.country;
-      const state = result.regionName;
-      const city = result.city;
-      console.log("country = ", country, "state = ", state, "city = ", city);
-      return await fetch(apiUrl.GET_HOMEDATA, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ country: country, state: state, city: city }),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          if (result.status >= 400) {
-            throw new Error(result.message);
-          }
-          dispatch(fetchInitSuccess(result.data));
-        })
-        .catch((err) => dispatch(fetchError(err.message)));
-    })
-    .catch((err) => {
-      if (err) {
-        dispatch(fetchError("failed to load location"));
-      }
-    });
-};
-
-export const fetchIpLookUp = () => async (dispatch) => {
-  return await fetch("https://ip-api.com/json", {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
+      "Content-Type": "application/json",
     },
   })
     .then((response) => response.json())
@@ -115,10 +79,8 @@ export const fetchIpLookUp = () => async (dispatch) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
+      console.log("category list == ", result.data);
+      dispatch(fetchInitSuccess(result.data));
     })
-    .catch((err) => {
-      if (err) {
-        dispatch(fetchError("failed to load location"));
-      }
-    });
+    .catch((err) => dispatch(fetchError(err.message)));
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { Menu, Dropdown, Icon, Badge } from "antd";
+import { Menu, Dropdown, Icon, Badge, Tooltip } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import style from "./index.scss";
 import rainbow from "@Components/images/header/pettran.jpg";
@@ -218,10 +218,14 @@ class VendorHeader extends React.Component {
   }
 }
 
-const mapStateToProps = ({ headerNotiReducer }) => {
+const mapStateToProps = ({ headerNotiReducer, loginReducer, vendorProfileReducer }) => {
   const { notification } = headerNotiReducer;
+  const { user } = loginReducer;
+  const { reviews } = vendorProfileReducer;
   return {
     notification,
+    user,
+    reviews,
   };
 };
 

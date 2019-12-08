@@ -44,7 +44,7 @@ class HomeSearchBar extends React.Component {
             }&&zip=${this.state.zipCode !== "" ? this.state.zipCode : "a"}`;
           }}
         >
-          Get
+          Get Started
         </button>
       </div>
     );
