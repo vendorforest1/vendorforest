@@ -9,9 +9,12 @@ class NewPostedJobs extends React.Component {
 
   render() {
     const generateJobs = () => {
-      return this.props.jobs.map((job, index) => {
-        return <JobItem job={job} key={index} />;
-      });
+      return (
+        this.props.jobs &&
+        this.props.jobs.map((job, index) => {
+          return <JobItem job={job} key={index} />;
+        })
+      );
     };
 
     return (

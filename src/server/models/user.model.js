@@ -86,7 +86,7 @@ const UserSchema = new mongoose.Schema(
     connectedAccountId: {
       type: String,
     },
-    stripe_client_id: {
+    stripeClientId: {
       type: String,
     },
     currentLocation: {

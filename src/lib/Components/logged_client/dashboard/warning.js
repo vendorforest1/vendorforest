@@ -14,7 +14,7 @@ class Warning extends React.Component {
   componentDidMount() {
     if (this.props.data) {
       const account = this.props.data.bsLocation ? true : undefined;
-      const billingMethod = this.props.data.stripe_client_id ? true : undefined;
+      const billingMethod = this.props.data.stripeClientId ? true : undefined;
       this.setState({
         account: account,
         bill: billingMethod,

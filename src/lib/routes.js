@@ -253,7 +253,7 @@ export default [
     component: EmailConfirmRequire,
   },
   {
-    path: `/confirmation/:token`,
+    path: `/confirmation`,
     component: EmailConfrimSuccess,
   },
   {

@@ -28,7 +28,7 @@ const ClientSchema = new mongoose.Schema(
         type: String,
       },
     },
-    stripe_client_id: {
+    stripeClientId: {
       type: String,
     },
     paypal: {

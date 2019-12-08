@@ -17,7 +17,7 @@ export default () => {
     const newMilestone = new Milestone({ ...req.body });
     const milestoneID = newMilestone.contract;
     env.MODE === "development" && console.log("$$$$$$ newMilestone $$$$$$", newMilestone);
-    const user = req.user.stripe_client_id;
+    const user = req.user.stripeClientId;
     const price = newMilestone.price;
     await Contract.find({
       _id: milestoneID,
@@ -167,7 +167,7 @@ export default () => {
   };
 
   controllers.release = async (req, res, next) => {
-    const userStripeAccount = req.user.stripe_client_id;
+    const userStripeAccount = req.user.stripeClientId;
     const milestoneID = req.body._id;
     try {
       await Milestone.find({

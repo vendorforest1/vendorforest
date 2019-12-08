@@ -2,14 +2,13 @@ import Service from "@Models/service.model";
 import User from "@Models/user.model";
 import Job from "@Models/job.model";
 import getEnv, { constants } from "@Config/index";
-import { async } from "q";
 
 const env = getEnv();
 
 export default () => {
   const controllers = {};
 
-  controllers.get = async (req, res, next) => {
+  controllers.get = async (req, res) => {
     env.MODE === "development" && console.log("req.isAuthenticated() ", req.isAuthenticated());
     try {
       await Service.find({})

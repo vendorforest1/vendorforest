@@ -49,10 +49,13 @@ class ServicesCategory extends React.Component {
 
   componentDidMount() {
     const catGroup = [];
-    this.props.services.forEach((service) => {
-      const categories = service.categories.map((cat) => cat.name);
-      catGroup.push(categories.splice(Math.floor(Math.random() * (categories.length - 6)), 6));
-    });
+    this.props.services &&
+      this.props.services.forEach((service) => {
+        const categories = service.categories.map((cat) => cat.name);
+        catGroup.push(
+          categories.splice(Math.floor(Math.random() * (categories.length - 6)), 6),
+        );
+      });
     this.setState({
       categoryGroup: catGroup,
     });

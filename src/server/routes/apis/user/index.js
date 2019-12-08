@@ -29,7 +29,7 @@ export default function(app, passport) {
   );
   router.get("/users", userCtr.getAllUsers);
   router.get("/emailsent/:id", userCtr.emailSent);
-  router.get("/confirmation/:token", userCtr.confirmationPost);
+  router.get("/confirmation", userCtr.confirmationPost);
   router.post("/auth/:token", userCtr.autheticate);
   router.get(
     "/codeemail_send/:email",

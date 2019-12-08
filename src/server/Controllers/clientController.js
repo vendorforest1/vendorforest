@@ -35,15 +35,15 @@ export default () => {
         email: req.user.email,
       })
       .then((result) => {
-        const stripe_client_id = {
-          stripe_client_id: result.id,
+        const stripeClientId = {
+          stripeClientId: result.id,
         };
         try {
           User.findOneAndUpdate(
             {
               email: req.user.email,
             },
-            stripe_client_id,
+            stripeClientId,
             {
               new: true,
             },
