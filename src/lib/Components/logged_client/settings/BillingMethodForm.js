@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { injectStripe, CardElement } from "react-stripe-elements";
 import { Input, Form, Radio, Select, Card, message } from "antd";
 import { getClientId } from "./essential";
-
+import { connect } from "react-redux";
 class ClientBilling extends Component {
   static fetchInitialData() {}
   client_secret = "";
@@ -49,7 +49,7 @@ class ClientBilling extends Component {
         .createToken({ type: "card", name: this.state.firstName + this.state.lastName })
         .then((payload) => {
           process.env.NODE_ENV === "development" && console.log("[token]", payload.token.id);
-          getClientId(payload.token.id);
+          this.props.getClientId(payload.token.id);
         });
       message.success("Your account is successfully registered.");
     } else {
@@ -217,4 +217,13 @@ class ClientBilling extends Component {
 const ClientBillingMethodForm = Form.create({ name: "client_setting_billingmethod" })(
   ClientBilling,
 );
-export default injectStripe(ClientBillingMethodForm);
+const mapStateToProps = ({ clientSettingsReducer }) => {
+  const { error, user, pending } = clientSettingsReducer;
+  return {
+    error,
+    user,
+    pending,
+  };
+};
+
+export default connect(mapStateToProps, {getClientId})(injectStripe(ClientBillingMethodForm));

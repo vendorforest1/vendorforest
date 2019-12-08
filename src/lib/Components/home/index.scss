@@ -52,7 +52,7 @@ html {
     }
 
     width: 100%;
-    padding-top: 4rem;
+    padding-top: 0px;
     background-color: #fff;
     background-image: url("../sass/lib/img/headerbg.png");
     background-size: cover;
@@ -69,7 +69,7 @@ html {
         align-items: center;
 
         .header-search {
-            margin: 0 auto;
+            margin: 0px;
             overflow: hidden;
 
             h1 {

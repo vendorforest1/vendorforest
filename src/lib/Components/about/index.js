@@ -19,7 +19,7 @@ class About extends React.Component {
     return (
       <div>
         <Header />
-        <div className="container">
+        <div className="container content-container">
           <div className="row title">
             <div className="col-sm-12">
               <h2 className="title-font">About Us</h2>

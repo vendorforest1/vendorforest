@@ -49,7 +49,7 @@ export default () => {
             },
           ).then((result) => result); //("Your Stripe Client Id is saved.")
         } catch (error) {
-          env.MODE === "development" && console.log(error);
+          env.MODE === "development" && console.log("saving client id error", error);
         }
       });
   };

@@ -5,7 +5,7 @@ import ClientBillingMethodForm from "./BillingMethodForm";
 class ClientBillingMethod extends Component {
   render() {
     return (
-      <StripeProvider apiKey="pk_test_qD3GtwiIpstGsZ8mt9txbGHm00hg9nYbKK">
+      <StripeProvider apiKey="pk_test_t5yr8PtFZ2q8YfuUUuEGcOXM009TZGJItg">
         <Elements>
           <ClientBillingMethodForm />
         </Elements>
