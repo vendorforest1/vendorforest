@@ -51,33 +51,39 @@ class VendorPortfolios extends React.Component {
       if (portfolios.length === 0) {
         return <h6 className="text-danger p-5 text-center w-100">No Portfolio</h6>;
       }
-      return portfolios.map((portfolio, index) => {
-        return (
-          <div className="col-md-4 portfolio-card" key={index}>
-            <Card
-              hoverable
-              onClick={() => {
-                this.selectPortfolio(index);
-              }}
-              style={{ width: "100%", marginBottom: "24px" }}
-              cover={
-                <img
-                  alt="cover"
-                  src={portfolio.coverImage.url}
-                  style={{
-                    minHeight: "200px",
-                    height: "200px",
-                    width: "auto",
-                    margin: "0 auto",
-                  }}
-                />
-              }
-            >
-              <Meta title={portfolio.title} description={portfolio.caption} />
-            </Card>
-          </div>
-        );
-      });
+      return (
+        portfolios &&
+        portfolios.map((portfolio, index) => {
+          return (
+            <div className="col-md-4 portfolio-card" key={index}>
+              <Card
+                hoverable
+                onClick={() => {
+                  this.selectPortfolio(index);
+                }}
+                style={{ width: "100%", marginBottom: "24px" }}
+                cover={
+                  portfolio.coverImage &&
+                  portfolio.coverImage.url && (
+                    <img
+                      alt="cover"
+                      src={portfolio.coverImage.url}
+                      style={{
+                        minHeight: "200px",
+                        height: "200px",
+                        width: "auto",
+                        margin: "0 auto",
+                      }}
+                    />
+                  )
+                }
+              >
+                <Meta title={portfolio.title} description={portfolio.caption} />
+              </Card>
+            </div>
+          );
+        })
+      );
     };
 
     return (

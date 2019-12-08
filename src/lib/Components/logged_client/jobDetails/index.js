@@ -2,8 +2,8 @@ import React from "react";
 import { Icon, Tabs } from "antd";
 import { connect } from "react-redux";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_ClientHeader from "@Components/inc/client_header";
-import VF_Footer from "@Components/inc/footer";
+import Header from "@Components/inc/client_header";
+import Footer from "@Components/inc/footer";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import JobContent from "./JobContent";
@@ -53,7 +53,7 @@ class ClientJobDetails extends React.Component {
     }
     return (
       <div className="job-details">
-        <VF_ClientHeader />
+        <Header />
         <div className="content">
           <div className="container">
             <div className="row">
@@ -98,7 +98,7 @@ class ClientJobDetails extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }

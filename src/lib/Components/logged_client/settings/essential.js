@@ -1,5 +1,4 @@
-import { apiUrl } from "@Shared/constants";
-import { async } from "q";
+import { apiUrl, API_URL } from "@Shared/constants";
 // import stripe from "react-stripe-elements";
 // Actions
 const FETCH_SETTINGS_REQUEST = "FETCH_SETTINGS_REQUEST";

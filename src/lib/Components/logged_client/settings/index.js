@@ -2,7 +2,7 @@ import React from "react";
 import { Select, Icon, message } from "antd";
 import { connect } from "react-redux";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_ClientHeader from "@Components/inc/client_header";
+import Header from "@Components/inc/client_header";
 import { Footer } from "@Components/inc";
 import ClientMyAccount from "./MyAccount";
 import ClientSecurity from "./Security";
@@ -43,7 +43,6 @@ class ClientSettings extends React.Component {
     this.props.fetchGetSettings();
   }
 
-  // UNSAFE_componentWillReceiveProps(newProps) {
   static getDerivedStateFromProps(props, state) {
     if (!state.success && props.success) {
       message.success(props.success);
@@ -66,7 +65,7 @@ class ClientSettings extends React.Component {
   render() {
     return (
       <div id="client-settings">
-        <VF_ClientHeader />
+        <Header />
         <div className="container">
           <div className="row">
             <div className="col-12">

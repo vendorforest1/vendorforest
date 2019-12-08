@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Steps, Button, message, Icon, Tag } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_ClientHeader from "@Components/inc/client_header";
+import ClientHeader from "@Components/inc/client_header";
 import VF_Footer from "@Components/inc/footer";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
@@ -203,7 +203,7 @@ class PostJob extends React.Component {
 
     return (
       <div className="client-postjob">
-        <VF_ClientHeader />
+        <ClientHeader />
         <div className="content">
           <div className="container">
             {this.props.user && this.props.job ? (

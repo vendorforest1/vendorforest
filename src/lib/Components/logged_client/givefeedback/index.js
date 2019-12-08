@@ -31,7 +31,6 @@ class ClientGiveFeedBack extends React.Component {
     this.giveFeedbck = this.giveFeedbck.bind(this);
   }
 
-  // UNSAFE_componentWillReceiveProps(newProps) {
   static getDerivedStateFromProps(props, state) {
     if (!state.success && props.success) {
       message.success(props.success);

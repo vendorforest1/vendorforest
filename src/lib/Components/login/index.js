@@ -104,7 +104,7 @@ class MainLogin extends React.Component {
                       </button>
                     </div>
                     <p className="w-100 text-right mb-4">
-                      <a className="text-color" href="/resetpass">
+                      <a className="text-color" href="/forgotPassword">
                         Forgot password
                       </a>
                     </p>

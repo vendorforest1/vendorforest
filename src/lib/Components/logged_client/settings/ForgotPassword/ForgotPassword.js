@@ -1,9 +1,10 @@
+// @ts-nocheck
 import React from "react";
 import { connect } from "react-redux";
-import { Input, Form, Card } from "antd";
-import { fetchResetPass } from "./essential";
+import { Input, Form, Card, message } from "antd";
+import { fetchResetPass, verifyLink } from "./essential";
 
-class ClientSecurity extends React.Component {
+class PasswordReset extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,7 +14,6 @@ class ClientSecurity extends React.Component {
       repeatPass: "",
     };
   }
-  10;
   resetPass = async (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -24,15 +24,33 @@ class ClientSecurity extends React.Component {
     });
   };
 
+  componentDidMount() {
+    const { token } = this.props.match.params;
+    this.props.verifyLink(token);
+  }
   static getDerivedStateFromProps(props, state) {
-    if (props.match.params) {
-      console.log("this.props.match.params ", props.match.params);
+    if (props.error) {
+      console.log(("error: ", props.error));
+      setImmediate(() => {
+        message.error(props.error);
+      }, 3600);
+      props.history.push("/404");
     }
+    // if (props.success) {
+    //   props.history.push("/login");
+    // }
+    return {
+      //...state,
+      error: props.error,
+      success: props.success,
+      pending: props.pending,
+    };
   }
 
   render() {
     const { getFieldDecorator } = this.props.form;
 
+    console.log("", this.props);
     return (
       <div className="client-security">
         <Card
@@ -79,7 +97,7 @@ class ClientSecurity extends React.Component {
               </div>
               <div className="col-12 d-flex justify-content-start">
                 <button
-                  className={`button-primary ${this.props.pending ? "disable" : ""}`}
+                  className={`button-primary ${this.state.pending ? "disable" : ""}`}
                   type="submit"
                 >
                   Save
@@ -93,18 +111,18 @@ class ClientSecurity extends React.Component {
   }
 }
 
-const ClientSecurityForm = Form.create({ name: "client_setting_security" })(ClientSecurity);
+const PasswordResetForm = Form.create({ name: "client_setting_security" })(PasswordReset);
 
-const mapStateToProps = ({ clientSettingsReducer }) => {
-  const { error, user, success, pending } = clientSettingsReducer;
+const mapStateToProps = ({ ForgotPasswordReducer }) => {
+  const { error, success, pending } = ForgotPasswordReducer;
   return {
     error,
-    user,
     success,
     pending,
   };
 };
 
-export default connect(mapStateToProps, {
+export const ForgotPassword = connect(mapStateToProps, {
   fetchResetPass,
-})(ClientSecurityForm);
+  verifyLink,
+})(PasswordResetForm);

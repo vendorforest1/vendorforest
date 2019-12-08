@@ -5,6 +5,8 @@ import storage from "redux-persist/lib/storage"; // or whatever storage you are 
 
 import loginReducer from "@Components/login/essential";
 import registerReducer from "@Components/register/essential";
+import { ForgotPasswordReducer } from "@Components/logged_client/settings/ForgotPassword";
+
 import messagesReducer from "@Components/messages/essential";
 import homeReducer from "@Components/home/essential";
 
@@ -29,9 +31,9 @@ import vendorReviewReducer from "@Components/logged_vendor/givefeedback/essentia
 import headerNotiReducer from "@Components/inc/essential";
 
 const reducers = {
-  login: loginReducer,
   loginReducer,
   registerReducer,
+  ForgotPasswordReducer,
   homeReducer,
   messagesReducer,
   clientDashboardReducer,

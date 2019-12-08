@@ -47,7 +47,6 @@ class VendorFindJob extends React.Component {
     this.props.fetchServiceData();
   }
 
-  // UNSAFE_componentWillReceiveProps(newProps) {
   static getDerivedStateFromProps(props, state) {
     if (props.services) {
       return {

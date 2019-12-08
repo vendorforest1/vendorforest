@@ -8,6 +8,41 @@ import { mail } from "@Config/mail";
 import geoip from "geoip-lite";
 import getEnv, { constants } from "@Config/index";
 import mongoose from "mongoose";
+import { generate } from "generate-password";
+
+import bcrypt from "mongoose-bcrypt";
+const Schema = mongoose.Schema;
+const restPasswordSchema = new Schema({
+  uuid: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "user",
+  },
+  token: {
+    type: String,
+  },
+  email: {
+    type: String,
+    required: true,
+    ref: "user",
+  },
+  resetPassword: {
+    type: String,
+    // bcrypt: true,
+  },
+  createdAt: {
+    type: Date,
+    required: true,
+    default: Date.now,
+    expires: "300s",
+  },
+});
+
+restPasswordSchema.plugin(bcrypt, {
+  rounds: 8,
+});
+
+const ResetPassword = mongoose.model("resetPassword", restPasswordSchema);
 
 const getIp = require("ipware")().get_ip;
 
@@ -28,10 +63,6 @@ export default function(passport) {
     });
   };
 
-  controllers.resendTokenPost = function() {};
-
-  controllers.updateUser = function() {};
-
   //deactivate not delete
   controllers.deActivateUser = function() {};
 
@@ -47,6 +78,8 @@ export default function(passport) {
           }
 
           if (!userObject) {
+            //TODO if passport fails to authenticate,
+            // then user could be trying to use temporary login information
             return res.status(401).send({
               msg: "Error occured",
             });
@@ -65,6 +98,205 @@ export default function(passport) {
     } catch (e) {
       env.MODE === "development" && console.log("Errror: ", e);
     }
+  };
+
+  //first
+  controllers.sendResetPasswordEmail = async (req, res) => {
+    const userEmail = req.body.userEmail;
+    const subject = "Reset Password is required";
+
+    await User.findOne({ email: userEmail })
+      // .then((res) => res.json())
+      .then(function(user) {
+        console.log("********* ", user);
+        if (!user) {
+          res.status(404).json({
+            status: 404,
+            message: "no record match that request!",
+          });
+        }
+
+        const token = new Token({
+          _userId: user._id,
+          email: user.email,
+          token: crypto.randomBytes(16).toString("hex"),
+        });
+
+        token.save(function(err, token) {
+          if (err) {
+            env.MODE === "development" && console.log("TOKEN Reset Email: ", err);
+            return res.status(500).json({
+              status: 500,
+              msg: err.message,
+            });
+          }
+
+          const temporaryPass = generate({
+            length: 10,
+            numbers: true,
+          });
+
+          const newResetPassword = new ResetPassword({
+            uuid: token._userId,
+            email: token.email,
+            resetPassword: temporaryPass,
+            token: token.token,
+          });
+
+          newResetPassword.save(function(err, doc) {
+            if (err) {
+              return res.status(404).json({
+                status: 404,
+                message: "something went wrong while re setting password!",
+              });
+            }
+
+            mail.sendResetPasswordEmail(doc, subject, (err, msg) => {
+              if (err) {
+                return res.status(404).json({
+                  status: 404,
+                  message: "Email was not sent something went wrong!",
+                });
+              }
+              return res.status(200).json({
+                status: 200,
+                message: "Temporary password has been sent to your email successfully.",
+              });
+            });
+          });
+        });
+      })
+      .catch((err) => {
+        return res.status(404).json({
+          status: 404,
+          message: err.message,
+        });
+      });
+  };
+
+  //before you chage password
+  controllers.autheticate = async function(req, res) {
+    await Token.findOne({
+      token: req.params.token,
+    })
+      .then((token) => {
+        if (!token) {
+          return res.status(402).send({
+            status: 402,
+            message: "We were unable to find token. This token may have expired. Please try",
+          });
+        }
+        if (token.token !== req.params.token) {
+          return res.status(402).send({
+            status: 402,
+            message: "Invalid verification code",
+          });
+        }
+        ResetPassword.findOne({ uuid: token._userId, email: token.email }, async function(
+          user,
+        ) {
+          if (!user) {
+            return res.status(404).status({
+              status: 404,
+              message: "no reset found!",
+            });
+          }
+          console.log("password: ", user);
+          await User.findOneAndUpdate(
+            {
+              _id: user.uuid,
+            },
+            {
+              $set: { password: user.resetPassword },
+            },
+            function(err, doc) {
+              if (err) {
+                return res.status(404).status({
+                  status: 404,
+                  message: "no reset found!",
+                });
+              }
+              return res.status(200).json({
+                status: 200,
+                message: "verified",
+              });
+            },
+          );
+        });
+      })
+      .catch((error) => {
+        env.MODE === "development" && console.log(error);
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+  // after link is authenticated
+  controllers.forgotPassword = async (req, res) => {
+    ResetPassword.findOne(
+      {
+        email: req.body.email,
+        resetPassword: req.body.password,
+      },
+      async function(error, user) {
+        if (error) {
+          return res.status(401).send(error);
+        }
+
+        await User.findById({
+          _id: user.uuid,
+        })
+          .then(async (user) => {
+            if (!user) {
+              return res.status(401).json({
+                status: 401,
+                message:
+                  env.MODE === "development"
+                    ? `User ${constants.DEV_EMPTYDOC_MSG}`
+                    : constants.PROD_COMMONERROR_MSG,
+              });
+            }
+            await user
+              .verifyPassword(req.body.oldPass)
+              .then(async (isMatch) => {
+                if (!isMatch) {
+                  return res.status(403).json({
+                    status: 400,
+                    message: "Invalid old password",
+                  });
+                }
+                await User.findOneAndUpdate(
+                  {
+                    _id: req.user._id,
+                  },
+                  {
+                    $set: { password: req.body.newPass },
+                  },
+                )
+                  .then(async () => {
+                    return res.status(200).json({
+                      status: 200,
+                      message: "Passward has been reset",
+                    });
+                  })
+                  .catch((error) => {
+                    throw new Error(error.message);
+                  });
+              })
+              .catch((error) => {
+                throw new Error(error.message);
+              });
+          })
+          .catch((error) => {
+            return res.status(500).json({
+              status: 500,
+              message:
+                env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+            });
+          });
+      },
+    );
   };
 
   controllers.getUser = async (req, res) => {
@@ -121,7 +353,7 @@ export default function(passport) {
         token: crypto.randomBytes(16).toString("hex"),
       });
 
-      await token.save(async function(err) {
+      await token.save(function(err) {
         if (err) {
           env.MODE === "development" && console.log("TOKEN ERR: ", err);
           return res.status(500).json({
@@ -264,24 +496,6 @@ export default function(passport) {
     );
   };
 
-  controllers.sendResetEmail = async (req, res) => {
-    const userEmail = req.body.userEmail;
-    const subject = "Reset Password is required";
-    const user = { email: userEmail };
-    mail.sendResetEmail(user, subject, (err, msg) => {
-      if (err) {
-        return res.status(404).json({
-          status: 404,
-          message: "Email was not sent something went wrong!",
-        });
-      }
-      return res.status(200).json({
-        status: 200,
-        message: "Email has been sent successfully.",
-      });
-    });
-  };
-
   controllers.confirmationPost = async (req, res) => {
     // Find a matching token
     await Token.findOne(
@@ -416,9 +630,9 @@ export default function(passport) {
     );
   };
 
-  controllers.updateAccount = async (req, res) => {
+  controllers.updateAccount = (req, res) => {
     if (req.body.verifyCode) {
-      await Token.findOne({
+      Token.findOne({
         email: req.body.email,
       })
         .then(async (token) => {
@@ -445,7 +659,7 @@ export default function(passport) {
           });
         });
     }
-    await User.findOneAndUpdate(
+    User.findOneAndUpdate(
       {
         _id: req.user._id,
       },

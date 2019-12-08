@@ -153,8 +153,9 @@ export const updatePastContracts = (payload) => {
   };
 };
 
-export const sendEmail = (payload) => async () => {
-  console.log("*******&&*&&&&", payload);
+export const sendEmail = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
   return await fetch(apiUrl.RESET_EMAIL, {
     method: "POST",
     headers: {
@@ -165,7 +166,10 @@ export const sendEmail = (payload) => async () => {
   })
     .then((response) => response.json())
     .then((result) => {
-      console.log("esindfdsf*&*&*", result);
+      dispatch(fetchInitSuccess(result));
     })
-    .catch((err) => console.log("#$###errors*****", err));
+    .catch((err) => {
+      console.log(err);
+      dispatch(fetchError(err));
+    });
 };

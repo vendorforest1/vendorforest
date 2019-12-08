@@ -130,12 +130,13 @@ const mailService = () => {
             .processHTML(data)
             .then(async (source) => {
               const userNamePattern = /{user}/i;
-              const cofirmationUrlPattern = /{confirmUrl}/i;
+              const urlPattern = /{url}/i;
+              const temporaryPassPattern = /{resetPassword}/i;
               const href = mailHeader.href;
 
               if (href) {
                 source = source.replace(
-                  cofirmationUrlPattern,
+                  urlPattern,
                   `<a href=${href} target="_blank">${href}</a>`,
                 );
               }
@@ -144,11 +145,11 @@ const mailService = () => {
                 source = user.firstName
                   ? source.replace(userNamePattern, user.firstName)
                   : source.replace(userNamePattern, user.username);
+                source = source.replace(temporaryPassPattern, user.resetPassword);
               }
 
               mailOptions.html = source;
 
-              console.log(">>>>>> ", source);
               // send mail with defined transport object
               await transporter.sendMail(mailOptions, (error, response) => {
                 if (error) {
@@ -171,9 +172,10 @@ const mailService = () => {
     }
   };
 
-  mailObject.sendResetEmail = async (user, subject, callback) => {
+  mailObject.sendResetPasswordEmail = async (user, subject, callback) => {
     const mailOptions = {
       subject: subject, // Subject line
+      href: `${env.API_URL}/reset/${user.token}`,
     };
     sendEmail(user, "email_template.html", mailOptions, callback);
   };

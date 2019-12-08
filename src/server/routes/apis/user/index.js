@@ -30,6 +30,7 @@ export default function(app, passport) {
   router.get("/users", userCtr.getAllUsers);
   router.get("/emailsent/:id", userCtr.emailSent);
   router.get("/confirmation/:token", userCtr.confirmationPost);
+  router.post("/auth/:token", userCtr.autheticate);
   router.get(
     "/codeemail_send/:email",
     isAuthenticatedForApi,
@@ -48,6 +49,7 @@ export default function(app, passport) {
     validator.body(resetPass.body),
     userCtr.resetPass,
   );
-  router.post("/resetpw", userCtr.sendResetEmail);
+  router.post("/forgotPassword", validator.body(resetPass.body), userCtr.forgotPassword);
+  router.post("/resetpw", userCtr.sendResetPasswordEmail);
   return router;
 }

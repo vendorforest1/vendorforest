@@ -1,7 +1,5 @@
 import React from "react";
-import { Input, Form, message } from "antd";
-import { apiUrl } from "@Shared/constants";
-import moment from "moment";
+import { Input, Form, message, Icon } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import VF_Header from "@Components/inc/header";
 import VF_Footer from "@Components/inc/footer";
@@ -59,6 +57,7 @@ class ResetPass extends React.Component {
             <div className="row">
               <div className="col-xl-6 col-lg-8 col-md-10 col-12 offset-xl-3 offset-lg-3 offset-md-1  offset-0">
                 <div className="shadow form-content">
+                  {this.state.pending && <Icon type="sync" spin />}
                   <Form layout="vertical">
                     <h2 className="text-center mb-5">Reset your password</h2>
                     <Form.Item
@@ -128,7 +127,13 @@ const mapStateToProps = ({ loginReducer }) => {
   return { user };
 };
 
+const mapDispatchActionToProps = (dispatch) => {
+  return {
+    sendEmail: (payload) => dispatch(sendEmail(payload)),
+  };
+};
 const ResetPassForm = Form.create({ name: "forgot-pass-form" })(ResetPass);
-export default connect(mapStateToProps, { sendEmail })(
-  withStyles(globalStyle, localStyle)(ResetPassForm),
-);
+export default connect(
+  mapStateToProps,
+  mapDispatchActionToProps,
+)(withStyles(globalStyle, localStyle)(ResetPassForm));

@@ -36,6 +36,7 @@ import Messages from "@Components/messages";
 import Milestones from "@Components/logged_client/contractDetails/Milestones";
 import { VendorPublicProfile } from "./Components/logged_vendor/profile/publicProfile";
 import { Home } from "./Components/home";
+import { ForgotPassword } from "./Components/logged_client/settings/ForgotPassword/ForgotPassword";
 
 export default [
   {
@@ -54,7 +55,7 @@ export default [
     component: MainRegister,
   },
   {
-    path: "/resetpass",
+    path: "/forgotPassword",
     exact: true,
     component: ResetPass,
   },
@@ -84,6 +85,11 @@ export default [
     path: "/client/settings",
     exact: true,
     component: ClientSettings,
+  },
+  {
+    path: "/reset/:token",
+    exact: true,
+    component: ForgotPassword,
   },
   {
     path: "/client/postjob",

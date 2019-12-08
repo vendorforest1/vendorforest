@@ -53,8 +53,7 @@ class AddPortfolio extends React.Component {
     }
   }
 
-  // UNSAFE_componentWillReceiveProps(newProps) {
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props) {
     if (props.portfolio) {
       return {
         portfolioId: props.portfolio._id,
@@ -182,16 +181,9 @@ class AddPortfolio extends React.Component {
   };
 
   render() {
-    const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
+    const { getFieldDecorator } = this.props.form;
 
-    const {
-      previewImgVisible,
-      previewVidVisible,
-      previewImage,
-      previewVideo,
-      attachImgFiles,
-      attachVidFiles,
-    } = this.state;
+    const { previewImgVisible, previewImage, attachImgFiles } = this.state;
 
     const uploadButton = (
       <div>
