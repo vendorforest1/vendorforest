@@ -4,6 +4,7 @@ import Notification from "@Models/notification.model";
 // import Token from "../models/token.model";
 import getEnv, { constants } from "@Config/index";
 import { ObjectId } from "bson";
+import mongoose from "mongoose";
 
 const env = getEnv();
 const stripe = require("stripe")(env.STRIPE_SECRET_KEY);
@@ -38,6 +39,7 @@ export default () => {
         const stripeClientId = {
           stripeClientId: result.id,
         };
+        console.log("client: ---- ", stripeClientId);
         try {
           User.findOneAndUpdate(
             {
@@ -47,10 +49,14 @@ export default () => {
             {
               new: true,
             },
-          ).then((result) => result); //("Your Stripe Client Id is saved.")
+          ).then((result) => res.status(200).json(result)); //("Your Stripe Client Id is saved.")
         } catch (error) {
           env.MODE === "development" && console.log("saving client id error", error);
+          return res.status(404).json({ status: 404, message: error.message });
         }
+      })
+      .catch((e) => {
+        return res.status(404).json({ status: 404, message: e.message });
       });
   };
 
@@ -235,7 +241,9 @@ export default () => {
   controllers.getNotifications = async (req, res) => {
     const user = req.user._id;
     env.MODE === "development" && console.log("user0bjectId");
-    await Notification.find({ username: ObjectId(user) })
+
+    // await Notification.find({ username: ObjectId(user) })
+    await Notification.find({ username: mongoose.Schema.Types.ObjectId(user) })
       .sort({ createdAt: -1 })
       .limit(5)
       .then((result) => {
