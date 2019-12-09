@@ -72,7 +72,7 @@ class TopRatedVendors extends React.Component {
       <div className="container toprate-vendor">
         <div className="row">
           <div className="col-12">
-            <h1 className="mb-5">Top Rated Vendors</h1>
+            <h1 className="mb-5">Top vendors recommended for you</h1>
             <div className="carousel slide position-relative" data-ride="carousel">
               <ul className="carousel-indicators">{generateSlide()}</ul>
               <div id="toprated-carousel" className="carousel-inner">

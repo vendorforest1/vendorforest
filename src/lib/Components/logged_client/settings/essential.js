@@ -113,8 +113,9 @@ export const getSetupIntent = () => {
     });
 };
 
-export const getClientId = (card) => {
-  return fetch(apiUrl.GET_CLIENT_ID, {
+export const getClientId = (card) => async (dispatch, getState) => {
+  console.log("client id == ", card);
+  return await fetch(apiUrl.GET_CLIENT_ID, {
     method: "POST",
     headers: {
       Accept: "application/json",
