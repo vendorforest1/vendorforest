@@ -36,6 +36,7 @@ connect(env.DATABASE_CONNECTION, {
 
 //DB connection
 const DB_CONNECTION = connection;
+const MAXAGE = 14 * 24 * 60 * 60;
 
 const sess = {
   genid: () => {
@@ -46,7 +47,7 @@ const sess = {
   resave: false, //don't save session if unmodified
   store: new MongoStore({
     mongooseConnection: DB_CONNECTION,
-    ttl: 14 * 24 * 60 * 60, // = 14 days. Default
+    ttl: MAXAGE, // = 14 days. Default
     autoRemove: "interval",
     autoRemoveInterval: 10, // In minutes. Default
   }),
@@ -56,6 +57,7 @@ const sess = {
 if (env.MODE === "production") {
   app.set("trust proxy", 1); // trust first proxy
   sess.cookie.secure = true; // serve secure cookies
+  sess.cookie.maxAge = MAXAGE;
 }
 
 app.use(session(sess));
