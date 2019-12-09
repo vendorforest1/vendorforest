@@ -176,7 +176,6 @@ export const fetchUserInfo = () => async (dispatch, getState) => {
         throw new Error(result.message);
       }
       dispatch(fetchUserInfoSuccess(result.body));
-      console.log("this user's info ======", result.body);
     })
     .catch((err) => {
       process.env.NODE_ENV === "development" && console.log(err);

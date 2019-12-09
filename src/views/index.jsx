@@ -2,7 +2,8 @@ import React from "react";
 
 class HelloMessage extends React.Component {
   render() {
-    console.log("Props: ", this.props);
+    process.env.NODE_ENV === "development" &&
+      console.log("Props: ", this.props);
     return <div>Hello {this.props.name}</div>;
   }
 }

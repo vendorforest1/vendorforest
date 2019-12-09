@@ -266,7 +266,6 @@ export const initChat = async (payload) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      console.log("******** ", result);
       return result;
     })
     .catch((err) => {

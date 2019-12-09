@@ -65,7 +65,8 @@ export default () => {
                 .limit(3)
                 .then(async (jobResult) => {
                   const jobs = jobResult;
-                  console.log("vendor = ", vendors, "jobs = ", jobs, "services = ", services);
+                  process.env.NODE_ENV === "development" &&
+                    console.log("vendor = ", vendors, "jobs = ", jobs, "services = ", services);
                   return res.status(200).json({
                     status: 200,
                     data: {

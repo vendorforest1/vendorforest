@@ -19,7 +19,6 @@ class Warning extends React.Component {
         account: account,
         bill: billingMethod,
       });
-      console.log("in warining.js file = ", this.props.data, account, billingMethod);
     }
   }
 

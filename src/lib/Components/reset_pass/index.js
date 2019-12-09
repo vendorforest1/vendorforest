@@ -30,7 +30,6 @@ class ResetPass extends React.Component {
     const code = this.state.code;
     const captchaCodes = this.state.captchaCode;
     const captchaCode = captchaCodes.join("");
-    console.log("email ==", userEmail, "captchaCode", captchaCode);
     if (code !== captchaCode) {
       message.warning("Please retype the captcha code");
     } else {

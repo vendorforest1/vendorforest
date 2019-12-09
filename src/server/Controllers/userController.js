@@ -505,7 +505,8 @@ export default function(passport) {
         model: "vendor",
       })
       .then((result) => {
-        console.log("fetch result = ", result);
+        process.env.NODE_ENV === "development" &&
+          console.log("fetch result = ", result);
         return res.status(200).send({
           status: 200,
           body: result,
@@ -524,7 +525,8 @@ export default function(passport) {
       _id: req.user._id,
     })
       .then((result) => {
-        console.log("fetch result = ", result);
+        process.env.NODE_ENV === "development" &&
+          console.log("fetch result = ", result);
         return res.status(200).send({
           status: 200,
           data: result,
