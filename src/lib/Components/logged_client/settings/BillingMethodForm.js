@@ -51,10 +51,10 @@ class ClientBilling extends Component {
           if (!payload || !payload.token) {
             throw Error("something went wrong with payload " + payload);
           }
-          process.env.NODE_ENV === "development" && console.log("[token]", payload.token.id);
           this.props.getClientId(payload.token.id);
-        });
-      message.success("Your account is successfully registered.");
+          // message.success("Your account is successfully registered.");
+        })
+        .catch((err) => message.error(err.message));
     } else {
       message.error("Stripe.js hasn't loaded yet.");
     }

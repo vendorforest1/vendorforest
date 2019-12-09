@@ -125,9 +125,12 @@ export const getClientId = (card) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      process.env.NODE_ENV === "development" && console.log("Client_ID:", result);
+      if (result.status > 400) {
+        throw Error(result.message);
+      }
+      dispatch(receivedSettings(result));
     })
-    .catch((err) => process.env.NODE_ENV === "development" && console.log("Client_ID", err));
+    .catch((err) => dispatch(settingsError(err.message)));
 };
 //TODO encrypt Card information
 export const fetchUpdateBilling = (payload) => async (dispatch, getState) => {
