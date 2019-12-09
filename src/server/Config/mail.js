@@ -184,7 +184,7 @@ const mailService = () => {
     const fileName =
       user.accountType === constants.ACCOUNT_TYPE.CLIENT ? clientFile : vendorFile;
     const mailHeader = {
-      href: `${env.API_URL}/confirmation?token=${token}`,
+      href: `${env.API_URL}/confirmation/${token}`,
       subject: "Welcome to VendorForest!",
     };
     sendEmail(user, fileName, mailHeader, callback);

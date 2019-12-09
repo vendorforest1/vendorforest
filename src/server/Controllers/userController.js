@@ -540,10 +540,9 @@ export default function(passport) {
 
   controllers.confirmationPost = async (req, res) => {
     // Find a matching token
-    console.log("!!!!!! ", req.query, " 0000 ", req);
     await Token.findOne(
       {
-        token: req.query.token,
+        token: req.params.token,
       },
       (err, token) => {
         if (err) {

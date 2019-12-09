@@ -8,6 +8,7 @@ import VendorForestFooter from "@Components/inc/footer";
 
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
+import { withRouter } from "react-router";
 
 class EmailConfirmRequire extends React.Component {
   constructor(props) {
@@ -18,9 +19,9 @@ class EmailConfirmRequire extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     if (this.props.match.params.token) {
-      return fetch(`${apiUrl.EMAILCONFIRM}/${this.props.match.params.token}`, {
+      await fetch(`${apiUrl.EMAILCONFIRM}/${this.props.match.params.token}`, {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -102,4 +103,4 @@ class EmailConfirmRequire extends React.Component {
   }
 }
 
-export default withStyles(globalStyle, localStyle)(EmailConfirmRequire);
+export default withStyles(globalStyle, localStyle)(withRouter(EmailConfirmRequire));

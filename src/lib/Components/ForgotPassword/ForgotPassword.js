@@ -37,7 +37,7 @@ class PasswordReset extends React.Component {
       setImmediate(() => {
         message.error(props.error);
       }, 3600);
-      props.history.push("/404");
+      // props.history.push("/404");
     }
     // if (props.success) {
     //   props.history.push("/login");

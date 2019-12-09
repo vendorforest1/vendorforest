@@ -112,108 +112,106 @@ class VendorHeader extends React.Component {
       </Menu>
     );
     return (
-      this.props.user && (
-        <div className="top-header">
-          <img src={rainbow} alt="" id="rainbow_top" />
-          <div className="top-main-nav">
-            <div className="container">
-              <div className="row">
-                <div className="col-12 d-flex">
-                  <div className="mr-auto">
-                    <div className="top-nav-logo">
-                      <a href="/">
-                        <img
-                          src="https://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png"
-                          alt="vendorforest.com"
-                        />
-                      </a>
-                    </div>
+      <div className="top-header">
+        <img src={rainbow} alt="" id="rainbow_top" />
+        <div className="top-main-nav">
+          <div className="container">
+            <div className="row">
+              <div className="col-12 d-flex">
+                <div className="mr-auto">
+                  <div className="top-nav-logo">
+                    <a href="/">
+                      <img
+                        src="https://res.cloudinary.com/lyruntpzo/image/upload/v1508334633/VF_logo_pa8lzd.png"
+                        alt="vendorforest.com"
+                      />
+                    </a>
                   </div>
-                  <div className="menu-content d-none d-xl-flex justify-content-end align-items-center">
-                    <a href="/vendor" className="mr-4">
-                      DASHBOARD
+                </div>
+                <div className="menu-content d-none d-xl-flex justify-content-end align-items-center">
+                  <a href="/vendor" className="mr-4">
+                    DASHBOARD
+                  </a>
+                  <a href="/vendor/findjob" className="mr-4">
+                    JOBS
+                  </a>
+                  {/* <a href="" className="mr-4">VENDORS</a> */}
+                  <a href="/messages/v" className="mr-4">
+                    MESSAGES
+                  </a>
+                  <Dropdown overlay={helpMenu} className="mr-3">
+                    <a className="ant-dropdown-link" href="#/">
+                      <Icon type="question-circle" />
+                      &nbsp;
+                      <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
-                    <a href="/vendor/findjob" className="mr-4">
-                      JOBS
+                  </Dropdown>
+                  <Dropdown
+                    overlay={<Menu onClick={this.handleIcon}>{this.notifiMenu()}</Menu>}
+                    className="mr-3"
+                  >
+                    <a className="ant-dropdown-link" href="#/">
+                      <Icon type="bell" />
+                      &nbsp;
+                      <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
-                    {/* <a href="" className="mr-4">VENDORS</a> */}
-                    <a href="/messages/v" className="mr-4">
-                      MESSAGES
+                  </Dropdown>
+                  <Dropdown overlay={useriMenu}>
+                    <a className="ant-dropdown-link" href="#/">
+                      <Icon type="user" />
+                      &nbsp;
+                      <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
-                    <Dropdown overlay={helpMenu} className="mr-3">
-                      <a className="ant-dropdown-link" href="#/">
-                        <Icon type="question-circle" />
-                        &nbsp;
-                        <Icon type="down" style={{ fontSize: "8px" }} />
-                      </a>
-                    </Dropdown>
-                    <Dropdown
-                      overlay={<Menu onClick={this.handleIcon}>{this.notifiMenu()}</Menu>}
-                      className="mr-3"
-                    >
-                      <a className="ant-dropdown-link" href="#/">
-                        <Icon type="bell" />
-                        &nbsp;
-                        <Icon type="down" style={{ fontSize: "8px" }} />
-                      </a>
-                    </Dropdown>
-                    <Dropdown overlay={useriMenu}>
-                      <a className="ant-dropdown-link" href="#/">
-                        <Icon type="user" />
-                        &nbsp;
-                        <Icon type="down" style={{ fontSize: "8px" }} />
-                      </a>
-                    </Dropdown>
+                  </Dropdown>
+                </div>
+                <div className="menu-hamburger d-xl-none d-block">
+                  <div onClick={this.toggle} className="text-right">
+                    {this.state.isOpen ? (
+                      <img src="https://img.icons8.com/ios/40/000000/multiply.png" alt="" />
+                    ) : (
+                      <i className="icon">
+                        <img src="https://img.icons8.com/ios/30/000000/menu.png" alt="" />
+                      </i>
+                    )}
                   </div>
-                  <div className="menu-hamburger d-xl-none d-block">
-                    <div onClick={this.toggle} className="text-right">
-                      {this.state.isOpen ? (
-                        <img src="https://img.icons8.com/ios/40/000000/multiply.png" alt="" />
-                      ) : (
-                        <i className="icon">
-                          <img src="https://img.icons8.com/ios/30/000000/menu.png" alt="" />
-                        </i>
-                      )}
+                </div>
+              </div>
+              {this.state.isOpen && (
+                <div className="col-12 d-flex justify-content-center d-xl-none d-block">
+                  <div className="w-100">
+                    <div className="menu-hamburger-content w-100">
+                      <p className=" text-center">
+                        <a href="/vendor">DASHBOARD</a>
+                      </p>
+                      <p className=" text-center">
+                        <a href="/vendor/findjob">JOBS</a>
+                      </p>
+                      <p className=" text-center">
+                        <a href="/messages/v">MESSAGES</a>
+                      </p>
+                      <p className=" text-center">
+                        <a href="#/">HELP</a>
+                      </p>
+                      <p className=" text-center">
+                        <a href="#/">NOTIFICATION</a>
+                      </p>
+                      <p className=" text-center">
+                        <a href="/vendor/settings">SETTINGS</a>
+                      </p>
+                      <p className=" text-center">
+                        <a onClick={() => this.handleLogout()} href="/login">
+                          <Icon type="logout" />
+                          &nbsp;&nbsp;LOGOUT
+                        </a>
+                      </p>
                     </div>
                   </div>
                 </div>
-                {this.state.isOpen && (
-                  <div className="col-12 d-flex justify-content-center d-xl-none d-block">
-                    <div className="w-100">
-                      <div className="menu-hamburger-content w-100">
-                        <p className=" text-center">
-                          <a href="/vendor">DASHBOARD</a>
-                        </p>
-                        <p className=" text-center">
-                          <a href="/vendor/findjob">JOBS</a>
-                        </p>
-                        <p className=" text-center">
-                          <a href="/messages/v">MESSAGES</a>
-                        </p>
-                        <p className=" text-center">
-                          <a href="#/">HELP</a>
-                        </p>
-                        <p className=" text-center">
-                          <a href="#/">NOTIFICATION</a>
-                        </p>
-                        <p className=" text-center">
-                          <a href="/vendor/settings">SETTINGS</a>
-                        </p>
-                        <p className=" text-center">
-                          <a onClick={() => this.handleLogout()} href="/login">
-                            <Icon type="logout" />
-                            &nbsp;&nbsp;LOGOUT
-                          </a>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+              )}
             </div>
           </div>
         </div>
-      )
+      </div>
     );
   }
 }

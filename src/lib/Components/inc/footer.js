@@ -60,7 +60,7 @@ class VendorForestFooter extends React.Component {
                         </a>
                       </span>
                     </li>
-                    <li className="social">(a)2019 VendorForest.com, inc.</li>
+                    <li className="social">&copy;2019 VendorForest.com, inc.</li>
                   </ul>
                 </div>
                 <div className="col-md-4"></div>

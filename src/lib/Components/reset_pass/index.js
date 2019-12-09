@@ -1,8 +1,8 @@
 import React from "react";
 import { Input, Form, message, Icon } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_Header from "@Components/inc/header";
-import VF_Footer from "@Components/inc/footer";
+import { Header } from "@Components/inc/header";
+import { Footer } from "@Components/inc/footer";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import { sendEmail } from "./sendEmail";
@@ -51,7 +51,7 @@ class ResetPass extends React.Component {
 
     return (
       <div className="resetpass-section">
-        <VF_Header />
+        <Header />
         <div className="content">
           <div className="container">
             <div className="row">
@@ -116,7 +116,7 @@ class ResetPass extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }

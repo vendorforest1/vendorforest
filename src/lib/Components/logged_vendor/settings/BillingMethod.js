@@ -29,8 +29,8 @@ class VendorBillingMethod extends React.Component {
   };
 
   render() {
-    const API_URL = _process && _process.env.API_URL;
-    const STRIPE_CLIENT = _process && _process.env.STRIPE_CLIENT;
+    const API_URL = process.env.API_URL;
+    const STRIPE_CLIENT = process.env.STRIPE_CLIENT;
 
     const { getFieldError, isFieldTouched } = this.props.form;
 
