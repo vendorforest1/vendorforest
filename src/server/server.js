@@ -24,6 +24,8 @@ const MongoStore = connectMongo(session);
 
 const PORT = env.PORT;
 
+app.use(cors());
+
 connect(env.DATABASE_CONNECTION, {
   useFindAndModify: false,
   useNewUrlParser: true,
@@ -52,17 +54,19 @@ const sess = {
     autoRemove: "interval",
     autoRemoveInterval: 10, // In minutes. Default
   }),
-  cookie: {},
+  cookie: {
+    SameSite: "Strict",
+    HttpOnly: true,
+  },
 };
 
 if (env.MODE === "production") {
   app.set("trust proxy", true); // trust first proxy
-  sess.domain = env.API_URL;
-  sess.cookie.secure = true; // serve secure cookies
-  sess.cookie.maxAge = MAXAGE;
+  sess.cookie.Domain = env.API_URL;
+  sess.cookie.Secure = true; // serve secure cookies
+  sess.cookie.MaxAge = MAXAGE;
 }
 
-app.use(cors());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({

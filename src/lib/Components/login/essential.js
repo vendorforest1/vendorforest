@@ -72,6 +72,7 @@ export const fetchLogin = (payload) => async (dispatch, getState) => {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
+      credentials: "include",
     },
     body: JSON.stringify(payload),
   })
