@@ -4,8 +4,9 @@ import ClientBillingMethodForm from "./BillingMethodForm";
 
 class ClientBillingMethod extends Component {
   render() {
+    const STRIPE_PUBLISHABLE_KEY = process.env.STRIPE_PUBLISHABLE_KEY;
     return (
-      <StripeProvider apiKey="pk_test_t5yr8PtFZ2q8YfuUUuEGcOXM009TZGJItg">
+      <StripeProvider apiKey={ STRIPE_PUBLISHABLE_KEY }>
         <Elements>
           <ClientBillingMethodForm />
         </Elements>
