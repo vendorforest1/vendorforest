@@ -6,8 +6,9 @@ import VendorHeader from "./vendor_header";
 import { connect } from "react-redux";
 import rainbow from "@Components/images/header/pettran.jpg";
 import logo from "@Components/images/logo.svg";
-import { Button } from "antd";
+import { Button, Input } from "antd";
 
+const { Search } = Input;
 class VendorForestHeader extends React.Component {
   constructor(props) {
     super(props);
@@ -76,6 +77,9 @@ class VendorForestHeader extends React.Component {
                       /> */}{" "}
                       <img className="footer-logo" src={logo} alt=" footer" width="300" />
                     </a>
+                    {/* <span style={{display:"inline-block", verticalAlign:"middle"}}>
+                    <Search placeholder="input search text"  enterButton />
+                    </span> */}
                   </div>
                 </div>
                 <div className="menu-content d-none d-xl-flex justify-content-end align-items-center">

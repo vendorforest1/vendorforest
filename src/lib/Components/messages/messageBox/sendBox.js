@@ -3,7 +3,6 @@ import { Button, Icon } from "antd";
 import moment from "moment";
 import { connect } from "react-redux";
 import { constants } from "@Shared/constants";
-import io from "socket.io-client";
 import {} from "../essential";
 
 class SendBox extends React.Component {

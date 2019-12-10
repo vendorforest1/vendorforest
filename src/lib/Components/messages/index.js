@@ -58,14 +58,6 @@ class Messages extends React.Component {
         window.addEmbedIframe(window.chat_iframe);
       }
     };
-
-    // const user = this.props.user.userObj.username;
-    // socket.emit("join", user, () => {
-    //   process.env.NODE_ENV === "development" && console.log("This is first socket.io connection");
-    // });
-    // socket.on('emit', (result) => {
-    //   alert(result);
-    // });
   }
 
   render() {

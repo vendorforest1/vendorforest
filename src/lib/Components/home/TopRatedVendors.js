@@ -14,14 +14,8 @@ class TopRatedVendors extends React.Component {
   }
 
   componentDidMount() {
-    // $(document).ready(()=>{
-    //   $('#toprated-carousel').carousel({
-    //     interval: 5000
-    //   });
-    // })
     if (this.props.vendors) {
       let vendorGroup = [];
-      console.log("this.props.vendors : ", this.props.vendors);
       for (let i = 0; i < this.props.vendors.length; i += 3) {
         vendorGroup.push(this.props.vendors.slice(i, 3));
       }

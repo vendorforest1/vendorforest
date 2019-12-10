@@ -15,7 +15,6 @@ class Warning extends React.Component {
   }
   componentDidMount() {
     if (this.props.data) {
-      console.log("data ===== ", this.props.data);
       const account = this.props.data.bsLocation ? true : undefined;
       const billingMethod = this.props.data.connectedAccountId ? true : undefined;
       const company = this.props.data.vendor.company ? true : undefined;

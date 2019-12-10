@@ -9,8 +9,6 @@ import ProposalDetails from "./ProposalDetails";
 import { fetchDeclineProposal } from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
 
-const io = require("socket.io-client");
-const socket = io();
 class ProposalItem extends React.Component {
   constructor(props) {
     super(props);
