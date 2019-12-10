@@ -45,7 +45,7 @@ const sess = {
   secret: `${env.SECRET}`,
   proxy: true,
   saveUninitialized: true, // don't create session until something stored
-  resave: false, //don't save session if unmodified
+  resave: true, //don't save session if unmodified
   store: new MongoStore({
     mongooseConnection: DB_CONNECTION,
     ttl: MAXAGE, // = 14 days. Default
