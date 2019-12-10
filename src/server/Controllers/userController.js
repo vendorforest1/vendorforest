@@ -108,7 +108,6 @@ export default function(passport) {
     await User.findOne({ email: userEmail })
       // .then((res) => res.json())
       .then(function(user) {
-        console.log("********* ", user);
         if (!user) {
           res.status(404).json({
             status: 404,
@@ -722,6 +721,7 @@ export default function(passport) {
         },
       })
       .then(async (user) => {
+        console.log("user info === ", user);
         if (!user) {
           return res.status(401).json({
             status: 401,
