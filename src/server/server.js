@@ -17,7 +17,7 @@ import configureStore from "@Shared/configureStore";
 import createApp from "./jsxReactApp";
 import routes from "./routes";
 
-const reload = require("reload");
+// const reload = require("reload");
 const app = express();
 const env = config();
 const MongoStore = connectMongo(session);
@@ -120,7 +120,8 @@ app.get("*", (req, res, next) => {
 
 //dev experience
 env.MODE === "development" &&
-  reload(app)
+  // reload(app)
+  require("reload")(app)
     .then(() => {
       // reloadReturned object see returns documentation below for what is returned
       // Reload started

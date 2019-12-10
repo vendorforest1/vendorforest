@@ -35,7 +35,7 @@ import Messages from "@Components/messages";
 
 import Milestones from "@Components/logged_client/contractDetails/Milestones";
 import { VendorPublicProfile } from "./Components/logged_vendor/profile/publicProfile";
-import { Home } from "./Components/home";
+// import { Home } from "./Components/home";
 import { ForgotPassword } from "@Components/ForgotPassword";
 
 import About from "@Components/about";
@@ -47,7 +47,10 @@ export default [
   {
     path: `/`,
     exact: true,
-    component: Home,
+    component: async () => {
+      const { Home } = await import("@Components/home");
+      return Home;
+    },
   },
   {
     path: "/login",
