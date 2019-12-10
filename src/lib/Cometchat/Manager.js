@@ -107,18 +107,10 @@ export class CCManager {
       this.LISTENER_KEY_MESSAGE,
       new CometChat.MessageListener({
         onTextMessageReceived: (message) => {
-          process.env.NODE_ENV === "development" &&
-            console.log("Incoming Message Log", {
-              message,
-            });
           this.handleMessage(message, dispatch);
         },
 
         onMediaMessageReceived: (message) => {
-          process.env.NODE_ENV === "development" &&
-            console.log("Incoming Message Log", {
-              message,
-            });
           // handle media message
           this.handleMessage(message, dispatch);
         },

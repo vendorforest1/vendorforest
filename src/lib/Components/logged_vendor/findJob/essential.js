@@ -122,7 +122,6 @@ export const fetchFindJobsData = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      process.env.NODE_ENV === "development" && console.log("fetchfindjobdata", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
