@@ -17,7 +17,7 @@ import configureStore from "@Shared/configureStore";
 import createApp from "./jsxReactApp";
 import routes from "./routes";
 
-const reload = require("reload");
+// const reload = require("reload");
 const app = express();
 const env = config();
 const MongoStore = connectMongo(session);
@@ -43,7 +43,8 @@ const sess = {
     return uuidv4(); // use UUIDs for session IDs
   },
   secret: `${env.SECRET}`,
-  saveUninitialized: false, // don't create session until something stored
+  proxy: true,
+  saveUninitialized: true, // don't create session until something stored
   resave: false, //don't save session if unmodified
   store: new MongoStore({
     mongooseConnection: DB_CONNECTION,
@@ -55,7 +56,7 @@ const sess = {
 };
 
 if (env.MODE === "production") {
-  app.set("trust proxy", 1); // trust first proxy
+  app.set("trust proxy", true); // trust first proxy
   sess.cookie.secure = true; // serve secure cookies
   sess.cookie.maxAge = MAXAGE;
 }
@@ -120,7 +121,8 @@ app.get("*", (req, res, next) => {
 
 //dev experience
 env.MODE === "development" &&
-  reload(app)
+  // reload(app)
+  require("reload")(app)
     .then(() => {
       // reloadReturned object see returns documentation below for what is returned
       // Reload started
