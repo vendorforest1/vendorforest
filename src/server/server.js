@@ -45,7 +45,7 @@ const sess = {
   secret: `${env.SECRET}`,
   proxy: true,
   saveUninitialized: true, // don't create session until something stored
-  resave: true, //don't save session if unmodified
+  resave: false, //don't save session if unmodified
   store: new MongoStore({
     mongooseConnection: DB_CONNECTION,
     ttl: MAXAGE, // = 14 days. Default
@@ -57,11 +57,10 @@ const sess = {
 
 if (env.MODE === "production") {
   app.set("trust proxy", true); // trust first proxy
+  sess.domain = env.API_URL;
   sess.cookie.secure = true; // serve secure cookies
   sess.cookie.maxAge = MAXAGE;
 }
-
-app.use(session(sess));
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -70,6 +69,7 @@ app.use(
     extended: true,
   }),
 );
+app.use(session(sess));
 app.use("/static", express.static("dist/static"));
 // app.use("/static", express.static("./public"));
 // app.set("views", path.resolve("public"));

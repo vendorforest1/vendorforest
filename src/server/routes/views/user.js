@@ -16,13 +16,14 @@ router.get("/register", function(req, res, next) {
   }
 });
 
-// router.get("/signed", function(req, res, next) {
-//   if (!req.user) {
-//     res.status(300).json({ user: undefined });
-//   } else {
-//     res.status(200).json({ ...req.user });
-//   }
-// });
+router.get("/DEMO", function(req, res, next) {
+  console.log(req.session, " **** ", req.user);
+  if (!req.user) {
+    res.status(300).json({ user: undefined });
+  } else {
+    res.status(200).json({ ...req.user });
+  }
+});
 
 router.get("/login", function(req, res, next) {
   if (!req.user) {
