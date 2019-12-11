@@ -50,6 +50,10 @@ class FindVendors extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.props.fetchInitData();
+  }
+
   static getDerivedStateFromProps(props, state) {
     if (props.homedata) {
       return {
