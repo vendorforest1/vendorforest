@@ -21,6 +21,7 @@ class VendorItem extends React.Component {
       invitedVendors.push(this.props.vendor._id);
     }
     this.props.updateInvtedVendor(invitedVendors);
+    console.log("invited vendors = ", invitedVendors);
   }
 
   render() {

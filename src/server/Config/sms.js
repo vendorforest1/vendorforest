@@ -4,7 +4,6 @@ const env = getEnv();
 
 
 export default function sendingSms(phone, title, description) {
-  console.log("phone", phone, "title", title, "description", description, "number", env.SERVER_TWILIO_NUMBER);
     const accountSid = env.TWILIO_ACCOUNT_SID;
     const authToken = env.TWILIO_AUTH_TOKEN;
     const from = env.SERVER_TWILIO_NUMBER;

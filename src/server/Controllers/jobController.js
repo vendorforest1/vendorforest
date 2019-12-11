@@ -125,6 +125,31 @@ export default () => {
   };
 
   controllers.create = async (req, res) => {
+    const invitedVendors = req.body.invitedVendors;
+    if (invitedVendors) {    
+        invitedVendors.map((vendorId) => {
+          console.log("Invited vendor list = ", vendorId);
+          User.find({
+            _id: vendorId
+          }, 
+          {
+            email: 1,
+            phone: 1,
+          })
+            .then((result) => {
+              const vendorEmail = result[0].email;
+              const vendorID = result[0]._id;
+              const phoneNumber = result[0].phone;
+              const notiDescription = `You are invited to this job. Title: ${req.body.title}`;
+              saveNotification(vendorID, notiDescription);
+              sendSMS(phoneNumber, "You are invited to this job", `Title: ${req.body.title} \n Please bid on this job. \n vendorforest.com`);
+              //send Email
+            })
+            .catch((err) => {
+              env.MODE === "development" && console.log("error occured", err)
+            })
+        })
+     }
     const newJob = new Job({ ...req.body, client: req.user._id });
     const title = req.body.title;
     await newJob
@@ -161,7 +186,7 @@ export default () => {
               const notificationDescription = `New job posted The title is ${title}`;
               const vendorPhone = result[0].phone;
               const vendorTitle = "New job posted";
-              const smsDescription = `Title: ${title} \n This job is matched well to your skill.`;
+              const smsDescription = `Title: ${title} \n This job is matched well to your skill. \n vendorforest.com`;
               saveNotification(vendorId, notificationDescription);
               sendSMS(vendorPhone, vendorTitle, smsDescription);
               // await mail.sendVendorEmail(result[0].email, "VendorForest information!", (err, msg) => {

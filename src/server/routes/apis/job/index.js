@@ -19,5 +19,4 @@ router.get("/get", validator.query(get.query), jobCtr.get);
 router.post("/send_email", jobCtr.sendEmail);
 router.post("/sendNewJobNotification", jobCtr.sendingNotification);
 router.post("/initChat", jobCtr.initChat);
-
 export default router;

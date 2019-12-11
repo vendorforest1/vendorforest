@@ -29,6 +29,7 @@ class PostJobStepThree extends React.Component {
     this.post = this.post.bind(this);
     this.selectBudgetType = this.selectBudgetType.bind(this);
     this.updateInvtedVendor = this.updateInvtedVendor.bind(this);
+    
   }
 
   selectBudgetType(e) {
