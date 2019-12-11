@@ -2,6 +2,8 @@ import Job from "@Models/job.model";
 import Proposal from "@Models/proposal.model";
 import Offer from "@Models/offer.model";
 import getEnv, { constants } from "@Config/index";
+import saveNotification from "@Config/notification";
+import sendSMS from "@Config/sms";
 
 const env = getEnv();
 
@@ -24,6 +26,24 @@ export default () => {
         message: "You has been bided to this job already.",
       });
     }
+    const client = req.body.job;
+    Job.find({
+      _id: client
+    })
+      .populate({
+        path: "client",
+        model: "user",
+      })
+      .then((result) => {
+        const clientEmail = result[0].client.email;
+        const clientphone = result[0].client.phone;
+        const clientID = result[0].client._id;
+        saveNotification(clientID, `${req.user.username} has bidded on your job post.
+                                       Please check that bid.`);
+        sendSMS(clientphone, `${req.user.username} has bidded on your job post.`, `Please check that bid. \n vendorforest.com`);
+        //sending Email
+      })
+      .catch((error) => env.MODE === "development" && console.log(error))
     await newProposal
       .save()
       .then(async (proposal) => {

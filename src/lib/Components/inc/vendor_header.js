@@ -51,7 +51,7 @@ class VendorHeader extends React.Component {
       return (
         <Menu.Item key={index}>
           <a rel="noopener noreferrer" href="#/">
-            <p style={{ maxWidth: "350px", wordWrap: "break-word" }}>
+            <p style={{ maxWidth: "500px", wordWrap: "break-word" }}>
               {noti.isRead === false ? (
                 <Badge dot>
                   <Icon type="notification" />

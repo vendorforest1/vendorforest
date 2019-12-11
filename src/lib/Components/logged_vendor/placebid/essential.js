@@ -181,6 +181,7 @@ export const fetchTeamsData = () => async (dispatch, getState) => {
 };
 
 export const fetchProposalSubmit = (payload) => async (dispatch, getState) => {
+  console.log("submit the proposal = ", payload);
   dispatch(clearError());
   dispatch(fetchRequest());
   return await fetch(apiUrl.CREATE_PROPOSAL, {

@@ -50,7 +50,7 @@ class VendorForestClientHeader extends React.Component {
       return (
         <Menu.Item key={index}>
           <a rel="noopener noreferrer" href="/#">
-            <p style={{ maxWidth: "350px", wordWrap: "break-word" }}>
+            <p style={{ maxWidth: "700px", wordWrap: "break-word" }}>
               {noti.isRead === false ? (
                 <Badge dot>
                   <Icon type="notification" />
