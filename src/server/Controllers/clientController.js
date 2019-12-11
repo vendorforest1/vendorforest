@@ -240,12 +240,11 @@ export default () => {
 
   controllers.getNotifications = async (req, res) => {
     const user = req.user._id;
-    env.MODE === "development" && console.log("user0bjectId");
 
     // await Notification.find({ username: ObjectId(user) })
-    await Notification.find({ username: mongoose.Schema.Types.ObjectId(user) })
+    await Notification.find({ username: user })
       .sort({ createdAt: -1 })
-      .limit(5)
+      .limit(10)
       .then((result) => {
         return res.status(200).json({
           data: result,

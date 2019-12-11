@@ -145,18 +145,19 @@ class PostJobStepThree extends React.Component {
     } else {
       params.status = constants.JOB_STATUS.POSTED;
       this.createJob(params);
-      sendEmail(params);
+      // sendEmail(params);
     }
   }
 
   async createJob(params) {
     if (!this.state.pending) {
-      // await this.props.fetchPostJob(params);
+      // await this.props.fetchPostJob(params)
       fetchPostJob(params)
         .then((data) => {
           this.setState({
             pending: false,
           });
+          console.log("post job data", data.data);
           this.props.updateJob(data.data);
           message.success(data.message);
           window.location.href = "/client";
@@ -227,9 +228,9 @@ class PostJobStepThree extends React.Component {
               <Radio value={0} className="mb-3">
                 Fixed
               </Radio>
-              <Radio value={1} className="mb-3">
+              {/* <Radio value={1} className="mb-3">
                 Hourly
-              </Radio>
+              </Radio> */}
             </Radio.Group>
             <InputNumber
               value={this.state.budget}

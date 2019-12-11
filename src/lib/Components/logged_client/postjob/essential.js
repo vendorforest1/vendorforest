@@ -155,7 +155,6 @@ export const fetchInitialData = () => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      process.env.NODE_ENV === "development" && console.log("essential ******** wtf ", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }
@@ -215,7 +214,7 @@ export const fetchMatchVendorData = (payload) => async (dispatch, getState) => {
 };
 
 export const fetchPostJob = async (payload) => {
-  process.env.NODE_ENV === "development" && console.log("post_information", payload);
+  console.log("post_information", payload);
   return await fetch(apiUrl.CREATE_JOB, {
     method: "POST",
     headers: {

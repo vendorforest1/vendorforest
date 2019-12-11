@@ -137,6 +137,7 @@ export const getNotification = () => async (dispatch) => {
   })
     .then((response) => response.json())
     .then((result) => {
+      process.env.NODE_ENV === "development" && console.log("fetch result", result);
       dispatch(fetchNotiSuccess(result.data));
     })
     .catch((err) => process.env.NODE_ENV === "development" && console.log("fetch error", err));

@@ -79,7 +79,6 @@ class PostedJobs extends Component {
 }
 
 const mapStateToProps = ({ clientDashboardReducer, loginReducer }) => {
-  process.env.NODE_ENV === "development" && console.log("wtf", clientDashboardReducer);
   const {
     error,
     success,

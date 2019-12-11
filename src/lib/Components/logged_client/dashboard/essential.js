@@ -275,7 +275,6 @@ export const fetchClient = () => async (dispatch) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      process.env.NODE_ENV === "development" && console.log("fetch client result === ", result.data);
       dispatch(fetchClientInfoSuccess(result.data));
     })
     .catch((err) => {
