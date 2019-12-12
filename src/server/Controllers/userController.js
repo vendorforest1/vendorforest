@@ -532,7 +532,6 @@ export default function(passport) {
         model: "vendor",
       })
       .then((result) => {
-        process.env.NODE_ENV === "development" && console.log("fetch result = ", result);
         return res.status(200).send({
           status: 200,
           body: result,
