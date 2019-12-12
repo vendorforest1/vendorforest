@@ -198,23 +198,23 @@ export default () => {
                 const smsDescription = `Title: ${title} \n This job is matched well to your skill. \n vendorforest.com`;
                 saveNotification(vendorId, notificationDescription);
                 sendSMS(vendorPhone, vendorTitle, smsDescription);
-                await mail.sendVendorEmail(
-                  result[0].email,
-                  "VendorForest information!",
-                  (err, msg) => {
-                    if (err) {
-                      return res.status(404).json({
-                        status: 404,
-                        message: "Email was not sent something went wrong!",
-                      });
-                    }
-                    console.log("email sent");
-                    return res.status(200).json({
-                      status: 200,
-                      message: "Email about this has been sent to vendors successfully.",
-                    });
-                  },
-                );
+                // await mail.sendVendorEmail(
+                //   result[0].email,
+                //   "VendorForest information!",
+                //   (err, msg) => {
+                //     if (err) {
+                //       return res.status(404).json({
+                //         status: 404,
+                //         message: "Email was not sent something went wrong!",
+                //       });
+                //     }
+                //     console.log("email sent");
+                //     return res.status(200).json({
+                //       status: 200,
+                //       message: "Email about this has been sent to vendors successfully.",
+                //     });
+                //   },
+                // );
               })
               .catch(
                 (error) => env.MODE === "development" && console.log("error occured", error),
