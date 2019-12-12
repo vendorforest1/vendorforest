@@ -9,7 +9,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CaseSensitivePathsPlugin = require("case-sensitive-paths-webpack-plugin");
 const InlineChunkHtmlPlugin = require("react-dev-utils/InlineChunkHtmlPlugin");
 const TerserPlugin = require("terser-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const safePostCssParser = require("postcss-safe-parser");
 const ManifestPlugin = require("webpack-manifest-plugin");
@@ -23,6 +22,9 @@ const modules = require("./modules");
 const getClientEnvironment = require("./env");
 const ModuleNotFoundPlugin = require("react-dev-utils/ModuleNotFoundPlugin");
 const postcssNormalize = require("postcss-normalize");
+
+// const MinifyPlugin = require("babel-minify-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const exit = process.exit;
 
@@ -241,9 +243,6 @@ module.exports = (webpackEnv) => {
     // These are the "entry points" to our application.
     // This means they will be the "root" imports that are included in JS bundle.
     target: "web", //BY DEFAULT
-    devServer: {
-      historyApiFallback: true,
-    },
     name: "frontend",
     entry: [
       // Include an alternative client for WebpackDevServer. A client's job is to
@@ -656,11 +655,6 @@ module.exports = (webpackEnv) => {
       historyApiFallback: true,
       contentBase: path.resolve(fs.realpathSync(process.cwd()), "dist"),
       compress: true,
-      publicPath: "http://localhost:4444/static/",
-      // proxy: {
-      //   "/": "http://localhost:4444",
-      //   "/apis": "http://localhost:4444",
-      // },
       port: process.env.MODE,
     },
     name: "backend",
@@ -701,7 +695,7 @@ module.exports = (webpackEnv) => {
         // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
         // please link the files into your node_modules/ and let module-resolution kick in.
         // Make sure your source files are compiled, as they will not be processed in any way.
-        new ModuleScopePlugin("src", [paths.appPackageJson]),
+        new ModuleScopePlugin("src/server", [paths.appPackageJson]),
       ],
     },
     resolveLoader: {
