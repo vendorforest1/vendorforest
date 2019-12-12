@@ -176,10 +176,11 @@ export default function(passport) {
 
   //before you chage password
   controllers.autheticate = async function(req, res) {
+    console.log("**********auth********", req.params.token);
     await Token.findOne({
       token: req.params.token,
     })
-      .then((token) => {
+      .then(async (token) => {
         if (!token) {
           return res.status(402).send({
             status: 402,
@@ -192,37 +193,50 @@ export default function(passport) {
             message: "Invalid verification code",
           });
         }
-        ResetPassword.findOne({ uuid: token._userId, email: token.email }, async function(
-          user,
-        ) {
-          if (!user) {
-            return res.status(404).status({
-              status: 404,
-              message: "no reset found!",
-            });
-          }
-          console.log("password: ", user);
-          await User.findOneAndUpdate(
-            {
-              _id: user.uuid,
-            },
-            {
-              $set: { password: user.resetPassword },
-            },
-            function(err, doc) {
-              if (err) {
-                return res.status(404).status({
-                  status: 404,
-                  message: "no reset found!",
-                });
-              }
-              return res.status(200).json({
-                status: 200,
-                message: "verified",
+        await ResetPassword.findOne({ uuid: token._userId, email: token.email })
+          .then(async function(user) {
+            if (!user) {
+              return res.status(404).status({
+                status: 404,
+                message: "no reset found!",
               });
-            },
+            }
+            console.log("password: level 1", user);
+            await User.findOneAndUpdate(
+              {
+                _id: user.uuid,
+              },
+              {
+                $set: { password: user.resetPassword },
+              },
+            )
+              .then(function(doc) {
+                console.log("password: level 2", doc);
+
+                if (!doc) {
+                  return res.status(404).status({
+                    status: 404,
+                    message: "no reset found!",
+                  });
+                }
+                return res.status(200).json({
+                  status: 200,
+                  message: "verified",
+                });
+              })
+              .catch((error) => {
+                return res.status(500).json({
+                  status: 401,
+                  message: "password reset failed level 1 " + error.message,
+                });
+              });
+          })
+          .catch((error) =>
+            res.status(500).json({
+              status: 401,
+              message: "password reset failed level 1 " + error.message,
+            }),
           );
-        });
       })
       .catch((error) => {
         env.MODE === "development" && console.log(error);
@@ -234,17 +248,16 @@ export default function(passport) {
   };
   // after link is authenticated
   controllers.forgotPassword = async (req, res) => {
-    ResetPassword.findOne(
-      {
-        email: req.body.email,
-        resetPassword: req.body.password,
-      },
-      async function(error, user) {
-        if (error) {
-          return res.status(401).send(error);
+    console.log("******** forgotPassword", req.body);
+    await ResetPassword.findOne({
+      resetPassword: req.body.oldPass,
+    })
+      .then(async function(user) {
+        if (!user) {
+          return res.status(401).send("user not found");
         }
-
-        await User.findById({
+        console.log("******** ", user);
+        await User.findOne({
           _id: user.uuid,
         })
           .then(async (user) => {
@@ -281,11 +294,21 @@ export default function(passport) {
                     });
                   })
                   .catch((error) => {
-                    throw new Error(error.message);
+                    return res.status(500).json({
+                      status: 500,
+                      message:
+                        env.MODE === "development"
+                          ? error.message
+                          : constants.PROD_COMMONERROR_MSG,
+                    });
                   });
               })
               .catch((error) => {
-                throw new Error(error.message);
+                return res.status(500).json({
+                  status: 500,
+                  message:
+                    env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+                });
               });
           })
           .catch((error) => {
@@ -295,8 +318,13 @@ export default function(passport) {
                 env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
             });
           });
-      },
-    );
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
   };
 
   controllers.getUser = async (req, res) => {
@@ -505,8 +533,7 @@ export default function(passport) {
         model: "vendor",
       })
       .then((result) => {
-        process.env.NODE_ENV === "development" &&
-          console.log("fetch result = ", result);
+        process.env.NODE_ENV === "development" && console.log("fetch result = ", result);
         return res.status(200).send({
           status: 200,
           body: result,
@@ -525,8 +552,7 @@ export default function(passport) {
       _id: req.user._id,
     })
       .then((result) => {
-        process.env.NODE_ENV === "development" &&
-          console.log("fetch result = ", result);
+        process.env.NODE_ENV === "development" && console.log("fetch result = ", result);
         return res.status(200).send({
           status: 200,
           data: result,

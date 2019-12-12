@@ -36,6 +36,7 @@
     "babel-eslint": "10.x",
     "babel-jest": "^23.4.2",
     "babel-loader": "8.0.6",
+    "babel-minify-webpack-plugin": "^0.3.1",
     "babel-plugin-named-asset-import": "^0.3.3",
     "babel-plugin-webpack-alias": "^2.1.2",
     "babel-preset-react-app": "^9.0.1",
@@ -136,6 +137,7 @@
     "google-auth-library": "^5.5.1",
     "googleapis": "^39.2.0",
     "handlebars": "^4.5.2",
+    "helmet": "^3.21.2",
     "history": "^4.9.0",
     "hoek": "5.0.3",
     "hogan.js": "^3.0.2",
@@ -290,9 +292,10 @@
         "import",
         {
           "libraryName": "antd",
-          "libraryDirectory": "lib"
+          "libraryDirectory": "lib",
+          "style": false
         },
-        "ant"
+        "antd"
       ],
       [
         "module-resolver",

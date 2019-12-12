@@ -5,6 +5,7 @@ import connectMongo from "connect-mongo";
 import uuidv4 from "uuid/v4";
 import passport from "passport";
 import cors from "cors";
+import helmet from "helmet";
 import bodyParser from "body-parser";
 import path from "path";
 import ReactDOMServer from "react-dom/server";
@@ -25,6 +26,7 @@ const MongoStore = connectMongo(session);
 const PORT = env.PORT;
 
 app.use(cors());
+app.use(helmet());
 
 connect(env.DATABASE_CONNECTION, {
   useFindAndModify: false,
@@ -123,7 +125,6 @@ app.get("*", (req, res, next) => {
   });
 });
 
-//dev experience
 env.MODE === "development" &&
   // reload(app)
   require("reload")(app)
@@ -185,4 +186,5 @@ env.MODE === "production" &&
           throw error;
       }
     });
+
 export default app;

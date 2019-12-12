@@ -23,12 +23,14 @@ export const ForgotPasswordReducer = function reducer(
     case FETCH_SUCCESS:
       return {
         ...state,
+        error: undefined,
         pending: false,
         success: action.payload,
       };
     case FETCH_ERROR:
       return {
         ...state,
+        success: undefined,
         pending: false,
         error: action.payload,
       };
@@ -64,6 +66,7 @@ const clearError = () => ({
 });
 
 export const fetchResetPass = (payload) => async (dispatch, getState) => {
+  console.log("REset");
   dispatch(clearError());
   dispatch(requestVerifyLink());
   return await fetch(`${API_URL}/apis/forgotPassword`, {
@@ -88,8 +91,8 @@ export const fetchResetPass = (payload) => async (dispatch, getState) => {
 export const verifyLink = (token) => async (dispatch, getState) => {
   dispatch(clearError());
   dispatch(requestVerifyLink());
-  return await fetch(`${API_URL}/apis/auth/${token}`, {
-    method: "POST",
+  return await fetch(`${API_URL}/apis/authToken/${token}`, {
+    method: "GET",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -100,6 +103,7 @@ export const verifyLink = (token) => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
+      console.log("I get here");
       dispatch(setSuccess("This Link is authenticated!"));
     })
     .catch((err) => dispatch(setError(err.message)));

@@ -6,12 +6,16 @@ import { fetchResetPass, verifyLink } from "./essential";
 import { Header } from "@Components/inc/header";
 import { Footer } from "@Components/inc/footer";
 import { withRouter } from "react-router";
+import withStyles from "isomorphic-style-loader/withStyles";
+
+import styles from "./index.scss";
 
 class PasswordReset extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      verify: false,
       oldPass: "",
       newPass: "",
       repeatPass: "",
@@ -20,41 +24,53 @@ class PasswordReset extends React.Component {
   resetPass = async (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err && !this.props.pending) {
-        process.env.NODE_ENV === "development" && console.log(values);
+      if (!err) {
+        // if (!err && !this.props.pending && this.state.verify) {
         this.props.fetchResetPass(values);
       }
     });
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { token } = this.props.match.params;
-    this.props.verifyLink(token);
+    await this.props.verifyLink(token);
   }
+
   static getDerivedStateFromProps(props, state) {
     if (props.error) {
-      process.env.NODE_ENV === "development" &&
-      console.log(("error: ", props.error));
       setImmediate(() => {
         message.error(props.error);
-      }, 3600);
-      // props.history.push("/404");
+      }, 36000);
+      props.history.push("/404");
+      return {
+        ...state,
+        verify: true,
+        error: props.error,
+        success: props.success,
+        pending: false,
+      };
     }
-    // if (props.success) {
-    //   props.history.push("/login");
-    // }
+    if (props.success && !state.verify) {
+      return {
+        ...state,
+        verify: true,
+        error: props.error,
+        success: props.success,
+        pending: false,
+      };
+    }
     return {
       //...state,
       error: props.error,
       success: props.success,
-      pending: props.pending,
+      pending: false,
     };
   }
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    process.env.NODE_ENV === "development" && 
-    console.log("", this.props);
+
+    console.log("this.props.pending ", this.props.pending, this.state.verify);
     return (
       <div className="resetpass-section">
         <Header />
@@ -63,87 +79,84 @@ class PasswordReset extends React.Component {
             <div className="row">
               <div className="col-xl-6 col-lg-8 col-md-10 col-12 offset-xl-3 offset-lg-3 offset-md-1  offset-0">
                 <div className="shadow form-content">
-                  {this.state.pending && <Icon type="sync" spin />}
-                  <div className="client-security">
-                    <Card
-                      title="Password & security"
-                      style={{
-                        boxShadow: "0 1px 6px rgba(57,73,76,.35)",
-                        marginBottom: "50px",
-                      }}
-                    >
-                      <Form layout="vertical" onSubmit={this.resetPass}>
-                        <div className="row">
-                          <div className="col-md-6 col-sm-12">
-                            <Form.Item label="Old Password">
-                              {getFieldDecorator("oldPass", {
-                                initialValue: this.state.oldPass, //solution
-                                rules: [
-                                  { required: true, message: "Please input Old Password" },
-                                ],
-                              })(
-                                <Input.Password
-                                  placeholder="Old Password"
-                                  name="oldPass"
-                                  size={"large"}
-                                />,
-                              )}
-                            </Form.Item>
-                          </div>
-                          <div className="col-md-6"></div>
-                          <div className="col-md-6 col-sm-12">
-                            <Form.Item label="New Password">
-                              {getFieldDecorator("newPass", {
-                                initialValue: this.state.newPass, //solution
-                                rules: [
-                                  { required: true, message: "Please input New Password" },
-                                ],
-                              })(
-                                <Input.Password
-                                  placeholder="New Password"
-                                  name="newPass"
-                                  size={"large"}
-                                />,
-                              )}
-                            </Form.Item>
-                          </div>
-                          <div className="col-md-6"></div>
-                          <div className="col-md-6">
-                            <Form.Item label="Repeat Password">
-                              {getFieldDecorator("repeatPass", {
-                                initialValue: this.state.repeatPass, //solution
-                                rules: [
-                                  { required: true, message: "Please input Repeat Password" },
-                                ],
-                              })(
-                                <Input.Password
-                                  placeholder="Repeat Passwords"
-                                  name="repeatPass"
-                                  size={"large"}
-                                />,
-                              )}
-                            </Form.Item>
-                          </div>
-                          <div className="col-12 d-flex justify-content-start">
-                            <button
-                              className={`button-primary ${
-                                this.props.pending ? "disable" : ""
-                              }`}
-                              type="submit"
-                            >
-                              Save
-                            </button>
-                          </div>
+                  <Card
+                    title="Password & security"
+                    style={{
+                      boxShadow: "0 1px 6px rgba(57,73,76,.35)",
+                    }}
+                  >
+                    <Form layout="vertical" onSubmit={this.resetPass}>
+                      <div className="row">
+                        <div className="col-md-12 col-sm-12">
+                          <Form.Item label="Old Password">
+                            {getFieldDecorator("oldPass", {
+                              initialValue: this.state.oldPass, //solution
+                              rules: [{ required: true, message: "Please input Old Password" }],
+                            })(
+                              <Input.Password
+                                placeholder="Old Password"
+                                name="oldPass"
+                                size={"large"}
+                              />,
+                            )}
+                          </Form.Item>
                         </div>
-                      </Form>
-                    </Card>
-                  </div>{" "}
+                        <div className="col-md-6"></div>
+                        <div className="col-md-12 col-sm-12">
+                          <Form.Item label="New Password">
+                            {getFieldDecorator("newPass", {
+                              initialValue: this.state.newPass, //solution
+                              rules: [{ required: true, message: "Please input New Password" }],
+                            })(
+                              <Input.Password
+                                placeholder="New Password"
+                                name="newPass"
+                                size={"large"}
+                              />,
+                            )}
+                          </Form.Item>
+                        </div>
+                        <div className="col-md-6"></div>
+                        <div className="col-md-12">
+                          <Form.Item label="Repeat Password">
+                            {getFieldDecorator("repeatPass", {
+                              initialValue: this.state.repeatPass, //solution
+                              rules: [
+                                { required: true, message: "Please input Repeat Password" },
+                              ],
+                            })(
+                              <Input.Password
+                                placeholder="Repeat Passwords"
+                                name="repeatPass"
+                                size={"large"}
+                              />,
+                            )}
+                          </Form.Item>
+                        </div>
+                        <div className="col-12 d-flex justify-content-start">
+                          <button
+                            className={`button-primary ${
+                              this.state.pending && !this.state.verify ? "disable" : ""
+                            }`}
+                            type="submit"
+                          >
+                            Save &nbsp;
+                            {this.state.pending && !this.state.verify && (
+                              <Icon type="sync" spin />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                    </Form>
+                  </Card>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <Footer />
+        <div className="footer">
+          <Footer />
+        </div>
       </div>
     );
   }
@@ -163,4 +176,4 @@ const mapStateToProps = ({ ForgotPasswordReducer }) => {
 export const ForgotPassword = connect(mapStateToProps, {
   fetchResetPass,
   verifyLink,
-})(withRouter(PasswordResetForm));
+})(withStyles(styles)(withRouter(PasswordResetForm)));
