@@ -6,7 +6,7 @@ class ClientBillingMethod extends Component {
   render() {
     const STRIPE_PUBLISHABLE_KEY = process.env.STRIPE_PUBLISHABLE_KEY;
     return (
-      <StripeProvider apiKey={ STRIPE_PUBLISHABLE_KEY }>
+      <StripeProvider apiKey={STRIPE_PUBLISHABLE_KEY}>
         <Elements>
           <ClientBillingMethodForm />
         </Elements>

@@ -30,7 +30,6 @@ class PostJobStepThree extends React.Component {
     this.post = this.post.bind(this);
     this.selectBudgetType = this.selectBudgetType.bind(this);
     this.updateInvtedVendor = this.updateInvtedVendor.bind(this);
-    
   }
 
   selectBudgetType(e) {
@@ -71,10 +70,10 @@ class PostJobStepThree extends React.Component {
     }
     if (this.state.budgetType === 0) {
       const minBudget = days * hrsPerDay * minVendor.vendor.hourlyRate;
-      if(this.state.minBudget === 5) {
+      if (this.state.minBudget === 5) {
         this.setState({
-        minBudget:minBudget
-      });
+          minBudget: minBudget,
+        });
       }
       return `Suggestion Budget: $${(days * hrsPerDay * minVendor.vendor.hourlyRate).toFixed(
         2,
@@ -152,7 +151,7 @@ class PostJobStepThree extends React.Component {
       this.updatePostedJob(params);
     } else {
       params.status = constants.JOB_STATUS.POSTED;
-      if(params.budget < this.state.minBudget){
+      if (params.budget < this.state.minBudget) {
         message.warning("Your budget is lower than suggest budget");
       } else {
         this.createJob(params);

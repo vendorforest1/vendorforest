@@ -28,7 +28,7 @@ export default () => {
     }
     const client = req.body.job;
     Job.find({
-      _id: client
+      _id: client,
     })
       .populate({
         path: "client",
@@ -38,12 +38,19 @@ export default () => {
         const clientEmail = result[0].client.email;
         const clientphone = result[0].client.phone;
         const clientID = result[0].client._id;
-        saveNotification(clientID, `${req.user.username} has bidded on your job post.
-                                       Please check that bid.`);
-        sendSMS(clientphone, `${req.user.username} has bidded on your job post.`, `Please check that bid. \n vendorforest.com`);
+        saveNotification(
+          clientID,
+          `${req.user.username} has bidded on your job post.
+                                   Please check that bid.`,
+        );
+        sendSMS(
+          clientphone,
+          `${req.user.username} has bidded on your job post.`,
+          `Please check that bid. \n vendorforest.com`,
+        );
         //sending Email
       })
-      .catch((error) => env.MODE === "development" && console.log(error))
+      .catch((error) => env.MODE === "development" && console.log(error));
     await newProposal
       .save()
       .then(async (proposal) => {

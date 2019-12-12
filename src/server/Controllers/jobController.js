@@ -126,30 +126,36 @@ export default () => {
 
   controllers.create = async (req, res) => {
     const invitedVendors = req.body.invitedVendors;
-    if (invitedVendors) {    
-        invitedVendors.map((vendorId) => {
-          console.log("Invited vendor list = ", vendorId);
-          User.find({
-            _id: vendorId
-          }, 
+    if (invitedVendors) {
+      invitedVendors.map((vendorId) => {
+        console.log("Invited vendor list = ", vendorId);
+        User.find(
+          {
+            _id: vendorId,
+          },
           {
             email: 1,
             phone: 1,
+          },
+        )
+          .then((result) => {
+            const vendorEmail = result[0].email;
+            const vendorID = result[0]._id;
+            const phoneNumber = result[0].phone;
+            const notiDescription = `You are invited to this job. Title: ${req.body.title}`;
+            saveNotification(vendorID, notiDescription);
+            sendSMS(
+              phoneNumber,
+              "You are invited to this job",
+              `Title: ${req.body.title} \n Please bid on this job. \n vendorforest.com`,
+            );
+            //send Email
           })
-            .then((result) => {
-              const vendorEmail = result[0].email;
-              const vendorID = result[0]._id;
-              const phoneNumber = result[0].phone;
-              const notiDescription = `You are invited to this job. Title: ${req.body.title}`;
-              saveNotification(vendorID, notiDescription);
-              sendSMS(phoneNumber, "You are invited to this job", `Title: ${req.body.title} \n Please bid on this job. \n vendorforest.com`);
-              //send Email
-            })
-            .catch((err) => {
-              env.MODE === "development" && console.log("error occured", err)
-            })
-        })
-     }
+          .catch((err) => {
+            env.MODE === "development" && console.log("error occured", err);
+          });
+      });
+    }
     const newJob = new Job({ ...req.body, client: req.user._id });
     const title = req.body.title;
     await newJob
@@ -166,46 +172,54 @@ export default () => {
         }
         // console.log("before sending email", job);
         // send notification
-        await Vendor.find({
-          category: req.body.category
-        },
-        {
-          _id:1
-        })
-        .then(async (vendors) => {
+        await Vendor.find(
+          {
+            category: req.body.category,
+          },
+          {
+            _id: 1,
+          },
+        ).then(async (vendors) => {
           await vendors.map(async (vendor) => {
-            await User.find({
-              vendor: vendor._id
-            },
-            {
-              email: 1,
-              phone: 1,
-            })
-            .then(async (result) => {
-              const vendorId = result[0]._id;
-              const notificationDescription = `New job posted The title is ${title}`;
-              const vendorPhone = result[0].phone;
-              const vendorTitle = "New job posted";
-              const smsDescription = `Title: ${title} \n This job is matched well to your skill. \n vendorforest.com`;
-              saveNotification(vendorId, notificationDescription);
-              sendSMS(vendorPhone, vendorTitle, smsDescription);
-              // await mail.sendVendorEmail(result[0].email, "VendorForest information!", (err, msg) => {
-              //   if (err) {
-              //     return res.status(404).json({
-              //       status: 404,
-              //       message: "Email was not sent something went wrong!",
-              //     });
-              //   }
-              //   console.log("email sent");
-              //   return res.status(200).json({
-              //     status: 200,
-              //     message: "Email about this has been sent to vendors successfully.",
-              //   });
-              // });
-              }
+            await User.find(
+              {
+                vendor: vendor._id,
+              },
+              {
+                email: 1,
+                phone: 1,
+              },
             )
-            .catch((error) => env.MODE === "development" && console.log("error occured", error));
-          })
+              .then(async (result) => {
+                const vendorId = result[0]._id;
+                const notificationDescription = `New job posted The title is ${title}`;
+                const vendorPhone = result[0].phone;
+                const vendorTitle = "New job posted";
+                const smsDescription = `Title: ${title} \n This job is matched well to your skill. \n vendorforest.com`;
+                saveNotification(vendorId, notificationDescription);
+                sendSMS(vendorPhone, vendorTitle, smsDescription);
+                await mail.sendVendorEmail(
+                  result[0].email,
+                  "VendorForest information!",
+                  (err, msg) => {
+                    if (err) {
+                      return res.status(404).json({
+                        status: 404,
+                        message: "Email was not sent something went wrong!",
+                      });
+                    }
+                    console.log("email sent");
+                    return res.status(200).json({
+                      status: 200,
+                      message: "Email about this has been sent to vendors successfully.",
+                    });
+                  },
+                );
+              })
+              .catch(
+                (error) => env.MODE === "development" && console.log("error occured", error),
+              );
+          });
         });
         return res.status(200).json({
           status: 200,
@@ -313,7 +327,6 @@ export default () => {
       .catch((error) => env.MODE === "development" && console.log("error occured", error));
   };
 
-
   controllers.update = async (req, res) => {
     await Job.findOneAndUpdate(
       {
@@ -338,7 +351,7 @@ export default () => {
         });
       });
   };
-  
+
   controllers.find = async (req, res) => {
     const statusQuery = req.body.status.map((st) => {
       return {
@@ -346,7 +359,8 @@ export default () => {
       };
     });
     if (req.user.vendor) {
-      await Vendor.find({
+      await Vendor.find(
+        {
           _id: req.user.vendor,
         },
         {
@@ -354,7 +368,8 @@ export default () => {
           service: 1,
           company: 1,
           _id: 0,
-        })
+        },
+      )
         .then(async (result) => {
           const query = {};
           if (result[0].service) {
@@ -382,7 +397,13 @@ export default () => {
             const re = new RegExp(req.body.title, "i");
             query["title"] = re;
           }
-          if(result[0].service && result[0].category && result[0].company && req.user.bsLocation && req.user.connectedAccountId) {
+          if (
+            result[0].service &&
+            result[0].category &&
+            result[0].company &&
+            req.user.bsLocation &&
+            req.user.connectedAccountId
+          ) {
             await Job.find({
               ...query,
               status: 0,
@@ -424,15 +445,16 @@ export default () => {
               .catch((error) => {
                 return res.status(500).json({
                   status: 500,
-                  message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+                  message:
+                    env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
                 });
               });
-            }
-          })
-          .catch((err) => {
-            env.MODE === "development" ? err.message : constants.PROD_COMMONERROR_MSG;
-          })
-        }
+          }
+        })
+        .catch((err) => {
+          env.MODE === "development" ? err.message : constants.PROD_COMMONERROR_MSG;
+        });
+    }
   };
 
   return controllers;

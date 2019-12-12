@@ -235,7 +235,7 @@ export const fetchPostJob = async (payload) => {
     });
 };
 
-export const sendEmail = (payload) => async(dispatch) => {
+export const sendEmail = (payload) => async (dispatch) => {
   sub.subscribeUser(payload);
   return await fetch(apiUrl.SEND_EMAIL, {
     method: "POST",
@@ -243,7 +243,7 @@ export const sendEmail = (payload) => async(dispatch) => {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({vendorID: payload}),
+    body: JSON.stringify({ vendorID: payload }),
   })
     .then((response) => response.json())
     .then((result) => {

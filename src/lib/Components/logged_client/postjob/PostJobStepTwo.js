@@ -335,9 +335,9 @@ class PostJobStepTwo extends React.Component {
                       <InputNumber
                         className="w-100"
                         formatter={(value) =>
-                          `${value}km`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          `${value}mile`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                         }
-                        parser={(value) => value.replace(/\km\s?|(,*)/g, "")}
+                        parser={(value) => value.replace(/\mile\s?|(,*)/g, "")}
                         step={0.1}
                         size={"large"}
                       />,

@@ -68,6 +68,7 @@ class CreateContract extends React.Component {
       stDateTime: this.state.contractStDateTime.toDate(),
       endDateTime: this.state.contractEndDateTime.toDate(),
     };
+    // jqcc.cometchat.launch({uid:params.vendor});
     this.createContract(params);
   }
 

@@ -52,7 +52,7 @@ async function hydrate() {
     ReactDOM.render(jsx, mountApp);
   } catch (e) {
     process.env.NODE_ENV === "development" &&
-    console.log("something bad happened! ", e.message);
+      console.log("something bad happened! ", e.message);
   }
 }
 
