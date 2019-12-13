@@ -245,8 +245,50 @@ export default () => {
       });
   };
 
-  controllers.getHireDetail = async (req, res) => {
+  controllers.updateHireProposal = async (req, res) => {
     console.log(req.body);
+    await Contract.findOneAndUpdate({
+      _id: req.body.contract
+    },
+    {
+      budget: req.body.updatePrice
+    },
+    {
+      new: true
+    })
+      .then(async () => {
+        await Job.findOneAndUpdate({
+          _id: req.body.job
+        },
+        {
+          title: req.body.updateTitle,
+          description: req.body.updateDescription,
+        },
+        {
+          new: true
+        })
+          .then(async (result) => {
+            return res.status(200).json({
+              status: 200,
+              message: `Your proposal has been updated successfully.`,
+            });
+          })
+          .catch((error) => {
+            return res.status(500).json({
+              status: 500,
+              message: `${error} Failed to update. Please try again.`
+            });
+          })
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+  
+  controllers.getHireDetail = async (req, res) => {
     const jobId = req.body.job_id;
     const vendorId = req.body.vendor_id;
     await Contract.findOne({
@@ -276,7 +318,6 @@ export default () => {
         ],
       })
       .then(async (result) => {
-        console.log("hire result", result);
         return res.status(200).json({
           status: 200,
           data: result,
@@ -289,7 +330,7 @@ export default () => {
         });
       });
   };
-
+  
   controllers.get = async (req, res, next) => {
     await Contract.findById(req.query._id)
       .populate({

@@ -166,6 +166,7 @@ export const apiUrl = {
   GET_CONTRACT: `${API_URL}/apis/contract/get`,
   GET_ATTACHFILES: `${API_URL}/apis/contract/get_attachfiles`,
   GET_HIRE_DETAIL: `${API_URL}/apis/contract/get_hire_detail`,
+  UPDATE_HIRE_PROPOSAL: `${API_URL}/apis/contract/update_hire_proposal`,
 
   CREATE_MILESTONE: `${API_URL}/apis/milestone/create`,
   UPDATE_MILESTONE: `${API_URL}/apis/milestone/update`,

@@ -14,6 +14,7 @@ import {
   InputNumber,
   DatePicker,
   Row,
+  message,
 } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import defaultProfileImage from "@Components/images/profileplace.png";
@@ -21,12 +22,12 @@ import Header from "@Components/inc/header";
 import Footer from "@Components/inc/footer";
 
 import { connect } from "react-redux";
-import { fetchGetHireData } from "./essential";
-import EditModalForm from "./editmodal";
+import { fetchGetHireData, updateProposal } from "./essential";
 
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 
+const { TextArea } = Input;
 class Hire extends React.Component {
   constructor(props) {
     super(props);
@@ -37,7 +38,7 @@ class Hire extends React.Component {
       confirmStatus: undefined,
       modalStatus: undefined,
       visible: false,
-      emditmodal: undefined,
+      emditmodal: false,
     };
     this.selectdueDateTime = this.selectdueDateTime.bind(this);
     this.onConfirmChange = this.onConfirmChange.bind(this);
@@ -45,6 +46,8 @@ class Hire extends React.Component {
     this.handeleOk = this.handeleOk.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.onCreate = this.onCreate.bind(this);
+    this.onCancel = this.onCancel.bind(this);
   }
 
   componentDidMount() {
@@ -81,6 +84,39 @@ class Hire extends React.Component {
   handleEdit() {
     this.setState({
       emditmodal: true,
+    });
+  }
+  onCreate() {
+    this.setState({
+      emditmodal:false,
+    });
+    this.props.form.validateFields(["updateTitle", "updateDescription", "updatePrice"], (err, values) => {
+      if (!err) {
+        const params = {
+          updateTitle: values.updateTitle,
+          updateDescription: values.updateDescription,
+          updatePrice: values.updatePrice,
+          contract: this.props.hireInfo._id,
+          job: this.props.hireInfo.job._id,
+        }
+        console.log("params", params);
+        this.props.updateProposal(params);
+      }
+      if(err){
+        console.log(err);
+      }
+    });
+    window.location.reload();
+    if(this.props.success) {
+      message.success(this.props.success);
+    } 
+    // else {
+    //   message.error(this.props.error);
+    // }
+  }
+  onCancel() {
+    this.setState({
+      emditmodal:false,
     });
   }
   render() {
@@ -206,7 +242,7 @@ class Hire extends React.Component {
                           </div>
                           <div className="col-md-8 col-sm-6">
                             <span className="edit">
-                              <a href="#">Edit</a>
+                              <a onClick={this.handleEdit} >Edit</a>
                             </span>
                           </div>
                         </div>
@@ -315,8 +351,6 @@ class Hire extends React.Component {
                     </div>
                   )}
                 </div>
-                {this.state.emditmodal === true? <EditModalForm /> : ""}
-                {console.log("Modal status === ", this.state.emditmodal)}
                 <div style={{ margin: "20px 0px" }}></div>
                 {this.props.hireInfo && (
                   <div className="content-details shadow">
@@ -332,7 +366,6 @@ class Hire extends React.Component {
                             including the User Agreement and
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Privacy Policy
                           </Checkbox>
-                          {console.log("confirm = ", this.state.confirmStatus)}
                         </div>
                         <div className="col-md-6" style={{ margin: "5% 0px" }}>
                           <Popconfirm
@@ -410,6 +443,50 @@ class Hire extends React.Component {
             </Form.Item>
           </Form>
         </Modal>
+
+        <Modal
+        visible={this.state.emditmodal}
+        title="Update Proposal"
+        okText="Update"
+        onCancel={this.onCancel}
+        onOk={this.onCreate}
+        >
+          {this.props.hireInfo && (
+        <Form layout="vertical">
+          <Form.Item label="Title">
+            {getFieldDecorator('updateTitle', {
+              initialValue: this.props.hireInfo.job.title,
+              rules: [{ required: true, message: 'Please input the title of Proposal!' }],
+            })(<Input />)}
+          </Form.Item>
+          <Form.Item label="description">
+            {getFieldDecorator('updateDescription', {
+              initialValue: this.props.hireInfo.job.description,
+              rules: [{ required: true, message: 'Please input the description of Proposal!' }],
+            })(<TextArea type="textarea" rows={5}/>)}
+          </Form.Item>
+          <Form.Item label="Price">
+            {getFieldDecorator("updatePrice", {
+              initialValue: getContractBudget(),
+              rules: [
+                { required: true, message: "Price of a milestone" },
+              ],
+            })(
+              <InputNumber
+                placeholder="Price of a milestone"
+                size={"large"}
+                min={1}
+                formatter={(value) =>
+                  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                className="w-100"
+              />,
+            )}
+          </Form.Item>
+        </Form>
+          )}
+      </Modal>
         <Footer />
       </div>
     );
@@ -427,4 +504,5 @@ const mapStateToProps = ({ loginReducer, clientHireDetailReducer }) => {
 
 export default connect(mapStateToProps, {
   fetchGetHireData,
+  updateProposal,
 })(withStyles(globalStyle, localStyle)(HireMilestonesForm));
