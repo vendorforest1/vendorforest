@@ -2,6 +2,7 @@ import Job from "@Models/job.model";
 import Proposal from "@Models/proposal.model";
 import Contract from "@Models/contract.model";
 import getEnv, { constants } from "@Config/index";
+import { async } from "q";
 
 const env = getEnv();
 
@@ -234,6 +235,51 @@ export default () => {
           status: 200,
           data: contract,
           message: "Contract has been ended successfully.",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
+  controllers.getHireDetail = async (req, res) => {
+    console.log(req.body);
+    const jobId = req.body.job_id;
+    const vendorId = req.body.vendor_id;
+    await Contract.findOne({
+      job: jobId,
+      vendor: vendorId,
+    })
+      .populate({
+        path: "vendor",
+        model: "user",
+      })
+      .populate({
+        path: "proposal",
+        model: "proposal",
+      })
+      .populate({
+        path: "job",
+        model: "job",
+        populate: [
+          {
+            path: "category",
+            model: "category",
+          },
+          {
+            path: "service",
+            model: "service",
+          },
+        ],
+      })
+      .then(async (result) => {
+        console.log("hire result", result);
+        return res.status(200).json({
+          status: 200,
+          data: result,
         });
       })
       .catch((error) => {

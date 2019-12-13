@@ -19,6 +19,7 @@ import clientPostjobReducer from "@Components/logged_client/postjob/essential";
 import clientJobDetailsReducer from "@Components/logged_client/jobDetails/essential";
 import clientContractDetailsReducer from "@Components/logged_client/contractDetails/essential";
 import clientReviewReducer from "@Components/logged_client/givefeedback/essential";
+import clientHireDetailReducer from "@Components/hire/essential";
 
 import vendorFindJobReducer from "@Components/logged_vendor/findJob/essential";
 import vendorJobDetailsReducer from "@Components/logged_vendor/jobDetails/essential";
@@ -42,6 +43,7 @@ const reducers = {
   clientJobDetailsReducer,
   clientContractDetailsReducer,
   clientReviewReducer,
+  clientHireDetailReducer,
   vendorProfileReducer,
   vendorSettingsReducer,
   vendorDashboardReducer,

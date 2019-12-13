@@ -70,6 +70,7 @@ class CreateContract extends React.Component {
     };
     // jqcc.cometchat.launch({uid:params.vendor});
     this.createContract(params);
+    window.location.href = `/client/hire/${params.job}&${params.vendor}`;
   }
 
   createContract(params) {

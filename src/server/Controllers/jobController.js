@@ -64,6 +64,7 @@ export default () => {
   };
 
   controllers.get = async (req, res) => {
+    console.log("url =======", req.query.vendor_id);
     await Job.findById(req.query._id)
       .populate("service")
       .populate("category")
@@ -322,7 +323,6 @@ export default () => {
               message: "Email about this has been sent to vendors successfully.",
             });
           });
-          sendingSms(result.phone, title, description);
         }),
       )
       .catch((error) => env.MODE === "development" && console.log("error occured", error));
