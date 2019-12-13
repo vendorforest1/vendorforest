@@ -12,6 +12,7 @@ import {
   fetchUpdateJob,
 } from "./essential";
 import { constants } from "@Shared/constants";
+import { withRouter } from "react-router-dom";
 const Search = Input.Search;
 
 class PostJobStepThree extends React.Component {
@@ -103,7 +104,7 @@ class PostJobStepThree extends React.Component {
       message.error(props.error.message);
     } else if (props.success) {
       message.success(props.success.message);
-      this.props.history.push("/client");
+      props.history.push("/client");
     }
     if (props.vendors) {
       return {
@@ -113,9 +114,7 @@ class PostJobStepThree extends React.Component {
         error: props.error,
       };
     }
-    return {
-      ...state,
-    };
+    return null;
   }
 
   post() {
@@ -171,7 +170,7 @@ class PostJobStepThree extends React.Component {
           console.log("post job data", data.data);
           this.props.updateJob(data.data);
           message.success(data.message);
-          window.location.href = "/client";
+          this.props.history.push("/client");
         })
         .catch((error) => {
           this.setState({
@@ -193,7 +192,7 @@ class PostJobStepThree extends React.Component {
           });
           this.props.updateJob(data.data);
           message.success(data.message);
-          window.location.href = "/client";
+          this.props.history.push("/client");
         })
         .catch((error) => {
           this.setState({
@@ -360,4 +359,4 @@ export default connect(mapStateToProps, {
   fetchUpdateJob,
   fetchMatchVendorData,
   fetchPostJob,
-})(PostJobStepThree);
+})(withRouter(PostJobStepThree));

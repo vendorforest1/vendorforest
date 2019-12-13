@@ -38,6 +38,7 @@ class PasswordReset extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     if (props.error) {
+      process.env.NODE_ENV === "development" && console.log(("error: ", props.error));
       setImmediate(() => {
         message.error(props.error);
       }, 36000);

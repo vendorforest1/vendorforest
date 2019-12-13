@@ -142,7 +142,7 @@ const mailService = () => {
               }
 
               if (user) {
-                source = user.firstName
+                source = !user.username
                   ? source.replace(userNamePattern, user.firstName)
                   : source.replace(userNamePattern, user.username);
                 source = source.replace(temporaryPassPattern, user.resetPassword);
