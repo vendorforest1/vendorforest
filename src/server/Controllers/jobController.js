@@ -170,7 +170,7 @@ export default () => {
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
-        // console.log("before sending email", job);
+        console.log("before sending email", job);
         // send notification
         await Vendor.find(
           {
@@ -180,15 +180,18 @@ export default () => {
             _id: 1,
           },
         ).then(async (vendors) => {
+          console.log("result[0]: ", vendors);
+
           await vendors.map(async (vendor) => {
             await User.find(
               {
                 vendor: vendor._id,
               },
-              {
-                email: 1,
-                phone: 1,
-              },
+              // {
+              //   firstName: 1,
+              //   email: 1,
+              //   phone: 1,
+              // },
             )
               .then(async (result) => {
                 const vendorId = result[0]._id;
@@ -196,29 +199,27 @@ export default () => {
                 const vendorPhone = result[0].phone;
                 const vendorTitle = "New job posted";
                 const smsDescription = `Title: ${title} \n This job is matched well to your skill. \n vendorforest.com`;
-                saveNotification(vendorId, notificationDescription);
-                sendSMS(vendorPhone, vendorTitle, smsDescription);
+                // saveNotification(vendorId, notificationDescription);
+                // sendSMS(vendorPhone, vendorTitle, smsDescription);
+                console.log(result[0], "***********");
+
                 await mail.sendVendorEmail(
-                  result[0].email,
+                  result[0],
                   "VendorForest information!",
                   (err, msg) => {
                     if (err) {
-                      return res.status(404).json({
-                        status: 404,
-                        message: "Email was not sent something went wrong!",
-                      });
+                      return err;
                     }
-                    console.log("email sent");
-                    return res.status(200).json({
-                      status: 200,
-                      message: "Email about this has been sent to vendors successfully.",
-                    });
+                    return;
                   },
                 );
               })
-              .catch(
-                (error) => env.MODE === "development" && console.log("error occured", error),
-              );
+              .catch((error) => {
+                return res.status(404).json({
+                  status: 404,
+                  message: "something went wrong!",
+                });
+              });
           });
         });
         return res.status(200).json({

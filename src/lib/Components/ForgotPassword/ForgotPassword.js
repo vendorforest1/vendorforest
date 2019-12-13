@@ -38,10 +38,7 @@ class PasswordReset extends React.Component {
 
   static getDerivedStateFromProps(props, state) {
     if (props.error) {
-<<<<<<< HEAD
       process.env.NODE_ENV === "development" && console.log(("error: ", props.error));
-=======
->>>>>>> 4c8c8259b3b1347ba4f1c2ed80232220c939a70e
       setImmediate(() => {
         message.error(props.error);
       }, 36000);
@@ -73,12 +70,8 @@ class PasswordReset extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-<<<<<<< HEAD
-    process.env.NODE_ENV === "development" && console.log("", this.props);
-=======
 
     console.log("this.props.pending ", this.props.pending, this.state.verify);
->>>>>>> 4c8c8259b3b1347ba4f1c2ed80232220c939a70e
     return (
       <div className="resetpass-section">
         <Header />

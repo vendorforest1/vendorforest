@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from "react";
 import { Input, Form, Radio, Checkbox, InputNumber, Select } from "antd";
 import { connect } from "react-redux";
@@ -337,7 +336,7 @@ class PostJobStepTwo extends React.Component {
                         formatter={(value) =>
                           `${value}mile`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                         }
-                        parser={(value) => value.replace(/\mile\s?|(,*)/g, "")}
+                        parser={(value) => value.replace(/mile\s?|(,*)/g, "")}
                         step={0.1}
                         size={"large"}
                       />,
