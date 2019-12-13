@@ -200,8 +200,8 @@ export default () => {
                 const vendorPhone = result[0].phone;
                 const vendorTitle = "New job posted";
                 const smsDescription = `Title: ${title} \n This job is matched well to your skill. \n vendorforest.com`;
-                // saveNotification(vendorId, notificationDescription);
-                // sendSMS(vendorPhone, vendorTitle, smsDescription);
+                saveNotification(vendorId, notificationDescription);
+                sendSMS(vendorPhone, vendorTitle, smsDescription);
                 console.log(result[0], "***********");
 
                 await mail.sendVendorEmail(

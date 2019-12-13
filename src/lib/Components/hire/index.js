@@ -22,6 +22,7 @@ import Footer from "@Components/inc/footer";
 
 import { connect } from "react-redux";
 import { fetchGetHireData } from "./essential";
+import EditModalForm from "./editmodal";
 
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
@@ -36,12 +37,14 @@ class Hire extends React.Component {
       confirmStatus: undefined,
       modalStatus: undefined,
       visible: false,
+      emditmodal: undefined,
     };
     this.selectdueDateTime = this.selectdueDateTime.bind(this);
     this.onConfirmChange = this.onConfirmChange.bind(this);
     this.confirmPopup = this.confirmPopup.bind(this);
     this.handeleOk = this.handeleOk.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
 
   componentDidMount() {
@@ -73,6 +76,11 @@ class Hire extends React.Component {
   handleCancel() {
     this.setState({
       visible: false,
+    });
+  }
+  handleEdit() {
+    this.setState({
+      emditmodal: true,
     });
   }
   render() {
@@ -139,8 +147,8 @@ class Hire extends React.Component {
                             <h4 className="title">Job Listing</h4>
                           </div>
                           <div className="col-md-4 col-sm-6">
-                            <span className="edit">
-                              <a href="#">Edit</a>
+                            <span className="edit" >
+                               <a onClick={this.handleEdit}>Edit</a>
                             </span>
                           </div>
                           <div className="col-md-12">
@@ -154,7 +162,7 @@ class Hire extends React.Component {
                           </div>
                           <div className="col-md-4 col-sm-6">
                             <span className="edit">
-                              <a href="#">Edit</a>
+                              <a onClick={this.handleEdit} >Edit</a>
                             </span>
                           </div>
                           <div className="col-md-12">
@@ -307,6 +315,8 @@ class Hire extends React.Component {
                     </div>
                   )}
                 </div>
+                {this.state.emditmodal === true? <EditModalForm /> : ""}
+                {console.log("Modal status === ", this.state.emditmodal)}
                 <div style={{ margin: "20px 0px" }}></div>
                 {this.props.hireInfo && (
                   <div className="content-details shadow">
