@@ -129,6 +129,7 @@ class ClientContractDetails extends React.Component {
                                 window.location.href = "/messages/c";
                               }}
                             >
+                              {console.log("milestones in fetch", this.props.milestones)}
                               <Icon type="message" />
                             </div>
                           </div>

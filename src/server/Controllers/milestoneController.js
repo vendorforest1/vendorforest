@@ -6,6 +6,9 @@ import Notifi from "@Models/notification.model";
 import getEnv, { constants } from "@Config/index";
 import { async } from "q";
 import { ObjectId } from "bson";
+import { mail } from "@Config/mail";
+import saveNotification from "@Config/notification";
+import sendSMS from "@Config/sms";
 const nodemailer = require("nodemailer");
 const twilio = require("twilio");
 const env = getEnv();
@@ -69,18 +72,28 @@ export default () => {
                             $inc: {
                               escrowPrice: milestone.price,
                             },
+                            budget: req.body.budget,
                           },
                         )
                           .then(async (result) => {
                             const vendorId = result.vendor;
                             const emailTitle = "Milestone has been created.";
-                            const description = `You can start work on this job.<br> Your accepted budget is ${milestone.price} USD.`;
+                            const description = `You can start work on this job. Your accepted budget is ${milestone.price} USD.`;
                             const phoneDescription = `You can start work on this job.\n Your accepted budget is ${milestone.price} USD.`;
                             env.MODE === "development" &&
                               console.log("create milestone result", result);
-                            saveNotification(vendorId, milestone.price);
-                            sendingEmail(vendorEmail, emailTitle, description);
-                            sendingSms(vendorPhone, emailTitle, phoneDescription);
+                            saveNotification(vendorId, description);
+                            sendSMS(vendorPhone, emailTitle, phoneDescription);
+                            await mail.sendCreateMilestoneEmail(
+                              result,
+                              "VendorForest information!",
+                              (err, msg) => {
+                                if (err) {
+                                  return err;
+                                }
+                                return;
+                              },
+                            );
                           })
                           .catch(
                             (error) =>
@@ -117,10 +130,6 @@ export default () => {
                   message: `Errors ${error}`,
                 });
               });
-            // return res.status(200).json({
-            //     status: 200,
-            //     message: "Password Matched!",
-            //   });
           })
           .catch((error) => {
             return res.status(500).json({
@@ -136,17 +145,6 @@ export default () => {
           message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
-  };
-
-  const saveNotification = async (vendorId, price) => {
-    const time = new Date().toLocaleString();
-    const query = new Notifi({
-      username: vendorId,
-      notificationMsg: `You created milestone. Amount is ${price}USD`,
-      time: time,
-    });
-    // env.MODE === "development" && console.log("milestone result", result);
-    await query.save();
   };
 
   const paymentIntent = async (clientID, price) => {
@@ -481,6 +479,7 @@ export default () => {
   };
 
   controllers.getMilestones = async (req, res, next) => {
+    console.log("returned query ===== ", req.query);
     await Milestone.find(req.query)
       .then(async (milestones) => {
         return res.status(200).json({

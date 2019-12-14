@@ -26,6 +26,11 @@ class Milestones extends React.Component {
         contract: this.props.contract._id,
       });
     }
+    console.log(
+      "this.props.milestones in milestonejs",
+      this.props.milestones,
+      this.props.contract._id,
+    );
   }
 
   create() {

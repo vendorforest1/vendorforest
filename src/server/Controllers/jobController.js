@@ -64,7 +64,6 @@ export default () => {
   };
 
   controllers.get = async (req, res) => {
-    console.log("url =======", req.query.vendor_id);
     await Job.findById(req.query._id)
       .populate("service")
       .populate("category")

@@ -195,7 +195,16 @@ const mailService = () => {
 
     sendEmail(job, "email_invite.html", mailOptions, callback);
   };
+  
 
+  mailObject.sendCreateMilestoneEmail = async (milestone, subject, callback) => {
+    const mailOptions = {
+      subject: subject, // Subject line
+      //href: `${env.API_URL}/reset/${user.token}`,
+    };
+
+    sendEmail(milestone, "email_payment_request.html", mailOptions, callback);
+  };
   return mailObject;
 };
 

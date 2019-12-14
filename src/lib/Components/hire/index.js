@@ -99,6 +99,7 @@ class Hire extends React.Component {
         description: "Whole milestone",
         price: this.props.hireInfo.budget,
         contract: this.props.hireInfo._id,
+        budget: this.props.hireInfo.budget,
         // endDateTime: this.props.hireInfo.endDateTime,
       };
       const lessParams = {
@@ -106,17 +107,35 @@ class Hire extends React.Component {
         description: this.state.description,
         price: this.state.price,
         contract: this.props.hireInfo._id,
+        budget: this.props.hireInfo.budget - this.state.price,
         // endDateTime: this.state.dueDateString,
       };
       if (this.state.deposit === 0) {
-        this.props.comparePW(defaultParams);
+        this.fetchCompare(defaultParams);
       } else {
-        this.props.comparePW(lessParams);
+        this.fetchCompare(lessParams);
       }
     });
     this.setState({
       visible: false,
     });
+    // window.location.href =`/client/contract/${this.props.hireInfo._id}`;
+  }
+  async fetchCompare(params) {
+    // await this.props.fetchPostJob(params)
+    comparePW(params)
+      .then((data) => {
+        console.log("post job data", data.message);
+        message.success(data.message);
+        this.props.history.push(`/client/contract/${this.props.hireInfo._id}`);
+      })
+      .catch((error) => {
+        // this.setState({
+        //   pending: false,
+        // });
+        process.env.NODE_ENV === "development" && console.log(error);
+        message.success(error.message);
+      });
   }
   handleCancel() {
     this.setState({

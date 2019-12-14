@@ -15,6 +15,7 @@ export const create = {
     status: Joi.number(),
     password: Joi.string(),
     endDateTime: Joi.string(),
+    budget: Joi.number(),
   }),
 };
 
