@@ -20,6 +20,7 @@ import withStyles from "isomorphic-style-loader/withStyles";
 import defaultProfileImage from "@Components/images/profileplace.png";
 import Header from "@Components/inc/header";
 import Footer from "@Components/inc/footer";
+import moment from "moment";
 
 import { connect } from "react-redux";
 import { fetchGetHireData, updateProposal } from "./essential";
@@ -33,12 +34,17 @@ class Hire extends React.Component {
     super(props);
 
     this.state = {
-      dueDateTime: undefined,
+      dueDateTime: moment(),
+      show: false,
+      dueDateString: undefined,
       deposit: 0,
-      confirmStatus: undefined,
+      confirmStatus: false,
       modalStatus: undefined,
       visible: false,
       emditmodal: false,
+      description: undefined,
+      price: undefined,
+      skip: false,
     };
     this.selectdueDateTime = this.selectdueDateTime.bind(this);
     this.onConfirmChange = this.onConfirmChange.bind(this);
@@ -48,6 +54,18 @@ class Hire extends React.Component {
     this.handleEdit = this.handleEdit.bind(this);
     this.onCreate = this.onCreate.bind(this);
     this.onCancel = this.onCancel.bind(this);
+    this.createLesserMilestone = this.createLesserMilestone.bind(this);
+    this.cancelMilestone =this.cancelMilestone.bind(this);
+    this.onSkip = this.onSkip.bind(this);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (!this.props.success && newProps.success) {
+      message.success(newProps.success);
+    }
+    if (!this.props.error && newProps.error) {
+      message.error(newProps.error);
+    }
   }
 
   componentDidMount() {
@@ -59,11 +77,13 @@ class Hire extends React.Component {
   selectdueDateTime(value, dateString) {
     this.setState({
       dueDateTime: value,
+      dueDateString: dateString,
     });
+    console.log(moment(value), "--========***", dateString);
   }
   onConfirmChange(value) {
     this.setState({
-      confirmStatus: value,
+      confirmStatus: !this.state.confirmStatus,
     });
   }
   confirmPopup() {
@@ -107,17 +127,32 @@ class Hire extends React.Component {
       }
     });
     window.location.reload();
-    if(this.props.success) {
-      message.success(this.props.success);
-    } 
-    // else {
-    //   message.error(this.props.error);
-    // }
   }
   onCancel() {
     this.setState({
       emditmodal:false,
     });
+  }
+  createLesserMilestone() {
+    this.props.form.validateFields(["price", "description"], (err, values) => {
+      this.setState({
+        description: values.description,
+        price: values.price,
+        show: true,
+      });
+    });
+  }
+  cancelMilestone() {
+    this.setState ({
+      description: undefined,
+      price: undefined,
+      show: false,
+    })
+  }
+  onSkip(e) {
+    this.setState ({
+      skip: e.target.checked,
+    })
   }
   render() {
     const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
@@ -137,7 +172,7 @@ class Hire extends React.Component {
             funds from escrow to your freelancer. Learn more
           </div>
           <div className="col-md-12 box1">
-            <Checkbox>Don't show me this again, I understand how escrow works.</Checkbox>
+            <Checkbox onChange={this.onSkip} checked={this.state.skip}>Don't show me this again, I understand how escrow works.</Checkbox>
           </div>
         </div>
       );
@@ -260,7 +295,7 @@ class Hire extends React.Component {
                               }}
                               value={this.state.deposit}
                             >
-                              <Radio value={0} className="d-block mb-3" defaultChecked>
+                              <Radio value={0} className="d-block mb-3" defaultChecked onChange={() => {this.setState({show: false})}}>
                                 Deposit ${this.props.hireInfo.budget} for the whole project
                               </Radio>
                               <Radio value={1} className="d-block mb-3">
@@ -335,18 +370,32 @@ class Hire extends React.Component {
                                 </div>
                                 <button
                                   className={`button-primary ${
-                                    this.props.pending && this._button === 0 ? "disable" : ""
+                                    this.props.pending ? "disable" : ""
                                   }`}
                                   style={{ marginTop: "38px" }}
-                                  onClick={this.create}
+                                  onClick={this.createLesserMilestone}
                                 >
                                   <Icon type="plus" />
                                   &nbsp;Add
                                 </button>
                               </div>
                             </Form>
+                          </div>                      
+                        </div>
+                        {this.state.deposit === 1 ? <hr></hr>  : ""}
+                        
+                        <div className="row box">
+                          <div className="col-md-5 col-sm-6">
+                            {this.state.show === true ? `Description : ${this.state.description}` : ""}
+                          </div>
+                          <div className="col-md-4 col-sm-3">
+                            {this.state.show === true ? `Due Date: ${this.state.dueDateString}` : ""}
+                          </div>
+                          <div className="col-md-3 col-sm-3">
+                            {this.state.show === true ? `Price : $ ${this.state.price}` : ""}
                           </div>
                         </div>
+                        {this.state.show === true ? <hr></hr>  : ""}
                       </div>
                     </div>
                   )}
@@ -358,7 +407,6 @@ class Hire extends React.Component {
                       <div className="row box">
                         <div className="col-md-12">
                           <Checkbox
-                            value={this.state.confirmStatus}
                             onChange={this.onConfirmChange}
                             style={{ color: "black", paddingTop: "25px" }}
                           >
@@ -368,19 +416,33 @@ class Hire extends React.Component {
                           </Checkbox>
                         </div>
                         <div className="col-md-6" style={{ margin: "5% 0px" }}>
-                          <Popconfirm
+                        {this.state.confirmStatus ? 
+                          (
+                            this.state.skip === false ? (
+                              <Popconfirm
                             placement="leftBottom"
                             title={text()}
                             onConfirm={this.confirmPopup}
                             okText="Yes, Deposite Now"
                             cancelText="Cancel"
                             style={{ padding: "0% 20%" }}
-                          >
+                            >
                             <Button type="primary" className="confirm_btn">
                               Hire {this.props.hireInfo.vendor.username}
                             </Button>
                           </Popconfirm>
-                          <Button type="default" className="confirm_btn">
+                            )
+                            :
+                            (
+                              <Button type="primary" className="confirm_btn" onClick={() => this.setState ({visible: true})}>
+                              Hire {this.props.hireInfo.vendor.username}
+                              </Button>
+                            )
+                          )
+                          : (<Button type="primary" className="confirm_btn" onClick={() => {message.warning("Please check the checkbox ")}}>
+                          Hire {this.props.hireInfo.vendor.username}
+                          </Button>)}
+                          <Button type="default" className="cancel_btn" onClick={this.cancelMilestone}>
                             Cancel
                           </Button>
                         </div>
