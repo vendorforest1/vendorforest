@@ -1,4 +1,5 @@
 import React from "react";
+import { Icon, Button } from "antd";
 
 class BuildTeamsBox extends React.Component {
   render() {
@@ -8,14 +9,14 @@ class BuildTeamsBox extends React.Component {
           <div className="row">
             <div className="col-12 text-center">
               <h1 className="mb-5">Build a team of vendors just like you online</h1>
-              <button
-                className="button-white"
+              <Button
+                type="primary"
                 onClick={() => {
                   window.location.href = "/register";
                 }}
               >
                 Get Started
-              </button>
+              </Button>
             </div>
           </div>
         </div>
