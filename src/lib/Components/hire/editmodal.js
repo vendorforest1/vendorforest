@@ -12,47 +12,47 @@ class EditModal extends React.Component {
   }
   onCreate() {
     this.setState({
-      visible:false,
-    })
+      visible: false,
+    });
   }
   onCancel() {
     this.setState({
-      visible:false,
-    })
+      visible: false,
+    });
   }
 
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-      <Modal
-        visible={this.state.visible}
-        title="Create a new collection"
-        okText="Create"
-        onCancel={this.onCancel}
-        onOk={this.onCreate}
-      >
-        <Form layout="vertical">
-          <Form.Item label="Title">
-            {getFieldDecorator('title', {
-              rules: [{ required: true, message: 'Please input the title of collection!' }],
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item label="Description">
-            {getFieldDecorator('description')(<Input type="textarea" />)}
-          </Form.Item>
-          <Form.Item className="collection-create-form_last-form-item">
-            {getFieldDecorator('modifier', {
-              initialValue: 'public',
-            })(
-              <Radio.Group>
-                <Radio value="public">Public</Radio>
-                <Radio value="private">Private</Radio>
-              </Radio.Group>,
-            )}
-          </Form.Item>
-        </Form>
-      </Modal>
+        <Modal
+          visible={this.state.visible}
+          title="Create a new collection"
+          okText="Create"
+          onCancel={this.onCancel}
+          onOk={this.onCreate}
+        >
+          <Form layout="vertical">
+            <Form.Item label="Title">
+              {getFieldDecorator("title", {
+                rules: [{ required: true, message: "Please input the title of collection!" }],
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="Description">
+              {getFieldDecorator("description")(<Input type="textarea" />)}
+            </Form.Item>
+            <Form.Item className="collection-create-form_last-form-item">
+              {getFieldDecorator("modifier", {
+                initialValue: "public",
+              })(
+                <Radio.Group>
+                  <Radio value="public">Public</Radio>
+                  <Radio value="private">Private</Radio>
+                </Radio.Group>,
+              )}
+            </Form.Item>
+          </Form>
+        </Modal>
       </div>
     );
   }

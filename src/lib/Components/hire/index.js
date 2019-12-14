@@ -23,7 +23,7 @@ import Footer from "@Components/inc/footer";
 import moment from "moment";
 
 import { connect } from "react-redux";
-import { fetchGetHireData, updateProposal } from "./essential";
+import { fetchGetHireData, updateProposal, comparePW } from "./essential";
 
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
@@ -55,7 +55,7 @@ class Hire extends React.Component {
     this.onCreate = this.onCreate.bind(this);
     this.onCancel = this.onCancel.bind(this);
     this.createLesserMilestone = this.createLesserMilestone.bind(this);
-    this.cancelMilestone =this.cancelMilestone.bind(this);
+    this.cancelMilestone = this.cancelMilestone.bind(this);
     this.onSkip = this.onSkip.bind(this);
   }
 
@@ -92,6 +92,28 @@ class Hire extends React.Component {
     });
   }
   handeleOk() {
+    console.log("sending pw === ");
+    this.props.form.validateFields(["password"], (err, values) => {
+      const defaultParams = {
+        password: values.password,
+        description: "Whole milestone",
+        price: this.props.hireInfo.budget,
+        contract: this.props.hireInfo._id,
+        // endDateTime: this.props.hireInfo.endDateTime,
+      };
+      const lessParams = {
+        password: values.password,
+        description: this.state.description,
+        price: this.state.price,
+        contract: this.props.hireInfo._id,
+        // endDateTime: this.state.dueDateString,
+      };
+      if (this.state.deposit === 0) {
+        this.props.comparePW(defaultParams);
+      } else {
+        this.props.comparePW(lessParams);
+      }
+    });
     this.setState({
       visible: false,
     });
@@ -108,29 +130,32 @@ class Hire extends React.Component {
   }
   onCreate() {
     this.setState({
-      emditmodal:false,
+      emditmodal: false,
     });
-    this.props.form.validateFields(["updateTitle", "updateDescription", "updatePrice"], (err, values) => {
-      if (!err) {
-        const params = {
-          updateTitle: values.updateTitle,
-          updateDescription: values.updateDescription,
-          updatePrice: values.updatePrice,
-          contract: this.props.hireInfo._id,
-          job: this.props.hireInfo.job._id,
+    this.props.form.validateFields(
+      ["updateTitle", "updateDescription", "updatePrice"],
+      (err, values) => {
+        if (!err) {
+          const params = {
+            updateTitle: values.updateTitle,
+            updateDescription: values.updateDescription,
+            updatePrice: values.updatePrice,
+            contract: this.props.hireInfo._id,
+            job: this.props.hireInfo.job._id,
+          };
+          console.log("params", params);
+          this.props.updateProposal(params);
         }
-        console.log("params", params);
-        this.props.updateProposal(params);
-      }
-      if(err){
-        console.log(err);
-      }
-    });
+        if (err) {
+          console.log(err);
+        }
+      },
+    );
     window.location.reload();
   }
   onCancel() {
     this.setState({
-      emditmodal:false,
+      emditmodal: false,
     });
   }
   createLesserMilestone() {
@@ -143,16 +168,16 @@ class Hire extends React.Component {
     });
   }
   cancelMilestone() {
-    this.setState ({
+    this.setState({
       description: undefined,
       price: undefined,
       show: false,
-    })
+    });
   }
   onSkip(e) {
-    this.setState ({
+    this.setState({
       skip: e.target.checked,
-    })
+    });
   }
   render() {
     const { getFieldDecorator, getFieldError, isFieldTouched } = this.props.form;
@@ -172,7 +197,9 @@ class Hire extends React.Component {
             funds from escrow to your freelancer. Learn more
           </div>
           <div className="col-md-12 box1">
-            <Checkbox onChange={this.onSkip} checked={this.state.skip}>Don't show me this again, I understand how escrow works.</Checkbox>
+            <Checkbox onChange={this.onSkip} checked={this.state.skip}>
+              Don't show me this again, I understand how escrow works.
+            </Checkbox>
           </div>
         </div>
       );
@@ -218,8 +245,8 @@ class Hire extends React.Component {
                             <h4 className="title">Job Listing</h4>
                           </div>
                           <div className="col-md-4 col-sm-6">
-                            <span className="edit" >
-                               <a onClick={this.handleEdit}>Edit</a>
+                            <span className="edit">
+                              <a onClick={this.handleEdit}>Edit</a>
                             </span>
                           </div>
                           <div className="col-md-12">
@@ -233,7 +260,7 @@ class Hire extends React.Component {
                           </div>
                           <div className="col-md-4 col-sm-6">
                             <span className="edit">
-                              <a onClick={this.handleEdit} >Edit</a>
+                              <a onClick={this.handleEdit}>Edit</a>
                             </span>
                           </div>
                           <div className="col-md-12">
@@ -277,7 +304,7 @@ class Hire extends React.Component {
                           </div>
                           <div className="col-md-8 col-sm-6">
                             <span className="edit">
-                              <a onClick={this.handleEdit} >Edit</a>
+                              <a onClick={this.handleEdit}>Edit</a>
                             </span>
                           </div>
                         </div>
@@ -295,7 +322,14 @@ class Hire extends React.Component {
                               }}
                               value={this.state.deposit}
                             >
-                              <Radio value={0} className="d-block mb-3" defaultChecked onChange={() => {this.setState({show: false})}}>
+                              <Radio
+                                value={0}
+                                className="d-block mb-3"
+                                defaultChecked
+                                onChange={() => {
+                                  this.setState({ show: false });
+                                }}
+                              >
                                 Deposit ${this.props.hireInfo.budget} for the whole project
                               </Radio>
                               <Radio value={1} className="d-block mb-3">
@@ -369,9 +403,7 @@ class Hire extends React.Component {
                                   </Form.Item>
                                 </div>
                                 <button
-                                  className={`button-primary ${
-                                    this.props.pending ? "disable" : ""
-                                  }`}
+                                  className={`button-primary`}
                                   style={{ marginTop: "38px" }}
                                   onClick={this.createLesserMilestone}
                                 >
@@ -380,22 +412,26 @@ class Hire extends React.Component {
                                 </button>
                               </div>
                             </Form>
-                          </div>                      
+                          </div>
                         </div>
-                        {this.state.deposit === 1 ? <hr></hr>  : ""}
-                        
+                        {this.state.deposit === 1 ? <hr></hr> : ""}
+
                         <div className="row box">
                           <div className="col-md-5 col-sm-6">
-                            {this.state.show === true ? `Description : ${this.state.description}` : ""}
+                            {this.state.show === true
+                              ? `Description : ${this.state.description}`
+                              : ""}
                           </div>
                           <div className="col-md-4 col-sm-3">
-                            {this.state.show === true ? `Due Date: ${this.state.dueDateString}` : ""}
+                            {this.state.show === true
+                              ? `Due Date: ${this.state.dueDateString}`
+                              : ""}
                           </div>
                           <div className="col-md-3 col-sm-3">
                             {this.state.show === true ? `Price : $ ${this.state.price}` : ""}
                           </div>
                         </div>
-                        {this.state.show === true ? <hr></hr>  : ""}
+                        {this.state.show === true ? <hr></hr> : ""}
                       </div>
                     </div>
                   )}
@@ -416,33 +452,45 @@ class Hire extends React.Component {
                           </Checkbox>
                         </div>
                         <div className="col-md-6" style={{ margin: "5% 0px" }}>
-                        {this.state.confirmStatus ? 
-                          (
+                          {this.state.confirmStatus ? (
                             this.state.skip === false ? (
                               <Popconfirm
-                            placement="leftBottom"
-                            title={text()}
-                            onConfirm={this.confirmPopup}
-                            okText="Yes, Deposite Now"
-                            cancelText="Cancel"
-                            style={{ padding: "0% 20%" }}
-                            >
-                            <Button type="primary" className="confirm_btn">
-                              Hire {this.props.hireInfo.vendor.username}
-                            </Button>
-                          </Popconfirm>
-                            )
-                            :
-                            (
-                              <Button type="primary" className="confirm_btn" onClick={() => this.setState ({visible: true})}>
-                              Hire {this.props.hireInfo.vendor.username}
+                                placement="leftBottom"
+                                title={text()}
+                                onConfirm={this.confirmPopup}
+                                okText="Yes, Deposite Now"
+                                cancelText="Cancel"
+                                style={{ padding: "0% 20%" }}
+                              >
+                                <Button type="primary" className="confirm_btn">
+                                  Hire {this.props.hireInfo.vendor.username}
+                                </Button>
+                              </Popconfirm>
+                            ) : (
+                              <Button
+                                type="primary"
+                                className="confirm_btn"
+                                onClick={() => this.setState({ visible: true })}
+                              >
+                                Hire {this.props.hireInfo.vendor.username}
                               </Button>
                             )
-                          )
-                          : (<Button type="primary" className="confirm_btn" onClick={() => {message.warning("Please check the checkbox ")}}>
-                          Hire {this.props.hireInfo.vendor.username}
-                          </Button>)}
-                          <Button type="default" className="cancel_btn" onClick={this.cancelMilestone}>
+                          ) : (
+                            <Button
+                              type="primary"
+                              className="confirm_btn"
+                              onClick={() => {
+                                message.warning("Please check the checkbox ");
+                              }}
+                            >
+                              Hire {this.props.hireInfo.vendor.username}
+                            </Button>
+                          )}
+                          <Button
+                            type="default"
+                            className="cancel_btn"
+                            onClick={this.cancelMilestone}
+                          >
                             Cancel
                           </Button>
                         </div>
@@ -488,10 +536,10 @@ class Hire extends React.Component {
           visible={this.state.visible}
           title="Please confirm the password to your account."
           okText="Confirm"
-          onCancel={this.handeleOk}
-          onOk={this.handleCancel}
+          onCancel={this.handleCancel}
+          onOk={this.handeleOk}
         >
-          <Form onSubmit={this.handleSubmit} className="login-form">
+          <Form className="login-form">
             <Form.Item>
               {getFieldDecorator("password", {
                 rules: [{ required: true, message: "Please input your Password!" }],
@@ -507,48 +555,46 @@ class Hire extends React.Component {
         </Modal>
 
         <Modal
-        visible={this.state.emditmodal}
-        title="Update Proposal"
-        okText="Update"
-        onCancel={this.onCancel}
-        onOk={this.onCreate}
+          visible={this.state.emditmodal}
+          title="Update Proposal"
+          okText="Update"
+          onCancel={this.onCancel}
+          onOk={this.onCreate}
         >
           {this.props.hireInfo && (
-        <Form layout="vertical">
-          <Form.Item label="Title">
-            {getFieldDecorator('updateTitle', {
-              initialValue: this.props.hireInfo.job.title,
-              rules: [{ required: true, message: 'Please input the title of Proposal!' }],
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item label="description">
-            {getFieldDecorator('updateDescription', {
-              initialValue: this.props.hireInfo.job.description,
-              rules: [{ required: true, message: 'Please input the description of Proposal!' }],
-            })(<TextArea type="textarea" rows={5}/>)}
-          </Form.Item>
-          <Form.Item label="Price">
-            {getFieldDecorator("updatePrice", {
-              initialValue: getContractBudget(),
-              rules: [
-                { required: true, message: "Price of a milestone" },
-              ],
-            })(
-              <InputNumber
-                placeholder="Price of a milestone"
-                size={"large"}
-                min={1}
-                formatter={(value) =>
-                  `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                className="w-100"
-              />,
-            )}
-          </Form.Item>
-        </Form>
+            <Form layout="vertical">
+              <Form.Item label="Title">
+                {getFieldDecorator("updateTitle", {
+                  initialValue: this.props.hireInfo.job.title,
+                  rules: [{ required: true, message: "Please input the title of Proposal!" }],
+                })(<Input />)}
+              </Form.Item>
+              <Form.Item label="description">
+                {getFieldDecorator("updateDescription", {
+                  initialValue: this.props.hireInfo.job.description,
+                  rules: [
+                    { required: true, message: "Please input the description of Proposal!" },
+                  ],
+                })(<TextArea type="textarea" rows={5} />)}
+              </Form.Item>
+              <Form.Item label="Price">
+                {getFieldDecorator("updatePrice", {
+                  initialValue: getContractBudget(),
+                  rules: [{ required: true, message: "Price of a milestone" }],
+                })(
+                  <InputNumber
+                    placeholder="Price of a milestone"
+                    size={"large"}
+                    min={1}
+                    formatter={(value) => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    className="w-100"
+                  />,
+                )}
+              </Form.Item>
+            </Form>
           )}
-      </Modal>
+        </Modal>
         <Footer />
       </div>
     );
@@ -567,4 +613,5 @@ const mapStateToProps = ({ loginReducer, clientHireDetailReducer }) => {
 export default connect(mapStateToProps, {
   fetchGetHireData,
   updateProposal,
+  comparePW,
 })(withStyles(globalStyle, localStyle)(HireMilestonesForm));

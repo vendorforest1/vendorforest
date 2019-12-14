@@ -326,6 +326,51 @@ export default function(passport) {
       });
   };
 
+  controllers.comparePW = async (req, res) => {
+    console.log("matching pw", req.body.password);
+    await User.findOne({
+      _id: req.user._id,
+    })
+      .then(async (user) => {
+        if (!user) {
+          return res.status(401).json({
+            status: 401,
+            message:
+              env.MODE === "development"
+                ? `User ${constants.DEV_EMPTYDOC_MSG}`
+                : constants.PROD_COMMONERROR_MSG,
+          });
+        }
+        await user
+          .verifyPassword(req.body.password)
+          .then(async (isMatch) => {
+            if (!isMatch) {
+              return res.status(403).json({
+                status: 400,
+                message: "Your Password is not matched. Please try again.",
+              });
+            }
+            return res.status(200).json({
+              status: 200,
+              message: "Password Matched!",
+            });
+          })
+          .catch((error) => {
+            return res.status(500).json({
+              status: 500,
+              message:
+                env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+            });
+          });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
   controllers.getUser = async (req, res) => {
     await User.findById(req.user._id)
       .populate({ path: "vendor" })

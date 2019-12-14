@@ -13,6 +13,8 @@ export const create = {
     description: Joi.string().required(),
     price: Joi.number().required(),
     status: Joi.number(),
+    password: Joi.string(),
+    endDateTime: Joi.string(),
   }),
 };
 

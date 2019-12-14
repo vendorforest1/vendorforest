@@ -152,3 +152,27 @@ export const updateProposal = (payload) => async (dispatch, getState) => {
     })
     .catch((err) => dispatch(fetchError(err.message)));
 };
+
+export const comparePW = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
+  return await fetch(apiUrl.CREATE_MILESTONE, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then(async (result) => {
+      if (result.status >= 400) {
+        dispatch(fetchError(result.message));
+        throw new Error(result.message);
+      }
+      dispatch(fetchSuccessMsg(result.message));
+    })
+    .catch((err) => {
+      dispatch(fetchError(err.message));
+    });
+};

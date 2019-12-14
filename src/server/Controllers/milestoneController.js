@@ -14,80 +14,126 @@ export default () => {
   const controllers = {};
 
   controllers.create = async (req, res, next) => {
-    const newMilestone = new Milestone({ ...req.body });
+    console.log("create milestone =====", req.body);
+    const newMilestone = new Milestone({
+      description: req.body.description,
+      price: req.body.price,
+      contract: req.body.contract,
+    });
     const milestoneID = newMilestone.contract;
     env.MODE === "development" && console.log("$$$$$$ newMilestone $$$$$$", newMilestone);
-    const user = req.user.stripeClientId;
+    const stripeClientId = req.user.stripeClientId;
     const price = newMilestone.price;
-    await Contract.find({
-      _id: milestoneID,
+    await User.findOne({
+      _id: req.user._id,
     })
-      .populate({
-        path: "vendor",
-        model: "user",
-      })
-      .then(async (vendorInfo) => {
-        const vendorEmail = vendorInfo[0].vendor.email;
-        const vendorPhone = vendorInfo[0].vendor.phone;
-        const paymentIntentID = await paymentIntent(user, price)
-          .then(() => {
-            newMilestone
-              .save()
-              .then(async (milestone) => {
-                await Contract.findOneAndUpdate(
-                  {
-                    _id: milestone.contract,
-                  },
-                  {
-                    $inc: {
-                      escrowPrice: milestone.price,
-                    },
-                  },
-                )
-                  .then(async (result) => {
-                    const vendorId = result.vendor;
-                    const emailTitle = "Milestone has been created.";
-                    const description = `You can start work on this job.<br> Your accepted budget is ${milestone.price} USD.`;
-                    const phoneDescription = `You can start work on this job.\n Your accepted budget is ${milestone.price} USD.`;
-                    env.MODE === "development" &&
-                      console.log("create milestone result", result);
-                    saveNotification(vendorId, milestone.price);
-                    sendingEmail(vendorEmail, emailTitle, description);
-                    sendingSms(vendorPhone, emailTitle, phoneDescription);
+      .then(async (user) => {
+        if (!user) {
+          return res.status(401).json({
+            status: 401,
+            message:
+              env.MODE === "development"
+                ? `User ${constants.DEV_EMPTYDOC_MSG}`
+                : constants.PROD_COMMONERROR_MSG,
+          });
+        }
+        await user
+          .verifyPassword(req.body.password)
+          .then(async (isMatch) => {
+            if (!isMatch) {
+              return res.status(403).json({
+                status: 400,
+                message: "Your Password is not matched. Please try again.",
+              });
+            }
+            await Contract.findOne({
+              _id: milestoneID,
+            })
+              .populate({
+                path: "vendor",
+                model: "user",
+              })
+              .then(async (vendorInfo) => {
+                const vendorEmail = vendorInfo.vendor.email;
+                const vendorPhone = vendorInfo.vendor.phone;
+                await paymentIntent(stripeClientId, price)
+                  .then(() => {
+                    newMilestone
+                      .save()
+                      .then(async (milestone) => {
+                        await Contract.findOneAndUpdate(
+                          {
+                            _id: milestone.contract,
+                          },
+                          {
+                            $inc: {
+                              escrowPrice: milestone.price,
+                            },
+                          },
+                        )
+                          .then(async (result) => {
+                            const vendorId = result.vendor;
+                            const emailTitle = "Milestone has been created.";
+                            const description = `You can start work on this job.<br> Your accepted budget is ${milestone.price} USD.`;
+                            const phoneDescription = `You can start work on this job.\n Your accepted budget is ${milestone.price} USD.`;
+                            env.MODE === "development" &&
+                              console.log("create milestone result", result);
+                            saveNotification(vendorId, milestone.price);
+                            sendingEmail(vendorEmail, emailTitle, description);
+                            sendingSms(vendorPhone, emailTitle, phoneDescription);
+                          })
+                          .catch(
+                            (error) =>
+                              env.MODE === "development" &&
+                              console.log("saving notification error", error),
+                          );
+                        env.MODE === "development" && console.log("milestone", milestone);
+                        return res.status(200).json({
+                          status: 200,
+                          data: milestone,
+                          message: "Milestone has been created successfully.",
+                        });
+                      })
+                      .catch((error) => {
+                        return res.status(500).json({
+                          status: 500,
+                          message:
+                            env.NODE_ENV === "development"
+                              ? error.message
+                              : constants.PROD_COMMONERROR_MSG,
+                        });
+                      });
                   })
-                  .catch(
-                    (error) =>
-                      env.MODE === "development" &&
-                      console.log("saving notification error", error),
-                  );
-                env.MODE === "development" && console.log("milestone", milestone);
-                return res.status(200).json({
-                  status: 200,
-                  data: milestone,
-                  message: "Milestone has been created successfully.",
-                });
+                  .catch((error) => {
+                    return res.status(500).json({
+                      status: 500,
+                      message: `Errors ${error}`,
+                    });
+                  });
               })
               .catch((error) => {
                 return res.status(500).json({
                   status: 500,
-                  message:
-                    env.NODE_ENV === "development"
-                      ? error.message
-                      : constants.PROD_COMMONERROR_MSG,
+                  message: `Errors ${error}`,
                 });
               });
+            // return res.status(200).json({
+            //     status: 200,
+            //     message: "Password Matched!",
+            //   });
           })
           .catch((error) => {
             return res.status(500).json({
               status: 500,
-              message: `Errors ${error}`,
+              message:
+                env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
             });
           });
       })
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: `Errors ${error}`,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
   };
