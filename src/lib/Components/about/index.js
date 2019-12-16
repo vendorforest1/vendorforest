@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Button } from "antd";
+import Button from "antd/lib/button";
 import withStyles from "isomorphic-style-loader/withStyles";
 import { connect } from "react-redux";
 
@@ -78,7 +78,7 @@ class About extends React.Component {
             <div className="col-sm-12 padding-0">
               <p className="content_letter">
                 <a href="/howitworks">
-                  <button>How it works</button>
+                  <Button size={"large"}>How it works</Button>
                 </a>
               </p>
             </div>

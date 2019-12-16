@@ -66,7 +66,7 @@ class MainLogin extends React.Component {
                     <h2 className="text-center mb-5">Login</h2>
                     <Form.Item>
                       {getFieldDecorator("email", {
-                        rules: [{ required: true, message: "Please input your username!" }],
+                        rules: [{ required: true, message: "Please input your email!" }],
                       })(
                         <Input
                           size={"large"}

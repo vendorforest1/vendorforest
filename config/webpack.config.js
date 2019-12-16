@@ -645,11 +645,7 @@ module.exports = (webpackEnv) => {
   const serverConfig = {
     mode: isEnvProduction ? "production" : isEnvDevelopment && "development",
     target: "node",
-    externals: [
-      nodeExternals({
-        whitelist: ["jquery"],
-      }),
-    ],
+    externals: [nodeExternals({})],
     devServer: {
       injectClient: true,
       historyApiFallback: true,
@@ -665,7 +661,7 @@ module.exports = (webpackEnv) => {
     //   injectClient: true,
     // },
     resolve: {
-      //extensions: [".js", ".jsx"],
+      extensions: [".js", ".jsx", ".css", ".scss"],
       extensions: paths.moduleFileExtensions.map((ext) => `.${ext}`),
 
       // This allows you to set a fallback for where Webpack should look for modules.

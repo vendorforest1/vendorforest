@@ -7,10 +7,6 @@ import os from "os";
 import getEnv, { constants } from "@Config/index";
 
 import { OAuth2Client } from "google-auth-library";
-// require('whatwg-fetch')
-// import { google } from "googleapis";
-
-const readline = require("readline");
 
 const readFile = util.promisify(fs.readFile);
 // const OAuth2 = google.auth.OAuth2;
