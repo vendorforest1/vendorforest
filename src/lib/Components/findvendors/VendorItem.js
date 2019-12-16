@@ -34,17 +34,11 @@ class VendorItem extends React.Component {
   render() {
     const { user } = this.props;
     const { vendor } = user;
-    process.env.NODE_ENV === "development" && console.log("user: ", user);
-    process.env.NODE_ENV === "development" && console.log("vendor: ", vendor);
     return (
       <div className="vendor-item d-md-flex d-block justify-content-between">
         <div className="vendor-info d-flex mb-3 mb-md-0">
           <div className="vendor-photo">
-            <Avatar
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              size={80}
-              style={{ width: "80px" }}
-            />
+            <Avatar src={`${user.profileImage}`} size={80} style={{ width: "80px" }} />
           </div>
           <div className="vendor-summary ml-2">
             <h5

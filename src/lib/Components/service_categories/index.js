@@ -1,9 +1,8 @@
 import React from "react";
-import { Input, Form } from "antd";
 
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_Header from "@Components/inc/header";
-import VF_Footer from "@Components/inc/footer";
+import Header from "@Components/inc/header";
+import Footer from "@Components/inc/footer";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import { services } from "@Shared/services.json";
@@ -124,7 +123,7 @@ class ServiceCategories extends React.Component {
 
     return (
       <div className="service-categories-section">
-        <VF_Header />
+        <Header />
         <div className="content">
           <div className="container">
             <div className="row">
@@ -136,7 +135,7 @@ class ServiceCategories extends React.Component {
             </div>
           </div>
         </div>
-        <VF_Footer />
+        <Footer />
       </div>
     );
   }

@@ -1,5 +1,4 @@
 import React from "react";
-// import * as $ from "jquery";
 import { Alert } from "antd";
 // @ts-ignore
 import withStyles from "isomorphic-style-loader/withStyles";

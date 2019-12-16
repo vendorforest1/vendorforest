@@ -4,8 +4,7 @@ import withStyles from "isomorphic-style-loader/withStyles";
 import TopRatedVendorCard from "./TopRatedVendorCard";
 
 import AliceCarousel from "react-alice-carousel";
-// import "react-alice-carousel/lib/scss/alice-carousel.scss";
-import style from "react-alice-carousel/lib/alice-carousel.css";
+import style from "alice";
 
 class TopRatedVendors extends React.Component {
   constructor(props) {
@@ -76,5 +75,4 @@ class TopRatedVendors extends React.Component {
   }
 }
 
-// export default TopRatedVendors;
 export default withStyles(style)(TopRatedVendors);
