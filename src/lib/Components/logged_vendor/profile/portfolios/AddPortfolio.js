@@ -183,7 +183,7 @@ class AddPortfolio extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
 
-    const { previewImgVisible, previewImage, attachImgFiles } = this.state;
+    const { previewImgVisible, previewImage, attachImgFiles, attachVidFiles, previewVidVisible, previewVideo } = this.state;
 
     const uploadButton = (
       <div>

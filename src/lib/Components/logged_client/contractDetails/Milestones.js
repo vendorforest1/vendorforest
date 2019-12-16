@@ -19,19 +19,14 @@ class Milestones extends React.Component {
     this.state = {};
     this.create = this.create.bind(this);
   }
-
-  componentDidMount() {
-    if (!this.props.milestones) {
+  componentWillReceiveProps(newProps) {
+    if(this.props.contract._id !== newProps.contract._id) {
       this.props.fetchGetMilestonesData({
-        contract: this.props.contract._id,
+        contract: newProps.contract._id,
       });
     }
-    console.log(
-      "this.props.milestones in milestonejs",
-      this.props.milestones,
-      this.props.contract._id,
-    );
   }
+  componentDidMount() {}
 
   create() {
     this._button = 0;
@@ -185,7 +180,7 @@ class Milestones extends React.Component {
             {this.props.milestones && (
               <div className="milestone-list-content">
                 <h5 className="mb-2">Milestones</h5>
-                <Form>
+                {/* <Form>
                   <div className="add-milestone mb-4 d-md-flex">
                     <div className="ms-descrption mr-md-2 mr-0 mb-2 mb-md-0">
                       <Form.Item label="Description">
@@ -236,7 +231,7 @@ class Milestones extends React.Component {
                       &nbsp;Add
                     </button>
                   </div>
-                </Form>
+                </Form> */}
                 <div className="milestone-list">{generateMilestone()}</div>
               </div>
             )}

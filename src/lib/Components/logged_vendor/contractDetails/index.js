@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Slider, Icon, Tabs, message } from "antd";
+import { Avatar, Slider, Icon, Tabs, message, Button } from "antd";
 import { connect } from "react-redux";
 import withStyles from "isomorphic-style-loader/withStyles";
 import VF_ClientHeader from "@Components/inc/client_header";
@@ -20,12 +20,15 @@ class VendorContractDetails extends React.Component {
     super(props);
     this.state = {};
     this.clickTab = this.clickTab.bind(this);
-
-    // persistor.dispatch({ type: REHYDRATE });
+    this.jobComplete = this.jobComplete.bind(this);
   }
 
   clickTab(key) {
     process.env.NODE_ENV === "development" && console.log(key);
+  }
+  
+  jobComplete() {
+    //
   }
 
   componentDidMount() {
@@ -140,6 +143,14 @@ class VendorContractDetails extends React.Component {
                               Job Details
                             </a>
                           </p>
+                        </div>
+                        <div className="text-center mb-3 mb-md-0" >
+                          <Button
+                          style={{backgroundColor:"#07b107", color:"white", fontWeight:"bolder", height:"40px"}}
+                          onClick={this.jobComplete}
+                          >
+                            Job Completed
+                            </Button>
                         </div>
                         <div className="status">
                           {this.props.contract.status === constants.CONTRACT_STATUS.END &&
