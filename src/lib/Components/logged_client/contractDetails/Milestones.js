@@ -103,7 +103,8 @@ class Milestones extends React.Component {
                   {this.props.pending && this._button === index + 1 && (
                     <Icon type="sync" spin className="mr-2 text-success" />
                   )}
-                  <a
+                  {this.props.contract.status !== constants.CONTRACT_STATUS.END ?
+                  (<a
                     className={`pointer ${
                       milestone.status === constants.MILESTONE_STATUS.REQ_RELEASED
                         ? "text-warning"
@@ -115,6 +116,7 @@ class Milestones extends React.Component {
                   >
                     Release
                   </a>
+                  ) : <p>Pending Milestone</p>}
                   {/* <Divider type="vertical" /> */}
                   {/* <a
                     className="pointer text-danger"

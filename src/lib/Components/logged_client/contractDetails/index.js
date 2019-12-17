@@ -140,7 +140,8 @@ class ClientContractDetails extends React.Component {
                                 ? getTimeFromTimezone(this.props.contract.vendor.timeZone)
                                 : "NONE"}
                             </p>
-                            <div
+                            {this.props.contract.status !== constants.CONTRACT_STATUS.END &&
+                            (<div
                               className="text-color pointer h5"
                               onClick={() => {
                                 window.location.href = "/messages/c";
@@ -149,6 +150,7 @@ class ClientContractDetails extends React.Component {
                               {console.log("milestones in fetch", this.props.milestones)}
                               <Icon type="message" />
                             </div>
+                            )}
                           </div>
                         </div>
                         <div className="text-center mb-3 mb-md-0">

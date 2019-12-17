@@ -124,6 +124,7 @@ class VendorContractDetails extends React.Component {
                                 {getTimeFromTimezone(this.props.contract.client.timeZone)}
                               </p>
                             )}
+                            {this.props.contract.status !== constants.CONTRACT_STATUS.END && (
                             <div
                               className="text-color pointer h5"
                               onClick={() => {
@@ -132,6 +133,7 @@ class VendorContractDetails extends React.Component {
                             >
                               <Icon type="message" />
                             </div>
+                            )}
                           </div>
                         </div>
                         <div className="text-center mb-3 mb-md-0">
