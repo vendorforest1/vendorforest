@@ -20,7 +20,6 @@ class ProposalDetails extends React.Component {
     this.props.fetchGetReviewsData({
       to: this.props.proposal.vendor._id,
     });
-    console.log("reviews", this.props.reviews);
   }
 
   UNSAFE_componentWillReceiveProps(newProps) {

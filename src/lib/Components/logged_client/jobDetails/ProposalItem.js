@@ -71,11 +71,11 @@ class ProposalItem extends React.Component {
         <div className="row">
           {this.props.proposal.vendor && (
             <div>
-              <div className="col-lg-4 col-md-6 vendor-profile-content d-flex">
+              <div className="col-lg-16 col-md-24 vendor-profile-content d-flex">
                 <Avatar
                   src={this.props.proposal.vendor.profileImage || defaultProfileImage}
                   className="photo"
-                />
+                />               
                 <div className="ml-2">
                   <h6 className="text-dark font-weight-bold">
                     {this.props.proposal.vendor.username}
@@ -100,7 +100,7 @@ class ProposalItem extends React.Component {
                   )}
                 </div>
               </div>
-              <div className="col-lg-4 col-md-6 vendor-rate">
+              <div className="col-lg-16 col-md-24 vendor-rate">
                 <Progress
                   percent={this.props.proposal.vendor.vendor.successRate}
                   size="small"
