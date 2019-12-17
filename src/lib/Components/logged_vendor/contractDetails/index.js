@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar, Slider, Icon, Tabs, message, Button } from "antd";
 import { connect } from "react-redux";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_ClientHeader from "@Components/inc/client_header";
+import VF_VendorHeader from "@Components/inc/vendor_header";
 import VF_Footer from "@Components/inc/footer";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
@@ -10,7 +10,12 @@ import Milestones from "./Milestones";
 import AttachFiles from "./AttachFiles";
 import Review from "./Review";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
-import { fetchGetContractData, fetchUpdateContractData, updateContract } from "./essential";
+import {
+  fetchGetContractData,
+  fetchUpdateContractData,
+  updateContract,
+  jobComplete,
+} from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
 
 const { TabPane } = Tabs;
@@ -20,15 +25,30 @@ class VendorContractDetails extends React.Component {
     super(props);
     this.state = {};
     this.clickTab = this.clickTab.bind(this);
-    this.jobComplete = this.jobComplete.bind(this);
+    this.handlejobComplete = this.handlejobComplete.bind(this);
   }
 
   clickTab(key) {
     process.env.NODE_ENV === "development" && console.log(key);
   }
-  
-  jobComplete() {
-    //
+
+  handlejobComplete() {
+    const params = {
+      contractId: this.props.contract._id,
+      title: this.props.contract.job.title,
+    };
+    this.fetchJobComplete(params);
+  }
+  async fetchJobComplete(params) {
+    jobComplete(params)
+      .then((data) => {
+        message.success(data.message);
+        window.location.href = `/vendor/givefeedback/${this.props.contract._id}`;
+      })
+      .catch((error) => {
+        process.env.NODE_ENV === "development" && console.log(error);
+        message.warning(error.message);
+      });
   }
 
   componentDidMount() {
@@ -68,7 +88,7 @@ class VendorContractDetails extends React.Component {
   render() {
     return (
       <div className="contract-details">
-        <VF_ClientHeader />
+        <VF_VendorHeader />
         <div className="content">
           <div className="container">
             <div className="row">
@@ -144,15 +164,22 @@ class VendorContractDetails extends React.Component {
                             </a>
                           </p>
                         </div>
-                        <div className="text-center mb-3 mb-md-0" >
-                          <Button
-                          style={{backgroundColor:"#07b107", color:"white", fontWeight:"bolder", height:"40px"}}
-                          onClick={this.jobComplete}
-                          >
-                            Job Completed
+                        <div className="text-center mb-3 mb-md-0">
+                          {this.props.contract.status !== constants.CONTRACT_STATUS.END && (
+                            <Button
+                              style={{
+                                backgroundColor: "#07b107",
+                                color: "white",
+                                fontWeight: "bolder",
+                                height: "40px",
+                              }}
+                              onClick={this.handlejobComplete}
+                            >
+                              Job Completed
                             </Button>
+                          )}
                         </div>
-                        <div className="status">
+                        {/* <div className="status">
                           {this.props.contract.status === constants.CONTRACT_STATUS.END &&
                             !this.isLeftFeedBack() && (
                               <div>
@@ -168,7 +195,7 @@ class VendorContractDetails extends React.Component {
                                 </button>
                               </div>
                             )}
-                        </div>
+                        </div> */}
                       </div>
                       <div className="main-content">
                         <Tabs defaultActiveKey="1" onChange={this.clickTab}>
@@ -209,4 +236,5 @@ export default connect(mapStateToProps, {
   fetchGetContractData,
   fetchUpdateContractData,
   updateContract,
+  jobComplete,
 })(withStyles(globalStyle, localStyle)(VendorContractDetails));

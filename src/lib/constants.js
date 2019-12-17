@@ -149,6 +149,7 @@ export const apiUrl = {
   SEND_INVITE: `${API_URL}/apis/job/send_invite`,
   SEND_NOTIFICATION: `${API_URL}/apis/job/sendNewJobNotification`,
   INIT_CHAT: `${API_URL}/apis/job/initChat`,
+  SEND_JOB_COMPLETE: `${API_URL}/apis/job/job_completed`,
 
   CREATE_PROPOSAL: `${API_URL}/apis/proposal/create`,
   UPDATE_PROPOSAL: `${API_URL}/apis/proposal/update`,

@@ -2,6 +2,7 @@ import Job from "@Models/job.model";
 import User from "@Models/user.model";
 import Room from "@Models/chatRoom.model";
 import Vendor from "@Models/vendor.model";
+import Contract from "@Models/contract.model";
 import getEnv, { constants } from "@Config/index";
 import mongoose from "mongoose";
 import { mail } from "@Config/mail";
@@ -455,6 +456,48 @@ export default () => {
           env.MODE === "development" ? err.message : constants.PROD_COMMONERROR_MSG;
         });
     }
+  };
+
+  controllers.jobCompleted = async (req, res) => {
+    await Contract.findOne({
+      _id: req.body.contractId,
+    })
+      .populate({
+        path: "client",
+        model: "user",
+      })
+      .then(async (result) => {
+        const clientEmail = result.client.email;
+        const clientPhone = result.client.phone;
+        const clientId = result.client._id;
+        const smsDescription = `Title: ${req.body.title} \n Vendor completed this job. Please check the job. \n vendorforest.com`;
+        // saveNotification(
+        //   clientId,
+        //   `Vendor has completed the Job. Title is ${req.body.title}. Please confirm this.`,
+        // );
+        // sendSMS(clientPhone, "Vendor has completed the Job", smsDescription);
+        // //send email.
+        // await mail.sendJobCompletedEmail(
+        //   result.client,
+        //   "VendorForest information!",
+        //   (err, msg) => {
+        //     if (err) {
+        //       return err;
+        //     }
+        //     return;
+        //   },
+        // );
+        return res.status(200).json({
+          status: 200,
+          message: "Your confirmation has been delievered.",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
   };
 
   return controllers;

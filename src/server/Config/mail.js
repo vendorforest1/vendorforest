@@ -194,6 +194,18 @@ const mailService = () => {
     };
 
     sendEmail(job, "email_invite.html", mailOptions, callback);
+    console.log("sent email");
+  };
+
+  mailObject.sendJobCompletedEmail = async (jobCompleted, subject, callback) => {
+    console.log("I am in sent email.");
+    const mailOptions = {
+      subject: subject, // Subject line
+      //href: `${env.API_URL}/reset/${user.token}`,
+    };
+
+    sendEmail(jobCompleted, "email_job_completed.html", mailOptions, callback);
+    console.log("sent email");
   };
   
 
@@ -204,6 +216,7 @@ const mailService = () => {
     };
 
     sendEmail(milestone, "email_payment_request.html", mailOptions, callback);
+    console.log("sent email");
   };
   return mailObject;
 };
