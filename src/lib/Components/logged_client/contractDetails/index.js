@@ -25,7 +25,7 @@ class ClientContractDetails extends React.Component {
     super(props);
     this.state = {};
     this.clickTab = this.clickTab.bind(this);
-    this.jobComplete = this.jobComplete.bind(this);
+    this.createNewMilestone = this.createNewMilestone.bind(this);
     this.endContract = this.endContract.bind(this);
   }
 
@@ -54,14 +54,15 @@ class ClientContractDetails extends React.Component {
     };
   }
 
-  jobComplete() {
-    this._button = 0;
-    if (this.props.match.params.id) {
-      this.props.fetchUpdateContractData({
-        _id: this.props.match.params.id,
-        completedPercent: 100,
-      });
-    }
+  createNewMilestone() {
+    window.location.href = `/client/hire/${this.props.contract.job._id}&${this.props.contract.vendor._id}`;
+    // this._button = 0;
+    // if (this.props.match.params.id) {
+    //   this.props.fetchUpdateContractData({
+    //     _id: this.props.match.params.id,
+    //     completedPercent: 100,
+    //   });
+    // }
   }
 
   isLeftFeedBack() {
@@ -79,15 +80,31 @@ class ClientContractDetails extends React.Component {
   endContract() {
     this._button = 1;
     if (this.props.match.params.id) {
-      this.props.fetchEndContractData({
+      const params = {
         _id: this.props.match.params.id,
-      });
+      };
+      this.EndContractData(params);
     }
+  }
+
+  async EndContractData(params) {
+    // await this.props.fetchPostJob(params)
+    fetchEndContractData(params)
+      .then((data) => {
+        console.log("post job data", data.message);
+        message.success(data.message);
+        window.location.href = `/client/givefeedback/${this.props.contract._id}`;
+      })
+      .catch((error) => {
+        process.env.NODE_ENV === "development" && console.log(error);
+        message.warning(error.message);
+      });
   }
 
   render() {
     return (
       <div className="contract-details">
+        {console.log("contract detail = ", this.props.contract)}
         <ClientHeader />
         <div className="content">
           <div className="container">
@@ -152,16 +169,15 @@ class ClientContractDetails extends React.Component {
                           </p>
                         </div>
                         <div className="status">
-                          {this.props.contract.status === constants.CONTRACT_STATUS.CREATED &&
-                            this.props.contract.completedPercent < 100 && (
+                          {this.props.contract.status !== constants.CONTRACT_STATUS.END &&
+                            !this.isLeftFeedBack() && (
                               <div>
                                 <button
-                                  className={`button-primary ${
-                                    this._button === 0 && this.props.pending ? "disable" : ""
-                                  }`}
-                                  onClick={this.jobComplete}
+                                  className={`button-primary`}
+                                  style={{ width: "200px" }}
+                                  onClick={this.createNewMilestone}
                                 >
-                                  Job Complete
+                                  Create New Milestone
                                 </button>
                               </div>
                             )}
@@ -171,13 +187,14 @@ class ClientContractDetails extends React.Component {
                                 className={`button-white ${
                                   this._button === 1 && this.props.pending ? "disable" : ""
                                 }`}
+                                style={{ width: "200px" }}
                                 onClick={this.endContract}
                               >
                                 End Contract
                               </button>
                             </div>
                           )}
-                          {this.props.contract.status === constants.CONTRACT_STATUS.END &&
+                          {/* {this.props.contract.status === constants.CONTRACT_STATUS.END &&
                             !this.isLeftFeedBack() && (
                               <div>
                                 <button
@@ -189,7 +206,7 @@ class ClientContractDetails extends React.Component {
                                   Leave Feedback
                                 </button>
                               </div>
-                            )}
+                            )} */}
                         </div>
                       </div>
                       <div className="main-content">

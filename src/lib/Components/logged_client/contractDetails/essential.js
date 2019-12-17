@@ -310,9 +310,7 @@ export const fetchUpdateContractData = (payload) => async (dispatch, getState) =
     .catch((err) => dispatch(fetchError(err.message)));
 };
 
-export const fetchEndContractData = (payload) => async (dispatch, getState) => {
-  dispatch(clearError());
-  dispatch(fetchRequest());
+export const fetchEndContractData = async (payload) => {
   return await fetch(apiUrl.END_CONTRACT, {
     method: "POST",
     headers: {
@@ -326,8 +324,9 @@ export const fetchEndContractData = (payload) => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      dispatch(fetchContractSuccess(result.data));
-      dispatch(fetchSuccessMsg(result.message));
+      return result;
     })
-    .catch((err) => dispatch(fetchError(err.message)));
+    .catch((err) => {
+      process.env.NODE_ENV === "development" && console.log("fetch error", err);
+    });
 };

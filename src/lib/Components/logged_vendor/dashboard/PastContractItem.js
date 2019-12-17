@@ -35,7 +35,6 @@ class PastContractItem extends React.Component {
   }
 
   getContractRate() {
-    // console.log("reviews 123123 = ", this.props.contract.reviews.length)
     if (this.props.contract.reviews.length === 0) {
       return 0.0;
     }
@@ -97,7 +96,6 @@ class PastContractItem extends React.Component {
               </div>
             </div>
             <div className="rate text-center">
-              {console.log("number of stars = ", this.getContractRate())}
               <Rate disabled value={this.getContractRate()} allowHalf />
               {this.props.contract.status === constants.CONTRACT_STATUS.END &&
                 !this.isLeftFeedBack() && (

@@ -57,7 +57,7 @@ export default () => {
                 model: "user",
               })
               .then(async (vendorInfo) => {
-                const vendorEmail = vendorInfo.vendor.email;
+                const vendorEmail = vendorInfo.vendor;
                 const vendorPhone = vendorInfo.vendor.phone;
                 await paymentIntent(stripeClientId, price)
                   .then(() => {
@@ -85,7 +85,7 @@ export default () => {
                             saveNotification(vendorId, description);
                             sendSMS(vendorPhone, emailTitle, phoneDescription);
                             await mail.sendCreateMilestoneEmail(
-                              result,
+                              vendorEmail,
                               "VendorForest information!",
                               (err, msg) => {
                                 if (err) {
@@ -211,7 +211,7 @@ export default () => {
   };
 
   controllers.release = async (req, res, next) => {
-    const userStripeAccount = req.user.stripeClientId;
+    // const userStripeAccount = req.user.stripeClientId;
     const milestoneID = req.body._id;
     try {
       await Milestone.find({
@@ -226,8 +226,9 @@ export default () => {
           },
         })
         .then((milestone) => {
+          env.MODE === "development" && console.log("fetch milestone result === ", milestone);
           const vendorStripeID = milestone[0].contract.vendor.connectedAccountId;
-          const vendorEmail = milestone[0].contract.vendor.email;
+          const vendorEmail = milestone[0].contract.vendor;
           const vendorPhone = milestone[0].contract.vendor.phone;
           const vendorID = milestone[0].contract.vendor._id;
           const price = milestone[0].price;
@@ -252,6 +253,8 @@ export default () => {
                 },
               )
                 .then(async (milestone) => {
+                  env.MODE === "development" &&
+                    console.log("milestone result+++++===", milestone);
                   if (!milestone) {
                     return res.status(401).json({
                       status: 401,
@@ -261,14 +264,6 @@ export default () => {
                           : constants.PROD_COMMONERROR_MSG,
                     });
                   }
-                  const emailTitle = "Milestone has been released.";
-                  const description = `Milestone has been released.<br> Your client released the milestone. Amount is ${milestone.price *
-                    0.75} USD.`;
-                  const phoneDescription = `Milestone has been released.\n Your client released the milestone. Amount is ${milestone.price *
-                    0.75} USD.`;
-                  await saveReleaseNotification(vendorID, milestone.price);
-                  await sendingEmail(vendorEmail, emailTitle, description);
-                  await sendingSms(vendorPhone, emailTitle, phoneDescription);
                   await Contract.findOneAndUpdate(
                     {
                       _id: milestone.contract,
@@ -280,6 +275,8 @@ export default () => {
                       },
                     },
                   ).then(async (contract) => {
+                    env.MODE === "development" &&
+                      console.log("contract result+++++===", contract);
                     if (!contract) {
                       return res.status(401).json({
                         status: 401,
@@ -289,6 +286,32 @@ export default () => {
                             : constants.PROD_COMMONERROR_MSG,
                       });
                     }
+                    const emailTitle = "Milestone has been released.";
+                    const description = `Milestone has been released. Your client released the milestone. Amount is ${milestone.price *
+                      0.75} USD.`;
+                    const phoneDescription = `Milestone has been released.\n Your client released the milestone. Amount is ${milestone.price *
+                      0.75} USD. \n vendorforest.com`;
+                    console.log(
+                      "=====",
+                      emailTitle,
+                      description,
+                      phoneDescription,
+                      vendorID,
+                      vendorPhone,
+                      "======",
+                    );
+                    saveNotification(vendorID, description);
+                    sendSMS(vendorPhone, emailTitle, phoneDescription);
+                    await mail.sendReleaseMilestoneEmail(
+                      vendorEmail,
+                      "VendorForest information!",
+                      (err, msg) => {
+                        if (err) {
+                          return err;
+                        }
+                        return;
+                      },
+                    );
                     return res.status(200).json({
                       status: 200,
                       data: milestone,

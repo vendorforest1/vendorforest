@@ -26,7 +26,11 @@ class Milestones extends React.Component {
       });
     }
   }
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.fetchGetMilestonesData({
+      contract: this.props.contract._id,
+    });
+  }
 
   create() {
     this._button = 0;
@@ -111,8 +115,8 @@ class Milestones extends React.Component {
                   >
                     Release
                   </a>
-                  <Divider type="vertical" />
-                  <a
+                  {/* <Divider type="vertical" /> */}
+                  {/* <a
                     className="pointer text-danger"
                     onClick={() => {
                       this.cancelMilestone(index);
@@ -120,7 +124,7 @@ class Milestones extends React.Component {
                   >
                     {" "}
                     Cancel{" "}
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>

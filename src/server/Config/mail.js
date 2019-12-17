@@ -218,6 +218,16 @@ const mailService = () => {
     sendEmail(milestone, "email_payment_request.html", mailOptions, callback);
     console.log("sent email");
   };
+  mailObject.sendReleaseMilestoneEmail = async (milestone, subject, callback) => {
+    const mailOptions = {
+      subject: subject, // Subject line
+      //href: `${env.API_URL}/reset/${user.token}`,
+    };
+
+    sendEmail(milestone, "email_payment_completed.html", mailOptions, callback);
+    console.log("sent email");
+  };
+
   return mailObject;
 };
 
