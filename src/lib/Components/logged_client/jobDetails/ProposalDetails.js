@@ -83,16 +83,17 @@ class ProposalDetails extends React.Component {
                     </p>
                   </div>
                 </div>
+                {this.props.proposal.vendor && (
                 <div className="col-md-5 vendor-status">
                   <Progress
-                    percent={this.props.proposal.vendor.vendor.successRate}
+                    percent={(this.props.proposal.vendor.vendor.jobComplatedReate / this.props.proposal.vendor.vendor.jobs).toFixed(0)}
                     size="small"
                     status="active"
                     className="job-progress"
                   />
                   <Rate
                     disabled
-                    value={this.props.proposal.vendor.vendor.rate}
+                    value={(this.props.proposal.vendor.vendor.rate / this.props.proposal.vendor.vendor.reviewCount).toFixed(1)}
                     allowHalf={true}
                     className="like-rate"
                   />
@@ -100,6 +101,7 @@ class ProposalDetails extends React.Component {
                     {this.props.proposal.vendor.vendor.reviewCount} Reviews
                   </span>
                 </div>
+                )}
               </div>
             </div>
             <hr />

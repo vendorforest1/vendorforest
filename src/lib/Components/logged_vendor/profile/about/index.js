@@ -79,8 +79,8 @@ class VendorAbout extends React.Component {
                         </span>
                       </p>
                     )}
-                    <Rate value={vendor.vendor ? (vendor.vendor.rate/vendor.vendor.jobs).toFixed(1) : 0} disabled allowHalf />
-                    <span className="h6">{vendor.vendor ? (vendor.vendor.rate / vendor.vendor.jobs).toFixed(1) : ""}</span>
+                    <Rate value={vendor.vendor ? (vendor.vendor.rate/vendor.vendor.reviewCount).toFixed(1) : 0} disabled allowHalf />
+                    <span className="h6">{vendor.vendor ? (vendor.vendor.rate / vendor.vendor.reviewCount).toFixed(1) : ""}</span>
                   </div>
                 </div>
                 <div className="status">

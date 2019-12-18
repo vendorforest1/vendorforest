@@ -45,8 +45,8 @@ class TopRatedVendorCard extends React.Component {
             : "NONE"}
         </div>
         <div className="mb-3">
-          <Rate value={this.props.vendor.vendor.rate} allowHalf disabled />
-          <span>{this.props.vendor.vendor.rate}</span>
+          <Rate value={(this.props.vendor.vendor.rate / this.props.vendor.vendor.reviewCount).toFixed(1)} allowHalf disabled />
+          <span>{this.props.vendor.vendor.rate ? (this.props.vendor.vendor.rate / this.props.vendor.vendor.reviewCount).toFixed(1) : 0}</span>
         </div>
         <button
           type="button"

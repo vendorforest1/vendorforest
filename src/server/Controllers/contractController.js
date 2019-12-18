@@ -2,6 +2,7 @@ import Job from "@Models/job.model";
 import Proposal from "@Models/proposal.model";
 import Contract from "@Models/contract.model";
 import Vendor from "@Models/vendor.model";
+import Client from "@Models/client.model";
 import getEnv, { constants } from "@Config/index";
 import { async } from "q";
 
@@ -232,6 +233,15 @@ export default () => {
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
+        await Client.findOneAndUpdate({
+          _id: req.user.client
+        }, 
+        {
+          $inc : {
+            totalSpent: contract.paidPrice,
+          }
+        })
+        .then(() => {})
         console.log("end contract === ", contract);
         const vendorModelId = contract.vendor.vendor._id;
         const paidPrice = contract.paidPrice;

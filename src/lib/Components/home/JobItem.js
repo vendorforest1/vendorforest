@@ -97,20 +97,20 @@ class JobItem extends React.Component {
             : this.props.job.description}
         </p>
         <div className="client d-flex">
-          {/* <img
+          <img
             src={this.props.job.client.profileImage || defaultProfileImage}
             style={{ height: "35px", width: "35px" }}
             alt=""
-          /> */}
+          />
           <div className="ml-2">
-            {/* <h6 className="text-color">{this.props.job.client.username}</h6> */}
+            <h6 className="text-color">{this.props.job.client.username}</h6>
             <h6 className="text-dark">
-              {/* <span>
+              <span>
                 {this.props.job.client.bsLocation
                   ? this.props.job.client.bsLocation.country
                   : this.props.job.location.country}{" "}
                 | ${this.props.job.client.client.totalSpent} spent
-              </span> */}
+              </span>
             </h6>
           </div>
         </div>
