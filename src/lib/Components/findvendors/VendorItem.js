@@ -60,14 +60,14 @@ class VendorItem extends React.Component {
               )}
             </p>
             <Progress
-              percent={vendor.jobCompletedRate}
+              percent={vendor.jobComplatedReate !== 0 ? Number((vendor.jobComplatedReate/vendor.jobs).toFixed(0)) : 0}
               size="small"
               status="active"
               className="job-progress"
             />
             <div className="text-grey">
-              <span className="mr-2">{vendor.rate}</span>
-              <Rate disabled defaultValue={vendor.rate} />
+              <span className="mr-2">{vendor.rate !== 0 ? (vendor.rate / vendor.reviewCount).toFixed(1) : 0}</span>
+              <Rate disabled value={vendor.rate !== 0 ? Number((vendor.rate / vendor.reviewCount).toFixed(1)) : 0} />
               <span className="mx-2">{vendor.reviewCount} Reviews</span>
             </div>
           </div>
