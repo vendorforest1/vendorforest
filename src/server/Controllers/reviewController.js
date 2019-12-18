@@ -2,8 +2,10 @@
 import Review from "@Models/review.model";
 import Contract from "@Models/contract.model";
 import User from "@Models/user.model";
+import Vendor from "@Models/vendor.model";
 
 import getEnv, { constants } from "@Config/index";
+import { async } from "q";
 
 const env = getEnv();
 
@@ -122,7 +124,24 @@ export default () => {
         }
         await Contract.findOne({
           _id: req.body.contract,
-        }).then(async (contract) => {
+        })
+        .populate({
+          path: "client",
+          model: "user",
+          populate: {
+            path: "client",
+            model: "client",
+          },
+        })
+        .populate({
+          path: "vendor",
+          model: "user",
+          populate: {
+            path: "vendor",
+            model: "vendor",
+          },
+        })
+        .then(async (contract) => {
           if (!contract) {
             return res.status(401).json({
               status: 401,
@@ -134,30 +153,48 @@ export default () => {
           }
           if (!req.body.to) {
             req.body.to =
-              String(contract.client) === String(req.body.from)
+              String(contract.client._id) === String(req.body.from)
                 ? contract.vendor
                 : contract.client;
           }
-          const reviewDoc = new Review({
-            ...req.body,
-          });
-          await reviewDoc.save().then(async (review) => {
-            await Contract.findOneAndUpdate(
-              {
-                _id: contract._id,
-              },
-              {
-                $push: {
-                  reviews: review._id,
-                },
-              },
-            );
-            return res.status(200).json({
-              status: 200,
-              data: review,
-              message: "Feedback success.",
+          const vendorModelId = contract.vendor.vendor._id;
+          await Vendor.findOneAndUpdate({
+            _id: vendorModelId
+          }, {
+            $inc: {
+              rate: req.body.rate,
+              reviewCount: 1
+            }
+          })
+          .then(async(result) => {
+            const reviewDoc = new Review({
+              ...req.body,
             });
-          });
+            await reviewDoc.save().then(async (review) => {
+              await Contract.findOneAndUpdate(
+                {
+                  _id: contract._id,
+                },
+                {
+                  $push: {
+                    reviews: review._id,
+                  },
+                },
+              );
+              return res.status(200).json({
+                status: 200,
+                data: review,
+                message: "Feedback success.",
+              });
+            });
+          })
+          .catch((error) => {
+            return res.status(500).json({
+              status: 500,
+              message:
+                env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+            });
+          })
         });
       });
     } catch (error) {

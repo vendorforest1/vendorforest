@@ -1,6 +1,7 @@
 import Job from "@Models/job.model";
 import Proposal from "@Models/proposal.model";
 import Contract from "@Models/contract.model";
+import Vendor from "@Models/vendor.model";
 import getEnv, { constants } from "@Config/index";
 import { async } from "q";
 
@@ -179,12 +180,12 @@ export default () => {
         populate: {
           path: "client",
           model: "client",
-          select: {
-            username: 1,
-            bsLocation: 1,
-            profileImage: 1,
-            timeZone: 1,
-          },
+          // select: {
+          //   username: 1,
+          //   bsLocation: 1,
+          //   profileImage: 1,
+          //   timeZone: 1,
+          // },
         },
       })
       .populate({
@@ -193,12 +194,12 @@ export default () => {
         populate: {
           path: "vendor",
           model: "vendor",
-          select: {
-            username: 1,
-            bsLocation: 1,
-            profileImage: 1,
-            timeZone: 1,
-          },
+          // select: {
+          //   username: 1,
+          //   bsLocation: 1,
+          //   profileImage: 1,
+          //   timeZone: 1,
+          // },
         },
       })
       .populate({
@@ -231,11 +232,33 @@ export default () => {
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
-        return res.status(200).json({
-          status: 200,
-          data: contract,
-          message: "Contract has been ended successfully.",
-        });
+        console.log("end contract === ", contract);
+        const vendorModelId = contract.vendor.vendor._id;
+        const paidPrice = contract.paidPrice;
+        const jobCompletedRate = paidPrice !== 0 ? 100 : 0;
+        await Vendor.findOneAndUpdate({
+          _id: vendorModelId
+        }, {
+          $inc : {
+            totalEarning : paidPrice,
+            jobComplatedReate : jobCompletedRate,
+            jobs: 1,
+          },
+        })
+          .then((result) => {
+            console.log("after saving", result);
+            return res.status(200).json({
+              status: 200,
+              data: result,
+              message: "Contract has been ended successfully.",
+            });
+          })
+          .catch((error) => {
+            return res.status(500).json({
+              status: 500,
+              message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+            });
+          })
       })
       .catch((error) => {
         return res.status(500).json({

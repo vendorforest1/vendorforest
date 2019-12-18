@@ -250,6 +250,17 @@ export default () => {
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
+        if (!user.vendor.service) {
+          User.findOneAndUpdate({
+            _id: req.user._id
+          },{
+            $inc :
+            {
+               profilePercent: 34, 
+            }
+          })
+          .then(() => {})
+        }
         env.MODE === "development" && console.log(user);
         await Vendor.updateOne(
           {

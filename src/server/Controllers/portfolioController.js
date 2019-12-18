@@ -1,4 +1,5 @@
 import Portfolio from "@Models/portfolio.model";
+import User from "@Models/user.model";
 import getEnv, { constants } from "@Config/index";
 
 const env = getEnv();
@@ -77,6 +78,15 @@ export default () => {
         ...req.body,
       });
       await portfolioDoc.save().then(async (portfolio) => {
+        await User.findOneAndUpdate({
+          _id: req.user._id
+        },{
+          $inc :
+          {
+             profilePercent: 33 
+          }
+        })
+        .then(() => {})
         return res.status(200).json({
           status: 200,
           data: portfolio,

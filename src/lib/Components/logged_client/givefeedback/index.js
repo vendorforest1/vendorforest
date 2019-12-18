@@ -34,7 +34,6 @@ class ClientGiveFeedBack extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (!state.success && props.success) {
       message.success(props.success);
-      window.location.href = "/client";
     }
     if (!state.error && props.error) {
       message.error(props.error);
@@ -46,7 +45,7 @@ class ClientGiveFeedBack extends React.Component {
   }
 
   giveFeedbck() {
-    if (!this.props.pending) {
+    if (this.props.pending) {
       return;
     }
     if (this.props.match.params.contract_id) {
@@ -62,6 +61,7 @@ class ClientGiveFeedBack extends React.Component {
             vendorBadge: this.state.vendorBadge,
           };
           this.props.fetchCreateReviewData(params);
+          window.location.href = "/client";
         }
       });
     }
@@ -307,7 +307,7 @@ class ClientGiveFeedBack extends React.Component {
                       </p>
                     </div>
                     <button
-                      className={`button-primary ${!this.props.pending ? "disable" : ""}`}
+                      className={`button-primary ${this.props.pending ? "disable" : ""}`}
                       onClick={this.giveFeedbck}
                     >
                       Send

@@ -88,10 +88,8 @@ class ClientContractDetails extends React.Component {
   }
 
   async EndContractData(params) {
-    // await this.props.fetchPostJob(params)
     fetchEndContractData(params)
       .then((data) => {
-        console.log("post job data", data.message);
         message.success(data.message);
         window.location.href = `/client/givefeedback/${this.props.contract._id}`;
       })

@@ -1,6 +1,6 @@
 import Service from "@Models/service.model";
 import Category from "@Models/category.model";
-
+import User from "@Models/user.model";
 import getEnv, { constants } from "@Config/index";
 
 const env = getEnv();
