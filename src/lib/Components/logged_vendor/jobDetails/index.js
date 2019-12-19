@@ -103,7 +103,7 @@ class VendorJobDetails extends React.Component {
                         <div className="job-main-content">
                           <div className="job-head">
                             <h4 className="mb-2">{this.props.job.title}</h4>
-                            <p>Posted 1 month a go</p>
+                            {/* <p>Posted 1 month a go</p> */}
                           </div>
                           <hr />
                           <div className="job-body">

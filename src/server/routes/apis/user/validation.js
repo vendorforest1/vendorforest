@@ -52,6 +52,9 @@ export const updateAccount = {
       lng: Joi.number(),
       placeId: Joi.string(),
     },
+    phone: Joi.string(),
+    phonePrefix: Joi.string(),
+    localPhoneNumber: Joi.string(),
     timeZone: Joi.string(),
   }),
 };

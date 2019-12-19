@@ -40,7 +40,6 @@ export default () => {
           stripeClientId: result.id,
           cardId: result.default_source,
         };
-        console.log("client: ---- ", result);
         try {
           User.findOneAndUpdate(
             {
@@ -77,7 +76,6 @@ export default () => {
           stripeClientId: result.id,
           cardId: result.default_source,
         };
-        console.log("client: ---- ===== ", result);
         try {
           User.findOneAndUpdate(
             {
