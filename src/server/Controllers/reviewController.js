@@ -125,77 +125,82 @@ export default () => {
         await Contract.findOne({
           _id: req.body.contract,
         })
-        .populate({
-          path: "client",
-          model: "user",
-          populate: {
+          .populate({
             path: "client",
-            model: "client",
-          },
-        })
-        .populate({
-          path: "vendor",
-          model: "user",
-          populate: {
+            model: "user",
+            populate: {
+              path: "client",
+              model: "client",
+            },
+          })
+          .populate({
             path: "vendor",
-            model: "vendor",
-          },
-        })
-        .then(async (contract) => {
-          if (!contract) {
-            return res.status(401).json({
-              status: 401,
-              message:
-                env.NODE_ENV === "development"
-                  ? `Contract ${constants.DEV_EMPTYDOC_MSG}`
-                  : constants.PROD_COMMONERROR_MSG,
-            });
-          }
-          if (!req.body.to) {
-            req.body.to =
-              String(contract.client._id) === String(req.body.from)
-                ? contract.vendor
-                : contract.client;
-          }
-          const vendorModelId = contract.vendor.vendor._id;
-          await Vendor.findOneAndUpdate({
-            _id: vendorModelId
-          }, {
-            $inc: {
-              rate: req.body.rate,
-              reviewCount: 1
-            }
+            model: "user",
+            populate: {
+              path: "vendor",
+              model: "vendor",
+            },
           })
-          .then(async(result) => {
-            const reviewDoc = new Review({
-              ...req.body,
-            });
-            await reviewDoc.save().then(async (review) => {
-              await Contract.findOneAndUpdate(
-                {
-                  _id: contract._id,
-                },
-                {
-                  $push: {
-                    reviews: review._id,
-                  },
-                },
-              );
-              return res.status(200).json({
-                status: 200,
-                data: review,
-                message: "Feedback success.",
+          .then(async (contract) => {
+            if (!contract) {
+              return res.status(401).json({
+                status: 401,
+                message:
+                  env.NODE_ENV === "development"
+                    ? `Contract ${constants.DEV_EMPTYDOC_MSG}`
+                    : constants.PROD_COMMONERROR_MSG,
               });
-            });
-          })
-          .catch((error) => {
-            return res.status(500).json({
-              status: 500,
-              message:
-                env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
-            });
-          })
-        });
+            }
+            if (!req.body.to) {
+              req.body.to =
+                String(contract.client._id) === String(req.body.from)
+                  ? contract.vendor
+                  : contract.client;
+            }
+            const vendorModelId = contract.vendor.vendor._id;
+            await Vendor.findOneAndUpdate(
+              {
+                _id: vendorModelId,
+              },
+              {
+                $inc: {
+                  rate: req.body.rate,
+                  reviewCount: 1,
+                },
+              },
+            )
+              .then(async (result) => {
+                const reviewDoc = new Review({
+                  ...req.body,
+                });
+                await reviewDoc.save().then(async (review) => {
+                  await Contract.findOneAndUpdate(
+                    {
+                      _id: contract._id,
+                    },
+                    {
+                      $push: {
+                        reviews: review._id,
+                      },
+                    },
+                  );
+                  return res.status(200).json({
+                    status: 200,
+                    data: review,
+                    message: "Feedback success.",
+                  });
+                });
+              })
+              .catch((error) => {
+                return res.status(500).json({
+                  status: 500,
+                  message:
+                    env.NODE_ENV === "development"
+                      ? error.message
+                      : constants.PROD_COMMONERROR_MSG,
+                });
+              });
+          });
       });
     } catch (error) {
       return res.status(500).json({

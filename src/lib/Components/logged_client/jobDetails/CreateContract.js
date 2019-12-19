@@ -130,15 +130,26 @@ class CreateContract extends React.Component {
             </div>
             <div className="col-lg-6">
               <Progress
-                percent={(this.props.proposal.vendor.vendor.jobComplatedReate / this.props.proposal.vendor.vendor.jobs).toFixed(0)}
+                percent={(
+                  this.props.proposal.vendor.vendor.jobComplatedReate /
+                  this.props.proposal.vendor.vendor.jobs
+                ).toFixed(0)}
                 size="small"
                 status="active"
                 style={{ width: "170px", display: "block" }}
               />
-              <span className="mr-2">{(this.props.proposal.vendor.vendor.rate / this.props.proposal.vendor.vendor.reviewCount).toFixed(1)}</span>
+              <span className="mr-2">
+                {(
+                  this.props.proposal.vendor.vendor.rate /
+                  this.props.proposal.vendor.vendor.reviewCount
+                ).toFixed(1)}
+              </span>
               <Rate
                 disabled
-                value={(this.props.proposal.vendor.vendor.rate / this.props.proposal.vendor.vendor.reviewCount).toFixed(1)}
+                value={(
+                  this.props.proposal.vendor.vendor.rate /
+                  this.props.proposal.vendor.vendor.reviewCount
+                ).toFixed(1)}
                 allowHalf={true}
                 className="like-rate"
               />

@@ -125,14 +125,14 @@ class VendorContractDetails extends React.Component {
                               </p>
                             )}
                             {this.props.contract.status !== constants.CONTRACT_STATUS.END && (
-                            <div
-                              className="text-color pointer h5"
-                              onClick={() => {
-                                window.location.href = "/messages/v";
-                              }}
-                            >
-                              <Icon type="message" />
-                            </div>
+                              <div
+                                className="text-color pointer h5"
+                                onClick={() => {
+                                  window.location.href = "/messages/v";
+                                }}
+                              >
+                                <Icon type="message" />
+                              </div>
                             )}
                           </div>
                         </div>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { injectStripe, CardElement } from "react-stripe-elements";
-import { Input, Form, Radio, Select, Card, message } from "antd";
-import { getClientId } from "./essential";
+import { Input, Form, Radio, Select, Card, message, Icon } from "antd";
+import { getClientId, updateClientId, getCardDigits } from "./essential";
 import { connect } from "react-redux";
 class ClientBilling extends Component {
   static fetchInitialData() {}
@@ -19,12 +19,38 @@ class ClientBilling extends Component {
       cvc: "",
       state: null,
       clientSecret: null,
+      pendingBtn: false,
+      cardDigits: undefined,
+      isStripe: undefined,
     };
 
     // this.stripePayload = new stripe("sk_test_PHS0wV5HZJ41uaZDQsgqHKQp");
     this.saveBillingInfo = this.saveBillingInfo.bind(this);
     this.checkSecurityCode = this.checkSecurityCode.bind(this);
     this.checkCardInfo = this.checkCardInfo.bind(this);
+  }
+  componentDidMount() {
+    this.fetchCard();
+    if (this.props.user.stripeClientId) {
+      this.setState({
+        isStripe: true,
+      });
+    } else {
+      this.setState({
+        isStripe: false,
+      });
+    }
+  }
+  async fetchCard() {
+    getCardDigits()
+      .then((data) => {
+        this.setState({
+          cardDigits: data.digits,
+        });
+      })
+      .catch((error) => {
+        message.warning(error.message);
+      });
   }
   checkCardInfo(rule, value, callback) {
     const form = this.props.form;
@@ -45,33 +71,57 @@ class ClientBilling extends Component {
   async saveBillingInfo(e) {
     e.preventDefault();
     if (this.props.stripe) {
+      this.setState({
+        pendingBtn: true,
+      });
       this.props.stripe
         .createToken({ type: "card", name: this.state.firstName + this.state.lastName })
         .then((payload) => {
           if (!payload || !payload.token) {
             throw Error("something went wrong with payload " + payload);
           }
-          this.props.getClientId(payload.token.id);
-          // message.success("Your account is successfully registered.");
+          if (this.state.isStripe === false) {
+            this.stripeRegister(payload.token.id);
+          } else {
+            this.stripeUpdate(payload.token.id);
+          }
         })
         .catch((err) => message.error(err.message));
     } else {
       message.error("Stripe.js hasn't loaded yet.");
     }
-    process.env.NODE_ENV === "development" && console.log("sds");
-    this.props.form.validateFields((err, value) => {
-      if (!err && !this.props.pending) {
-        const params = {
-          number: value.cardNumber,
-          firstName: value.firstName,
-          lastName: value.lastName,
-          exp_month: this.state.expMonth,
-          exp_year: this.state.expYear,
-          cvc: value.securityCode,
-        };
-        // this.props.confirmCardSetup(params);
-      }
-    });
+  }
+  async stripeRegister(params) {
+    getClientId(params)
+      .then((data) => {
+        message.success(data.message);
+        this.setState({
+          pendingBtn: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          pendingBtn: false,
+        });
+        process.env.NODE_ENV === "development" && console.log(error);
+        message.warning(error.message);
+      });
+  }
+  async stripeUpdate(params) {
+    updateClientId(params)
+      .then((data) => {
+        message.success(data.message);
+        this.setState({
+          pendingBtn: false,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          pendingBtn: false,
+        });
+        process.env.NODE_ENV === "development" && console.log(error);
+        message.warning(error.message);
+      });
   }
 
   render() {
@@ -131,6 +181,7 @@ class ClientBilling extends Component {
           }}
         >
           <div className="row">
+            {console.log("true or false =====", this.state.isStripe)}
             <div className="col-md-8 mb-5">
               <Radio.Group
                 onChange={(e) => {
@@ -204,12 +255,43 @@ class ClientBilling extends Component {
                 </div>
               </Radio.Group>
             </div>
-            <div className="col-12">
-              {}
-              <button className="button-primary" onClick={this.saveBillingInfo}>
-                Save
-              </button>
-            </div>
+            {this.state.isStripe === true ? (
+              <div className="col-md-4 mb-5">
+                <h6 style={{ textAlign: "center", fontWeight: "bolder", color: "#07b107" }}>
+                  Last 4digits of your card
+                </h6>
+                <p style={{ textAlign: "center", paddingTop: "5%", fontWeight: "bolder" }}>
+                  XXXX-XXXX-XXXX-{this.state.cardDigits}
+                </p>
+              </div>
+            ) : (
+              ""
+            )}
+            {this.props.user && (
+              <div className="col-12">
+                {this.state.isStripe === false ? (
+                  <button
+                    className={`button-primary ${
+                      this.state.pendingBtn === true ? "disable" : ""
+                    }`}
+                    onClick={this.saveBillingInfo}
+                  >
+                    Save &nbsp;
+                    {this.state.pendingBtn && <Icon type="sync" spin />}
+                  </button>
+                ) : (
+                  <button
+                    className={`button-primary ${
+                      this.state.pendingBtn === true ? "disable" : ""
+                    }`}
+                    onClick={this.saveBillingInfo}
+                  >
+                    Update &nbsp;
+                    {this.state.pendingBtn && <Icon type="sync" spin />}
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </Card>
       </div>
@@ -221,7 +303,7 @@ const ClientBillingMethodForm = Form.create({ name: "client_setting_billingmetho
   ClientBilling,
 );
 const mapStateToProps = ({ clientSettingsReducer }) => {
-  const { error, user, pending } = clientSettingsReducer;
+  const { error, pending, user } = clientSettingsReducer;
   return {
     error,
     user,
@@ -229,4 +311,6 @@ const mapStateToProps = ({ clientSettingsReducer }) => {
   };
 };
 
-export default connect(mapStateToProps, { getClientId })(injectStripe(ClientBillingMethodForm));
+export default connect(mapStateToProps, { getClientId, updateClientId, getCardDigits })(
+  injectStripe(ClientBillingMethodForm),
+);

@@ -233,28 +233,32 @@ export default () => {
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
-        await Client.findOneAndUpdate({
-          _id: req.user.client
-        }, 
-        {
-          $inc : {
-            totalSpent: contract.paidPrice,
-          }
-        })
-        .then(() => {})
+        await Client.findOneAndUpdate(
+          {
+            _id: req.user.client,
+          },
+          {
+            $inc: {
+              totalSpent: contract.paidPrice,
+            },
+          },
+        ).then(() => {});
         console.log("end contract === ", contract);
         const vendorModelId = contract.vendor.vendor._id;
         const paidPrice = contract.paidPrice;
         const jobCompletedRate = paidPrice !== 0 ? 100 : 0;
-        await Vendor.findOneAndUpdate({
-          _id: vendorModelId
-        }, {
-          $inc : {
-            totalEarning : paidPrice,
-            jobComplatedReate : jobCompletedRate,
-            jobs: 1,
+        await Vendor.findOneAndUpdate(
+          {
+            _id: vendorModelId,
           },
-        })
+          {
+            $inc: {
+              totalEarning: paidPrice,
+              jobComplatedReate: jobCompletedRate,
+              jobs: 1,
+            },
+          },
+        )
           .then((result) => {
             console.log("after saving", result);
             return res.status(200).json({
@@ -266,9 +270,10 @@ export default () => {
           .catch((error) => {
             return res.status(500).json({
               status: 500,
-              message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+              message:
+                env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
             });
-          })
+          });
       })
       .catch((error) => {
         return res.status(500).json({

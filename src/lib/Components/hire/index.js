@@ -45,6 +45,7 @@ class Hire extends React.Component {
       description: undefined,
       price: undefined,
       skip: false,
+      pendingBtn: false,
     };
     this.selectdueDateTime = this.selectdueDateTime.bind(this);
     this.onConfirmChange = this.onConfirmChange.bind(this);
@@ -94,12 +95,15 @@ class Hire extends React.Component {
   handeleOk() {
     console.log("sending pw === ");
     this.props.form.validateFields(["password"], (err, values) => {
+      this.setState({
+        pendingBtn: true,
+      });
       const defaultParams = {
         password: values.password,
         description: "Whole milestone",
         price: this.props.hireInfo.budget,
         contract: this.props.hireInfo._id,
-        budget: this.props.hireInfo.budget,
+        budget: 0,
         // endDateTime: this.props.hireInfo.endDateTime,
       };
       const lessParams = {
@@ -126,15 +130,18 @@ class Hire extends React.Component {
     comparePW(params)
       .then((data) => {
         console.log("post job data", data.message);
+        this.setState({
+          pendingBtn: false,
+        });
         message.success(data.message);
         this.props.history.push(`/client/contract/${this.props.hireInfo._id}`);
       })
       .catch((error) => {
-        // this.setState({
-        //   pending: false,
-        // });
+        this.setState({
+          pendingBtn: false,
+        });
         process.env.NODE_ENV === "development" && console.log(error);
-        message.success(error.message);
+        message.warning(error.message);
       });
   }
   handleCancel() {
@@ -481,28 +488,43 @@ class Hire extends React.Component {
                                 cancelText="Cancel"
                                 style={{ padding: "0% 20%" }}
                               >
-                                <Button type="primary" className="confirm_btn">
+                                <Button
+                                  type="primary"
+                                  className={`confirm_btn ${
+                                    this.state.pendingBtn === true ? "disable" : ""
+                                  }`}
+                                >
                                   Hire {this.props.hireInfo.vendor.username}
+                                  &nbsp;
+                                  {this.state.pendingBtn && <Icon type="sync" spin />}
                                 </Button>
                               </Popconfirm>
                             ) : (
                               <Button
                                 type="primary"
-                                className="confirm_btn"
+                                className={`confirm_btn ${
+                                  this.state.pendingBtn === true ? "disable" : ""
+                                }`}
                                 onClick={() => this.setState({ visible: true })}
                               >
                                 Hire {this.props.hireInfo.vendor.username}
+                                &nbsp;
+                                {this.state.pendingBtn && <Icon type="sync" spin />}
                               </Button>
                             )
                           ) : (
                             <Button
                               type="primary"
-                              className="confirm_btn"
+                              className={`confirm_btn ${
+                                this.state.pendingBtn === true ? "disable" : ""
+                              }`}
                               onClick={() => {
                                 message.warning("Please check the checkbox ");
                               }}
                             >
                               Hire {this.props.hireInfo.vendor.username}
+                              &nbsp;
+                              {this.state.pendingBtn && <Icon type="sync" spin />}
                             </Button>
                           )}
                           <Button

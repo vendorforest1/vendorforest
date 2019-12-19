@@ -57,13 +57,40 @@ export default () => {
                 model: "user",
               })
               .then(async (vendorInfo) => {
+                if (!vendorInfo) {
+                  return res.status(401).json({
+                    status: 401,
+                    message:
+                      env.NODE_ENV === "development"
+                        ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                        : constants.PROD_COMMONERROR_MSG,
+                  });
+                }
                 const vendorEmail = vendorInfo.vendor;
                 const vendorPhone = vendorInfo.vendor.phone;
                 await paymentIntent(stripeClientId, price)
                   .then(() => {
+                    // if (!resul) {
+                    //   return res.status(401).json({
+                    //     status: 401,
+                    //     message:
+                    //       env.NODE_ENV === "development"
+                    //         ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                    //         : constants.PROD_COMMONERROR_MSG,
+                    //   });
+                    // }
                     newMilestone
                       .save()
                       .then(async (milestone) => {
+                        if (!milestone) {
+                          return res.status(401).json({
+                            status: 401,
+                            message:
+                              env.NODE_ENV === "development"
+                                ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                                : constants.PROD_COMMONERROR_MSG,
+                          });
+                        }
                         await Contract.findOneAndUpdate(
                           {
                             _id: milestone.contract,
@@ -76,6 +103,15 @@ export default () => {
                           },
                         )
                           .then(async (result) => {
+                            if (!result) {
+                              return res.status(401).json({
+                                status: 401,
+                                message:
+                                  env.NODE_ENV === "development"
+                                    ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                                    : constants.PROD_COMMONERROR_MSG,
+                              });
+                            }
                             const vendorId = result.vendor;
                             const emailTitle = "Milestone has been created.";
                             const description = `You can start work on this job. Your accepted budget is ${milestone.price} USD.`;
@@ -226,6 +262,15 @@ export default () => {
           },
         })
         .then((milestone) => {
+          if (!milestone) {
+            return res.status(401).json({
+              status: 401,
+              message:
+                env.NODE_ENV === "development"
+                  ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                  : constants.PROD_COMMONERROR_MSG,
+            });
+          }
           env.MODE === "development" && console.log("fetch milestone result === ", milestone);
           const vendorStripeID = milestone[0].contract.vendor.connectedAccountId;
           const vendorEmail = milestone[0].contract.vendor;
@@ -239,6 +284,15 @@ export default () => {
               destination: vendorStripeID,
             })
             .then(async (transfer) => {
+              if (!transfer) {
+                return res.status(401).json({
+                  status: 401,
+                  message:
+                    env.NODE_ENV === "development"
+                      ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                      : constants.PROD_COMMONERROR_MSG,
+                });
+              }
               const transferResult = transfer.amount;
               env.MODE === "development" && console.log("transfer result+++++===", transfer);
               await Milestone.findOneAndUpdate(

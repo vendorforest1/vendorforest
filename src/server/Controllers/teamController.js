@@ -183,15 +183,16 @@ export default () => {
     await teamDoc
       .save()
       .then(async (team) => {
-        User.findOneAndUpdate({
-          _id: req.user._id
-        },{
-          $inc :
+        User.findOneAndUpdate(
           {
-             profilePercent: 34, 
-          }
-        })
-        .then(() => {})
+            _id: req.user._id,
+          },
+          {
+            $inc: {
+              profilePercent: 34,
+            },
+          },
+        ).then(() => {});
         return res.status(200).json({
           status: 200,
           data: team,

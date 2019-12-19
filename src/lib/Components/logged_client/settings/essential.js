@@ -113,7 +113,7 @@ export const getSetupIntent = () => {
     });
 };
 
-export const getClientId = (card) => async (dispatch, getState) => {
+export const getClientId = async (card) => {
   console.log("client id == ", card);
   return await fetch(apiUrl.GET_CLIENT_ID, {
     method: "POST",
@@ -128,9 +128,48 @@ export const getClientId = (card) => async (dispatch, getState) => {
       if (result.status > 400) {
         throw Error(result.message);
       }
-      dispatch(receivedSettings(result));
+      return result;
     })
-    .catch((err) => dispatch(settingsError(err.message)));
+    .catch((err) => {});
+};
+
+export const updateClientId = async (card) => {
+  console.log("client id == ", card);
+  return await fetch(apiUrl.UPDATE_CLIENT_ID, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token_id: card }),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status > 400) {
+        throw Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {});
+};
+
+export const getCardDigits = async (card) => {
+  console.log("client id == ", card);
+  return await fetch(apiUrl.GET_CARD_DIGITS, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status > 400) {
+        throw Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {});
 };
 //TODO encrypt Card information
 export const fetchUpdateBilling = (payload) => async (dispatch, getState) => {

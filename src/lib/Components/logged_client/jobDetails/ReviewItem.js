@@ -62,7 +62,7 @@ class ReviewItem extends React.Component {
           <div>
             <Rate
               disabled
-              value={this.props.review.rate}
+              value={Number(this.props.review.rate)}
               allowHalf={true}
               className="like-rate"
             />

@@ -89,6 +89,9 @@ const UserSchema = new mongoose.Schema(
     stripeClientId: {
       type: String,
     },
+    cardId: {
+      type: String,
+    },
     currentLocation: {
       ipAddress: String,
       country: String,

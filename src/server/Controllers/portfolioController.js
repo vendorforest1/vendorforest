@@ -78,15 +78,16 @@ export default () => {
         ...req.body,
       });
       await portfolioDoc.save().then(async (portfolio) => {
-        await User.findOneAndUpdate({
-          _id: req.user._id
-        },{
-          $inc :
+        await User.findOneAndUpdate(
           {
-             profilePercent: 33 
-          }
-        })
-        .then(() => {})
+            _id: req.user._id,
+          },
+          {
+            $inc: {
+              profilePercent: 33,
+            },
+          },
+        ).then(() => {});
         return res.status(200).json({
           status: 200,
           data: portfolio,

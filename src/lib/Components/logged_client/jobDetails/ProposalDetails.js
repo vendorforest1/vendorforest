@@ -84,23 +84,33 @@ class ProposalDetails extends React.Component {
                   </div>
                 </div>
                 {this.props.proposal.vendor && (
-                <div className="col-md-5 vendor-status">
-                  <Progress
-                    percent={(this.props.proposal.vendor.vendor.jobComplatedReate / this.props.proposal.vendor.vendor.jobs).toFixed(0)}
-                    size="small"
-                    status="active"
-                    className="job-progress"
-                  />
-                  <Rate
-                    disabled
-                    value={(this.props.proposal.vendor.vendor.rate / this.props.proposal.vendor.vendor.reviewCount).toFixed(1)}
-                    allowHalf={true}
-                    className="like-rate"
-                  />
-                  <span className="ml-1">
-                    {this.props.proposal.vendor.vendor.reviewCount} Reviews
-                  </span>
-                </div>
+                  <div className="col-md-5 vendor-status">
+                    <Progress
+                      percent={Number(
+                        (
+                          this.props.proposal.vendor.vendor.jobComplatedReate /
+                          this.props.proposal.vendor.vendor.jobs
+                        ).toFixed(0),
+                      )}
+                      size="small"
+                      status="active"
+                      className="job-progress"
+                    />
+                    <Rate
+                      disabled
+                      value={Number(
+                        (
+                          this.props.proposal.vendor.vendor.rate /
+                          this.props.proposal.vendor.vendor.reviewCount
+                        ).toFixed(1),
+                      )}
+                      allowHalf={true}
+                      className="like-rate"
+                    />
+                    <span className="ml-1">
+                      {this.props.proposal.vendor.vendor.reviewCount} Reviews
+                    </span>
+                  </div>
                 )}
               </div>
             </div>
@@ -142,6 +152,7 @@ class ProposalDetails extends React.Component {
                   <Icon type="sync" spin />
                 </div>
               )}
+              {console.log("review length = ", this.props.reviews.length)}
               {!this.props.pending && this.props.reviews.length > 0 && (
                 <List
                   itemLayout="vertical"

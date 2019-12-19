@@ -75,7 +75,7 @@ class ProposalItem extends React.Component {
                 <Avatar
                   src={this.props.proposal.vendor.profileImage || defaultProfileImage}
                   className="photo"
-                />               
+                />
                 <div className="ml-2">
                   <h6 className="text-dark font-weight-bold">
                     {this.props.proposal.vendor.username}
@@ -102,15 +102,30 @@ class ProposalItem extends React.Component {
               </div>
               <div className="col-lg-16 col-md-24 vendor-rate">
                 <Progress
-                  percent={(this.props.proposal.vendor.vendor.jobComplatedReate / this.props.proposal.vendor.vendor.jobs).toFixed(0)}
+                  percent={Number(
+                    (
+                      this.props.proposal.vendor.vendor.jobComplatedReate /
+                      this.props.proposal.vendor.vendor.jobs
+                    ).toFixed(0),
+                  )}
                   size="small"
                   status="active"
                   className="job-progress"
                 />
-                <span className="mr-2">{(this.props.proposal.vendor.vendor.rate / this.props.proposal.vendor.vendor.reviewCount).toFixed(1)}</span>
+                <span className="mr-2">
+                  {(
+                    this.props.proposal.vendor.vendor.rate /
+                    this.props.proposal.vendor.vendor.reviewCount
+                  ).toFixed(1)}
+                </span>
                 <Rate
                   disabled
-                  value={(this.props.proposal.vendor.vendor.rate / this.props.proposal.vendor.vendor.reviewCount).toFixed(1)}
+                  value={Number(
+                    (
+                      this.props.proposal.vendor.vendor.rate /
+                      this.props.proposal.vendor.vendor.reviewCount
+                    ).toFixed(1),
+                  )}
                   allowHalf={true}
                   className="like-rate"
                 />
