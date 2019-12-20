@@ -196,6 +196,16 @@ const mailService = () => {
     sendEmail(job, "email_invite.html", mailOptions, callback);
     console.log("sent email");
   };
+  
+  mailObject.sendVendorJobPostedEmail = async (job, subject, callback) => {
+    const mailOptions = {
+      subject: subject, // Subject line
+      //href: `${env.API_URL}/reset/${user.token}`,
+    };
+
+    sendEmail(job, "email_new_jobs_arround_area.html", mailOptions, callback);
+    console.log("sent email");
+  };
 
   mailObject.sendJobCompletedEmail = async (jobCompleted, subject, callback) => {
     console.log("I am in sent email.");

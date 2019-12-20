@@ -56,15 +56,29 @@ class VendorItem extends React.Component {
           </div>
           <div className="col-lg-4 col-md-6 vendor-rate">
             <Progress
-              percent={this.props.vendor.vendor.successRate}
+              percent={Number(
+                (
+                  this.props.vendor.vendor.jobComplatedReate / this.props.vendor.vendor.jobs
+                ).toFixed(0),
+              )}
               size="small"
               status="active"
               className="job-progress"
             />
-            <span className="mr-2">{this.props.vendor.vendor.rate}</span>
+            <span className="mr-2">
+              {Number(
+                (this.props.vendor.vendor.rate / this.props.vendor.vendor.reviewCount).toFixed(
+                  1,
+                ),
+              )}
+            </span>
             <Rate
               disabled
-              value={this.props.vendor.vendor.rate}
+              value={Number(
+                (this.props.vendor.vendor.rate / this.props.vendor.vendor.reviewCount).toFixed(
+                  1,
+                ),
+              )}
               allowHalf={true}
               className="like-rate"
             />

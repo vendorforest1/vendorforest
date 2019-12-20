@@ -135,11 +135,11 @@ export default () => {
             _id: vendorId,
           },
           {
-            email: 1,
-            phone: 1,
+            // email: 1,
+            // phone: 1,
           },
         )
-          .then((result) => {
+          .then(async (result) => {
             const vendorEmail = result[0].email;
             const vendorID = result[0]._id;
             const phoneNumber = result[0].phone;
@@ -150,7 +150,30 @@ export default () => {
               "You are invited to this job",
               `Title: ${req.body.title} \n Please bid on this job. \n vendorforest.com`,
             );
-            //send Email
+            const now = new Date();
+            const inviteVendor = {
+              client: req.user.username,
+              title: req.body.title,
+              created: now.toUTCString(),
+              budget: req.body.budget,
+              user: result[0].username,
+              email: result[0].email,
+            };
+            console.log("job posted", inviteVendor);
+            // inviteVendor.client = req.user.username;
+            // inviteVendor.title = req.body.title;
+            // inviteVendor.created = now.toUTCString();
+            // inviteVendor.budget = req.body.budget;
+            await mail.sendVendorEmail(
+              inviteVendor,
+              "VendorForest information!",
+              (err, msg) => {
+                if (err) {
+                  return err;
+                }
+                return;
+              },
+            );
           })
           .catch((err) => {
             env.MODE === "development" && console.log("error occured", err);
@@ -159,6 +182,7 @@ export default () => {
     }
     const newJob = new Job({ ...req.body, client: req.user._id });
     const title = req.body.title;
+    const description = req.body.description;
     await newJob
       .save()
       .then(async (job) => {
@@ -202,10 +226,16 @@ export default () => {
                 const smsDescription = `Title: ${title} \n This job is matched well to your skill. \n vendorforest.com`;
                 saveNotification(vendorId, notificationDescription);
                 sendSMS(vendorPhone, vendorTitle, smsDescription);
-                console.log(result[0], "***********");
-
-                await mail.sendVendorEmail(
-                  result[0],
+                const emailContent = {
+                  title: req.body.title,
+                  description: req.body.description,
+                  email: result[0].email,
+                };
+                console.log("job email content = ", emailContent);
+                // emailContent.title = title;
+                // emailContent.description = description;
+                await mail.sendVendorJobPostedEmail(
+                  emailContent,
                   "VendorForest information!",
                   (err, msg) => {
                     if (err) {
