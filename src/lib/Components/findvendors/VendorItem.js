@@ -32,8 +32,9 @@ class VendorItem extends React.Component {
   }
 
   render() {
+    console.log("vendor item = ", this.props.user);
     const { user } = this.props;
-    const { vendor } = user;
+    // const { vendor } = user;
     return (
       <div className="vendor-item d-md-flex d-block justify-content-between">
         <div className="vendor-info d-flex mb-3 mb-md-0">
@@ -61,8 +62,8 @@ class VendorItem extends React.Component {
             </p>
             <Progress
               percent={
-                vendor.jobComplatedReate !== 0
-                  ? Number((vendor.jobComplatedReate / vendor.jobs).toFixed(0))
+                user.vendor.jobComplatedReate !== 0
+                  ? Number((user.vendor.jobComplatedReate / user.vendor.jobs).toFixed(0))
                   : 0
               }
               size="small"
@@ -71,21 +72,25 @@ class VendorItem extends React.Component {
             />
             <div className="text-grey">
               <span className="mr-2">
-                {vendor.rate !== 0 ? (vendor.rate / vendor.reviewCount).toFixed(1) : 0}
+                {user.vendor.rate !== 0
+                  ? (user.vendor.rate / user.vendor.reviewCount).toFixed(1)
+                  : 0}
               </span>
               <Rate
                 disabled
                 value={
-                  vendor.rate !== 0 ? Number((vendor.rate / vendor.reviewCount).toFixed(1)) : 0
+                  user.vendor.rate !== 0
+                    ? Number((user.vendor.rate / user.vendor.reviewCount).toFixed(1))
+                    : 0
                 }
               />
-              <span className="mx-2">{vendor.reviewCount} Reviews</span>
+              <span className="mx-2">{user.vendor.reviewCount} Reviews</span>
             </div>
           </div>
         </div>
         <div className="vendor-action d-flex flex-md-column flex-row align-items-center">
           <h6 className="vendor-subinfo text-color text-md-right text-center col">
-            ${vendor.hourlyRate}/hr
+            ${user.vendor.hourlyRate}/hr
           </h6>
           <div className="col">
             <button className="button-primary" onClick={this.toggle}>

@@ -155,7 +155,6 @@ class VendorFindJob extends React.Component {
             {this.props.userInfo !== undefined ? <Warning data={this.props.userInfo} /> : null}
             <div className="row">
               <div className="col-md-3 mb-4">
-                {console.log("service category = ", this.props.services)}
                 <div
                   className="d-flex justify-content-between shadow bg-white d-block d-md-none mb-1 pointer text-color"
                   style={{ padding: "12px" }}

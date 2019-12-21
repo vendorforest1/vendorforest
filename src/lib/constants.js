@@ -121,6 +121,7 @@ export const apiUrl = {
   VENDOR_UPDATE_COMPANY: `${API_URL}/apis/vendor/update_company`,
   VENDOR_UPDATE_PROFILE: `${API_URL}/apis/vendor/update`,
   VENDOR_IN_RADIUS: `${API_URL}/apis/vendor/search_inradius`,
+  FIND_VENDORS: `${API_URL}/apis/vendor/find_vendors`,
 
   GET_MYREVIEWS: `${API_URL}/apis/review/get_myreviews`,
   GET_REVIEW: `${API_URL}/apis/review/get`,

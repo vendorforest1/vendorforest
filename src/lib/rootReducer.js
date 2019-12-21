@@ -28,6 +28,7 @@ import vendorViewTeamReducer from "@Components/logged_vendor/viewTeam/essential"
 import vendorDashboardReducer from "@Components/logged_vendor/dashboard/essential";
 import vendorContractDetailsReducer from "@Components/logged_vendor/contractDetails/essential";
 import vendorReviewReducer from "@Components/logged_vendor/givefeedback/essential";
+import clientFindVendorReducer from "@Components/findvendors/essential";
 
 import headerNotiReducer from "@Components/inc/essential";
 
@@ -44,6 +45,7 @@ const reducers = {
   clientContractDetailsReducer,
   clientReviewReducer,
   clientHireDetailReducer,
+  clientFindVendorReducer,
   vendorProfileReducer,
   vendorSettingsReducer,
   vendorDashboardReducer,

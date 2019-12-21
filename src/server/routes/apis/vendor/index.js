@@ -34,5 +34,6 @@ router.post(
   validator.body(searchVendorInRadius.body),
   vendorCtr.searchVendorInRadius,
 );
+router.post("/find_vendors", vendorCtr.findVendors);
 
 export default router;

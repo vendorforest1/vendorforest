@@ -448,6 +448,77 @@ export default () => {
       });
   };
 
+  controllers.findVendors = async (req, res, next) => {
+    const query = {};
+    const service = req.body.service;
+    const category = req.body.category;
+    // if (req.body.vendorType !== undefined) {
+    //   query.vendorType = req.body.vendorType;
+    // }
+    // if (req.body.location && req.body.location.country) {
+    //   query["location.country"] = req.body.location.country;
+    // }
+    if (req.body.city) {
+      query["bsLocation.city"] = req.body.city;
+    }
+    if (req.body.title) {
+      const re = new RegExp(req.body.title, "i");
+      query.username = re;
+    }
+    await User.find({
+      ...query,
+      accountType: 1,
+      vendor: {
+        $exists: true,
+      },
+    })
+      .populate({
+        path: "vendor",
+        model: "vendor",
+      })
+      .sort({
+        createdAt: -1,
+      })
+      .then(async (vendors) => {
+        var vendorData = [];
+        if (!service && !category) {
+          vendors.map((item) => {
+            vendorData.push(item);
+          });
+        }
+        if (service && !category) {
+          vendors.map((item) => {
+            if (String(item.vendor.service) === service) {
+              vendorData.push(item);
+            }
+          });
+        }
+        if (service && category) {
+          vendors.map((item) => {
+            if (
+              String(item.vendor.service) === service &&
+              String(item.vendor.category) === category
+            ) {
+              vendorData.push(item);
+            }
+          });
+        }
+        return res.status(200).json({
+          status: 200,
+          data: vendorData,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message:
+            process.env.NODE_ENV === "development"
+              ? error.message
+              : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
   controllers.searchVendorInRadius = async (req, res, next) => {
     await User.find({
       accountType: constants.ACCOUNT_TYPE.VENDOR,
