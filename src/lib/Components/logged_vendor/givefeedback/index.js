@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Icon, Rate, Input, Form, message } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
-import VF_ClientHeader from "@Components/inc/client_header";
+import VF_VendorHeader from "@Components/inc/vendor_header";
 import VF_Footer from "@Components/inc/footer";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
@@ -29,7 +29,7 @@ class VendorGiveFeedBack extends React.Component {
   }
 
   giveFeedbck() {
-    if (this.props.pending) {
+    if (!this.props.pending) {
       return;
     }
     if (this.props.match.params.contract_id) {
@@ -52,7 +52,8 @@ class VendorGiveFeedBack extends React.Component {
 
     return (
       <div className="givefeedback">
-        <VF_ClientHeader />
+        {console.log("pending result", this.props.pending)}
+        <VF_VendorHeader />
         <div className="content">
           <div className="container">
             <Form>
@@ -95,7 +96,7 @@ class VendorGiveFeedBack extends React.Component {
                       </Form.Item>
                     </div>
                     <button
-                      className={`button-primary ${this.props.pending ? "disable" : ""}`}
+                      className={`button-primary ${!this.props.pending ? "disable" : ""}`}
                       onClick={this.giveFeedbck}
                     >
                       Send

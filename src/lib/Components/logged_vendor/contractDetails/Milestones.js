@@ -78,7 +78,39 @@ class Milestones extends React.Component {
               </div>
             </div>
           );
-        } else if (milestone.status === constants.MILESTONE_STATUS.REQ_RELEASED) {
+        }
+        // else if (milestone.status === constants.MILESTONE_STATUS.REQ_RELEASED) {
+        //   return (
+        //     <div
+        //       key={index}
+        //       className="d-md-flex d-block justify-content-between align-items-end border-bottom mb-3 pb-3"
+        //     >
+        //       <h6 className="mb-2">
+        //         {index + 1}. {milestone.description}
+        //       </h6>
+        //       <div className="text-right d-md-block d-flex justify-content-between ">
+        //         <p className=" font-weight-bold mb-2">$ {milestone.price}</p>
+        //         <div>
+        //           {this.props.pending && this._button === index + 1 && (
+        //             <Icon type="sync" spin className="mr-2 text-success" />
+        //           )}
+        //           <span className="text-warning">Requested</span>
+        //           <Divider type="vertical" />
+        //           <a
+        //             className="pointer text-danger"
+        //             onClick={() => {
+        //               this.cancelMilestone(index);
+        //             }}
+        //             href={"#/"}
+        //           >
+        //             Cancel
+        //           </a>
+        //         </div>
+        //       </div>
+        //     </div>
+        //   );
+        // }
+        else {
           return (
             <div
               key={index}
@@ -90,37 +122,8 @@ class Milestones extends React.Component {
               <div className="text-right d-md-block d-flex justify-content-between ">
                 <p className=" font-weight-bold mb-2">$ {milestone.price}</p>
                 <div>
-                  {this.props.pending && this._button === index + 1 && (
-                    <Icon type="sync" spin className="mr-2 text-success" />
-                  )}
-                  <span className="text-warning">Requested</span>
-                  <Divider type="vertical" />
-                  <a
-                    className="pointer text-danger"
-                    onClick={() => {
-                      this.cancelMilestone(index);
-                    }}
-                    href={"#/"}
-                  >
-                    Cancel
-                  </a>
-                </div>
-              </div>
-            </div>
-          );
-        } else {
-          return (
-            <div
-              key={index}
-              className="d-md-flex d-block justify-content-between align-items-end border-bottom mb-3 pb-3"
-            >
-              <h6 className="mb-2">
-                {index + 1}. {milestone.description}
-              </h6>
-              <div className="text-right d-md-block d-flex justify-content-between ">
-                <p className=" font-weight-bold mb-2">$ {milestone.price}</p>
-                <div>
-                  {this.props.pending && this._button === index + 1 && (
+                  Pending Milestone
+                  {/* {this.props.pending && this._button === index + 1 && (
                     <Icon type="sync" spin className="mr-2 text-success" />
                   )}
                   <a
@@ -141,7 +144,7 @@ class Milestones extends React.Component {
                     href={"#/"}
                   >
                     Cancel
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>

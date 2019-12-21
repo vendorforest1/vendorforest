@@ -2,6 +2,7 @@ import Job from "@Models/job.model";
 import User from "@Models/user.model";
 import Room from "@Models/chatRoom.model";
 import Vendor from "@Models/vendor.model";
+import Contract from "@Models/contract.model";
 import getEnv, { constants } from "@Config/index";
 import mongoose from "mongoose";
 import { mail } from "@Config/mail";
@@ -134,11 +135,11 @@ export default () => {
             _id: vendorId,
           },
           {
-            email: 1,
-            phone: 1,
+            // email: 1,
+            // phone: 1,
           },
         )
-          .then((result) => {
+          .then(async (result) => {
             const vendorEmail = result[0].email;
             const vendorID = result[0]._id;
             const phoneNumber = result[0].phone;
@@ -149,7 +150,30 @@ export default () => {
               "You are invited to this job",
               `Title: ${req.body.title} \n Please bid on this job. \n vendorforest.com`,
             );
-            //send Email
+            const now = new Date();
+            const inviteVendor = {
+              client: req.user.username,
+              title: req.body.title,
+              created: now.toUTCString(),
+              budget: req.body.budget,
+              user: result[0].username,
+              email: result[0].email,
+            };
+            console.log("job posted", inviteVendor);
+            // inviteVendor.client = req.user.username;
+            // inviteVendor.title = req.body.title;
+            // inviteVendor.created = now.toUTCString();
+            // inviteVendor.budget = req.body.budget;
+            await mail.sendVendorEmail(
+              inviteVendor,
+              "VendorForest information!",
+              (err, msg) => {
+                if (err) {
+                  return err;
+                }
+                return;
+              },
+            );
           })
           .catch((err) => {
             env.MODE === "development" && console.log("error occured", err);
@@ -158,6 +182,7 @@ export default () => {
     }
     const newJob = new Job({ ...req.body, client: req.user._id });
     const title = req.body.title;
+    const description = req.body.description;
     await newJob
       .save()
       .then(async (job) => {
@@ -199,12 +224,18 @@ export default () => {
                 const vendorPhone = result[0].phone;
                 const vendorTitle = "New job posted";
                 const smsDescription = `Title: ${title} \n This job is matched well to your skill. \n vendorforest.com`;
-                // saveNotification(vendorId, notificationDescription);
-                // sendSMS(vendorPhone, vendorTitle, smsDescription);
-                console.log(result[0], "***********");
-
-                await mail.sendVendorEmail(
-                  result[0],
+                saveNotification(vendorId, notificationDescription);
+                sendSMS(vendorPhone, vendorTitle, smsDescription);
+                const emailContent = {
+                  title: req.body.title,
+                  description: req.body.description,
+                  email: result[0].email,
+                };
+                console.log("job email content = ", emailContent);
+                // emailContent.title = title;
+                // emailContent.description = description;
+                await mail.sendVendorJobPostedEmail(
+                  emailContent,
                   "VendorForest information!",
                   (err, msg) => {
                     if (err) {
@@ -322,7 +353,6 @@ export default () => {
               message: "Email about this has been sent to vendors successfully.",
             });
           });
-          sendingSms(result.phone, title, description);
         }),
       )
       .catch((error) => env.MODE === "development" && console.log("error occured", error));
@@ -456,6 +486,48 @@ export default () => {
           env.MODE === "development" ? err.message : constants.PROD_COMMONERROR_MSG;
         });
     }
+  };
+
+  controllers.jobCompleted = async (req, res) => {
+    await Contract.findOne({
+      _id: req.body.contractId,
+    })
+      .populate({
+        path: "client",
+        model: "user",
+      })
+      .then(async (result) => {
+        const clientEmail = result.client.email;
+        const clientPhone = result.client.phone;
+        const clientId = result.client._id;
+        const smsDescription = `Title: ${req.body.title} \n Vendor completed this job. Please check the job. \n vendorforest.com`;
+        saveNotification(
+          clientId,
+          `Vendor has completed the Job. Title is ${req.body.title}. Please confirm this.`,
+        );
+        sendSMS(clientPhone, "Vendor has completed the Job", smsDescription);
+        //send email.
+        await mail.sendJobCompletedEmail(
+          result.client,
+          "VendorForest information!",
+          (err, msg) => {
+            if (err) {
+              return err;
+            }
+            return;
+          },
+        );
+        return res.status(200).json({
+          status: 200,
+          message: "Your confirmation has been delievered.",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
   };
 
   return controllers;

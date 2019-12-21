@@ -1,4 +1,5 @@
 import { apiUrl, constants } from "@Shared/constants";
+import { async } from "q";
 
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
@@ -132,6 +133,27 @@ export const fetchGetContractData = (payload) => async (dispatch, getState) => {
       dispatch(fetchContractSuccess(result.data));
     })
     .catch((err) => dispatch(fetchError(err.message)));
+};
+
+export const jobComplete = async (payload) => {
+  return await fetch(apiUrl.SEND_JOB_COMPLETE, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then(async (result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 
 export const fetchUpdateContractData = (payload) => async (dispatch, getState) => {

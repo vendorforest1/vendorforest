@@ -36,20 +36,25 @@ export default () => {
         email: req.user.email,
       })
       .then((result) => {
-        const stripeClientId = {
+        const stripeInfo = {
           stripeClientId: result.id,
+          cardId: result.default_source,
         };
-        console.log("client: ---- ", stripeClientId);
         try {
           User.findOneAndUpdate(
             {
               email: req.user.email,
             },
-            stripeClientId,
+            stripeInfo,
             {
               new: true,
             },
-          ).then((result) => res.status(200).json(result)); //("Your Stripe Client Id is saved.")
+          ).then((result) => {
+            return res.status(200).json({
+              status: 200,
+              message: "Your card has been accepted.",
+            });
+          }); //("Your Stripe Client Id is saved.")
         } catch (error) {
           env.MODE === "development" && console.log("saving client id error", error);
           return res.status(404).json({ status: 404, message: error.message });
@@ -58,6 +63,55 @@ export default () => {
       .catch((e) => {
         return res.status(404).json({ status: 404, message: e.message });
       });
+  };
+
+  controllers.updateClientId = async (req, res) => {
+    await stripe.customers
+      .update(req.user.stripeClientId, {
+        source: req.body.token_id,
+        email: req.user.email,
+      })
+      .then((result) => {
+        const stripeInfo = {
+          stripeClientId: result.id,
+          cardId: result.default_source,
+        };
+        try {
+          User.findOneAndUpdate(
+            {
+              email: req.user.email,
+            },
+            stripeInfo,
+            {
+              new: true,
+            },
+          ).then((result) => {
+            return res.status(200).json({
+              status: 200,
+              message: "Your card has been updated successfully.",
+            });
+          });
+        } catch (error) {
+          env.MODE === "development" && console.log("saving client id error", error);
+          return res.status(404).json({ status: 404, message: error.message });
+        }
+      })
+      .catch((e) => {
+        return res.status(404).json({ status: 404, message: e.message });
+      });
+  };
+  controllers.getCardDigits = async (req, res) => {
+    const clientId = req.user.stripeClientId;
+    const cardId = req.user.cardId;
+    await stripe.customers.retrieveSource(clientId, cardId, function(err, card) {
+      if (err) {
+        return res.status(404).json({ status: 404, message: err });
+      }
+      return res.status(200).json({
+        status: 200,
+        digits: card.last4,
+      });
+    });
   };
 
   controllers.getClient = async (req, res, _next) => {

@@ -250,6 +250,18 @@ export default () => {
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
+        if (!user.vendor.service) {
+          User.findOneAndUpdate(
+            {
+              _id: req.user._id,
+            },
+            {
+              $inc: {
+                profilePercent: 34,
+              },
+            },
+          ).then(() => {});
+        }
         env.MODE === "development" && console.log(user);
         await Vendor.updateOne(
           {
@@ -432,6 +444,87 @@ export default () => {
         return res.status(500).json({
           status: 500,
           message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
+  controllers.findVendors = async (req, res, next) => {
+    const query = {};
+    const service = req.body.service;
+    const category = req.body.category;
+    // if (req.body.vendorType !== undefined) {
+    //   query.vendorType = req.body.vendorType;
+    // }
+    // if (req.body.location && req.body.location.country) {
+    //   query["location.country"] = req.body.location.country;
+    // }
+    if (req.body.city) {
+      query["bsLocation.city"] = req.body.city;
+    }
+    if (req.body.title) {
+      const re = new RegExp(req.body.title, "i");
+      query.username = re;
+    }
+    await User.find({
+      ...query,
+      accountType: 1,
+      vendor: {
+        $exists: true,
+      },
+    })
+      .populate({
+        path: "vendor",
+        model: "vendor",
+        populate: [
+          {
+            path: "service",
+            model: "service",
+          },
+          {
+            path: "category",
+            model: "category",
+          },
+        ],
+      })
+      .sort({
+        createdAt: -1,
+      })
+      .then(async (vendors) => {
+        var vendorData = [];
+        if (!service && !category) {
+          vendors.map((item) => {
+            vendorData.push(item);
+          });
+        }
+        if (service && !category) {
+          vendors.map((item) => {
+            if (String(item.vendor.service._id) === service) {
+              vendorData.push(item);
+            }
+          });
+        }
+        if (service && category) {
+          vendors.map((item) => {
+            if (
+              String(item.vendor.service._id) === service &&
+              String(item.vendor.category._id) === category
+            ) {
+              vendorData.push(item);
+            }
+          });
+        }
+        return res.status(200).json({
+          status: 200,
+          data: vendorData,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message:
+            process.env.NODE_ENV === "development"
+              ? error.message
+              : constants.PROD_COMMONERROR_MSG,
         });
       });
   };

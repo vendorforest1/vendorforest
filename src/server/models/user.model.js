@@ -50,6 +50,8 @@ const UserSchema = new mongoose.Schema(
     },
     subscriptionId: String,
     countryDialCode: String,
+    phonePrefix: String,
+    localPhoneNumber: String,
     phone: String,
     isRental: {
       type: Number,
@@ -87,6 +89,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
     },
     stripeClientId: {
+      type: String,
+    },
+    cardId: {
       type: String,
     },
     currentLocation: {

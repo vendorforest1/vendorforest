@@ -98,7 +98,7 @@ class VendorForestClientHeader extends React.Component {
         <Menu.Item>
           <a onClick={() => this.handleLogout()} href="/login">
             <Icon type="logout" />
-            &nbsp;&nbsp;LOGOUT
+            &nbsp;&nbsp;Logout
           </a>
         </Menu.Item>
       </Menu>
@@ -130,26 +130,26 @@ class VendorForestClientHeader extends React.Component {
                   <a href="/messages/c" className="mr-4">
                     MESSAGES
                   </a>
-                  <Dropdown overlay={helpMenu} className="mr-3">
+                  {/* <Dropdown overlay={helpMenu} className="mr-3">
                     <a className="ant-dropdown-link" href="#/">
                       <Icon type="question-circle" />
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
-                  </Dropdown>
+                  </Dropdown> */}
                   <Dropdown
                     overlay={<Menu onClick={this.handleIcon}>{this.notifiMenu()}</Menu>}
                     className="mr-3"
                   >
                     <a className="ant-dropdown-link" href="#/">
-                      <Icon type="bell" />
+                      <Icon type="bell" style={{ fontSize: "20px" }}/>
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
                   </Dropdown>
                   <Dropdown overlay={useriMenu}>
                     <a className="ant-dropdown-link" href="#/">
-                      <Icon type="user" />
+                      <Icon type="user" style={{ fontSize: "20px" }}/>
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>

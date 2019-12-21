@@ -1,6 +1,6 @@
 /* eslint-disable import/first */
 import React, { Component } from "react";
-import { Input, List, Icon } from "antd";
+import { Input, List, Icon, Button } from "antd";
 import { connect } from "react-redux";
 const { Search } = Input;
 import PostedJobItem from "./PostedJobItem";
@@ -22,14 +22,15 @@ class PostedJobs extends Component {
       <div className="posted-job shadow">
         <div className="head">
           <h4 className="text-grey">My Job Postings</h4>
-          <button
-            className="button-primary"
+          <Button
+            // className="button-primary"
+            type="primary"
             onClick={() => {
               window.location.href = "/client/postjob";
             }}
           >
             Post a New Job
-          </button>
+          </Button>
         </div>
         <div className="jobs-list-content">
           <div className="py-2">

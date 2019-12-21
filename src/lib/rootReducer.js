@@ -19,6 +19,7 @@ import clientPostjobReducer from "@Components/logged_client/postjob/essential";
 import clientJobDetailsReducer from "@Components/logged_client/jobDetails/essential";
 import clientContractDetailsReducer from "@Components/logged_client/contractDetails/essential";
 import clientReviewReducer from "@Components/logged_client/givefeedback/essential";
+import clientHireDetailReducer from "@Components/hire/essential";
 
 import vendorFindJobReducer from "@Components/logged_vendor/findJob/essential";
 import vendorJobDetailsReducer from "@Components/logged_vendor/jobDetails/essential";
@@ -27,6 +28,7 @@ import vendorViewTeamReducer from "@Components/logged_vendor/viewTeam/essential"
 import vendorDashboardReducer from "@Components/logged_vendor/dashboard/essential";
 import vendorContractDetailsReducer from "@Components/logged_vendor/contractDetails/essential";
 import vendorReviewReducer from "@Components/logged_vendor/givefeedback/essential";
+import clientFindVendorReducer from "@Components/findvendors/essential";
 
 import headerNotiReducer from "@Components/inc/essential";
 
@@ -42,6 +44,8 @@ const reducers = {
   clientJobDetailsReducer,
   clientContractDetailsReducer,
   clientReviewReducer,
+  clientHireDetailReducer,
+  clientFindVendorReducer,
   vendorProfileReducer,
   vendorSettingsReducer,
   vendorDashboardReducer,

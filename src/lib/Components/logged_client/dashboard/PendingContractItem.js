@@ -163,7 +163,7 @@ class PendingContractItem extends React.Component {
                 status="active"
                 className="job-progress"
               />
-              {this.props.contract.completedPercent < 100 && (
+              {/* {this.props.contract.completedPercent < 100 && (
                 <div>
                   <button
                     className={`button-primary ${
@@ -184,7 +184,7 @@ class PendingContractItem extends React.Component {
                 >
                   End Contract
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

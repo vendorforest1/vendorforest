@@ -96,11 +96,11 @@ class PastContractItem extends React.Component {
               </div>
             </div>
             <div className="rate text-center">
-              <Rate disabled defaultValue={this.getContractRate()} allowHalf />
+              <Rate disabled value={this.getContractRate()} allowHalf />
               {this.props.contract.status === constants.CONTRACT_STATUS.END &&
                 !this.isLeftFeedBack() && (
                   <div>
-                    <button
+                    {/* <button
                       className="button-primary mt-3"
                       onClick={(e) => {
                         e.stopPropagation();
@@ -108,7 +108,7 @@ class PastContractItem extends React.Component {
                       }}
                     >
                       Leave Feedback
-                    </button>
+                    </button> */}
                   </div>
                 )}
             </div>

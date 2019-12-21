@@ -70,54 +70,69 @@ class ProposalItem extends React.Component {
       <div className="propposal-item ">
         <div className="row">
           {this.props.proposal.vendor && (
-            <div>
-              <div className="col-lg-4 col-md-6 vendor-profile-content d-flex">
-                <Avatar
-                  src={this.props.proposal.vendor.profileImage || defaultProfileImage}
-                  className="photo"
-                />
-                <div className="ml-2">
-                  <h6 className="text-dark font-weight-bold">
-                    {this.props.proposal.vendor.username}
-                  </h6>
+            <div className="col-lg-4 col-md-6 vendor-profile-content d-flex">
+              <Avatar
+                src={this.props.proposal.vendor.profileImage || defaultProfileImage}
+                className="photo"
+              />
+              <div className="ml-2">
+                <h6 className="text-dark font-weight-bold">
+                  {this.props.proposal.vendor.username}
+                </h6>
+                <p>
+                  {this.props.proposal.vendor.vendor
+                    ? `${this.props.proposal.vendor.vendor.service.name}/${this.props.proposal.vendor.vendor.category.name}`
+                    : "NONE"}
+                </p>
+                <p className="font-weight-bold text-blue">
+                  {constants.ACCOUNTTYPES[this.props.proposal.vendor.accountType]}
+                </p>
+                {this.props.proposal.vendor.bsLocation && (
                   <p>
-                    {this.props.proposal.vendor.vendor
-                      ? `${this.props.proposal.vendor.vendor.service.name}/${this.props.proposal.vendor.vendor.category.name}`
-                      : "NONE"}
+                    <span className=" font-weight-bold">Location: </span>
+                    <Icon type="global" />
+                    <span className="ml-1">
+                      {this.props.proposal.vendor.bsLocation.city}/
+                      {this.props.proposal.vendor.bsLocation.country}{" "}
+                    </span>
                   </p>
-                  <p className="font-weight-bold text-blue">
-                    {constants.ACCOUNTTYPES[this.props.proposal.vendor.accountType]}
-                  </p>
-                  {this.props.proposal.vendor.bsLocation && (
-                    <p>
-                      <span className=" font-weight-bold">Location: </span>
-                      <Icon type="global" />
-                      <span className="ml-1">
-                        {this.props.proposal.vendor.bsLocation.city}/
-                        {this.props.proposal.vendor.bsLocation.country}{" "}
-                      </span>
-                    </p>
-                  )}
-                </div>
+                )}
               </div>
-              <div className="col-lg-4 col-md-6 vendor-rate">
-                <Progress
-                  percent={this.props.proposal.vendor.vendor.successRate}
-                  size="small"
-                  status="active"
-                  className="job-progress"
-                />
-                <span className="mr-2">{this.props.proposal.vendor.vendor.rate}</span>
-                <Rate
-                  disabled
-                  value={this.props.proposal.vendor.vendor.rate}
-                  allowHalf={true}
-                  className="like-rate"
-                />
-                <span className="ml-1">
-                  {this.props.proposal.vendor.vendor.reviewCount} Reviews
-                </span>
-              </div>
+            </div>
+          )}
+          {this.props.proposal.vendor && (
+            <div className="col-lg-4 col-md-6 vendor-rate">
+              <Progress
+                percent={Number(
+                  (
+                    this.props.proposal.vendor.vendor.jobComplatedReate /
+                    this.props.proposal.vendor.vendor.jobs
+                  ).toFixed(0),
+                )}
+                size="small"
+                status="active"
+                className="job-progress"
+              />
+              <span className="mr-2">
+                {(
+                  this.props.proposal.vendor.vendor.rate /
+                  this.props.proposal.vendor.vendor.reviewCount
+                ).toFixed(1)}
+              </span>
+              <Rate
+                disabled
+                value={Number(
+                  (
+                    this.props.proposal.vendor.vendor.rate /
+                    this.props.proposal.vendor.vendor.reviewCount
+                  ).toFixed(1),
+                )}
+                allowHalf={true}
+                className="like-rate"
+              />
+              <span className="ml-1">
+                {this.props.proposal.vendor.vendor.reviewCount} Reviews
+              </span>
             </div>
           )}
           <div className="col-lg-4 col-md-6 d-block d-md-flex align-items-center justify-content-between">

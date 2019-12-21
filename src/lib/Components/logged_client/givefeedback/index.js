@@ -34,7 +34,6 @@ class ClientGiveFeedBack extends React.Component {
   static getDerivedStateFromProps(props, state) {
     if (!state.success && props.success) {
       message.success(props.success);
-      state.history.push(`/client`);
     }
     if (!state.error && props.error) {
       message.error(props.error);
@@ -62,6 +61,7 @@ class ClientGiveFeedBack extends React.Component {
             vendorBadge: this.state.vendorBadge,
           };
           this.props.fetchCreateReviewData(params);
+          window.location.href = "/client";
         }
       });
     }

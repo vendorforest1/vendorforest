@@ -36,25 +36,29 @@ class VendorBillingMethod extends React.Component {
 
     return (
       <div className="vendor-billingmethod">
-        {/* <a href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=https://connect.stripe.com/connect/default/oauth/test&client_id=ca_G69qhU4bRaQUrWwoYPRNlzu50gvOEgEy&state=asdwasd2132"><button>Connect to Stripe</button></a> */}
         <Card
           title={<span className="h5 font-weight-bold">Add New Billing Method</span>}
           style={{ marginBottom: "50px" }}
         >
-          <div>
-            <Row style={{ textAlign: "center" }}>
-              <a
-                href={`https://connect.stripe.com/express/oauth/authorize?redirect_uri=${API_URL}/vendor/settings&client_id=${STRIPE_CLIENT}`}
-              >
-                <button>
-                  <img src={stripeLinkButton} alt="" />
-                </button>
-              </a>
-              {/* <button onClick={ this.goToStripe }>
-                <img src={ stripeLinkButton } />
-              </button> */}
-            </Row>
-          </div>
+          {this.props.user && (
+            <div>
+              {this.props.user.connectedAccountId === null ? (
+                <Row style={{ textAlign: "center" }}>
+                  <button className="disable" disabled>
+                    <a
+                      href={`https://connect.stripe.com/express/oauth/authorize?redirect_uri=${API_URL}/vendor/settings&client_id=${STRIPE_CLIENT}`}
+                    >
+                      <img src={stripeLinkButton} alt="" />
+                    </a>
+                  </button>
+                </Row>
+              ) : (
+                <Row style={{ textAlign: "center" }}>
+                  You have already registered your stripe account.
+                </Row>
+              )}
+            </div>
+          )}
         </Card>
       </div>
     );

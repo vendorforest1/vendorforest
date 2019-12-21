@@ -7,6 +7,7 @@ import { constants } from "@Shared/constants";
 import GoogleMapLoader from "react-google-maps-loader";
 import GooglePlacesSuggest from "react-google-places-suggest";
 import countryData from "../../../country_state.json";
+import countryCode from "../../../CountryCodes.json";
 import { timeZone } from "@Shared/timezone.json";
 
 function getBase64(img, callback) {
@@ -107,6 +108,9 @@ class VendorMyAccount extends React.Component {
             placeId: this.state.placeId,
           },
           timeZone: values.timeZone,
+          phonePrefix: values.prefix,
+          localPhoneNumber: values.phone,
+          phone: values.prefix + values.phone,
         };
         this.props.fetchUpdateAccount(params);
       }
@@ -183,11 +187,28 @@ class VendorMyAccount extends React.Component {
       });
     };
 
+    const generateCodeOptions = () => {
+      return countryCode.map((code, index) => {
+        return (
+          <Select.Option value={code.dial_code} key={index}>
+            {code.dial_code}
+          </Select.Option>
+        );
+      });
+    };
+
     const uploadButton = (
       <div>
         <Icon type={this.state.loading ? "loading" : "plus"} />
         <div className="ant-upload-text">Upload</div>
       </div>
+    );
+    const prefixSelector = getFieldDecorator("prefix", {
+      initialValue: this.props.user.phonePrefix,
+    })(
+      <Select size={"large"} style={{ width: "80px" }}>
+        {generateCodeOptions()}
+      </Select>,
     );
 
     return (
@@ -220,7 +241,8 @@ class VendorMyAccount extends React.Component {
                   )}
                 </Upload>
               </div>
-              <div className="col-md-4 col-sm-12">
+
+              <div className="col-md-6 col-sm-12">
                 <Form.Item label="First Name">
                   {getFieldDecorator("firstName", {
                     initialValue: this.props.user.firstName, //solution
@@ -230,7 +252,7 @@ class VendorMyAccount extends React.Component {
                   })(<Input placeholder="First Name" size={"large"} />)}
                 </Form.Item>
               </div>
-              <div className="col-md-4 col-sm-12">
+              <div className="col-md-6 col-sm-12">
                 <Form.Item label="Last Name">
                   {getFieldDecorator("lastName", {
                     initialValue: this.props.user.lastName, //solution
@@ -238,12 +260,20 @@ class VendorMyAccount extends React.Component {
                   })(<Input placeholder="Last Name" size={"large"} />)}
                 </Form.Item>
               </div>
-              <div className="col-md-4 col-sm-12">
+              <div className="col-md-6 col-sm-12">
                 <Form.Item label="User Name">
                   {getFieldDecorator("username", {
                     initialValue: this.props.user.username, //solution
                     rules: [{ required: true, message: "Please input user name" }],
                   })(<Input placeholder="User Name" size={"large"} />)}
+                </Form.Item>
+              </div>
+              <div className="col-md-6 col-sm-12">
+                <Form.Item label="Phone Number">
+                  {getFieldDecorator("phone", {
+                    initialValue: this.props.user.localPhoneNumber,
+                    rules: [{ required: true, message: "Please input your phone number!" }],
+                  })(<Input addonBefore={prefixSelector} size={"large"} />)}
                 </Form.Item>
               </div>
               <div className="col-12">

@@ -103,7 +103,7 @@ class VendorJobDetails extends React.Component {
                         <div className="job-main-content">
                           <div className="job-head">
                             <h4 className="mb-2">{this.props.job.title}</h4>
-                            <p>Posted 1 month a go</p>
+                            {/* <p>Posted 1 month a go</p> */}
                           </div>
                           <hr />
                           <div className="job-body">
@@ -329,7 +329,7 @@ class VendorJobDetails extends React.Component {
                       </div>
                     </div>
                   </div>
-                  <div className="similar-jobs shadow">
+                  {/* <div className="similar-jobs shadow">
                     <h5 className="mb-4">Similar Jobs</h5>
                     <p>
                       <a href="#/" className="text-color">
@@ -352,7 +352,7 @@ class VendorJobDetails extends React.Component {
                         Full stack developer needed for short job
                       </a>
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               )}
             </div>

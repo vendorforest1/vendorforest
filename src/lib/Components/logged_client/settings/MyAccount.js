@@ -5,6 +5,7 @@ import { Input, Form, Upload, Icon, message, Card, Button, Select } from "antd";
 import { fetchUpdateAccount, fetchSendCodeEmail } from "./essential";
 import { constants } from "@Shared/constants";
 import { timeZone } from "@Shared/timezone.json";
+import countryCode from "../../../CountryCodes.json";
 import GoogleMapLoader from "react-google-maps-loader";
 import GooglePlacesSuggest from "react-google-places-suggest";
 
@@ -92,6 +93,7 @@ class ClientMyAccount extends React.Component {
         const params = {
           firstName: values.firstName,
           lastName: values.lastName,
+          username: values.username,
           email: values.email,
           verifyCode: values.verifyCode,
           profileImage: values.profileImage,
@@ -105,6 +107,9 @@ class ClientMyAccount extends React.Component {
             placeId: this.state.placeId,
           },
           timeZone: values.timeZone,
+          phonePrefix: values.prefix,
+          localPhoneNumber: values.phone,
+          phone: values.prefix + values.phone,
         };
         process.env.NODE_ENV === "development" && console.log(params);
         this.props.fetchUpdateAccount(params);
@@ -170,6 +175,23 @@ class ClientMyAccount extends React.Component {
       });
     };
 
+    const generateCodeOptions = () => {
+      return countryCode.map((code, index) => {
+        return (
+          <Select.Option value={code.dial_code} key={index}>
+            {code.dial_code}
+          </Select.Option>
+        );
+      });
+    };
+    const prefixSelector = getFieldDecorator("prefix", {
+      initialValue: this.props.user.phonePrefix,
+    })(
+      <Select size={"large"} style={{ width: "80px" }}>
+        {generateCodeOptions()}
+      </Select>,
+    );
+
     return (
       <div className="client-myaccount">
         <Card
@@ -200,7 +222,7 @@ class ClientMyAccount extends React.Component {
                   )}
                 </Upload>
               </div>
-              <div className="col-md-4 col-sm-12">
+              <div className="col-md-6 col-sm-12">
                 <Form.Item label="First Name">
                   {getFieldDecorator("firstName", {
                     initialValue: this.props.user.firstName, //solution
@@ -210,12 +232,28 @@ class ClientMyAccount extends React.Component {
                   })(<Input placeholder="First Name" size={"large"} />)}
                 </Form.Item>
               </div>
-              <div className="col-md-4 col-sm-12">
+              <div className="col-md-6 col-sm-12">
                 <Form.Item label="Last Name">
                   {getFieldDecorator("lastName", {
                     initialValue: this.props.user.lastName, //solution
                     rules: [{ required: true, message: "Please input Last Name" }],
                   })(<Input placeholder="Last Name" size={"large"} />)}
+                </Form.Item>
+              </div>
+              <div className="col-md-6 col-sm-12">
+                <Form.Item label="User Name">
+                  {getFieldDecorator("username", {
+                    initialValue: this.props.user.username, //solution
+                    rules: [{ required: true, message: "Please input user name" }],
+                  })(<Input placeholder="User Name" size={"large"} />)}
+                </Form.Item>
+              </div>
+              <div className="col-md-6 col-sm-12">
+                <Form.Item label="Phone Number">
+                  {getFieldDecorator("phone", {
+                    initialValue: this.props.user.localPhoneNumber,
+                    rules: [{ required: true, message: "Please input your phone number!" }],
+                  })(<Input addonBefore={prefixSelector} size={"large"} />)}
                 </Form.Item>
               </div>
               <div className="col-12">

@@ -1,6 +1,6 @@
 import Team from "../models/team.model";
 import getEnv, { constants } from "@Config/index";
-
+import User from "@Models/user.model";
 const env = getEnv();
 
 export default () => {
@@ -183,6 +183,16 @@ export default () => {
     await teamDoc
       .save()
       .then(async (team) => {
+        User.findOneAndUpdate(
+          {
+            _id: req.user._id,
+          },
+          {
+            $inc: {
+              profilePercent: 34,
+            },
+          },
+        ).then(() => {});
         return res.status(200).json({
           status: 200,
           data: team,

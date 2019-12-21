@@ -13,6 +13,8 @@ router.use(isAuthenticatedForApi);
 router.get("/getpubkey", clientCtrl.getPubKey);
 router.post("/getsetupintent", clientCtrl.getSetupIntent);
 router.post("/getclientid", clientCtrl.getClientId);
+router.post("/update_clientid", clientCtrl.updateClientId);
+router.get("/get_card_digits", clientCtrl.getCardDigits);
 
 router.post("/billing", clientCtrl.updateBillingInformation);
 router.get("/settings", clientCtrl.getClient);

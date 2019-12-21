@@ -6,6 +6,9 @@ import Notifi from "@Models/notification.model";
 import getEnv, { constants } from "@Config/index";
 import { async } from "q";
 import { ObjectId } from "bson";
+import { mail } from "@Config/mail";
+import saveNotification from "@Config/notification";
+import sendSMS from "@Config/sms";
 const nodemailer = require("nodemailer");
 const twilio = require("twilio");
 const env = getEnv();
@@ -14,93 +17,170 @@ export default () => {
   const controllers = {};
 
   controllers.create = async (req, res, next) => {
-    const newMilestone = new Milestone({ ...req.body });
+    console.log("create milestone =====", req.body);
+    const newMilestone = new Milestone({
+      description: req.body.description,
+      price: req.body.price,
+      contract: req.body.contract,
+    });
     const milestoneID = newMilestone.contract;
     env.MODE === "development" && console.log("$$$$$$ newMilestone $$$$$$", newMilestone);
-    const user = req.user.stripeClientId;
+    const stripeClientId = req.user.stripeClientId;
     const price = newMilestone.price;
-    await Contract.find({
-      _id: milestoneID,
+    await User.findOne({
+      _id: req.user._id,
     })
-      .populate({
-        path: "vendor",
-        model: "user",
-      })
-      .then(async (vendorInfo) => {
-        const vendorEmail = vendorInfo[0].vendor.email;
-        const vendorPhone = vendorInfo[0].vendor.phone;
-        const paymentIntentID = await paymentIntent(user, price)
-          .then(() => {
-            newMilestone
-              .save()
-              .then(async (milestone) => {
-                await Contract.findOneAndUpdate(
-                  {
-                    _id: milestone.contract,
-                  },
-                  {
-                    $inc: {
-                      escrowPrice: milestone.price,
-                    },
-                  },
-                )
-                  .then(async (result) => {
-                    const vendorId = result.vendor;
-                    const emailTitle = "Milestone has been created.";
-                    const description = `You can start work on this job.<br> Your accepted budget is ${milestone.price} USD.`;
-                    const phoneDescription = `You can start work on this job.\n Your accepted budget is ${milestone.price} USD.`;
-                    env.MODE === "development" &&
-                      console.log("create milestone result", result);
-                    saveNotification(vendorId, milestone.price);
-                    sendingEmail(vendorEmail, emailTitle, description);
-                    sendingSms(vendorPhone, emailTitle, phoneDescription);
+      .then(async (user) => {
+        if (!user) {
+          return res.status(401).json({
+            status: 401,
+            message:
+              env.MODE === "development"
+                ? `User ${constants.DEV_EMPTYDOC_MSG}`
+                : constants.PROD_COMMONERROR_MSG,
+          });
+        }
+        await user
+          .verifyPassword(req.body.password)
+          .then(async (isMatch) => {
+            if (!isMatch) {
+              return res.status(403).json({
+                status: 400,
+                message: "Your Password is not matched. Please try again.",
+              });
+            }
+            await Contract.findOne({
+              _id: milestoneID,
+            })
+              .populate({
+                path: "vendor",
+                model: "user",
+              })
+              .then(async (vendorInfo) => {
+                if (!vendorInfo) {
+                  return res.status(401).json({
+                    status: 401,
+                    message:
+                      env.NODE_ENV === "development"
+                        ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                        : constants.PROD_COMMONERROR_MSG,
+                  });
+                }
+                const vendorEmail = vendorInfo.vendor;
+                const vendorPhone = vendorInfo.vendor.phone;
+                await paymentIntent(stripeClientId, price)
+                  .then(() => {
+                    // if (!resul) {
+                    //   return res.status(401).json({
+                    //     status: 401,
+                    //     message:
+                    //       env.NODE_ENV === "development"
+                    //         ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                    //         : constants.PROD_COMMONERROR_MSG,
+                    //   });
+                    // }
+                    newMilestone
+                      .save()
+                      .then(async (milestone) => {
+                        if (!milestone) {
+                          return res.status(401).json({
+                            status: 401,
+                            message:
+                              env.NODE_ENV === "development"
+                                ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                                : constants.PROD_COMMONERROR_MSG,
+                          });
+                        }
+                        await Contract.findOneAndUpdate(
+                          {
+                            _id: milestone.contract,
+                          },
+                          {
+                            $inc: {
+                              escrowPrice: milestone.price,
+                            },
+                            budget: req.body.budget,
+                          },
+                        )
+                          .then(async (result) => {
+                            if (!result) {
+                              return res.status(401).json({
+                                status: 401,
+                                message:
+                                  env.NODE_ENV === "development"
+                                    ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                                    : constants.PROD_COMMONERROR_MSG,
+                              });
+                            }
+                            const vendorId = result.vendor;
+                            const emailTitle = "Milestone has been created.";
+                            const description = `You can start work on this job. Your accepted budget is ${milestone.price} USD.`;
+                            const phoneDescription = `You can start work on this job.\n Your accepted budget is ${milestone.price} USD.`;
+                            env.MODE === "development" &&
+                              console.log("create milestone result", result);
+                            saveNotification(vendorId, description);
+                            sendSMS(vendorPhone, emailTitle, phoneDescription);
+                            await mail.sendCreateMilestoneEmail(
+                              vendorEmail,
+                              "VendorForest information!",
+                              (err, msg) => {
+                                if (err) {
+                                  return err;
+                                }
+                                return;
+                              },
+                            );
+                          })
+                          .catch(
+                            (error) =>
+                              env.MODE === "development" &&
+                              console.log("saving notification error", error),
+                          );
+                        env.MODE === "development" && console.log("milestone", milestone);
+                        return res.status(200).json({
+                          status: 200,
+                          data: milestone,
+                          message: "Milestone has been created successfully.",
+                        });
+                      })
+                      .catch((error) => {
+                        return res.status(500).json({
+                          status: 500,
+                          message:
+                            env.NODE_ENV === "development"
+                              ? error.message
+                              : constants.PROD_COMMONERROR_MSG,
+                        });
+                      });
                   })
-                  .catch(
-                    (error) =>
-                      env.MODE === "development" &&
-                      console.log("saving notification error", error),
-                  );
-                env.MODE === "development" && console.log("milestone", milestone);
-                return res.status(200).json({
-                  status: 200,
-                  data: milestone,
-                  message: "Milestone has been created successfully.",
-                });
+                  .catch((error) => {
+                    return res.status(500).json({
+                      status: 500,
+                      message: `Errors ${error}`,
+                    });
+                  });
               })
               .catch((error) => {
                 return res.status(500).json({
                   status: 500,
-                  message:
-                    env.NODE_ENV === "development"
-                      ? error.message
-                      : constants.PROD_COMMONERROR_MSG,
+                  message: `Errors ${error}`,
                 });
               });
           })
           .catch((error) => {
             return res.status(500).json({
               status: 500,
-              message: `Errors ${error}`,
+              message:
+                env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
             });
           });
       })
       .catch((error) => {
         return res.status(500).json({
           status: 500,
-          message: `Errors ${error}`,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
-  };
-
-  const saveNotification = async (vendorId, price) => {
-    const time = new Date().toLocaleString();
-    const query = new Notifi({
-      username: vendorId,
-      notificationMsg: `You created milestone. Amount is ${price}USD`,
-      time: time,
-    });
-    // env.MODE === "development" && console.log("milestone result", result);
-    await query.save();
   };
 
   const paymentIntent = async (clientID, price) => {
@@ -167,7 +247,7 @@ export default () => {
   };
 
   controllers.release = async (req, res, next) => {
-    const userStripeAccount = req.user.stripeClientId;
+    // const userStripeAccount = req.user.stripeClientId;
     const milestoneID = req.body._id;
     try {
       await Milestone.find({
@@ -182,8 +262,18 @@ export default () => {
           },
         })
         .then((milestone) => {
+          if (!milestone) {
+            return res.status(401).json({
+              status: 401,
+              message:
+                env.NODE_ENV === "development"
+                  ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                  : constants.PROD_COMMONERROR_MSG,
+            });
+          }
+          env.MODE === "development" && console.log("fetch milestone result === ", milestone);
           const vendorStripeID = milestone[0].contract.vendor.connectedAccountId;
-          const vendorEmail = milestone[0].contract.vendor.email;
+          const vendorEmail = milestone[0].contract.vendor;
           const vendorPhone = milestone[0].contract.vendor.phone;
           const vendorID = milestone[0].contract.vendor._id;
           const price = milestone[0].price;
@@ -194,6 +284,15 @@ export default () => {
               destination: vendorStripeID,
             })
             .then(async (transfer) => {
+              if (!transfer) {
+                return res.status(401).json({
+                  status: 401,
+                  message:
+                    env.NODE_ENV === "development"
+                      ? `Milestone ${constants.DEV_EMPTYDOC_MSG}`
+                      : constants.PROD_COMMONERROR_MSG,
+                });
+              }
               const transferResult = transfer.amount;
               env.MODE === "development" && console.log("transfer result+++++===", transfer);
               await Milestone.findOneAndUpdate(
@@ -208,6 +307,8 @@ export default () => {
                 },
               )
                 .then(async (milestone) => {
+                  env.MODE === "development" &&
+                    console.log("milestone result+++++===", milestone);
                   if (!milestone) {
                     return res.status(401).json({
                       status: 401,
@@ -217,14 +318,6 @@ export default () => {
                           : constants.PROD_COMMONERROR_MSG,
                     });
                   }
-                  const emailTitle = "Milestone has been released.";
-                  const description = `Milestone has been released.<br> Your client released the milestone. Amount is ${milestone.price *
-                    0.75} USD.`;
-                  const phoneDescription = `Milestone has been released.\n Your client released the milestone. Amount is ${milestone.price *
-                    0.75} USD.`;
-                  await saveReleaseNotification(vendorID, milestone.price);
-                  await sendingEmail(vendorEmail, emailTitle, description);
-                  await sendingSms(vendorPhone, emailTitle, phoneDescription);
                   await Contract.findOneAndUpdate(
                     {
                       _id: milestone.contract,
@@ -236,6 +329,8 @@ export default () => {
                       },
                     },
                   ).then(async (contract) => {
+                    env.MODE === "development" &&
+                      console.log("contract result+++++===", contract);
                     if (!contract) {
                       return res.status(401).json({
                         status: 401,
@@ -245,6 +340,32 @@ export default () => {
                             : constants.PROD_COMMONERROR_MSG,
                       });
                     }
+                    const emailTitle = "Milestone has been released.";
+                    const description = `Milestone has been released. Your client released the milestone. Amount is ${milestone.price *
+                      0.75} USD.`;
+                    const phoneDescription = `Milestone has been released.\n Your client released the milestone. Amount is ${milestone.price *
+                      0.75} USD. \n vendorforest.com`;
+                    console.log(
+                      "=====",
+                      emailTitle,
+                      description,
+                      phoneDescription,
+                      vendorID,
+                      vendorPhone,
+                      "======",
+                    );
+                    saveNotification(vendorID, description);
+                    sendSMS(vendorPhone, emailTitle, phoneDescription);
+                    await mail.sendReleaseMilestoneEmail(
+                      vendorEmail,
+                      "VendorForest information!",
+                      (err, msg) => {
+                        if (err) {
+                          return err;
+                        }
+                        return;
+                      },
+                    );
                     return res.status(200).json({
                       status: 200,
                       data: milestone,
@@ -435,6 +556,7 @@ export default () => {
   };
 
   controllers.getMilestones = async (req, res, next) => {
+    console.log("returned query ===== ", req.query);
     await Milestone.find(req.query)
       .then(async (milestones) => {
         return res.status(200).json({

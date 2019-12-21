@@ -32,14 +32,19 @@ class VendorItem extends React.Component {
   }
 
   render() {
-    console.log("vendor item = ", this.props.user);
     const { user } = this.props;
-    // const { vendor } = user;
+    const { vendor } = user;
+    process.env.NODE_ENV === "development" && console.log("user: ", user);
+    process.env.NODE_ENV === "development" && console.log("vendor: ", vendor);
     return (
       <div className="vendor-item d-md-flex d-block justify-content-between">
         <div className="vendor-info d-flex mb-3 mb-md-0">
           <div className="vendor-photo">
-            <Avatar src={`${user.profileImage}`} size={80} style={{ width: "80px" }} />
+            <Avatar
+              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              size={80}
+              style={{ width: "80px" }}
+            />
           </div>
           <div className="vendor-summary ml-2">
             <h5
@@ -50,11 +55,6 @@ class VendorItem extends React.Component {
             >
               {user.username}
             </h5>
-            {user.vendor.service && user.vendor.category && (
-              <p>
-                {user.vendor.service.name} / {user.vendor.category.name}
-              </p>
-            )}
             {/* <p>{this.displaySkills()}</p> */}
             <h6 className="text-blue">{constants.ACCOUNTTYPES[user.accountType]}</h6>
             <p className="text-grey">
@@ -66,36 +66,21 @@ class VendorItem extends React.Component {
               )}
             </p>
             <Progress
-              percent={
-                user.vendor.jobComplatedReate !== 0
-                  ? Number((user.vendor.jobComplatedReate / user.vendor.jobs).toFixed(0))
-                  : 0
-              }
+              percent={vendor.jobCompletedRate}
               size="small"
               status="active"
               className="job-progress"
             />
             <div className="text-grey">
-              <span className="mr-2">
-                {user.vendor.rate !== 0
-                  ? (user.vendor.rate / user.vendor.reviewCount).toFixed(1)
-                  : 0}
-              </span>
-              <Rate
-                disabled
-                value={
-                  user.vendor.rate !== 0
-                    ? Number((user.vendor.rate / user.vendor.reviewCount).toFixed(1))
-                    : 0
-                }
-              />
-              <span className="mx-2">{user.vendor.reviewCount} Reviews</span>
+              <span className="mr-2">{vendor.rate}</span>
+              <Rate disabled defaultValue={vendor.rate} />
+              <span className="mx-2">{vendor.reviewCount} Reviews</span>
             </div>
           </div>
         </div>
         <div className="vendor-action d-flex flex-md-column flex-row align-items-center">
           <h6 className="vendor-subinfo text-color text-md-right text-center col">
-            ${user.vendor.hourlyRate}/hr
+            ${vendor.hourlyRate}/hr
           </h6>
           <div className="col">
             <button className="button-primary" onClick={this.toggle}>

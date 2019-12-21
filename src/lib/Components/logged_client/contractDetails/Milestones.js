@@ -19,13 +19,17 @@ class Milestones extends React.Component {
     this.state = {};
     this.create = this.create.bind(this);
   }
-
-  componentDidMount() {
-    if (!this.props.milestones) {
+  componentWillReceiveProps(newProps) {
+    if (this.props.contract._id !== newProps.contract._id) {
       this.props.fetchGetMilestonesData({
-        contract: this.props.contract._id,
+        contract: newProps.contract._id,
       });
     }
+  }
+  componentDidMount() {
+    this.props.fetchGetMilestonesData({
+      contract: this.props.contract._id,
+    });
   }
 
   create() {
@@ -99,20 +103,24 @@ class Milestones extends React.Component {
                   {this.props.pending && this._button === index + 1 && (
                     <Icon type="sync" spin className="mr-2 text-success" />
                   )}
-                  <a
-                    className={`pointer ${
-                      milestone.status === constants.MILESTONE_STATUS.REQ_RELEASED
-                        ? "text-warning"
-                        : "text-success"
-                    }`}
-                    onClick={() => {
-                      this.releaseMilestone(index);
-                    }}
-                  >
-                    Release
-                  </a>
-                  <Divider type="vertical" />
-                  <a
+                  {this.props.contract.status !== constants.CONTRACT_STATUS.END ? (
+                    <a
+                      className={`pointer ${
+                        milestone.status === constants.MILESTONE_STATUS.REQ_RELEASED
+                          ? "text-warning"
+                          : "text-success"
+                      }`}
+                      onClick={() => {
+                        this.releaseMilestone(index);
+                      }}
+                    >
+                      Release
+                    </a>
+                  ) : (
+                    <p>Pending Milestone</p>
+                  )}
+                  {/* <Divider type="vertical" /> */}
+                  {/* <a
                     className="pointer text-danger"
                     onClick={() => {
                       this.cancelMilestone(index);
@@ -120,7 +128,7 @@ class Milestones extends React.Component {
                   >
                     {" "}
                     Cancel{" "}
-                  </a>
+                  </a> */}
                 </div>
               </div>
             </div>
@@ -180,7 +188,7 @@ class Milestones extends React.Component {
             {this.props.milestones && (
               <div className="milestone-list-content">
                 <h5 className="mb-2">Milestones</h5>
-                <Form>
+                {/* <Form>
                   <div className="add-milestone mb-4 d-md-flex">
                     <div className="ms-descrption mr-md-2 mr-0 mb-2 mb-md-0">
                       <Form.Item label="Description">
@@ -231,7 +239,7 @@ class Milestones extends React.Component {
                       &nbsp;Add
                     </button>
                   </div>
-                </Form>
+                </Form> */}
                 <div className="milestone-list">{generateMilestone()}</div>
               </div>
             )}

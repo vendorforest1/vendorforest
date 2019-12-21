@@ -12,6 +12,7 @@ import ClientSettings from "@Components/logged_client/settings";
 import ClientJobDetails from "@Components/logged_client/jobDetails";
 import ClientDispute from "@Components/logged_client/clientDispute";
 import FindVendors from "@Components/findvendors";
+import Hire from "@Components/hire";
 
 import VendorDashboard from "@Components/logged_vendor/dashboard";
 import VendorJobDetails from "@Components/logged_vendor/jobDetails";
@@ -135,6 +136,11 @@ export default [
     path: "/client/milestones",
     exact: true,
     component: Milestones,
+  },
+  {
+    path: "/client/hire/:proposal_id&:vendor_id",
+    exact: true,
+    component: Hire,
   },
   /*================================== VENDOR LINKS ==========================*/
   {

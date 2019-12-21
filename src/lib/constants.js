@@ -96,6 +96,7 @@ export const apiUrl = {
   GET_HOMEDATA: `${API_URL}/apis/home`,
   GET_USER_INFO: `${API_URL}/apis/userinfo`,
   GET_CLIENT_INFO: `${API_URL}/apis/clientinfo`,
+  // COMPARE_PW: `${API_URL}/apis/compare_pw`,
 
   GET_SERVICE: `${API_URL}/apis/service/get_services`,
 
@@ -110,6 +111,8 @@ export const apiUrl = {
   GET_PUB_KEY: `${API_URL}/apis/client/getpubkey`,
   GET_SETUP_INTENT: `${API_URL}/apis/client/getsetupintent`,
   GET_CLIENT_ID: `${API_URL}/apis/client/getclientid`,
+  UPDATE_CLIENT_ID: `${API_URL}/apis/client/update_clientid`,
+  GET_CARD_DIGITS: `${API_URL}/apis/client/get_card_digits`,
   GET_VENDOR_PROFILE: `${API_URL}/apis/vendor`,
 
   VENDOR_GET: `${API_URL}/apis/vendor/get`,
@@ -118,6 +121,7 @@ export const apiUrl = {
   VENDOR_UPDATE_COMPANY: `${API_URL}/apis/vendor/update_company`,
   VENDOR_UPDATE_PROFILE: `${API_URL}/apis/vendor/update`,
   VENDOR_IN_RADIUS: `${API_URL}/apis/vendor/search_inradius`,
+  FIND_VENDORS: `${API_URL}/apis/vendor/find_vendors`,
 
   GET_MYREVIEWS: `${API_URL}/apis/review/get_myreviews`,
   GET_REVIEW: `${API_URL}/apis/review/get`,
@@ -148,6 +152,7 @@ export const apiUrl = {
   SEND_INVITE: `${API_URL}/apis/job/send_invite`,
   SEND_NOTIFICATION: `${API_URL}/apis/job/sendNewJobNotification`,
   INIT_CHAT: `${API_URL}/apis/job/initChat`,
+  SEND_JOB_COMPLETE: `${API_URL}/apis/job/job_completed`,
 
   CREATE_PROPOSAL: `${API_URL}/apis/proposal/create`,
   UPDATE_PROPOSAL: `${API_URL}/apis/proposal/update`,
@@ -165,6 +170,8 @@ export const apiUrl = {
   GET_CONTRACTS: `${API_URL}/apis/contract/get_contracts`,
   GET_CONTRACT: `${API_URL}/apis/contract/get`,
   GET_ATTACHFILES: `${API_URL}/apis/contract/get_attachfiles`,
+  GET_HIRE_DETAIL: `${API_URL}/apis/contract/get_hire_detail`,
+  UPDATE_HIRE_PROPOSAL: `${API_URL}/apis/contract/update_hire_proposal`,
 
   CREATE_MILESTONE: `${API_URL}/apis/milestone/create`,
   UPDATE_MILESTONE: `${API_URL}/apis/milestone/update`,

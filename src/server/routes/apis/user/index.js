@@ -31,6 +31,7 @@ export default function(app, passport) {
   router.get("/emailsent/:id", userCtr.emailSent);
   router.get("/confirmation/:token", userCtr.confirmationPost);
   router.get("/authToken/:token", userCtr.autheticate);
+  // router.post("/compare_pw", userCtr.comparePW)
   router.get(
     "/codeemail_send/:email",
     isAuthenticatedForApi,

@@ -4,6 +4,7 @@ const FETCH_REQUEST = "FETCH_REQUEST";
 const FETCH_INIT_SUCCESS = "FETCH_INIT_SUCCESS";
 const FETCH_FAILURE = "FETCH_FAILURE";
 const CLEAR_FAILURE = "CLEAR_FAILURE";
+const FETCH_VENDORS_SUCCESS = "FETCH_VENDORS_SUCCESS";
 
 // Reducer
 export default function reducer(
@@ -12,6 +13,7 @@ export default function reducer(
     success: undefined,
     homedata: undefined,
     pending: false,
+    vendors: undefined,
   },
   action,
 ) {
@@ -32,6 +34,12 @@ export default function reducer(
         ...state,
         pending: false,
         error: action.payload,
+      };
+    case FETCH_VENDORS_SUCCESS:
+      return {
+        ...state,
+        vendors: action.payload,
+        pending: false,
       };
     case CLEAR_FAILURE:
       return {
@@ -64,6 +72,11 @@ const clearError = () => ({
   type: CLEAR_FAILURE,
 });
 
+const fetchVendorsSuccess = (vendorsInfo) => ({
+  type: FETCH_VENDORS_SUCCESS,
+  payload: vendorsInfo,
+});
+
 export const fetchInitData = (payload) => async (dispatch, getState) => {
   dispatch(clearError());
   dispatch(fetchRequest());
@@ -80,6 +93,31 @@ export const fetchInitData = (payload) => async (dispatch, getState) => {
         throw new Error(result.message);
       }
       dispatch(fetchInitSuccess(result.data));
+    })
+    .catch((err) => dispatch(fetchError(err.message)));
+};
+
+export const fetchFindVendorsData = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
+  return await fetch(apiUrl.FIND_VENDORS, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      console.log("vendor result ====== ", result);
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      if (result.status === 302) {
+        dispatch(fetchError(result));
+      }
+      dispatch(fetchVendorsSuccess(result.data));
     })
     .catch((err) => dispatch(fetchError(err.message)));
 };

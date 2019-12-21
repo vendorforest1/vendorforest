@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 
 import { fetchServiceData, fetchUpdateData } from "../essential";
 
-const icons = ["home", "bell", "usergroup-add", "money-collect", "dribbble-square"];
+const icons = ["icons_Home", "icons_Events", "icons_Weddings", "icons_Wellness", "icons_Venue"];
 
 class VendorServices extends React.Component {
   constructor(props) {
@@ -168,7 +168,13 @@ class VendorServices extends React.Component {
                   this.state.selectedService === service._id ? "text-color" : ""
                 }`}
               >
-                <Icon type={icons[index]} className="h3 mr-2" /> {service.name}
+                <img
+                  src={require(`../../../images/NewIcons/${icons[index]}.png`)}
+                  style={{ height: "30px" }}
+                  className="h3 mr-2"
+                  alt=""
+                />
+                {service.name}
               </span>
             </div>
           </div>

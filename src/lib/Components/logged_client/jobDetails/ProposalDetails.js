@@ -83,23 +83,35 @@ class ProposalDetails extends React.Component {
                     </p>
                   </div>
                 </div>
-                <div className="col-md-5 vendor-status">
-                  <Progress
-                    percent={this.props.proposal.vendor.vendor.successRate}
-                    size="small"
-                    status="active"
-                    className="job-progress"
-                  />
-                  <Rate
-                    disabled
-                    value={this.props.proposal.vendor.vendor.rate}
-                    allowHalf={true}
-                    className="like-rate"
-                  />
-                  <span className="ml-1">
-                    {this.props.proposal.vendor.vendor.reviewCount} Reviews
-                  </span>
-                </div>
+                {this.props.proposal.vendor && (
+                  <div className="col-md-5 vendor-status">
+                    <Progress
+                      percent={Number(
+                        (
+                          this.props.proposal.vendor.vendor.jobComplatedReate /
+                          this.props.proposal.vendor.vendor.jobs
+                        ).toFixed(0),
+                      )}
+                      size="small"
+                      status="active"
+                      className="job-progress"
+                    />
+                    <Rate
+                      disabled
+                      value={Number(
+                        (
+                          this.props.proposal.vendor.vendor.rate /
+                          this.props.proposal.vendor.vendor.reviewCount
+                        ).toFixed(1),
+                      )}
+                      allowHalf={true}
+                      className="like-rate"
+                    />
+                    <span className="ml-1">
+                      {this.props.proposal.vendor.vendor.reviewCount} Reviews
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
             <hr />
@@ -140,6 +152,7 @@ class ProposalDetails extends React.Component {
                   <Icon type="sync" spin />
                 </div>
               )}
+              {console.log("review length = ", this.props.reviews.length)}
               {!this.props.pending && this.props.reviews.length > 0 && (
                 <List
                   itemLayout="vertical"

@@ -7,7 +7,7 @@ import Footer from "@Components/inc/footer";
 import VendorItem from "./VendorItem";
 
 import { connect } from "react-redux";
-import { fetchInitData } from "./essential";
+import { fetchInitData, fetchFindVendorsData } from "./essential";
 
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
@@ -40,34 +40,86 @@ class FindVendors extends React.Component {
 
     this.state = {
       vendors: [],
-      showFilter: true,
-      filterCity: "",
-      filterServices: [],
-      filterCategory: 0,
-      filterSubcategory: 0,
+      // showFilter: true,
+      // filterCity: "",
+      // filterServices: [],
+      // filterCategory: 0,
+      // filterSubcategory: 0,
       filterTravel: 0,
       filterUserType: 0,
+
+      // jobs: [],
+      filterServices: [],
+      filterService: -1,
+      filterCategories: [],
+      filterCategory: -1,
+      filterBudgetType: -1,
+      filterAnyLocation: true,
+      filterCountry: 0,
+      filterCity: undefined,
+      filterVendorType: 0,
+      showFilter: true,
     };
   }
 
   componentDidMount() {
     this.props.fetchInitData();
+    this.props.fetchFindVendorsData({ status: 0 });
   }
 
   static getDerivedStateFromProps(props, state) {
     if (props.homedata) {
       return {
-        vendors: props.homedata.vendors,
+        // vendors: props.homedata.vendors,
+        filterServices: props.homedata.services,
+        filterCategories:
+          state.filterService === -1
+            ? []
+            : props.homedata.services[state.filterService].categories,
       };
     }
     return null;
   }
+
+  search(searchParams) {
+    const params = {
+      // @ts-ignore
+      service:
+        this.state.filterService === -1
+          ? undefined
+          : this.state.filterServices[this.state.filterService]._id,
+      // @ts-ignore
+      category:
+        this.state.filterCategory === -1
+          ? undefined
+          : this.state.filterCategories[this.state.filterCategory]._id,
+      // budgetType: this.state.filterBudgetType === -1 ? undefined : this.state.filterBudgetType,
+      city: this.state.filterCity,
+      // vendorType: this.state.filterVendorType === 0 ? undefined : this.state.filterVendorType,
+      // status: [0, 1],
+      ...searchParams,
+    };
+    this.props.fetchFindVendorsData(params);
+  }
+
   render() {
-    const generateFilterCategoryOptions = () => {
-      return filterCategoryList.map((category, index) => {
+    const generateFilterServiceOptions = () => {
+      // @ts-ignore
+      return this.state.filterServices.map((service, index) => {
         return (
-          <Option key={index} value={String(index)}>
-            {category}
+          <Option key={index} value={index}>
+            {service.name}
+          </Option>
+        );
+      });
+    };
+
+    const generateFilterCategoryOptions = () => {
+      // @ts-ignore
+      return this.state.filterCategories.map((category, index) => {
+        return (
+          <Option key={index} value={index}>
+            {category.name}
           </Option>
         );
       });
@@ -90,6 +142,7 @@ class FindVendors extends React.Component {
           <div className="container">
             <div className="row">
               <div className="col-md-3 mb-4">
+                {console.log("vendors list = ", this.props.vendors)}
                 <div
                   className="d-flex justify-content-between shadow bg-white d-block d-md-none mb-1 pointer text-color"
                   style={{ padding: "12px" }}
@@ -118,40 +171,71 @@ class FindVendors extends React.Component {
                     />
                   </div>
                   <div className="service mb-4">
-                    <h6 className="pb-3 border-bottom mb-2">Service Offers</h6>
-                    <CheckboxGroup
-                      options={filterServicesList}
-                      value={this.state.filterServices}
-                      onChange={(list) => {
+                    <h6 className="pb-3 border-bottom mb-2">Service offers</h6>
+                    <Select
+                      showSearch
+                      optionFilterProp="children"
+                      onChange={(value) => {
                         this.setState({
-                          filterServices: list,
+                          filterService: Number(value),
+                          filterCategories:
+                            Number(value) === -1
+                              ? []
+                              : this.props.homedata.services[Number(value)].categories,
+                          filterCategory: -1,
+                        });
+                        this.search({
+                          service:
+                            Number(value) === -1
+                              ? undefined
+                              : this.state.filterServices[Number(value)]._id,
+                          category: undefined,
                         });
                       }}
-                    />
+                      onFocus={() => {}}
+                      onBlur={() => {}}
+                      onSearch={() => {}}
+                      filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      value={this.state.filterService}
+                      size={"large"}
+                    >
+                      <Option key={-1} value={-1}>
+                        All
+                      </Option>
+                      {generateFilterServiceOptions()}
+                    </Select>
                   </div>
                   <div className="category mb-4">
                     <h6 className="pb-3 border-bottom mb-2">Category</h6>
                     <Select
-                      value={String(this.state.filterCategory)}
-                      className="mb-2"
+                      showSearch
+                      optionFilterProp="children"
                       onChange={(value) => {
                         this.setState({
                           filterCategory: Number(value),
                         });
-                      }}
-                    >
-                      {generateFilterCategoryOptions()}
-                    </Select>
-                    <Select
-                      value={String(this.state.filterSubcategory)}
-                      className="mb-2"
-                      onChange={(value) => {
-                        this.setState({
-                          filterSubcategory: Number(value),
+                        this.search({
+                          category:
+                            Number(value) === -1
+                              ? undefined
+                              : this.state.filterCategories[Number(value)]._id,
                         });
                       }}
+                      onFocus={() => {}}
+                      onBlur={() => {}}
+                      onSearch={() => {}}
+                      filterOption={(input, option) =>
+                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
+                      value={this.state.filterCategory}
+                      size={"large"}
                     >
-                      {generateFilterSubcategoryOptions()}
+                      <Option key={-1} value={-1}>
+                        All
+                      </Option>
+                      {generateFilterCategoryOptions()}
                     </Select>
                   </div>
                   <div className="budget-type mb-4">
@@ -197,30 +281,34 @@ class FindVendors extends React.Component {
                   <Search
                     placeholder="Find Vendor"
                     onSearch={(value) =>
-                      process.env.NODE_ENV === "development" && console.log(value)
+                      this.search({
+                        title: value === "" ? undefined : value,
+                      })
                     }
                     className="mb-4"
                     enterButton
                   />
                 </div>
-                <List
-                  itemLayout="vertical"
-                  size="large"
-                  className="vendor-list"
-                  pagination={{
-                    onChange: (page) => {
-                      process.env.NODE_ENV === "development" && console.log(page);
-                    },
-                    pageSize: 20,
-                  }}
-                  dataSource={this.state.vendors}
-                  footer={<div></div>}
-                  renderItem={(item, index) => (
-                    <List.Item key={index} style={{ cursor: "pointer" }}>
-                      <VendorItem user={item} />
-                    </List.Item>
-                  )}
-                />
+                {this.props.vendors && (
+                  <List
+                    itemLayout="vertical"
+                    size="large"
+                    className="vendor-list"
+                    pagination={{
+                      onChange: (page) => {
+                        process.env.NODE_ENV === "development" && console.log(page);
+                      },
+                      pageSize: 20,
+                    }}
+                    dataSource={this.props.vendors}
+                    footer={<div></div>}
+                    renderItem={(item, index) => (
+                      <List.Item key={index} style={{ cursor: "pointer" }}>
+                        <VendorItem user={item} />
+                      </List.Item>
+                    )}
+                  />
+                )}
               </div>
             </div>
           </div>
@@ -231,14 +319,15 @@ class FindVendors extends React.Component {
   }
 }
 
-const mapStateToProps = ({ homeReducer, loginReducer }) => {
+const mapStateToProps = ({ homeReducer, loginReducer, clientFindVendorReducer }) => {
   const { error, homedata, success, pending } = homeReducer;
-
+  const { vendors } = clientFindVendorReducer;
   const { user } = loginReducer;
 
-  return { error, homedata, success, pending, user };
+  return { error, homedata, success, pending, user, vendors };
 };
 
 export default connect(mapStateToProps, {
   fetchInitData,
+  fetchFindVendorsData,
 })(withStyles(globalStyle, localStyle)(FindVendors));

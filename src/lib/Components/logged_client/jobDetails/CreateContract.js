@@ -70,6 +70,7 @@ class CreateContract extends React.Component {
     };
     // jqcc.cometchat.launch({uid:params.vendor});
     this.createContract(params);
+    window.location.href = `/client/hire/${params.job}&${params.vendor}`;
   }
 
   createContract(params) {
@@ -129,15 +130,26 @@ class CreateContract extends React.Component {
             </div>
             <div className="col-lg-6">
               <Progress
-                percent={this.props.proposal.vendor.vendor.successRate}
+                percent={(
+                  this.props.proposal.vendor.vendor.jobComplatedReate /
+                  this.props.proposal.vendor.vendor.jobs
+                ).toFixed(0)}
                 size="small"
                 status="active"
                 style={{ width: "170px", display: "block" }}
               />
-              <span className="mr-2">{this.props.proposal.vendor.vendor.rate}</span>
+              <span className="mr-2">
+                {(
+                  this.props.proposal.vendor.vendor.rate /
+                  this.props.proposal.vendor.vendor.reviewCount
+                ).toFixed(1)}
+              </span>
               <Rate
                 disabled
-                value={this.props.proposal.vendor.vendor.rate}
+                value={(
+                  this.props.proposal.vendor.vendor.rate /
+                  this.props.proposal.vendor.vendor.reviewCount
+                ).toFixed(1)}
                 allowHalf={true}
                 className="like-rate"
               />
