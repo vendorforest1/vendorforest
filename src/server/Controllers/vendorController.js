@@ -475,6 +475,16 @@ export default () => {
       .populate({
         path: "vendor",
         model: "vendor",
+        populate: [
+          {
+            path: "service",
+            model: "service",
+          },
+          {
+            path: "category",
+            model: "category",
+          },
+        ],
       })
       .sort({
         createdAt: -1,
@@ -488,7 +498,7 @@ export default () => {
         }
         if (service && !category) {
           vendors.map((item) => {
-            if (String(item.vendor.service) === service) {
+            if (String(item.vendor.service._id) === service) {
               vendorData.push(item);
             }
           });
@@ -496,8 +506,8 @@ export default () => {
         if (service && category) {
           vendors.map((item) => {
             if (
-              String(item.vendor.service) === service &&
-              String(item.vendor.category) === category
+              String(item.vendor.service._id) === service &&
+              String(item.vendor.category._id) === category
             ) {
               vendorData.push(item);
             }

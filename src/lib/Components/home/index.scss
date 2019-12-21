@@ -700,12 +700,18 @@ html {
     margin-top: 5%;
     margin-bottom: 5%;
 }
-.group_button {
-    // border-color: #e9eced!important;
-    // border-radius: 0px!important;
-    // size: 100px;
-}
 .button_selected {
     background-color:white!important;
     color:black;
+}
+.alice-carousel__prev-btn-item,
+.alice-carousel__next-btn-item
+{
+    color: #07b107!important;
+}
+
+.alice-carousel__dots-item:hover,
+.alice-carousel__dots-item.__active
+{
+    background-color: #07b107!important;
 }

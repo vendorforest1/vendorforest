@@ -46,9 +46,9 @@ class TopRatedVendorCard extends React.Component {
         </div>
         <div className="mb-3">
           <Rate
-            value={(
-              this.props.vendor.vendor.rate / this.props.vendor.vendor.reviewCount
-            ).toFixed(1)}
+            value={Number(
+              (this.props.vendor.vendor.rate / this.props.vendor.vendor.reviewCount).toFixed(1),
+            )}
             allowHalf
             disabled
           />

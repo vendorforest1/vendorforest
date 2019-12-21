@@ -27,7 +27,7 @@ const steps = [
   },
 ];
 
-const icons = ["home", "bell", "usergroup-add", "money-collect", "dribbble-square"];
+const icons = ["icons_Home", "icons_Events", "icons_Weddings", "icons_Wellness", "icons_Venue"];
 
 class PostJob extends React.Component {
   constructor(props) {
@@ -153,7 +153,14 @@ class PostJob extends React.Component {
                   this.props.job.service === service._id ? "text-color" : ""
                 }`}
               >
-                <Icon type={icons[index]} className="h3 mr-2" /> {service.name}
+                {console.log(icons[index])}
+                <img
+                  src={require(`../../images/NewIcons/${icons[index]}.png`)}
+                  style={{ height: "40px" }}
+                  className="h3 mr-2"
+                  alt=""
+                />
+                {service.name}
               </span>
             </div>
           </div>

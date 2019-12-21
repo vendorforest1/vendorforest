@@ -50,6 +50,11 @@ class VendorItem extends React.Component {
             >
               {user.username}
             </h5>
+            {user.vendor.service && user.vendor.category && (
+              <p>
+                {user.vendor.service.name} / {user.vendor.category.name}
+              </p>
+            )}
             {/* <p>{this.displaySkills()}</p> */}
             <h6 className="text-blue">{constants.ACCOUNTTYPES[user.accountType]}</h6>
             <p className="text-grey">
