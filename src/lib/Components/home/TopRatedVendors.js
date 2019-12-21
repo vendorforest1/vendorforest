@@ -66,7 +66,7 @@ class TopRatedVendors extends React.Component {
           <div className="col-12">
             <h1 className="mb-5">Top vendors recommended for you</h1>
             <div id="toprated-carousel" className="carousel-inner">
-              <AliceCarousel items={this.generateVendors()} />
+              <AliceCarousel items={this.generateVendors()} buttonsDisabled />
             </div>
           </div>
         </div>
