@@ -103,30 +103,35 @@ class ProposalItem extends React.Component {
           {this.props.proposal.vendor && (
             <div className="col-lg-4 col-md-6 vendor-rate">
               <Progress
-                percent={Number(
+                percent={
+                  this.props.proposal.vendor.vendor.jobs !==0 ?
+                  Number(
                   (
                     this.props.proposal.vendor.vendor.jobComplatedReate /
                     this.props.proposal.vendor.vendor.jobs
                   ).toFixed(0),
-                )}
+                ) : 0}
                 size="small"
                 status="active"
                 className="job-progress"
               />
               <span className="mr-2">
-                {(
+                { this.props.proposal.vendor.vendor.reviewCount !== 0 ?
+                (
                   this.props.proposal.vendor.vendor.rate /
                   this.props.proposal.vendor.vendor.reviewCount
-                ).toFixed(1)}
+                ).toFixed(1) : 0}
               </span>
               <Rate
                 disabled
-                value={Number(
+                value={
+                  this.props.proposal.vendor.vendor.reviewCount !== 0 ? 
+                  
                   (
                     this.props.proposal.vendor.vendor.rate /
                     this.props.proposal.vendor.vendor.reviewCount
-                  ).toFixed(1),
-                )}
+                  ).toFixed(1)
+                 : 0}
                 allowHalf={true}
                 className="like-rate"
               />

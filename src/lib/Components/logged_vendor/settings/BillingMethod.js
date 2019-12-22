@@ -42,7 +42,7 @@ class VendorBillingMethod extends React.Component {
         >
           {this.props.user && (
             <div>
-              {this.props.user.connectedAccountId === null ? (
+              {!this.props.user.connectedAccountId  ? (
                 <Row style={{ textAlign: "center" }}>
                   <button className="disable" disabled>
                     <a

@@ -97,7 +97,7 @@ class VendorTeams extends React.Component {
           )}
           {teams && <div className="row">{generateTeams()}</div>}
         </Card>
-        {isPublic && (
+        {!isPublic && (
           <Modal
             title="Add Team"
             visible={this.state.isModal}

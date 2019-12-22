@@ -428,13 +428,13 @@ export default () => {
             const re = new RegExp(req.body.title, "i");
             query["title"] = re;
           }
-          if (
-            result[0].service &&
-            result[0].category &&
-            result[0].company &&
-            req.user.bsLocation &&
-            req.user.connectedAccountId
-          ) {
+          // if (
+          //   result[0].service &&
+          //   result[0].category &&
+          //   result[0].company &&
+          //   req.user.bsLocation &&
+          //   req.user.connectedAccountId
+          // ) {
             await Job.find({
               ...query,
               status: 0,
@@ -481,7 +481,7 @@ export default () => {
                 });
               });
           }
-        })
+        )
         .catch((err) => {
           env.MODE === "development" ? err.message : constants.PROD_COMMONERROR_MSG;
         });
