@@ -93,3 +93,23 @@
         }
     }
 }
+
+.head{
+    background-color: #f8f8f8;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    @media screen and (max-width: 768px){
+        h4{
+            font-size: 17px;
+        }
+    }
+    .button-primary{
+        max-width: 150px;
+        height: 45px;
+        line-height: 45px;
+        border-radius: 0;
+    }
+}

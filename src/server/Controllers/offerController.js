@@ -136,5 +136,30 @@ export default () => {
       });
   };
 
+  controllers.pendingOffers = async (req, res, next) => {
+    await Offer.find(req.body)
+      .then((offer) => {
+        if (!offer) {
+          return res.status(401).json({
+            status: 401,
+            message:
+              env.MODE === "development"
+                ? `Offer ${constants.DEV_EMPTYDOC_MSG}`
+                : constants.PROD_COMMONERROR_MSG,
+          });
+        }
+        return res.status(200).json({
+          status: 200,
+          message: "Offer has been accepted successfully.",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
   return controllers;
 };

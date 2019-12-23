@@ -1,6 +1,10 @@
 import React from "react";
-import VendorPastContractItem from "./PastContractItem";
-const { List, Card } = require("antd");
+import { Icon, List } from "antd";
+import PastContractItem from "./PastContractItem";
+import { connect } from "react-redux";
+import { constants } from "@Shared/constants";
+
+import { fetchPastContractsData } from "./essential";
 
 class PastConstracts extends React.Component {
   constructor(props) {
@@ -9,42 +13,71 @@ class PastConstracts extends React.Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    this.props.user &&
+      this.props.fetchPastContractsData({
+        vendor: this.props.user.userObj._id,
+        status: constants.CONTRACT_STATUS.END,
+      });
+  }
+
   render() {
     return (
-      <Card
-        title={<span className="h5 font-weight-bold">Closed Contracts</span>}
-        style={{ boxShadow: "0 1px 6px rgba(57,73,76,.35)", marginBottom: "50px" }}
-      >
+      <div className="past-contracts shadow">
+        <div className="head">
+          <h5 className="h5 font-weight-bold">Past Contracts</h5>
+        </div>
         <div className="contract-list-content">
-          <div>
-            <List
-              itemLayout="vertical"
-              size="large"
-              pagination={{
-                onChange: (page) => {
-                  process.env.NODE_ENV === "development" && console.log(page);
-                },
-                pageSize: 2,
-              }}
-              dataSource={this.props.contracts}
-              footer={<div></div>}
-              renderItem={(item, index) => (
-                <List.Item
-                  key={index}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    window.location.href = "/vendorjobdetails";
-                  }}
-                >
-                  <VendorPastContractItem contract={item} />
-                </List.Item>
-              )}
-            />
+          <div className="w-100">
+            {!this.props.pastContracts && this.props.pending && (
+              <div className="w-100 p-5 text-center loading-small">
+                <Icon type="sync" spin />
+              </div>
+            )}
+            {this.props.pastContracts && !this.props.pending && (
+              <List
+                itemLayout="vertical"
+                size="large"
+                pagination={{
+                  onChange: (page) => {
+                    process.env.NODE_ENV === "development" && console.log(page);
+                  },
+                  pageSize: 2,
+                }}
+                dataSource={this.props.pastContracts}
+                footer={<div></div>}
+                renderItem={(item, index) => (
+                  <List.Item
+                    key={index}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      window.location.href = `/vendor/contract/${item._id}`;
+                    }}
+                  >
+                    <PastContractItem contract={item} />
+                  </List.Item>
+                )}
+              />
+            )}
           </div>
         </div>
-      </Card>
+      </div>
     );
   }
 }
 
-export default PastConstracts;
+const mapStateToProps = ({ vendorDashboardReducer, loginReducer }) => {
+  const { error, success, pending, pastContracts } = vendorDashboardReducer;
+  const { user } = loginReducer;
+  return {
+    error,
+    success,
+    pending,
+    pastContracts,
+    user,
+  };
+};
+
+export default connect(mapStateToProps, {
+  fetchPastContractsData,
+})(PastConstracts);

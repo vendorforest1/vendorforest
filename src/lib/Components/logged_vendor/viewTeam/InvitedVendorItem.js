@@ -132,7 +132,7 @@ class InvitedVendorItem extends React.Component {
               </a>
             </div>
           )}
-          {console.log(this.props.member._id, this.props.user.userObj._id)}
+          {/* {console.log(this.props.member._id, this.props.user.userObj._id)} */}
           {this.props.member._id === this.props.user.userObj._id && (
             <div className="col-md-3 d-flex justify-content-end align-items-center">
               <a className="text-color pointer" onClick={this.accept}>

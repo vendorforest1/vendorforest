@@ -18,7 +18,13 @@ class Milestones extends React.Component {
     this.state = {};
     this.create = this.create.bind(this);
   }
-
+  componentWillReceiveProps(newProps) {
+    if (this.props.contract._id !== newProps.contract._id) {
+      this.props.fetchGetMilestonesData({
+        contract: newProps.contract._id,
+      });
+    }
+  }
   componentDidMount() {
     if (!this.props.mileStones) {
       this.props.fetchGetMilestonesData({

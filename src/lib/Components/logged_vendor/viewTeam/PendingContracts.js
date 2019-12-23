@@ -1,50 +1,99 @@
 import React from "react";
-import VendorPendingContractItem from "./PendingContractItem";
-const { Input, List, Card } = require("antd");
+import { List, Icon } from "antd";
+import { connect } from "react-redux";
+import PendingContractItem from "./PendingContractItem";
+import { constants } from "@Shared/constants";
 
-class VendorPendingConstracts extends React.Component {
+import { fetchPendingContractsData } from "./essential";
+
+class PendingContracts extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {};
   }
 
+  // static async fetchInitialData(store) {}
+  isAdmin() {
+    return this.props.team.admin._id === this.props.user.userObj._id;
+  }
+
+  UNSAFE_componentWillReceiveProps(newProps) {
+    if (this.props.team._id !== newProps.team._id) {
+      this.props.fetchPendingContractsData({
+        vendor: newProps.user.userObj._id,
+        status: constants.CONTRACT_STATUS.CREATED,
+      });
+    }
+  }
+  componentDidMount() {
+    this.props.user &&
+      this.props.fetchPendingContractsData({
+        vendor: this.props.user.userObj._id,
+        status: constants.CONTRACT_STATUS.CREATED,
+      });
+  }
+
   render() {
+    process.env.NODE_ENV === "development" && console.log(this.props.user);
     return (
-      <Card
-        title={<span className="h5 font-weight-bold">Pending Contracts</span>}
-        style={{ boxShadow: "0 1px 6px rgba(57,73,76,.35)", marginBottom: "50px" }}
-      >
+      <div className="pending-contracts shadow" style={{ marginBottom: "50px" }}>
+        <div className="head">
+          <h4 className="h5 font-weight-bold">My Pending Contracts</h4>
+        </div>
         <div className="contract-list-content">
-          <div>
-            <List
-              itemLayout="vertical"
-              size="large"
-              pagination={{
-                onChange: (page) => {
-                  process.env.NODE_ENV === "development" && console.log(page);
-                },
-                pageSize: 2,
-              }}
-              dataSource={this.props.contracts}
-              footer={<div></div>}
-              renderItem={(item, index) => (
-                <List.Item
-                  key={index}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    window.location.href = "/vendorjobdetails";
-                  }}
-                >
-                  <VendorPendingContractItem contract={item} />
-                </List.Item>
-              )}
-            />
+          <div className="w-100">
+            {!this.props.pendingContracts && this.props.pending && (
+              <div className="w-100 p-5 text-center loading-small">
+                <Icon type="sync" spin />
+              </div>
+            )}
+            {this.props.pendingContracts && !this.props.pending && (
+              <List
+                itemLayout="vertical"
+                size="large"
+                pagination={{
+                  onChange: (page) => {
+                    process.env.NODE_ENV === "development" && console.log(page);
+                  },
+                  pageSize: 2,
+                }}
+                dataSource={this.props.pendingContracts}
+                footer={<div></div>}
+                renderItem={(item, index) => (
+                  <List.Item
+                    key={index}
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      window.location.href = `/vendor/contract/${item._id}`;
+                    }}
+                  >
+                    <PendingContractItem contract={item} />
+                  </List.Item>
+                )}
+              />
+            )}
           </div>
         </div>
-      </Card>
+      </div>
     );
   }
 }
 
-export default VendorPendingConstracts;
+const mapStateToProps = ({ vendorViewTeamReducer, vendorDashboardReducer, loginReducer }) => {
+  const { error, success, pending, pendingContracts } = vendorDashboardReducer;
+  const { user } = loginReducer;
+  const { team } = vendorViewTeamReducer;
+  return {
+    error,
+    success,
+    pending,
+    pendingContracts,
+    user,
+    team,
+  };
+};
+
+export default connect(mapStateToProps, {
+  fetchPendingContractsData,
+})(PendingContracts);

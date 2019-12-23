@@ -181,7 +181,7 @@ class ClientBilling extends Component {
           }}
         >
           <div className="row">
-            {console.log("true or false =====", this.state.isStripe)}
+            {/* {console.log("true or false =====", this.state.isStripe)} */}
             <div className="col-md-8 mb-5">
               <Radio.Group
                 onChange={(e) => {

@@ -7,7 +7,8 @@ const FETCH_OFFERS_SUCCESS = "FETCH_OFFERS_SUCCESS";
 const FETCH_MSG_SUCCESS = "FETCH_MSG_SUCCESS";
 const FETCH_FAILURE = "FETCH_FAILURE";
 const CLEAR_FAILURE = "CLEAR_FAILURE";
-
+const FETCH_PENDINGCONTRACTS_SUCCESS = "FETCH_PENDINGCONTRACTS_SUCCESS";
+const FETCH_PASTCONTRACTS_SUCCESS = "FETCH_PASTCONTRACTS_SUCCESS";
 // Reducer
 export default function reducer(
   state = {
@@ -16,6 +17,8 @@ export default function reducer(
     team: undefined,
     offers: undefined,
     pending: false,
+    pendingContracts: undefined,
+    pastContracts: undefined,
   },
   action,
 ) {
@@ -35,6 +38,18 @@ export default function reducer(
       return {
         ...state,
         offers: action.payload,
+        pending: false,
+      };
+    case FETCH_PENDINGCONTRACTS_SUCCESS:
+      return {
+        ...state,
+        pendingContracts: action.payload,
+        pending: false,
+      };
+    case FETCH_PASTCONTRACTS_SUCCESS:
+      return {
+        ...state,
+        pastContracts: action.payload,
         pending: false,
       };
     case FETCH_MSG_SUCCESS:
@@ -74,6 +89,16 @@ const fetchTeamSuccess = (teamInfo) => ({
 const fetchOffersSuccess = (offersInfo) => ({
   type: FETCH_OFFERS_SUCCESS,
   payload: offersInfo,
+});
+
+const fetchPendingContractsSuccess = (contractsInfo) => ({
+  type: FETCH_PENDINGCONTRACTS_SUCCESS,
+  payload: contractsInfo,
+});
+
+const fetchPastContractsSuccess = (contractsInfo) => ({
+  type: FETCH_PASTCONTRACTS_SUCCESS,
+  payload: contractsInfo,
 });
 
 const fetchSuccessMsg = (success) => ({
@@ -145,6 +170,58 @@ export const fetchOffersData = (payload) => async (dispatch, getState) => {
       process.env.NODE_ENV === "development" && console.log(err);
       dispatch(fetchError(err.message));
     });
+};
+
+export const fetchPendingContractsData = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
+  let urlStr = "";
+  Object.keys(payload).forEach((key, index) => {
+    urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
+  });
+  return await fetch(`${apiUrl.GET_CONTRACTS}${urlStr}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      dispatch(fetchPendingContractsSuccess(result.data));
+    })
+    .catch((err) => {
+      process.env.NODE_ENV === "development" && console.log(err);
+      dispatch(fetchError(err.message));
+    });
+};
+
+export const fetchPastContractsData = (payload) => async (dispatch, getState) => {
+  dispatch(clearError());
+  dispatch(fetchRequest());
+  let urlStr = "";
+  Object.keys(payload).forEach((key, index) => {
+    urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
+  });
+  return await fetch(`${apiUrl.GET_CONTRACTS}${urlStr}`, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      process.env.NODE_ENV === "development" && console.log("contract result", result);
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      dispatch(fetchPastContractsSuccess(result.data));
+    })
+    .catch((err) => dispatch(fetchError(err.message)));
 };
 
 export const fetchOfferDecline = (payload) => async (dispatch, getState) => {

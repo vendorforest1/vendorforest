@@ -164,6 +164,7 @@ export const apiUrl = {
   GET_OFFERS: `${API_URL}/apis/offer/get_offers`,
   DECLINE_OFFER: `${API_URL}/apis/offer/decline`,
   ACCEPT_OFFER: `${API_URL}/apis/offer/accept`,
+  GET_PENDING_OFFERS: `${API_URL}/apis/offer/pending_offers`,
 
   CREATE_CONTRACT: `${API_URL}/apis/contract/create`,
   UPDATE_CONTRACT: `${API_URL}/apis/contract/update`,

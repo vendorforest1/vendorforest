@@ -1,8 +1,11 @@
 import React from "react";
+import { connect } from "react-redux";
+import { Tag, Icon, Avatar, Rate } from "antd";
 import moment from "moment";
-const { Icon, Avatar, Rate } = require("antd");
+import { constants, getTimeFromTimezone } from "@Shared/constants";
+import defaultProfileImage from "@Components/images/profileplace.png";
 
-class VendorPastContractItem extends React.Component {
+class PastContractItem extends React.Component {
   constructor(props) {
     super(props);
 
@@ -10,14 +13,37 @@ class VendorPastContractItem extends React.Component {
   }
 
   displaySkills() {
-    if (this.props.contract.job.skills.length === 0) {
-      return "";
-    }
-    let skills = this.props.contract.job.skills[0];
-    this.props.contract.job.skills.splice(0, 1).forEach((skill) => {
-      skills += ` / ${skill}`;
+    return this.props.contract.job.subCategories.map((subct, index) => {
+      return (
+        <Tag key={index} color="#ddd" className="text-dark mb-1">
+          {subct}
+        </Tag>
+      );
     });
-    return skills;
+  }
+
+  isLeftFeedBack() {
+    if (this.props.contract.reviews.length === 0) {
+      return false;
+    }
+    for (const review of this.props.contract.reviews) {
+      if (review.from._id === this.props.user.userObj._id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getContractRate() {
+    if (this.props.contract.reviews.length === 0) {
+      return 0.0;
+    }
+    for (const review of this.props.contract.reviews) {
+      if (review.from._id === this.props.user.userObj._id) {
+        return review.rate;
+      }
+    }
+    return 0.0;
   }
 
   render() {
@@ -26,36 +52,65 @@ class VendorPastContractItem extends React.Component {
         <div className="row">
           <div className="col-lg-6 mb-3">
             <h5 className="mb-2 text-grey">{this.props.contract.job.title}</h5>
-            <p className="mb-3 text-grey">{this.displaySkills()}</p>
+            <div className="mb-3 text-grey">{this.displaySkills()}</div>
             <p>
               <b>Completed date & time:</b> <Icon type="calendar" />{" "}
-              {moment(this.props.contract.completedDate).format("MMMM DD, YYYY")} -{" "}
+              {moment(this.props.contract.completedDateTime).format("MMMM DD, YYYY")} -{" "}
               <Icon type="clock-circle" />{" "}
-              {moment(this.props.contract.startDate).format("HH:mm A")}
+              {moment(this.props.contract.completedDateTime).format("HH:mm A")}
             </p>
             <p>
-              <b>Complete Budget:</b> <Icon type="dollar" />{" "}
-              <span className="text-color"> ${this.props.contract.completedBudget}</span>
+              <b>Complete Budget:</b> <Icon type="dollar" />
+              &nbsp;
+              <span className="text-color">
+                ${this.props.contract.budget}
+                {this.props.contract.job.budgetType === constants.BUDGET_TYPE.HOURLY
+                  ? "/hr"
+                  : ""}
+              </span>
             </p>
           </div>
           <div className="col-lg-6 d-md-flex justify-content-between d-block">
             <div className="user">
               <Avatar
-                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                src={this.props.contract.client.profileImage || defaultProfileImage}
                 className="photo"
               />
               <div className="info ml-2">
                 <h6>
                   <a href="" className="text-color font-weight-bold">
-                    {this.props.contract.employee.name}
+                    {this.props.contract.client.username}
                   </a>
                 </h6>
-                <p className="text-grey">{this.props.contract.employee.location}</p>
-                <p className="text-grey">{this.props.contract.employee.localTime}</p>
+                {this.props.contract.client.bsLocation && (
+                  <p className="text-grey">
+                    {this.props.contract.client.bsLocation.city} /{" "}
+                    {this.props.contract.client.bsLocation.country}
+                  </p>
+                )}
+                {this.props.contract.client.timeZone && (
+                  <p className="text-grey">
+                    {getTimeFromTimezone(this.props.contract.client.timeZone)}
+                  </p>
+                )}
               </div>
             </div>
             <div className="rate text-center">
-              <Rate disabled defaultValue={this.props.contract.rate} />
+              <Rate disabled value={this.getContractRate()} allowHalf />
+              {this.props.contract.status === constants.CONTRACT_STATUS.END &&
+                !this.isLeftFeedBack() && (
+                  <div>
+                    {/* <button
+                      className="button-primary mt-3"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        window.location.href = `/vendor/givefeedback/${this.props.contract._id}`;
+                      }}
+                    >
+                      Leave Feedback
+                    </button> */}
+                  </div>
+                )}
             </div>
           </div>
         </div>
@@ -64,4 +119,11 @@ class VendorPastContractItem extends React.Component {
   }
 }
 
-export default VendorPastContractItem;
+const mapStateToProps = ({ loginReducer }) => {
+  const { user } = loginReducer;
+  return {
+    user,
+  };
+};
+
+export default connect(mapStateToProps, {})(PastContractItem);

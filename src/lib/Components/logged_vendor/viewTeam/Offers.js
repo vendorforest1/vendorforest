@@ -21,6 +21,18 @@ class VendorOffers extends React.Component {
     return this.props.team.admin._id === this.props.user.userObj._id;
   }
 
+  UNSAFE_componentWillReceiveProps(newProps) {
+    if (this.props.team._id !== newProps.team._id) {
+      const params = {
+        team: newProps.team._id,
+        status: constants.OFFER_STATUS.CREATED,
+      };
+      if (!this.isAdmin()) {
+        params.receiver = this.props.user.userObj._id;
+      }
+      this.props.fetchOffersData(params);
+    }
+  }
   componentDidMount() {
     const params = {
       team: this.props.team._id,

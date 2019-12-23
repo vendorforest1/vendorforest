@@ -18,36 +18,7 @@ import globalStyle from "@Sass/index.scss";
 class VendorViewTeam extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      searchVendorName: "",
-      team: {
-        name: "Team1",
-        about:
-          "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Atque possimus facilis architecto iure eum aliquid, praesentium totam nemo molestiae rerum.",
-        members: [
-          {
-            name: "Gerard Kasemba",
-            email: "gerardkasemba@mail.com",
-            location: "Boston, MA, United States",
-            localTime: "4:30 PM",
-            rate: 5.0,
-            permission: 0,
-          },
-          {
-            name: "Gerard Kasemba",
-            email: "gerardkasemba@mail.com",
-            location: "Boston, MA, United States",
-            localTime: "4:30 PM",
-            rate: 5.0,
-            permission: 0,
-          },
-        ],
-      },
-      jobs: [],
-      pendingContracts: [],
-      pastContracts: [],
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -56,77 +27,6 @@ class VendorViewTeam extends React.Component {
         _id: this.props.match.params.id,
       });
     }
-    let jobs = [];
-    let pendingContracts = [];
-    let pastContracts = [];
-    for (let i = 0; i < 6; i++) {
-      jobs.push({
-        title: "The job title goes here all the time",
-        timeline: "June 12-06:30 AMToJune 15-06:30 PM",
-        location: "Boston, MA, USA",
-        client: {
-          name: "Jaon Micle",
-          location: "Boston, MA, USA",
-        },
-        budget: 3000,
-      });
-      pendingContracts.push({
-        job: {
-          title: `Wedding job for my brother ${i + 1}`,
-          skills: ["Photographer", "Wedding Photographer"],
-          content:
-            "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam, quod sunt. Quasi tempore, quo alias laborum nulla ipsum consequatur doloribus, eos dolorem minima provident impedit, veritatis commodi hic. Labore fuga tenetur illo, quo nesciunt eum. Molestias esse in facilis quasi exercitationem autem enim incidunt distinctio, tempore, atque hic amet omnis ipsa qui. Nisi, laboriosam ex doloremque impedit eveniet ducimus dolores labore ratione facilis nesciunt",
-          startDate: "June 12",
-          startTime: "06:30 AM",
-          endDate: "June 15",
-          endTime: "06:30 PM",
-          location: "Boston, MA, USA",
-          budget: 1500,
-        },
-        employee: {
-          email: "jaonmicle@outlook.com",
-          name: "Jaon Micle",
-          location: "China",
-          localTime: "03:00 AM",
-          online: true,
-        },
-        startDate: moment(),
-        estimatedEndDate: moment().add(7, "days"),
-        contractBudget: 2056,
-        progress: 50,
-        status: 0,
-      });
-      pastContracts.push({
-        job: {
-          title: `Wedding job for my brother ${i + 1}`,
-          skills: ["Photographer", "Wedding Photographer"],
-          content:
-            "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Totam, quod sunt. Quasi tempore, quo alias laborum nulla ipsum consequatur doloribus, eos dolorem minima provident impedit, veritatis commodi hic. Labore fuga tenetur illo, quo nesciunt eum. Molestias esse in facilis quasi exercitationem autem enim incidunt distinctio, tempore, atque hic amet omnis ipsa qui. Nisi, laboriosam ex doloremque impedit eveniet ducimus dolores labore ratione facilis nesciunt",
-          startDate: "June 12",
-          startTime: "06:30 AM",
-          endDate: "June 15",
-          endTime: "06:30 PM",
-          location: "Boston, MA, USA",
-          budget: 1500,
-        },
-        employee: {
-          email: "jaonmicle@outlook.com",
-          name: "Jaon Micle",
-          location: "China",
-          localTime: "03:00 AM",
-          online: true,
-        },
-        completedDate: moment(),
-        completedBudget: 2056,
-        status: 1,
-        rate: 5,
-      });
-    }
-    this.setState({
-      jobs: jobs,
-      pendingContracts: pendingContracts,
-      pastContracts: pastContracts,
-    });
   }
 
   UNSAFE__componentWillReceiveProps(newProps) {
@@ -158,8 +58,8 @@ class VendorViewTeam extends React.Component {
                   ) === -1 && (
                     <div>
                       <VendorOffers />
-                      <VendorPendingContracts contracts={this.state.pendingContracts} />
-                      <VendorPastContracts contracts={this.state.pastContracts} />
+                      <VendorPendingContracts />
+                      <VendorPastContracts />
                     </div>
                   )}
                 </div>

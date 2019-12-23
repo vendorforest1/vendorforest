@@ -15,5 +15,6 @@ router.post("/update", validator.body(update.body), offerCtr.update);
 router.get("/get_offers", validator.query(getOffers.query), offerCtr.getOffers);
 router.post("/decline", validator.body(decline.body), offerCtr.decline);
 router.post("/accept", validator.body(accept.body), offerCtr.accept);
+router.post("/pending_offers", offerCtr.pendingOffers);
 
 export default router;
