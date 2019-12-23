@@ -47,7 +47,7 @@ class AddPortfolio extends React.Component {
         portfolioId: this.props.portfolio._id,
         attachImgFiles: this.props.portfolio.attachImgFiles,
         attachVidFiles: this.props.portfolio.attachVidFiles,
-        title: this.props.portfolio.title,
+        // title: this.props.portfolio.title,
         caption: this.props.portfolio.caption,
       });
     }
@@ -59,7 +59,7 @@ class AddPortfolio extends React.Component {
         portfolioId: props.portfolio._id,
         attachImgFiles: props.portfolio.attachImgFiles,
         attachVidFiles: props.portfolio.attachVidFiles,
-        title: props.portfolio.title,
+        // title: props.portfolio.title,
         caption: props.portfolio.caption,
       };
     }
@@ -119,9 +119,12 @@ class AddPortfolio extends React.Component {
 
   save = async (e) => {
     e.preventDefault();
-    this.props.form.validateFields(["title", "caption"], async (error, values) => {
+    this.props.form.validateFields(["caption"], async (error, values) => {
       if (!error && !this.props.pending) {
-        const data = { ...values };
+        const data = values.caption
+          ? { title: " ", caption: values.caption }
+          : { title: " ", caption: " " };
+        console.log("data = ", data);
         (data.attachImgFiles = this.state.attachImgFiles.map((file) => {
           return {
             name: file.name,
@@ -243,16 +246,16 @@ class AddPortfolio extends React.Component {
               </div>
             </div> */}
             <div className="col-md-12">
-              <Form.Item label="Title">
+              {/* <Form.Item label="Title">
                 {getFieldDecorator("title", {
                   initialValue: this.state.title, //solution
                   rules: [{ required: true, message: "Please input title" }],
                 })(<Input placeholder="Title" name="title" size={"large"} />)}
-              </Form.Item>
+              </Form.Item> */}
               <Form.Item label="Caption">
                 {getFieldDecorator("caption", {
                   initialValue: this.state.caption, //solution
-                  rules: [{ required: true, message: "Please input Caption" }],
+                  rules: [{ required: false, message: "Please input Caption" }],
                 })(<TextArea placeholder="Caption" name="caption" rows={5} />)}
               </Form.Item>
             </div>

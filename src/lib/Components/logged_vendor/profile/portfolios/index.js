@@ -78,7 +78,7 @@ class VendorPortfolios extends React.Component {
                   )
                 }
               >
-                <Meta title={portfolio.title} description={portfolio.caption} />
+                <Meta description={portfolio.caption ? portfolio.caption : ""} />
               </Card>
             </div>
           );
