@@ -129,7 +129,7 @@ export default () => {
     const invitedVendors = req.body.invitedVendors;
     if (invitedVendors) {
       invitedVendors.map((vendorId) => {
-        console.log("Invited vendor list = ", vendorId);
+        // console.log("Invited vendor list = ", vendorId);
         User.find(
           {
             _id: vendorId,
@@ -159,7 +159,7 @@ export default () => {
               user: result[0].username,
               email: result[0].email,
             };
-            console.log("job posted", inviteVendor);
+            // console.log("job posted", inviteVendor);
             // inviteVendor.client = req.user.username;
             // inviteVendor.title = req.body.title;
             // inviteVendor.created = now.toUTCString();
@@ -205,7 +205,7 @@ export default () => {
             _id: 1,
           },
         ).then(async (vendors) => {
-          console.log("result[0]: ", vendors);
+          // console.log("result[0]: ", vendors);
 
           await vendors.map(async (vendor) => {
             await User.find(
@@ -231,7 +231,7 @@ export default () => {
                   description: req.body.description,
                   email: result[0].email,
                 };
-                console.log("job email content = ", emailContent);
+                // console.log("job email content = ", emailContent);
                 // emailContent.title = title;
                 // emailContent.description = description;
                 await mail.sendVendorJobPostedEmail(
@@ -435,53 +435,52 @@ export default () => {
           //   req.user.bsLocation &&
           //   req.user.connectedAccountId
           // ) {
-            await Job.find({
-              ...query,
-              status: 0,
+          await Job.find({
+            ...query,
+            status: 0,
+          })
+            .populate("service")
+            .populate("category")
+            .populate({
+              path: "proposales",
+              model: "proposal",
+              select: {
+                vendor: 1,
+              },
             })
-              .populate("service")
-              .populate("category")
-              .populate({
-                path: "proposales",
-                model: "proposal",
-                select: {
-                  vendor: 1,
-                },
-              })
-              .populate({
+            .populate({
+              path: "client",
+              model: "user",
+              populate: {
                 path: "client",
-                model: "user",
-                populate: {
-                  path: "client",
-                  model: "client",
-                },
-              })
-              .populate({
-                path: "hiredVendors",
-                model: "user",
-                populate: {
-                  path: "vendor",
-                  model: "vendor",
-                },
-              })
-              .sort({
-                createdAt: -1,
-              })
-              .then(async (jobs) => {
-                return res.status(200).json({
-                  status: 200,
-                  data: jobs,
-                });
-              })
-              .catch((error) => {
-                return res.status(500).json({
-                  status: 500,
-                  message:
-                    env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
-                });
+                model: "client",
+              },
+            })
+            .populate({
+              path: "hiredVendors",
+              model: "user",
+              populate: {
+                path: "vendor",
+                model: "vendor",
+              },
+            })
+            .sort({
+              createdAt: -1,
+            })
+            .then(async (jobs) => {
+              return res.status(200).json({
+                status: 200,
+                data: jobs,
               });
-          }
-        )
+            })
+            .catch((error) => {
+              return res.status(500).json({
+                status: 500,
+                message:
+                  env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+              });
+            });
+        })
         .catch((err) => {
           env.MODE === "development" ? err.message : constants.PROD_COMMONERROR_MSG;
         });

@@ -214,7 +214,7 @@ export const fetchMatchVendorData = (payload) => async (dispatch, getState) => {
 };
 
 export const fetchPostJob = async (payload) => {
-  console.log("post_information", payload);
+  // console.log("post_information", payload);
   return await fetch(apiUrl.CREATE_JOB, {
     method: "POST",
     headers: {

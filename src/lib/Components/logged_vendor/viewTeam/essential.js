@@ -251,6 +251,28 @@ export const fetchInviteDecline = async (payload) => {
     });
 };
 
+export const fetchMemberDecline = async (payload) => {
+  process.env.NODE_ENV === "development" && console.log("urlstring", payload);
+  return await fetch(apiUrl.DECLINE_TEAM_MEMBER, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {
+      throw err.message;
+    });
+};
+
 export const fetchTeamInviteUsers = async (payload) => {
   return await fetch(apiUrl.INVITE_TEAMUSERS, {
     method: "POST",
@@ -272,17 +294,43 @@ export const fetchTeamInviteUsers = async (payload) => {
     });
 };
 
+// export const fetchFindUser = async (payload) => {
+//   let urlStr = "";
+//   Object.keys(payload).forEach((key, index) => {
+//     urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
+//   });
+//   return await fetch(`${apiUrl.VENDOR_FIND}${urlStr}`, {
+//     method: "GET",
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//     },
+//   })
+//     .then((response) => response.json())
+//     .then((result) => {
+//       if (result.status >= 400) {
+//         throw new Error(result.message);
+//       }
+//       return result;
+//     })
+//     .catch((err) => {
+//       throw err.message;
+//     });
+// };
+
 export const fetchFindUser = async (payload) => {
   let urlStr = "";
-  Object.keys(payload).forEach((key, index) => {
-    urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
-  });
-  return await fetch(`${apiUrl.VENDOR_FIND}${urlStr}`, {
-    method: "GET",
+  // Object.keys(payload).forEach((key, index) => {
+  //   urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
+  // });
+  process.env.NODE_ENV === "development" && console.log("urlstring", urlStr);
+  return await fetch(apiUrl.VENDOR_FIND, {
+    method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(payload),
   })
     .then((response) => response.json())
     .then((result) => {

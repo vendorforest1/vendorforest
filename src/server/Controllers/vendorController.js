@@ -109,7 +109,7 @@ export default () => {
   /******************* */
   //CAUTION THIS IS A PUBLIC ROUTE
   controllers.findVendorByUserName = async (req, res, next) => {
-    env.MODE === "development" && console.log("findVendorByUserName");
+    env.MODE === "development" && console.log("findVendorByUserName why");
     await User.find({
       username: req.params.username,
       accountType: constants.ACCOUNT_TYPE.VENDOR,
@@ -215,7 +215,7 @@ export default () => {
   };
   controllers.find = async (req, res, next) => {
     await User.find({
-      email: req.query.email,
+      email: req.body.email,
       accountType: constants.ACCOUNT_TYPE.VENDOR,
     })
       .populate("client")
@@ -257,7 +257,7 @@ export default () => {
             },
             {
               $inc: {
-                profilePercent: 34,
+                profilePercent: 50,
               },
             },
           ).then(() => {});

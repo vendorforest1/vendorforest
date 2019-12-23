@@ -35,15 +35,13 @@ class InviteVendors extends React.Component {
         })
           .then((data) => {
             this.setState({ pending: false });
-            if (data.data.length > 0) {
+            if (data) {
               let newInvitedUsers = [...this.state.invitedUsers];
-              if (
-                newInvitedUsers.findIndex((user) => user.vendor._id === data.data[0]._id) > -1
-              ) {
+              if (newInvitedUsers.findIndex((user) => user._id === data.data._id) > -1) {
                 message.warning("This vendor added already.");
                 return;
               }
-              newInvitedUsers.push(data.data[0]);
+              newInvitedUsers.push(data.data);
               this.setState({
                 invitedUsers: newInvitedUsers,
               });

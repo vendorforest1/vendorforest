@@ -52,7 +52,7 @@ class VendorGiveFeedBack extends React.Component {
 
     return (
       <div className="givefeedback">
-        {console.log("pending result", this.props.pending)}
+        {/* {console.log("pending result", this.props.pending)} */}
         <VF_VendorHeader />
         <div className="content">
           <div className="container">

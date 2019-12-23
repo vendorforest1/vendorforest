@@ -158,7 +158,7 @@ class VendorHeader extends React.Component {
                   </Dropdown>
                   <Dropdown overlay={useriMenu}>
                     <a className="ant-dropdown-link" href="#/">
-                      <Icon type="user" style={{ fontSize: "20px" } }/>
+                      <Icon type="user" style={{ fontSize: "20px" }} />
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>

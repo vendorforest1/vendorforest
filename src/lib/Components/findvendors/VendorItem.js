@@ -32,7 +32,7 @@ class VendorItem extends React.Component {
   }
 
   render() {
-    console.log("vendor item = ", this.props.user);
+    // console.log("vendor item = ", this.props.user);
     const { user } = this.props;
     // const { vendor } = user;
     return (

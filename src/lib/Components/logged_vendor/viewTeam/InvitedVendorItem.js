@@ -85,15 +85,43 @@ class InvitedVendorItem extends React.Component {
           </div>
           <div className="col-md-4">
             <Progress
-              percent={this.props.member.vendor.jobComplatedReate}
+              percent={
+                this.props.member.vendor.jobs !== 0
+                  ? Number(
+                      (
+                        this.props.member.vendor.jobComplatedReate /
+                        this.props.member.vendor.jobs
+                      ).toFixed(0),
+                    )
+                  : 0
+              }
               size="small"
               status="active"
               className="job-progress"
               style={{ width: "165px" }}
             />
             <div>
-              <Rate disabled defaultValue={this.props.member.vendor.successRate} />
-              <span>{this.props.member.vendor.successRate}</span>
+              <Rate
+                disabled
+                value={
+                  this.props.member.vendor.reviewCount !== 0
+                    ? Number(
+                        (
+                          this.props.member.vendor.rate / this.props.member.vendor.reviewCount
+                        ).toFixed(1),
+                      )
+                    : 0
+                }
+              />
+              <span>
+                {this.props.member.vendor.reviewCount !== 0
+                  ? Number(
+                      (
+                        this.props.member.vendor.rate / this.props.member.vendor.reviewCount
+                      ).toFixed(1),
+                    )
+                  : 0}
+              </span>
             </div>
           </div>
           {this.isAdmin() && (
@@ -104,6 +132,7 @@ class InvitedVendorItem extends React.Component {
               </a>
             </div>
           )}
+          {console.log(this.props.member._id, this.props.user.userObj._id)}
           {this.props.member._id === this.props.user.userObj._id && (
             <div className="col-md-3 d-flex justify-content-end align-items-center">
               <a className="text-color pointer" onClick={this.accept}>

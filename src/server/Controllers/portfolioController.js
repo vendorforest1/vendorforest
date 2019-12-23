@@ -84,7 +84,7 @@ export default () => {
           },
           {
             $inc: {
-              profilePercent: 33,
+              profilePercent: 50,
             },
           },
         ).then(() => {});

@@ -29,15 +29,13 @@ class AddStepTwo extends React.Component {
         })
           .then((data) => {
             this.setState({ pending: false });
-            if (data.data.length > 0) {
+            if (data) {
               let newMembers = [...this.state.members];
-              if (
-                newMembers.findIndex((member) => member.vendor._id === data.data[0]._id) > -1
-              ) {
+              if (newMembers.findIndex((member) => member._id === data.data._id) > -1) {
                 message.warning("This vendor added already.");
                 return;
               }
-              newMembers.push(data.data[0]);
+              newMembers.push(data.data);
               this.setState({
                 members: newMembers,
               });

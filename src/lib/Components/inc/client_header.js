@@ -142,14 +142,14 @@ class VendorForestClientHeader extends React.Component {
                     className="mr-3"
                   >
                     <a className="ant-dropdown-link" href="#/">
-                      <Icon type="bell" style={{ fontSize: "20px" }}/>
+                      <Icon type="bell" style={{ fontSize: "20px" }} />
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
                   </Dropdown>
                   <Dropdown overlay={useriMenu}>
                     <a className="ant-dropdown-link" href="#/">
-                      <Icon type="user" style={{ fontSize: "20px" }}/>
+                      <Icon type="user" style={{ fontSize: "20px" }} />
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>

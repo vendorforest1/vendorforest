@@ -20,7 +20,7 @@ router.get("/get", isAuthenticatedForApi, vendorCtr.get);
 router.get("/:username", validator.query(find.query), vendorCtr.findVendorByUserName);
 
 router.use(isAuthenticatedForApi);
-router.get("/find", validator.query(find.query), vendorCtr.find);
+router.post("/find", validator.body(find.query), vendorCtr.find);
 router.get("/getvendor", validator.query(find.query), vendorCtr.getVendor);
 router.post("/update", validator.body(update.body), vendorCtr.update);
 router.post(

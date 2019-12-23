@@ -82,7 +82,7 @@ class VendorAbout extends React.Component {
                     <Rate
                       value={
                         vendor.vendor.reviewCount !== 0
-                          ? (vendor.vendor.rate / vendor.vendor.reviewCount).toFixed(1)
+                          ? Number((vendor.vendor.rate / vendor.vendor.reviewCount).toFixed(1))
                           : 0
                       }
                       disabled
@@ -100,7 +100,9 @@ class VendorAbout extends React.Component {
                   <Progress
                     percent={
                       vendor.vendor.jobs !== 0
-                        ? (vendor.vendor.jobComplatedReate / vendor.vendor.jobs).toFixed(0)
+                        ? Number(
+                            (vendor.vendor.jobComplatedReate / vendor.vendor.jobs).toFixed(0),
+                          )
                         : 0
                     }
                     size="small"

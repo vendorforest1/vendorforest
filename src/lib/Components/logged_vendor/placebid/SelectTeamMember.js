@@ -69,15 +69,32 @@ class SelectTeamMember extends React.Component {
               </div>
               <div className="col-md-4">
                 <Progress
-                  percent={member.vendor.jobComplatedReate}
+                  percent={
+                    member.vendor.jobs !== 0
+                      ? Number(
+                          (member.vendor.jobComplatedReate / member.vendor.jobs).toFixed(0),
+                        )
+                      : 0
+                  }
                   size="small"
                   status="active"
                   className="job-progress"
                   style={{ width: "165px" }}
                 />
                 <div>
-                  <Rate disabled defaultValue={member.vendor.successRate} />
-                  <span>{member.vendor.successRate}</span>
+                  <Rate
+                    disabled
+                    value={
+                      member.vendor.reviewCount !== 0
+                        ? Number((member.vendor.rate / member.vendor.reviewCount).toFixed(1))
+                        : 0
+                    }
+                  />
+                  <span>
+                    {member.vendor.reviewCount !== 0
+                      ? Number((member.vendor.rate / member.vendor.reviewCount).toFixed(1))
+                      : 0}
+                  </span>
                 </div>
               </div>
               <div className="col-md-3 d-flex justify-content-end align-items-center">

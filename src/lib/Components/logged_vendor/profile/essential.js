@@ -329,16 +329,17 @@ export const fetchServiceData = () => async (dispatch, getState) => {
 
 export const fetchFindUser = async (payload) => {
   let urlStr = "";
-  Object.keys(payload).forEach((key, index) => {
-    urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
-  });
-  process.env.NODE_ENV === "development" && console.log(urlStr);
-  return await fetch(`${apiUrl.VENDOR_FIND}${urlStr}`, {
-    method: "GET",
+  // Object.keys(payload).forEach((key, index) => {
+  //   urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
+  // });
+  process.env.NODE_ENV === "development" && console.log("urlstring", urlStr);
+  return await fetch(apiUrl.VENDOR_FIND, {
+    method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(payload),
   })
     .then((response) => response.json())
     .then((result) => {

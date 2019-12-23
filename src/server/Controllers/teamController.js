@@ -183,16 +183,16 @@ export default () => {
     await teamDoc
       .save()
       .then(async (team) => {
-        User.findOneAndUpdate(
-          {
-            _id: req.user._id,
-          },
-          {
-            $inc: {
-              profilePercent: 34,
-            },
-          },
-        ).then(() => {});
+        // User.findOneAndUpdate(
+        //   {
+        //     _id: req.user._id,
+        //   },
+        //   {
+        //     $inc: {
+        //       profilePercent: 34,
+        //     },
+        //   },
+        // ).then(() => {});
         return res.status(200).json({
           status: 200,
           data: team,
@@ -568,6 +568,100 @@ export default () => {
           status: 200,
           data: team,
           message: "Invitation has been decline.",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
+  controllers.memberDecline = async (req, res, next) => {
+    // console.log(req.body);
+    await Team.findOneAndUpdate(
+      {
+        _id: req.body._id,
+        members: req.body.memberId,
+      },
+      {
+        $pull: {
+          members: req.body.memberId,
+        },
+      },
+      {
+        new: true,
+      },
+    )
+      .populate({
+        path: "admin",
+        model: "user",
+        populate: {
+          path: "vendor",
+          model: "vendor",
+          populate: [
+            {
+              path: "service",
+              model: "service",
+            },
+            {
+              path: "category",
+              model: "category",
+            },
+          ],
+        },
+      })
+      .populate({
+        path: "members",
+        model: "user",
+        populate: {
+          path: "vendor",
+          model: "vendor",
+          populate: [
+            {
+              path: "service",
+              model: "service",
+            },
+            {
+              path: "category",
+              model: "category",
+            },
+          ],
+        },
+      })
+      .populate({
+        path: "invitedUsers",
+        model: "user",
+        populate: {
+          path: "vendor",
+          model: "vendor",
+          populate: [
+            {
+              path: "service",
+              model: "service",
+            },
+            {
+              path: "category",
+              model: "category",
+            },
+          ],
+        },
+      })
+      .then(async (team) => {
+        if (!team) {
+          return res.status(401).json({
+            status: 401,
+            message:
+              env.MODE === "development"
+                ? `Team ${constants.DEV_EMPTYDOC_MSG}`
+                : constants.PROD_COMMONERROR_MSG,
+          });
+        }
+        return res.status(200).json({
+          status: 200,
+          data: team,
+          message: "Member has been deleted.",
         });
       })
       .catch((error) => {

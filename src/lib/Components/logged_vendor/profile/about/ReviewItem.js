@@ -65,7 +65,7 @@ class ReviewItem extends React.Component {
             <p className="text-grey font-italic">{this.props.review.feedback}</p>
           </div>
           <div>
-            <Rate value={this.props.review.rate} disabled allowHalf />
+            <Rate value={Number(this.props.review.rate)} disabled allowHalf />
             <span className="text-grey">{this.props.review.rate}</span>
             <div className="d-flex justify-content-between mt-2">{generateBadges()}</div>
           </div>

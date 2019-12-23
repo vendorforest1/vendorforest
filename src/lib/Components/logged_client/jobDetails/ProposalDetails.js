@@ -87,13 +87,15 @@ class ProposalDetails extends React.Component {
                   <div className="col-md-5 vendor-status">
                     <Progress
                       percent={
-                        this.props.proposal.vendor.vendor.jobs !== 0?
-                        Number(
-                        (
-                          this.props.proposal.vendor.vendor.jobComplatedReate /
-                          this.props.proposal.vendor.vendor.jobs
-                        ).toFixed(0),
-                      ) : 0}
+                        this.props.proposal.vendor.vendor.jobs !== 0
+                          ? Number(
+                              (
+                                this.props.proposal.vendor.vendor.jobComplatedReate /
+                                this.props.proposal.vendor.vendor.jobs
+                              ).toFixed(0),
+                            )
+                          : 0
+                      }
                       size="small"
                       status="active"
                       className="job-progress"
@@ -101,13 +103,15 @@ class ProposalDetails extends React.Component {
                     <Rate
                       disabled
                       value={
-                        this.props.proposal.vendor.vendor.reviewCount !== 0 ?
-                        Number(
-                        (
-                          this.props.proposal.vendor.vendor.rate /
-                          this.props.proposal.vendor.vendor.reviewCount
-                        ).toFixed(1),
-                      ) : 0}
+                        this.props.proposal.vendor.vendor.reviewCount !== 0
+                          ? Number(
+                              (
+                                this.props.proposal.vendor.vendor.rate /
+                                this.props.proposal.vendor.vendor.reviewCount
+                              ).toFixed(1),
+                            )
+                          : 0
+                      }
                       allowHalf={true}
                       className="like-rate"
                     />
@@ -156,7 +160,7 @@ class ProposalDetails extends React.Component {
                   <Icon type="sync" spin />
                 </div>
               )}
-              {console.log("review length = ", this.props.reviews.length)}
+              {/* {console.log("review length = ", this.props.reviews.length)} */}
               {!this.props.pending && this.props.reviews.length > 0 && (
                 <List
                   itemLayout="vertical"

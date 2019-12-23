@@ -103,3 +103,19 @@ export const inviteDecline = {
       .required(),
   }),
 };
+
+export const memberDecline = {
+  user: Joi.object({
+    accountType: Joi.number().allow([constants.ACCOUNT_TYPE.VENDOR]),
+  }),
+  body: Joi.object({
+    _id: Joi.string()
+      .regex(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
+      .length(24)
+      .required(),
+    memberId: Joi.string()
+      .regex(/^(?=[a-f\d]{24}$)(\d+[a-f]|[a-f]+\d)/i)
+      .length(24)
+      .required(),
+  }),
+};

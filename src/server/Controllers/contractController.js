@@ -243,7 +243,7 @@ export default () => {
             },
           },
         ).then(() => {});
-        console.log("end contract === ", contract);
+        // console.log("end contract === ", contract);
         const vendorModelId = contract.vendor.vendor._id;
         const paidPrice = contract.paidPrice;
         const jobCompletedRate = paidPrice !== 0 ? 100 : 0;
@@ -260,7 +260,7 @@ export default () => {
           },
         )
           .then((result) => {
-            console.log("after saving", result);
+            // console.log("after saving", result);
             return res.status(200).json({
               status: 200,
               data: result,
@@ -284,7 +284,7 @@ export default () => {
   };
 
   controllers.updateHireProposal = async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     await Contract.findOneAndUpdate(
       {
         _id: req.body.contract,

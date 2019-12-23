@@ -11,6 +11,7 @@ import {
   inviteUsers,
   update,
   getTeams,
+  memberDecline,
 } from "./validation";
 
 const router = express.Router();
@@ -26,7 +27,7 @@ router.post("/update", validator.body(update.body), teamCtr.update);
 router.post("/invite_users", validator.body(inviteUsers.body), teamCtr.inviteUsers);
 router.post("/invite_accept", validator.body(inviteAccept.body), teamCtr.inviteAccept);
 router.post("/invite_decline", validator.body(inviteDecline.body), teamCtr.inviteDecline);
-
+router.post("/member_decline", validator.body(memberDecline.body), teamCtr.memberDecline);
 //   return router;
 // }
 
