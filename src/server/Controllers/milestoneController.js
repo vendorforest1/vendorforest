@@ -17,7 +17,6 @@ export default () => {
   const controllers = {};
 
   controllers.create = async (req, res, next) => {
-    console.log("create milestone =====", req.body);
     const newMilestone = new Milestone({
       description: req.body.description,
       price: req.body.price,

@@ -141,7 +141,7 @@ class VendorForestClientHeader extends React.Component {
                     overlay={<Menu onClick={this.handleIcon}>{this.notifiMenu()}</Menu>}
                     className="mr-3"
                   >
-                    <a className="ant-dropdown-link" href="#/">
+                    <a className="ant-dropdown-link" href="/notification">
                       <Icon type="bell" style={{ fontSize: "20px" }} />
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
@@ -184,7 +184,7 @@ class VendorForestClientHeader extends React.Component {
                         <a href="#/">HELP</a>
                       </p>
                       <p className=" text-center">
-                        <a href="#/">NOTIFICATION</a>
+                        <a href="/notification">NOTIFICATION</a>
                       </p>
                       <p className=" text-center">
                         <a href="/client/settings">SETTINGS</a>

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { constants } from "@Config/index";
 
 const NotificationSchema = new mongoose.Schema(
   {
@@ -10,6 +11,13 @@ const NotificationSchema = new mongoose.Schema(
     isRead: {
       type: Boolean,
       default: false,
+    },
+    status: {
+      type: Number,
+      default: constants.NOTIFICATION_STATUS.CREATED,
+    },
+    urlId: {
+      type: String,
     },
   },
   {

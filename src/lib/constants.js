@@ -35,6 +35,10 @@ export const constants = {
     LESS30: 1,
     MORE30: 2,
   },
+  NOTIFICATION_STATUS: {
+    CREATED: 0,
+    DELETED: 1,
+  },
   AVB_HRSPERWEEKS: ["Less than 10hrs/week", "10 ~ 30hrs/week", "30+ hrs/week "],
   JOB_STATUS: {
     POSTED: 0,
@@ -108,12 +112,14 @@ export const apiUrl = {
   CLIENT_POST_RESETPASS: `${API_URL}/apis/client/resetpass`,
   CLIENT_POST_NOTIFYSETTING: `${API_URL}/apis/client/notification`,
   GET_NOTIFICATION: `${API_URL}/apis/client/getnotifications`,
+  GET_DELETED_NOTIFICATION: `${API_URL}/apis/client/get_deleted_notifications`,
   GET_PUB_KEY: `${API_URL}/apis/client/getpubkey`,
   GET_SETUP_INTENT: `${API_URL}/apis/client/getsetupintent`,
   GET_CLIENT_ID: `${API_URL}/apis/client/getclientid`,
   UPDATE_CLIENT_ID: `${API_URL}/apis/client/update_clientid`,
   GET_CARD_DIGITS: `${API_URL}/apis/client/get_card_digits`,
   GET_VENDOR_PROFILE: `${API_URL}/apis/vendor`,
+  DELETE_NOTIFICATION: `${API_URL}/apis/client/del_notification`,
 
   VENDOR_GET: `${API_URL}/apis/vendor/get`,
   VENDOR_FIND: `${API_URL}/apis/vendor/find`,

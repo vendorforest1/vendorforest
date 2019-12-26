@@ -127,59 +127,7 @@ export default () => {
 
   controllers.create = async (req, res) => {
     const invitedVendors = req.body.invitedVendors;
-    if (invitedVendors) {
-      invitedVendors.map((vendorId) => {
-        // console.log("Invited vendor list = ", vendorId);
-        User.find(
-          {
-            _id: vendorId,
-          },
-          {
-            // email: 1,
-            // phone: 1,
-          },
-        )
-          .then(async (result) => {
-            const vendorEmail = result[0].email;
-            const vendorID = result[0]._id;
-            const phoneNumber = result[0].phone;
-            const notiDescription = `You are invited to this job. Title: ${req.body.title}`;
-            saveNotification(vendorID, notiDescription);
-            sendSMS(
-              phoneNumber,
-              "You are invited to this job",
-              `Title: ${req.body.title} \n Please bid on this job. \n vendorforest.com`,
-            );
-            const now = new Date();
-            const inviteVendor = {
-              client: req.user.username,
-              title: req.body.title,
-              created: now.toUTCString(),
-              budget: req.body.budget,
-              user: result[0].username,
-              email: result[0].email,
-            };
-            // console.log("job posted", inviteVendor);
-            // inviteVendor.client = req.user.username;
-            // inviteVendor.title = req.body.title;
-            // inviteVendor.created = now.toUTCString();
-            // inviteVendor.budget = req.body.budget;
-            await mail.sendVendorEmail(
-              inviteVendor,
-              "VendorForest information!",
-              (err, msg) => {
-                if (err) {
-                  return err;
-                }
-                return;
-              },
-            );
-          })
-          .catch((err) => {
-            env.MODE === "development" && console.log("error occured", err);
-          });
-      });
-    }
+    var jobId;
     const newJob = new Job({ ...req.body, client: req.user._id });
     const title = req.body.title;
     const description = req.body.description;
@@ -195,6 +143,7 @@ export default () => {
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
+        jobId = job._id;
         console.log("before sending email", job);
         // send notification
         await Vendor.find(
@@ -224,7 +173,7 @@ export default () => {
                 const vendorPhone = result[0].phone;
                 const vendorTitle = "New job posted";
                 const smsDescription = `Title: ${title} \n This job is matched well to your skill. \n vendorforest.com`;
-                saveNotification(vendorId, notificationDescription);
+                saveNotification(vendorId, notificationDescription, `/vendor/job/${jobId}`);
                 sendSMS(vendorPhone, vendorTitle, smsDescription);
                 const emailContent = {
                   title: req.body.title,
@@ -265,6 +214,55 @@ export default () => {
           message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
+
+    if (invitedVendors) {
+      invitedVendors.map((vendorId) => {
+        // console.log("Invited vendor list = ", vendorId);
+        User.find(
+          {
+            _id: vendorId,
+          },
+          {
+            // email: 1,
+            // phone: 1,
+          },
+        )
+          .then(async (result) => {
+            const vendorEmail = result[0].email;
+            const vendorID = result[0]._id;
+            const phoneNumber = result[0].phone;
+            const notiDescription = `You are invited to this job. Title: ${req.body.title}`;
+            saveNotification(vendorID, notiDescription, `/vendor/job/${jobId}`);
+            sendSMS(
+              phoneNumber,
+              "You are invited to this job",
+              `Title: ${req.body.title} \n Please bid on this job. \n vendorforest.com`,
+            );
+            const now = new Date();
+            const inviteVendor = {
+              client: req.user.username,
+              title: req.body.title,
+              created: now.toUTCString(),
+              budget: req.body.budget,
+              user: result[0].username,
+              email: result[0].email,
+            };
+            await mail.sendVendorEmail(
+              inviteVendor,
+              "VendorForest information!",
+              (err, msg) => {
+                if (err) {
+                  return err;
+                }
+                return;
+              },
+            );
+          })
+          .catch((err) => {
+            env.MODE === "development" && console.log("error occured", err);
+          });
+      });
+    }
   };
 
   controllers.initChat = async (req, res) => {
@@ -503,6 +501,7 @@ export default () => {
         saveNotification(
           clientId,
           `Vendor has completed the Job. Title is ${req.body.title}. Please confirm this.`,
+          `/client/contract/${req.body.contractId}`,
         );
         sendSMS(clientPhone, "Vendor has completed the Job", smsDescription);
         //send email.

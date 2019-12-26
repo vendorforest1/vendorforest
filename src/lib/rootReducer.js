@@ -31,6 +31,7 @@ import vendorReviewReducer from "@Components/logged_vendor/givefeedback/essentia
 import clientFindVendorReducer from "@Components/findvendors/essential";
 
 import headerNotiReducer from "@Components/inc/essential";
+import notificationReducer from "@Components/notification/essential";
 
 const reducers = {
   loginReducer,
@@ -56,6 +57,7 @@ const reducers = {
   vendorContractDetailsReducer,
   vendorReviewReducer,
   headerNotiReducer,
+  notificationReducer,
 };
 const config = {
   key: "primary",

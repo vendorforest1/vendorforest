@@ -24,6 +24,7 @@ router.post(
   clientCtrl.updateNotifySettings,
 );
 
-router.get("/getnotifications", clientCtrl.getNotifications);
-
+router.post("/getnotifications", clientCtrl.getNotifications);
+router.post("/get_deleted_notifications", clientCtrl.getDeletedNotifications);
+router.post("/del_notification", clientCtrl.delNotification);
 export default router;

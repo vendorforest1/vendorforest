@@ -44,6 +44,8 @@ import HowItWorks from "@Components/how_it_works";
 import Term from "@Components/terms";
 import Privacy from "@Components/privacy";
 
+import Notification from "@Components/notification";
+
 export default [
   {
     path: `/`,
@@ -84,6 +86,11 @@ export default [
     path: "/findvendors",
     exact: true,
     component: FindVendors,
+  },
+  {
+    path: "/notification",
+    exact: true,
+    component: Notification,
   },
 
   /*================================== CLIENT LINKS ==========================*/

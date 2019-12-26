@@ -49,6 +49,10 @@ export const constants = {
     DECLINE: 1,
     HIRED: 2,
   },
+  NOTIFICATION_STATUS: {
+    CREATED: 0,
+    DELETED: 1,
+  },
   CONTRACT_STATUS: {
     CREATED: 0,
     END: 1,

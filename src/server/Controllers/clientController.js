@@ -294,17 +294,52 @@ export default () => {
 
   controllers.getNotifications = async (req, res) => {
     const user = req.user._id;
-
-    // await Notification.find({ username: ObjectId(user) })
-    await Notification.find({ username: user })
+    const query = { username: user, status: req.body.status };
+    await Notification.find(query)
       .sort({ createdAt: -1 })
-      .limit(10)
       .then((result) => {
         return res.status(200).json({
           data: result,
         });
       })
       .catch((err) => env.MODE === "development" && console.log("err = ", err));
+  };
+
+  controllers.getDeletedNotifications = async (req, res) => {
+    const user = req.user._id;
+    const query = { username: user, status: req.body.status };
+    await Notification.find(query)
+      .sort({ createdAt: -1 })
+      .then((result) => {
+        return res.status(200).json({
+          data: result,
+        });
+      })
+      .catch((err) => env.MODE === "development" && console.log("err = ", err));
+  };
+
+  controllers.delNotification = async (req, res) => {
+    // await Notification.find({ username: ObjectId(user) })
+    await Notification.findOneAndUpdate(
+      {
+        _id: req.body._id,
+      },
+      {
+        status: req.body.status,
+      },
+    )
+      .then((result) => {
+        return res.status(200).json({
+          data: result,
+          message: "Notification has been deleted successfully.",
+        });
+      })
+      .catch((err) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
   };
 
   return controllers;
