@@ -1,4 +1,6 @@
 import { apiUrl, constants } from "@Shared/constants";
+import { async } from "q";
+import { message } from "antd";
 
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
@@ -240,7 +242,7 @@ export const fetchRleaseMilestoneData = (payload) => async (dispatch, getState) 
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify({ _id: payload._id }),
   })
     .then((response) => response.json())
     .then((result) => {
@@ -257,6 +259,34 @@ export const fetchRleaseMilestoneData = (payload) => async (dispatch, getState) 
       dispatch(fetchMilestonesSuccess(newMilestones));
       dispatch(fetchContractSuccess(newContract));
       dispatch(fetchSuccessMsg(result.message));
+
+      const params = {
+        status: constants.MILESTONE_STATUS.CREATED,
+        contract: result.data.contract,
+      };
+      return fetch(apiUrl.MILESTONE_RESULT, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(params),
+      })
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.status >= 400) {
+            throw new Error(result.message);
+          }
+          if (result.data.length > 0) {
+            message.warning("More milestones");
+          } else {
+            message.success("yes. no milestone");
+            window.location.href = `/client/givefeedback/${payload.contractId}`;
+          }
+        })
+        .catch((err) => {
+          throw err.message;
+        });
     })
     .catch((err) => dispatch(fetchError(err.message)));
 };

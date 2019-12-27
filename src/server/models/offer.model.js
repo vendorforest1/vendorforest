@@ -37,8 +37,6 @@ const ProposalSchema = new mongoose.Schema(
   },
 );
 
-ProposalSchema.post("init", function(doc) {
-  // env.MODE === "development" && console.log("init hook", doc)
-});
+ProposalSchema.post("init", function(doc) {});
 
 export default mongoose.model("offer", ProposalSchema);

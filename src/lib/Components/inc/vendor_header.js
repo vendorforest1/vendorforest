@@ -146,10 +146,7 @@ class VendorHeader extends React.Component {
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
                   </Dropdown> */}
-                  <Dropdown
-                    overlay={<Menu onClick={this.handleIcon}>{this.notifiMenu()}</Menu>}
-                    className="mr-3"
-                  >
+                  <Dropdown overlay={<Menu onClick={this.handleIcon}></Menu>} className="mr-3">
                     <a className="ant-dropdown-link" href="/notification">
                       <Icon type="bell" style={{ fontSize: "20px" }} />
                       &nbsp;

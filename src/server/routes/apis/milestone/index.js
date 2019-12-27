@@ -19,5 +19,5 @@ router.post("/req_release", validator.body(reqRelease.body), milestoneCtr.reqRel
 router.post("/cancel", validator.body(cancel.body), milestoneCtr.cancel);
 router.get("/get", validator.query(get.query), milestoneCtr.get);
 router.get("/get_milestones", validator.query(getMilestones.query), milestoneCtr.getMilestones);
-
+router.post("/milestone_result", milestoneCtr.milestoneResult);
 export default router;

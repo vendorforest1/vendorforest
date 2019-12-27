@@ -27,6 +27,10 @@ const JobSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    totalBudget: {
+      type: Number,
+      required: true,
+    },
     paidPrice: {
       type: Number,
       default: 0,

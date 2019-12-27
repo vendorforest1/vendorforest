@@ -124,7 +124,6 @@ class AddPortfolio extends React.Component {
         const data = values.caption
           ? { title: " ", caption: values.caption }
           : { title: " ", caption: " " };
-        console.log("data = ", data);
         (data.attachImgFiles = this.state.attachImgFiles.map((file) => {
           return {
             name: file.name,

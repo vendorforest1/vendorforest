@@ -36,8 +36,6 @@ const TeamSchema = new mongoose.Schema(
   },
 );
 
-TeamSchema.post("init", function(doc) {
-  // env.MODE === "development" && console.log("init hook", doc)
-});
+TeamSchema.post("init", function(doc) {});
 
 export default mongoose.model("team", TeamSchema);

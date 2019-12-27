@@ -579,7 +579,6 @@ export default () => {
   };
 
   controllers.memberDecline = async (req, res, next) => {
-    // console.log(req.body);
     await Team.findOneAndUpdate(
       {
         _id: req.body._id,

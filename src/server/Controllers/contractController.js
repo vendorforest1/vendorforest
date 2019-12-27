@@ -12,7 +12,11 @@ export default () => {
   const controllers = {};
 
   controllers.create = async (req, res, next) => {
-    const newContract = new Contract({ ...req.body, client: req.user._id });
+    const newContract = new Contract({
+      ...req.body,
+      client: req.user._id,
+      totalBudget: req.body.budget,
+    });
     await newContract
       .save()
       .then(async (contract) => {
@@ -245,16 +249,12 @@ export default () => {
         ).then(() => {});
         // console.log("end contract === ", contract);
         const vendorModelId = contract.vendor.vendor._id;
-        const paidPrice = contract.paidPrice;
-        const jobCompletedRate = paidPrice !== 0 ? 100 : 0;
         await Vendor.findOneAndUpdate(
           {
             _id: vendorModelId,
           },
           {
             $inc: {
-              totalEarning: paidPrice,
-              jobComplatedReate: jobCompletedRate,
               jobs: 1,
             },
           },

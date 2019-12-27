@@ -208,7 +208,6 @@ const mailService = () => {
   };
 
   mailObject.sendJobCompletedEmail = async (jobCompleted, subject, callback) => {
-    console.log("I am in sent email.");
     const mailOptions = {
       subject: subject, // Subject line
       //href: `${env.API_URL}/reset/${user.token}`,

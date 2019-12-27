@@ -91,7 +91,13 @@ class ClientContractDetails extends React.Component {
     fetchEndContractData(params)
       .then((data) => {
         message.success(data.message);
-        window.location.href = `/client/givefeedback/${this.props.contract._id}`;
+        if (this.props.match.params.id) {
+          this.props.fetchGetContractData({
+            _id: this.props.match.params.id,
+          });
+        }
+        // window.location.reload();
+        // window.location.href = `/client/givefeedback/${this.props.contract._id}`;
       })
       .catch((error) => {
         process.env.NODE_ENV === "development" && console.log(error);
@@ -178,6 +184,18 @@ class ClientContractDetails extends React.Component {
                                   onClick={this.createNewMilestone}
                                 >
                                   Create New Milestone
+                                </button>
+                              </div>
+                            )}
+                          {this.props.contract.status !== constants.CONTRACT_STATUS.END &&
+                            !this.isLeftFeedBack() && (
+                              <div>
+                                <button
+                                  className={`button-primary`}
+                                  style={{ width: "200px" }}
+                                  // onClick={this.createNewMilestone}
+                                >
+                                  Dispute
                                 </button>
                               </div>
                             )}

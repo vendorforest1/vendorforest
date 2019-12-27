@@ -1,6 +1,7 @@
 // @ts-nocheck
 import Milestone from "@Models/milestone.model";
 import User from "@Models/user.model";
+import Vendor from "@Models/vendor.model";
 import Contract from "@Models/contract.model";
 import Notifi from "@Models/notification.model";
 import getEnv, { constants } from "@Config/index";
@@ -276,6 +277,9 @@ export default () => {
           const vendorPhone = milestone[0].contract.vendor.phone;
           const vendorID = milestone[0].contract.vendor._id;
           const price = milestone[0].price;
+          const vendorModelId = milestone[0].contract.vendor.vendor;
+          const totalBudget = milestone[0].contract.totalBudget;
+          const rate = price < totalBudget ? ((price / totalBudget) * 100).toFixed(0) : 100;
           stripe.transfers
             .create({
               amount: price * 100 * 0.75,
@@ -339,6 +343,20 @@ export default () => {
                             : constants.PROD_COMMONERROR_MSG,
                       });
                     }
+                    //increse vendor's work history
+                    await Vendor.findOneAndUpdate(
+                      {
+                        _id: vendorModelId,
+                      },
+                      {
+                        $inc: {
+                          totalEarning: price,
+                          jobComplatedReate: rate,
+                        },
+                      },
+                    ).then((resul) => {
+                      console.log("saving vendor info result = ", resul);
+                    });
                     const emailTitle = "Milestone has been released.";
                     const description = `Milestone has been released. Your client released the milestone. Amount is ${milestone.price *
                       0.75} USD.`;
@@ -555,8 +573,24 @@ export default () => {
   };
 
   controllers.getMilestones = async (req, res, next) => {
-    console.log("returned query ===== ", req.query);
     await Milestone.find(req.query)
+      .then(async (milestones) => {
+        return res.status(200).json({
+          status: 200,
+          data: milestones,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message:
+            env.NODE_ENV === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
+  controllers.milestoneResult = async (req, res, next) => {
+    await Milestone.find(req.body)
       .then(async (milestones) => {
         return res.status(200).json({
           status: 200,

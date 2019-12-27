@@ -154,8 +154,6 @@ export default () => {
             _id: 1,
           },
         ).then(async (vendors) => {
-          // console.log("result[0]: ", vendors);
-
           await vendors.map(async (vendor) => {
             await User.find(
               {

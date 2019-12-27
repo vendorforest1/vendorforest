@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Input, Form, Divider, InputNumber } from "antd";
+import { Icon, Input, Form, Divider, InputNumber, message } from "antd";
 import { connect } from "react-redux";
 import moment from "moment";
 import { constants } from "@Shared/constants";
@@ -8,6 +8,7 @@ import {
   fetchCreateMilestoneData,
   fetchRleaseMilestoneData,
   fetchCancelMilestoneData,
+  // fetchMilestoneResult,
 } from "./essential";
 
 class Milestones extends React.Component {
@@ -54,6 +55,7 @@ class Milestones extends React.Component {
     this._button = index + 1;
     this.props.fetchRleaseMilestoneData({
       _id: this.props.milestones[index]._id,
+      contractId: this.props.contract._id,
     });
   }
 
@@ -103,7 +105,7 @@ class Milestones extends React.Component {
                   {this.props.pending && this._button === index + 1 && (
                     <Icon type="sync" spin className="mr-2 text-success" />
                   )}
-                  {this.props.contract.status !== constants.CONTRACT_STATUS.END ? (
+                  {this.props.contract.status === constants.CONTRACT_STATUS.END ? (
                     <a
                       className={`pointer ${
                         milestone.status === constants.MILESTONE_STATUS.REQ_RELEASED
@@ -117,7 +119,8 @@ class Milestones extends React.Component {
                       Release
                     </a>
                   ) : (
-                    <p>Pending Milestone</p>
+                    // <p>Pending Milestone</p>
+                    ""
                   )}
                   {/* <Divider type="vertical" /> */}
                   {/* <a

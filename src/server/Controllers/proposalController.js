@@ -42,6 +42,7 @@ export default () => {
           clientID,
           `${req.user.username} has bidded on your job post.
                                    Please check that bid.`,
+          `/client/job/${req.body.job}`,
         );
         sendSMS(
           clientphone,

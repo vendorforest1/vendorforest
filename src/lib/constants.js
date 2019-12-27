@@ -188,6 +188,7 @@ export const apiUrl = {
   CANCEL_MILESTONE: `${API_URL}/apis/milestone/cancel`,
   GET_MILESTONES: `${API_URL}/apis/milestone/get_milestones`,
   GET_MILESTONE: `${API_URL}/apis/milestone/get`,
+  MILESTONE_RESULT: `${API_URL}/apis/milestone/milestone_result`,
 
   GET_CONNECTED_USERS: `${API_URL}/apis/chat/get_connected_users`,
   GET_OLD_MSG: `${API_URL}/apis/chat/get_old_msg`,
