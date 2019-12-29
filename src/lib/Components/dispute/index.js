@@ -7,9 +7,9 @@ import VenorHeader from "@Components/inc/vendor_header";
 import Footer from "@Components/inc/footer";
 import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
-import AllNotifications from "./AllNotifications";
+import PendingDispute from "./PendingDisputes";
 import { getNotification } from "./essential";
-import DeletedNotifications from "./DeletedNotifications";
+import ClosedDispute from "./ClosedDisputes";
 const { TabPane } = Tabs;
 
 class ClientJobDetails extends React.Component {
@@ -30,7 +30,7 @@ class ClientJobDetails extends React.Component {
   render() {
     return (
       <div className="job-details">
-        {!this.props.notification && (
+        {!this.props.pendingDisputes && (
           <div className="text-center loading-small py-5">
             <Icon type="sync" spin />
           </div>
@@ -43,7 +43,7 @@ class ClientJobDetails extends React.Component {
                 <div className="row">
                   <div className="col-12">
                     <div className="shadow p-md-5 p-2">
-                      <h3>Notifications</h3>
+                      <h3>Disputes</h3>
                       <hr />
                       {/* {(!this.props.job || !this.props.proposales) && this.props.pending && (
                     <div className="text-center loading-small">
@@ -52,11 +52,11 @@ class ClientJobDetails extends React.Component {
                   )} */}
                       {/* {this.props.notification && ( */}
                       <Tabs defaultActiveKey="1" onChange={this.clickTab}>
-                        <TabPane tab="All Notifications" key="1">
-                          <AllNotifications />
+                        <TabPane tab="Pending Disputes" key="1">
+                          <PendingDispute />
                         </TabPane>
-                        <TabPane tab="Deleted Notifications" key="2">
-                          <DeletedNotifications />
+                        <TabPane tab="Closed Disputes" key="2">
+                          <ClosedDispute />
                         </TabPane>
                       </Tabs>
                     </div>
@@ -72,10 +72,10 @@ class ClientJobDetails extends React.Component {
   }
 }
 
-const mapStateToProps = ({ notificationReducer, loginReducer }) => {
+const mapStateToProps = ({ loginReducer, disputeReducer }) => {
   const { user } = loginReducer;
-  const { notification, error, pending, success } = notificationReducer;
-  return { error, notification, success, pending, user };
+  const { pendingDisputes } = disputeReducer;
+  return { user, pendingDisputes };
 };
 
 export default connect(

@@ -19,4 +19,7 @@ router.post("/get_hire_detail", contractCtr.getHireDetail);
 router.post("/update_hire_proposal", contractCtr.updateHireProposal);
 router.post("/save_dispute", contractCtr.saveDispute);
 router.post("/fetch_disputes", contractCtr.fetchDisputes);
+router.get("/get_pending_dispute", contractCtr.getPendingDispute);
+router.get("/get_closed_dispute", contractCtr.getClosedDispute);
+
 export default router;

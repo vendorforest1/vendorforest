@@ -32,6 +32,7 @@ import clientFindVendorReducer from "@Components/findvendors/essential";
 
 import headerNotiReducer from "@Components/inc/essential";
 import notificationReducer from "@Components/notification/essential";
+import disputeReducer from "@Components/dispute/essential";
 
 const reducers = {
   loginReducer,
@@ -58,6 +59,7 @@ const reducers = {
   vendorReviewReducer,
   headerNotiReducer,
   notificationReducer,
+  disputeReducer,
 };
 const config = {
   key: "primary",

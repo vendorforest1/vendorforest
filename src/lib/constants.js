@@ -182,6 +182,8 @@ export const apiUrl = {
   UPDATE_HIRE_PROPOSAL: `${API_URL}/apis/contract/update_hire_proposal`,
   SAVE_DISPUTE: `${API_URL}/apis/contract/save_dispute`,
   FETCH_DISPUTES: `${API_URL}/apis/contract/fetch_disputes`,
+  GET_PENDING_DISPUTE: `${API_URL}/apis/contract/get_pending_dispute`,
+  GET_CLOSED_DISPUTE: `${API_URL}/apis/contract/get_closed_dispute`,
 
   CREATE_MILESTONE: `${API_URL}/apis/milestone/create`,
   UPDATE_MILESTONE: `${API_URL}/apis/milestone/update`,

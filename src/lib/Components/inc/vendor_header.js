@@ -82,7 +82,7 @@ class VendorHeader extends React.Component {
           </a>
         </Menu.Item>
         <Menu.Item>
-          <a rel="noopener noreferrer" href="#/">
+          <a rel="noopener noreferrer" href="/dispute">
             Disputes
           </a>
         </Menu.Item>
@@ -139,13 +139,13 @@ class VendorHeader extends React.Component {
                   <a href="/messages/v" className="mr-4">
                     MESSAGES
                   </a>
-                  {/* <Dropdown overlay={helpMenu} className="mr-3">
+                  <Dropdown overlay={helpMenu} className="mr-3">
                     <a className="ant-dropdown-link" href="#/">
-                      <Icon type="question-circle" />
+                      <Icon type="question-circle" style={{ fontSize: "20px" }} />
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
-                  </Dropdown> */}
+                  </Dropdown>
                   <Dropdown overlay={<Menu onClick={this.handleIcon}></Menu>} className="mr-3">
                     <a className="ant-dropdown-link" href="/notification">
                       <Icon type="bell" style={{ fontSize: "20px" }} />

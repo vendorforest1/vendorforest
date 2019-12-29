@@ -613,5 +613,76 @@ export default () => {
       });
   };
 
+  controllers.getPendingDispute = async (req, res) => {
+    const query =
+      req.user.accountType === 0
+        ? { clientId: req.user._id, status: 0 }
+        : { vendorId: req.user._id, status: 0 };
+    await Dispute.find(query)
+      .populate({
+        path: "contractId",
+        model: "contract",
+        populate: {
+          path: "job",
+          model: "job",
+        },
+      })
+      .populate({
+        path: "vendorId",
+        model: "user",
+      })
+      .populate({
+        path: "clientId",
+        model: "user",
+      })
+      .then((result) => {
+        return res.status(200).json({
+          status: 200,
+          data: result,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
+  controllers.getClosedDispute = async (req, res) => {
+    const query =
+      req.user.accountType === 0
+        ? { clientId: req.user._id, status: 1 }
+        : { vendorId: req.user._id, status: 1 };
+    await Dispute.find(query)
+      .populate({
+        path: "contractId",
+        model: "contract",
+        populate: {
+          path: "job",
+          model: "job",
+        },
+      })
+      .populate({
+        path: "vendorId",
+        model: "user",
+      })
+      .populate({
+        path: "clientId",
+        model: "user",
+      })
+      .then((result) => {
+        return res.status(200).json({
+          status: 200,
+          data: result,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
   return controllers;
 };

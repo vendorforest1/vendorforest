@@ -45,6 +45,7 @@ import Term from "@Components/terms";
 import Privacy from "@Components/privacy";
 
 import Notification from "@Components/notification";
+import Dispute from "@Components/dispute";
 
 export default [
   {
@@ -91,6 +92,11 @@ export default [
     path: "/notification",
     exact: true,
     component: Notification,
+  },
+  {
+    path: "/dispute",
+    exact: true,
+    component: Dispute,
   },
 
   /*================================== CLIENT LINKS ==========================*/
