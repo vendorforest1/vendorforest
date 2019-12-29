@@ -1,13 +1,21 @@
 import mongoose from "mongoose";
 import { constants } from "@Config/index";
+import { string } from "prop-types";
 
 const DisputeSchema = new mongoose.Schema(
   {
     clientId: {
       type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "user",
     },
     vendorId: {
       type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "user",
+    },
+    title: {
+      type: String,
     },
     description: String,
     price: Number,

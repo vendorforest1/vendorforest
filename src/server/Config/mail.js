@@ -128,6 +128,8 @@ const mailService = () => {
               const userNamePattern = /{user}/i;
               const urlPattern = /{url}/i;
               const temporaryPassPattern = /{resetPassword}/i;
+              const disputeVendor = /{disputeVendor}/i;
+              const disputeClient = /{disputeClient}/i;
               const href = mailHeader.href;
 
               if (href) {
@@ -141,6 +143,8 @@ const mailService = () => {
                   ? source.replace(userNamePattern, user.firstName)
                   : source.replace(userNamePattern, user.username);
                 source = source.replace(temporaryPassPattern, user.resetPassword);
+                source = source.replace(disputeVendor, user.vendorId.username);
+                source = source.replace(disputeClient, user.clientId.username);
               }
 
               mailOptions.html = source;
@@ -184,6 +188,16 @@ const mailService = () => {
     };
     sendEmail(user, fileName, mailHeader, callback);
     // setup e-mail data with unicode symbols
+  };
+
+  mailObject.sendDisputeEmail = async (dispute, subject, callback) => {
+    const mailOptions = {
+      subject: subject, // Subject line
+      href: `${env.API_URL}/vendor/contract/${dispute.contractId}`,
+    };
+
+    sendEmail(dispute, "email_dispute_issue.html", mailOptions, callback);
+    console.log("sent email");
   };
 
   mailObject.sendVendorEmail = async (job, subject, callback) => {
@@ -235,7 +249,6 @@ const mailService = () => {
     sendEmail(milestone, "email_payment_completed.html", mailOptions, callback);
     console.log("sent email");
   };
-
   return mailObject;
 };
 

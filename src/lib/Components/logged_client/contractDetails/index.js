@@ -133,6 +133,7 @@ class ClientContractDetails extends React.Component {
             contractId: this.props.contract._id,
             clientId: this.props.contract.client._id,
             vendorId: this.props.contract.vendor._id,
+            title: this.props.contract.job.title,
           };
           this.saveDispute(params);
         }

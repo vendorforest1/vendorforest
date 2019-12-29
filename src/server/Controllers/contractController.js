@@ -5,6 +5,9 @@ import Vendor from "@Models/vendor.model";
 import Client from "@Models/client.model";
 import Dispute from "@Models/dispute.model";
 import getEnv, { constants } from "@Config/index";
+import { mail } from "@Config/mail";
+import saveNotification from "@Config/notification";
+import sendSMS from "@Config/sms";
 import { async } from "q";
 
 const env = getEnv();
@@ -536,7 +539,33 @@ export default () => {
                 queue: count,
               },
             )
-              .then((resul) => {
+              .populate({
+                path: "vendorId",
+                model: "user",
+              })
+              .then(async (resul) => {
+                const vendorPhone = resul.vendorId.phone;
+                const vendorId = resul.vendorId._id;
+                const smsDescription = `Job Title: ${req.body.title} \n Your Client has been disputed on this project. Please check the job. \n vendorforest.com`;
+                saveNotification(
+                  vendorId,
+                  `Your Client has been disputed on this project. Title is ${req.body.title}. Please confirm this.`,
+                  `/vendor/contract/${req.body.contractId}`,
+                );
+                const sendInfo = resul;
+                sendInfo.email = resul.vendorId.email;
+                sendSMS(vendorPhone, "VendorForest information!", smsDescription);
+                //send email.
+                await mail.sendDisputeEmail(
+                  sendInfo,
+                  "VendorForest information!",
+                  (err, msg) => {
+                    if (err) {
+                      return err;
+                    }
+                    return;
+                  },
+                );
                 return res.status(200).json({
                   status: 200,
                   data: resul,
