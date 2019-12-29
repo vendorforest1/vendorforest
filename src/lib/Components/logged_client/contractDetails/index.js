@@ -1,5 +1,17 @@
 import React from "react";
-import { Avatar, Progress, Icon, Tabs, message } from "antd";
+import {
+  Avatar,
+  Progress,
+  Icon,
+  Tabs,
+  message,
+  Modal,
+  Radio,
+  Form,
+  Input,
+  Divider,
+  InputNumber,
+} from "antd";
 import { connect } from "react-redux";
 import withStyles from "isomorphic-style-loader/withStyles";
 import ClientHeader from "@Components/inc/client_header";
@@ -14,19 +26,30 @@ import {
   fetchUpdateContractData,
   fetchEndContractData,
   fetchGetContractData,
+  fetchSavingDispute,
+  fetchDispute,
 } from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
+import value from "@Components/images/profileplace.png";
 const { TabPane } = Tabs;
-
+const { TextArea } = Input;
 class ClientContractDetails extends React.Component {
   _button = -1;
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      visible: false,
+      radioStatus: 0,
+      show: false,
+      btnPending: false,
+    };
     this.clickTab = this.clickTab.bind(this);
     this.createNewMilestone = this.createNewMilestone.bind(this);
     this.endContract = this.endContract.bind(this);
+    this.handleDispute = this.handleDispute.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handlSubmitDispute = this.handlSubmitDispute.bind(this);
   }
 
   clickTab(key) {
@@ -37,6 +60,16 @@ class ClientContractDetails extends React.Component {
     if (this.props.match.params.id) {
       this.props.fetchGetContractData({
         _id: this.props.match.params.id,
+      });
+      fetchDispute({
+        contractId: this.props.match.params.id,
+      }).then((result) => {
+        const count = result.value;
+        if (count > 0) {
+          this.setState({
+            btnPending: true,
+          });
+        }
       });
     }
   }
@@ -77,6 +110,53 @@ class ClientContractDetails extends React.Component {
     return false;
   }
 
+  handleDispute() {
+    this.setState({
+      visible: true,
+    });
+  }
+  handleCancel() {
+    this.setState({
+      visible: false,
+    });
+  }
+  handlSubmitDispute() {
+    this.props.form.validateFields(["price", "description"], (errors, values) => {
+      if (errors) {
+        message.warning("Invalid Input. Description is required!");
+      } else {
+        if (values.price > this.props.contract.escrowPrice) {
+          message.warning("Your inputed price is higher than the deposited price.");
+        } else {
+          const params = {
+            ...values,
+            contractId: this.props.contract._id,
+            clientId: this.props.contract.client._id,
+            vendorId: this.props.contract.vendor._id,
+          };
+          this.saveDispute(params);
+        }
+      }
+    });
+    this.setState({
+      visible: false,
+    });
+  }
+
+  async saveDispute(params) {
+    fetchSavingDispute(params)
+      .then((result) => {
+        const queue = result.queue;
+        this.setState({
+          btnPending: true,
+        });
+        this.info(queue);
+      })
+      .catch((error) => {
+        message.warning(error.message);
+      });
+  }
+
   endContract() {
     this._button = 1;
     if (this.props.match.params.id) {
@@ -87,6 +167,26 @@ class ClientContractDetails extends React.Component {
     }
   }
 
+  info = (queue) => {
+    Modal.info({
+      title: "Dispute infomation has been deliverd successfully.",
+      content: (
+        <div>
+          <p style={{ paddingBottom: "20px" }}>
+            Thank you for filling this dispute form, we will also send a copy of this message to
+            the vendor concerned.{" "}
+          </p>
+          <p style={{ fontWeight: "bolder" }}>Waiting # {queue}</p>
+          <p style={{ paddingTop: "20px" }}>
+            Someone in our team will get back to you as soon as they can.
+          </p>
+        </div>
+      ),
+      width: "50%",
+      onOk() {},
+    });
+  };
+
   async EndContractData(params) {
     fetchEndContractData(params)
       .then((data) => {
@@ -96,19 +196,16 @@ class ClientContractDetails extends React.Component {
             _id: this.props.match.params.id,
           });
         }
-        // window.location.reload();
-        // window.location.href = `/client/givefeedback/${this.props.contract._id}`;
       })
       .catch((error) => {
-        process.env.NODE_ENV === "development" && console.log(error);
         message.warning(error.message);
       });
   }
 
   render() {
+    const { getFieldDecorator } = this.props.form;
     return (
       <div className="contract-details">
-        {console.log("contract detail = ", this.props.contract)}
         <ClientHeader />
         <div className="content">
           <div className="container">
@@ -151,7 +248,6 @@ class ClientContractDetails extends React.Component {
                                   window.location.href = "/messages/c";
                                 }}
                               >
-                                {console.log("milestones in fetch", this.props.milestones)}
                                 <Icon type="message" />
                               </div>
                             )}
@@ -191,9 +287,17 @@ class ClientContractDetails extends React.Component {
                             !this.isLeftFeedBack() && (
                               <div>
                                 <button
-                                  className={`button-primary`}
+                                  className={
+                                    this.state.btnPending === true
+                                      ? `button-primary disable`
+                                      : "button-primary"
+                                  }
                                   style={{ width: "200px" }}
-                                  // onClick={this.createNewMilestone}
+                                  onClick={
+                                    this.state.btnPending !== true
+                                      ? this.handleDispute
+                                      : undefined
+                                  }
                                 >
                                   Dispute
                                 </button>
@@ -212,19 +316,6 @@ class ClientContractDetails extends React.Component {
                               </button>
                             </div>
                           )}
-                          {/* {this.props.contract.status === constants.CONTRACT_STATUS.END &&
-                            !this.isLeftFeedBack() && (
-                              <div>
-                                <button
-                                  className="button-primary"
-                                  onClick={() => {
-                                    window.location.href = `/client/givefeedback/${this.props.contract._id}`;
-                                  }}
-                                >
-                                  Leave Feedback
-                                </button>
-                              </div>
-                            )} */}
                         </div>
                       </div>
                       <div className="main-content">
@@ -248,10 +339,126 @@ class ClientContractDetails extends React.Component {
           </div>
         </div>
         <Footer />
+        <Modal
+          title="Dispute"
+          visible={this.state.visible}
+          onOk={this.handlSubmitDispute}
+          onCancel={this.handleCancel}
+          width={"90%"}
+          okText="Submit"
+        >
+          {this.props.contract && (
+            <div className="container">
+              <div className="row">
+                <div className="col-md-8">
+                  <div className="row modalRow">
+                    <div className="col-md-12">
+                      <h5>Job Title</h5>
+                    </div>
+
+                    <div className="col-md-12">
+                      <p>{this.props.contract.job.title}</p>
+                    </div>
+                  </div>
+                  <div className="row modalRow">
+                    <div className="col-md-12">
+                      <h5>Refund requested</h5>
+                    </div>
+
+                    <div className="col-md-12">
+                      <Radio.Group
+                        onChange={(e) => {
+                          this.setState({
+                            radioStatus: e.target.value,
+                          });
+                        }}
+                        value={this.state.radioStatus}
+                        style={{ paddingTop: "10px" }}
+                      >
+                        <Radio
+                          value={0}
+                          className="d-block mb-3"
+                          defaultChecked
+                          onChange={() => {
+                            this.setState({ show: false });
+                          }}
+                        >
+                          Deposit for the whole project (${this.props.contract.escrowPrice})
+                        </Radio>
+                        <Radio
+                          value={1}
+                          className="d-block mb-3"
+                          onClick={() => {
+                            this.setState({ show: true });
+                          }}
+                        >
+                          Deposit a lesser amount to cover the first milestone
+                        </Radio>
+                      </Radio.Group>
+                    </div>
+                    <div
+                      className={
+                        this.state.show !== false
+                          ? "col-md-s show-amount"
+                          : "col-md-s hide-amount"
+                      }
+                    >
+                      <Form>
+                        <Form.Item label="Price">
+                          {getFieldDecorator("price", {
+                            initialValue: this.props.contract.escrowPrice,
+                            rules: [{ required: true, message: "Price of a milestone" }],
+                          })(
+                            <InputNumber
+                              placeholder="Price of a milestone"
+                              size={"large"}
+                              min={1}
+                              // max={this.props.contract.escrowPrice}
+                              formatter={(value) =>
+                                `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                              }
+                              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                              className="w-100"
+                            />,
+                          )}
+                        </Form.Item>
+                      </Form>
+                    </div>
+                  </div>
+                  <div className="row modalRow">
+                    <div className="col-md-12">
+                      <h5>Message</h5>
+                    </div>
+
+                    <div className="col-md-12">
+                      <Form.Item label="description">
+                        {getFieldDecorator("description", {
+                          initialValue: undefined,
+                          rules: [
+                            { required: true, message: "Please input the Message of Dispute!" },
+                          ],
+                        })(<TextArea type="textarea" rows={5} />)}
+                      </Form.Item>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-md-4" style={{ borderLeft: "1px solid rgba(0,0,0,0.65)" }}>
+                  <h5>Requesting an escrow refund?</h5>
+                  <p style={{ paddingTop: "20px" }}>
+                    If your funds have been released from escrow, use this form to request a
+                    refund from your vendor.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </Modal>
       </div>
     );
   }
 }
+const ClientContractDetailsForm = Form.create({ name: "dispute form" })(ClientContractDetails);
 
 const mapStateToProps = ({ clientContractDetailsReducer, loginReducer }) => {
   const { error, contract, milestones, success, pending } = clientContractDetailsReducer;
@@ -272,4 +479,6 @@ export default connect(mapStateToProps, {
   fetchGetContractData,
   fetchEndContractData,
   fetchUpdateContractData,
-})(withStyles(globalStyle, localStyle)(ClientContractDetails));
+  fetchSavingDispute,
+  fetchDispute,
+})(withStyles(globalStyle, localStyle)(ClientContractDetailsForm));

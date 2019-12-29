@@ -57,6 +57,10 @@ export const constants = {
     CREATED: 0,
     END: 1,
   },
+  DISPUTE: {
+    OPEN: 0,
+    CLOSED: 1,
+  },
   MILESTONE_STATUS: {
     CREATED: 0,
     REQ_RELEASED: 1,

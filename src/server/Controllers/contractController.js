@@ -3,6 +3,7 @@ import Proposal from "@Models/proposal.model";
 import Contract from "@Models/contract.model";
 import Vendor from "@Models/vendor.model";
 import Client from "@Models/client.model";
+import Dispute from "@Models/dispute.model";
 import getEnv, { constants } from "@Config/index";
 import { async } from "q";
 
@@ -504,6 +505,75 @@ export default () => {
         return res.status(200).json({
           status: 200,
           data: contracts,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
+  controllers.saveDispute = async (req, res, next) => {
+    const time = new Date().toLocaleString();
+    const newDispute = new Dispute({
+      ...req.body,
+      time: time,
+    });
+    await newDispute
+      .save()
+      .then(async (result) => {
+        const id = result._id;
+        await Dispute.find()
+          .then(async (results) => {
+            const count = results.length;
+            await Dispute.findOneAndUpdate(
+              {
+                _id: id,
+              },
+              {
+                queue: count,
+              },
+            )
+              .then((resul) => {
+                return res.status(200).json({
+                  status: 200,
+                  data: resul,
+                  queue: count,
+                });
+              })
+              .catch((error) => {
+                return res.status(500).json({
+                  status: 500,
+                  message:
+                    env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+                });
+              });
+          })
+          .catch((error) => {
+            return res.status(500).json({
+              status: 500,
+              message:
+                env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+            });
+          });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
+  controllers.fetchDisputes = async (req, res) => {
+    await Dispute.find(req.body)
+      .then((result) => {
+        const count = result.length;
+        return res.status(200).json({
+          status: 200,
+          value: count,
         });
       })
       .catch((error) => {

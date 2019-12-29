@@ -136,7 +136,6 @@ const mailService = () => {
                   `<a href=${href} target="_blank">${href}</a>`,
                 );
               }
-
               if (user) {
                 source = !user.username
                   ? source.replace(userNamePattern, user.firstName)

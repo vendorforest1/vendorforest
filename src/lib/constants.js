@@ -180,6 +180,8 @@ export const apiUrl = {
   GET_ATTACHFILES: `${API_URL}/apis/contract/get_attachfiles`,
   GET_HIRE_DETAIL: `${API_URL}/apis/contract/get_hire_detail`,
   UPDATE_HIRE_PROPOSAL: `${API_URL}/apis/contract/update_hire_proposal`,
+  SAVE_DISPUTE: `${API_URL}/apis/contract/save_dispute`,
+  FETCH_DISPUTES: `${API_URL}/apis/contract/fetch_disputes`,
 
   CREATE_MILESTONE: `${API_URL}/apis/milestone/create`,
   UPDATE_MILESTONE: `${API_URL}/apis/milestone/update`,

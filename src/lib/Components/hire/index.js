@@ -93,7 +93,6 @@ class Hire extends React.Component {
     });
   }
   handeleOk() {
-    console.log("sending pw === ");
     this.props.form.validateFields(["password"], (err, values) => {
       this.setState({
         pendingBtn: true,

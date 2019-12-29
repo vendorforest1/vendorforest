@@ -360,3 +360,41 @@ export const fetchEndContractData = async (payload) => {
       process.env.NODE_ENV === "development" && console.log("fetch error", err);
     });
 };
+
+export const fetchSavingDispute = async (payload) => {
+  return await fetch(apiUrl.SAVE_DISPUTE, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then(async (result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {});
+};
+
+export const fetchDispute = async (payload) => {
+  return await fetch(apiUrl.FETCH_DISPUTES, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then(async (result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {});
+};

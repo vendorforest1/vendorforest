@@ -17,4 +17,6 @@ router.get("/get", validator.query(get.query), contractCtr.get);
 router.get("/get_contracts", validator.query(getContracts.query), contractCtr.getContracts);
 router.post("/get_hire_detail", contractCtr.getHireDetail);
 router.post("/update_hire_proposal", contractCtr.updateHireProposal);
+router.post("/save_dispute", contractCtr.saveDispute);
+router.post("/fetch_disputes", contractCtr.fetchDisputes);
 export default router;
