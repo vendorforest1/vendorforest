@@ -151,7 +151,6 @@ export const getPendingDisputes = () => async (dispatch) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      process.env.NODE_ENV === "development" && console.log("fetch result", result);
       dispatch(fetchPendingDisputeSuccess(result.data));
     })
     .catch((err) => process.env.NODE_ENV === "development" && console.log("fetch error", err));
@@ -167,7 +166,6 @@ export const getClosedDisputes = () => async (dispatch) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      process.env.NODE_ENV === "development" && console.log("fetch result", result);
       dispatch(fetchClosedDisputeSuccess(result.data));
     })
     .catch((err) => process.env.NODE_ENV === "development" && console.log("fetch error", err));

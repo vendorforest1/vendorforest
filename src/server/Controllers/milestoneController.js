@@ -118,7 +118,11 @@ export default () => {
                             const phoneDescription = `You can start work on this job.\n Your accepted budget is ${milestone.price} USD.`;
                             env.MODE === "development" &&
                               console.log("create milestone result", result);
-                            saveNotification(vendorId, description);
+                            saveNotification(
+                              vendorId,
+                              description,
+                              `/vendor/contract/${req.body.contract}`,
+                            );
                             sendSMS(vendorPhone, emailTitle, phoneDescription);
                             await mail.sendCreateMilestoneEmail(
                               vendorEmail,
@@ -279,6 +283,7 @@ export default () => {
           const price = milestone[0].price;
           const vendorModelId = milestone[0].contract.vendor.vendor;
           const totalBudget = milestone[0].contract.totalBudget;
+          const contractId = milestone[0].contract._id;
           const rate = price < totalBudget ? ((price / totalBudget) * 100).toFixed(0) : 100;
           stripe.transfers
             .create({
@@ -371,7 +376,7 @@ export default () => {
                       vendorPhone,
                       "======",
                     );
-                    saveNotification(vendorID, description);
+                    saveNotification(vendorID, description, `/vendor/contract/${contractId}`);
                     sendSMS(vendorPhone, emailTitle, phoneDescription);
                     await mail.sendReleaseMilestoneEmail(
                       vendorEmail,

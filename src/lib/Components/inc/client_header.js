@@ -3,7 +3,7 @@ import { Menu, Dropdown, Icon, Badge, Tooltip } from "antd";
 import withStyles from "isomorphic-style-loader/withStyles";
 import style from "./index.scss";
 import rainbow from "@Components/images/header/pettran.jpg";
-import { getNotification, logout } from "./essential";
+import { getNavBarNotification, logout, isRead, getBadge } from "./essential";
 import { connect } from "react-redux";
 import configureStore from "@Shared/configureStore";
 import { withRouter } from "react-router";
@@ -16,12 +16,19 @@ class VendorForestClientHeader extends React.Component {
 
     this.state = {
       isOpen: false,
+      badgeCount: 0,
     };
     this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
-    this.props.getNotification();
+    this.props.getNavBarNotification();
+    getBadge().then((result) => {
+      const length = result.length;
+      this.setState({
+        badgeCount: length,
+      });
+    });
   }
 
   toggle() {
@@ -29,6 +36,9 @@ class VendorForestClientHeader extends React.Component {
       isOpen: !this.state.isOpen,
     });
   }
+  handleBadge = (params) => {
+    this.props.isRead({ id: params });
+  };
   handleIcon = () => {};
   handleLogout = () => {
     this.props.logout();
@@ -43,28 +53,37 @@ class VendorForestClientHeader extends React.Component {
       });
   };
   notifiMenu = () => {
-    if (!this.props.notification) {
+    if (!this.props.navNotification) {
       return "";
     }
-    return this.props.notification.map((noti, index) => {
-      return (
-        <Menu.Item key={index}>
-          <a rel="noopener noreferrer" href="/#">
-            <p style={{ maxWidth: "1000px", wordWrap: "break-word" }}>
-              {noti.isRead === false ? (
-                <Badge dot>
-                  <Icon type="notification" />
-                </Badge>
-              ) : (
-                ""
-              )}
-              &nbsp;
-              {noti.notificationMsg} <br />
-              {noti.time}
-            </p>
-          </a>
-        </Menu.Item>
-      );
+    return this.props.navNotification.map((noti, index) => {
+      while (index < 8) {
+        return (
+          <Menu.Item key={index}>
+            <a
+              rel="noopener noreferrer"
+              href={noti.urlId}
+              onClick={() => {
+                this.handleBadge(noti._id);
+              }}
+            >
+              <p style={{ maxWidth: "1000px", wordWrap: "break-word" }}>
+                {noti.isRead === false ? (
+                  <Badge dot>
+                    <Icon type="notification" />
+                  </Badge>
+                ) : (
+                  ""
+                )}
+                &nbsp;
+                {noti.notificationMsg} <br />
+                {noti.time}
+              </p>
+            </a>
+            {index === 7 ? <a href="/notification"> See All Notifications </a> : ""}
+          </Menu.Item>
+        );
+      }
     });
   };
   render() {
@@ -137,11 +156,20 @@ class VendorForestClientHeader extends React.Component {
                       <Icon type="down" style={{ fontSize: "8px" }} />
                     </a>
                   </Dropdown>
-                  <Dropdown overlay={<Menu onClick={this.handleIcon}></Menu>} className="mr-3">
-                    <a className="ant-dropdown-link" href="/notification">
+                  <Dropdown
+                    overlay={<Menu onClick={this.handleIcon}>{this.notifiMenu()}</Menu>}
+                    className="mr-3"
+                  >
+                    <a className="ant-dropdown-link">
                       <Icon type="bell" style={{ fontSize: "20px" }} />
                       &nbsp;
                       <Icon type="down" style={{ fontSize: "8px" }} />
+                      &nbsp;
+                      {this.state.badgeCount !== 0 ? (
+                        <Badge count={this.state.badgeCount}> </Badge>
+                      ) : (
+                        undefined
+                      )}
                     </a>
                   </Dropdown>
                   <Dropdown overlay={useriMenu}>
@@ -204,14 +232,14 @@ class VendorForestClientHeader extends React.Component {
   }
 }
 const mapStateToProps = ({ headerNotiReducer, loginReducer }) => {
-  const { notification } = headerNotiReducer;
+  const { navNotification } = headerNotiReducer;
   const { user } = loginReducer;
   return {
-    notification,
+    navNotification,
     user,
   };
 };
 
-export default connect(mapStateToProps, { getNotification, logout })(
+export default connect(mapStateToProps, { getNavBarNotification, logout, isRead, getBadge })(
   withStyles(style)(withRouter(VendorForestClientHeader)),
 );

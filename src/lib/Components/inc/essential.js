@@ -20,7 +20,7 @@ export default function reducer(
     proposales: undefined,
     reviews: [],
     pending: false,
-    notification: undefined,
+    navNotification: undefined,
   },
   action,
 ) {
@@ -70,7 +70,7 @@ export default function reducer(
     case FETCH_NOTI_SUCCESS:
       return {
         ...state,
-        notification: action.payload,
+        navNotification: action.payload,
       };
     case PURGE:
       return {};
@@ -127,8 +127,8 @@ export const updateProposal = (payload) => {
   };
 };
 
-export const getNotification = () => async (dispatch) => {
-  return await fetch(apiUrl.GET_NOTIFICATION, {
+export const getNavBarNotification = () => async (dispatch) => {
+  return await fetch(apiUrl.GET_NAV_NOTIFICATION, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -137,8 +137,8 @@ export const getNotification = () => async (dispatch) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      process.env.NODE_ENV === "development" && console.log("fetch result", result);
-      dispatch(fetchNotiSuccess(result.data));
+      process.env.NODE_ENV === "development" && console.log("fetch result = ", result);
+      dispatch(fetchNotiSuccess(result.result));
     })
     .catch((err) => process.env.NODE_ENV === "development" && console.log("fetch error", err));
 };
@@ -234,6 +234,46 @@ export const fetchCreateContract = async (payload) => {
         throw new Error(result.message);
       }
       return result;
+    })
+    .catch((err) => {
+      throw err.message;
+    });
+};
+
+export const getBadge = async () => {
+  return await fetch(apiUrl.GET_BADGE, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {
+      throw err.message;
+    });
+};
+
+export const isRead = (payload) => async (dispatch) => {
+  return await fetch(apiUrl.CHECK_NOTI, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
     })
     .catch((err) => {
       throw err.message;

@@ -100,7 +100,9 @@ export const apiUrl = {
   GET_HOMEDATA: `${API_URL}/apis/home`,
   GET_USER_INFO: `${API_URL}/apis/userinfo`,
   GET_CLIENT_INFO: `${API_URL}/apis/clientinfo`,
-  // COMPARE_PW: `${API_URL}/apis/compare_pw`,
+  GET_NAV_NOTIFICATION: `${API_URL}/apis/get_nav_notifications`,
+  CHECK_NOTI: `${API_URL}/apis/check_noti`,
+  GET_BADGE: `${API_URL}/apis/get_badge`,
 
   GET_SERVICE: `${API_URL}/apis/service/get_services`,
 
@@ -112,6 +114,7 @@ export const apiUrl = {
   CLIENT_POST_RESETPASS: `${API_URL}/apis/client/resetpass`,
   CLIENT_POST_NOTIFYSETTING: `${API_URL}/apis/client/notification`,
   GET_NOTIFICATION: `${API_URL}/apis/client/getnotifications`,
+
   GET_DELETED_NOTIFICATION: `${API_URL}/apis/client/get_deleted_notifications`,
   GET_PUB_KEY: `${API_URL}/apis/client/getpubkey`,
   GET_SETUP_INTENT: `${API_URL}/apis/client/getsetupintent`,

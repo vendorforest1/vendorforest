@@ -9,6 +9,7 @@ import geoip from "geoip-lite";
 import getEnv, { constants } from "@Config/index";
 import mongoose from "mongoose";
 import { generate } from "generate-password";
+import Notification from "@Models/notification.model";
 
 import bcrypt from "mongoose-bcrypt";
 const Schema = mongoose.Schema;
@@ -864,6 +865,57 @@ export default function(passport) {
           message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
         });
       });
+  };
+
+  controllers.getNavNotifications = async (req, res) => {
+    const user = req.user._id;
+    const query = { username: user, status: 0 };
+    await Notification.find(query)
+      .sort({ createdAt: -1 })
+      .limit(8)
+      .then((result) => {
+        return res.status(200).json({
+          result: result,
+        });
+      })
+      .catch((err) => env.MODE === "development" && console.log("err = ", err));
+  };
+
+  controllers.checkNotification = async (req, res) => {
+    const id = req.body.id;
+    await Notification.findOneAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        isRead: true,
+      },
+      {
+        new: true,
+      },
+    )
+      .then((result) => {
+        return res.status(200).json({
+          result: result,
+        });
+      })
+      .catch((err) => env.MODE === "development" && console.log("err = ", err));
+  };
+
+  controllers.getBadge = async (req, res) => {
+    const query = {
+      username: req.user._id,
+      isRead: false,
+      status: 0,
+    };
+    await Notification.find(query)
+      .then((result) => {
+        const count = result.length;
+        return res.status(200).json({
+          length: count,
+        });
+      })
+      .catch((err) => env.MODE === "development" && console.log("err = ", err));
   };
 
   return controllers;

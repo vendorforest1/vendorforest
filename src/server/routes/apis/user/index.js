@@ -54,5 +54,8 @@ export default function(app, passport) {
   router.post("/resetpw", userCtr.sendResetPasswordEmail);
   router.get("/userinfo", userCtr.userInfo);
   router.get("/clientinfo", userCtr.clientInfo);
+  router.get("/get_nav_notifications", userCtr.getNavNotifications);
+  router.post("/check_noti", userCtr.checkNotification);
+  router.get("/get_badge", userCtr.getBadge);
   return router;
 }

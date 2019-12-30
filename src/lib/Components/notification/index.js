@@ -30,11 +30,11 @@ class ClientJobDetails extends React.Component {
   render() {
     return (
       <div className="job-details">
-        {!this.props.notification && (
+        {/* {!this.props.notification && (
           <div className="text-center loading-small py-5">
             <Icon type="sync" spin />
           </div>
-        )}
+        )} */}
         {this.props.user && (
           <div>
             {this.props.user.userObj.accountType === 0 ? <Header /> : <VenorHeader />}
