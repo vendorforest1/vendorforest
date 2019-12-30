@@ -45,9 +45,9 @@ class ClientGiveFeedBack extends React.Component {
   }
 
   giveFeedbck() {
-    if (this.props.pending) {
-      return;
-    }
+    // if (this.props.pending) {
+    //   return;
+    // }
     if (this.props.match.params.contract_id) {
       this.props.form.validateFields(["feedback"], (err, values) => {
         if (!err) {
@@ -307,7 +307,7 @@ class ClientGiveFeedBack extends React.Component {
                       </p>
                     </div>
                     <button
-                      className={`button-primary ${this.props.pending ? "disable" : ""}`}
+                      className={`button-primary ${this.props.pending ? "" : ""}`}
                       onClick={this.giveFeedbck}
                     >
                       Send

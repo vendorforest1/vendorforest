@@ -20,13 +20,13 @@ class PendingDispute extends React.Component {
   render() {
     return (
       <div className="proposals py-md-4 py-2">
-        {this.props.user.userObj && (
+        {this.props.user && (
           <div className="row">
             <div className="col-md-4 col-sm-6 vendor-profile-content d-flex">
               <h5>CONTRACT</h5>
             </div>
             <div className="col-md-3 col-sm-6 vendor-rate">
-              <h5>{this.props.user.userObj.accountType === 0 ? "CLIENT" : "VENDOR"}</h5>
+              <h5>{this.props.user.userObj.accountType !== 0 ? "CLIENT" : "VENDOR"}</h5>
             </div>
             <div className="col-md-3 col-sm-6 vendor-rate">
               <h5>DISPUTE DATE</h5>
