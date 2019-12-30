@@ -80,7 +80,14 @@ class VendorForestClientHeader extends React.Component {
                 {noti.time}
               </p>
             </a>
-            {index === 7 ? <a href="/notification" style={{color: "green"}}> See All Notifications </a> : ""}
+            {index === 7 ? (
+              <a href="/notification" style={{ color: "green" }}>
+                {" "}
+                See All Notifications{" "}
+              </a>
+            ) : (
+              ""
+            )}
           </Menu.Item>
         );
       }
