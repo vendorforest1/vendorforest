@@ -130,12 +130,12 @@ const mailService = () => {
               const temporaryPassPattern = /{resetPassword}/i;
               const disputeVendor = /{disputeVendor}/i;
               const disputeClient = /{disputeClient}/i;
-              // const title = /{title}/i;
-              // const description = /{description}/i;
+              const title = /{title}/i;
+              const description = /{description}/i;
               const href = mailHeader.href;
-              // const client = /{client}/i;
-              // const budget = /{budget}/i;
-              // const created = /{created}/i;
+              const client = /{client}/i;
+              const budget = /{budget}/i;
+              const created = /{created}/i;
 
               if (href) {
                 source = source.replace(
@@ -150,11 +150,11 @@ const mailService = () => {
                 source = source.replace(temporaryPassPattern, user.resetPassword);
                 source = source.replace(disputeVendor, user.vendorId.username);
                 source = source.replace(disputeClient, user.clientId.username);
-                // source = source.replace(title, user.title);
-                // source = source.replace(description, user.description);
-                // source = source.replace(client, user.client);
-                // source = source.replace(budget, user.budget);
-                // source = source.replace(created, user.created);
+                source = source.replace(title, user.title);
+                source = source.replace(description, user.description);
+                source = source.replace(client, user.client);
+                source = source.replace(budget, user.budget);
+                source = source.replace(created, user.created);
               }
 
               mailOptions.html = source;
@@ -198,6 +198,16 @@ const mailService = () => {
     };
     sendEmail(user, fileName, mailHeader, callback);
     // setup e-mail data with unicode symbols
+  };
+  
+  mailObject.sendVendorHireByClientEmail = async (hire, subject, callback) => {
+    const mailOptions = {
+      subject: subject, // Subject line
+      href: `${env.API_URL}/vendor/contract/${hire.contractId}`,
+    };
+
+    sendEmail(hire, "email_hire.html", mailOptions, callback);
+    console.log("sent email = ", hire);
   };
 
   mailObject.sendDisputeEmail = async (dispute, subject, callback) => {

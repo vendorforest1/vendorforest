@@ -20,4 +20,6 @@ router.post("/send_email", jobCtr.sendEmail);
 router.post("/sendNewJobNotification", jobCtr.sendingNotification);
 router.post("/initChat", jobCtr.initChat);
 router.post("/job_completed", jobCtr.jobCompleted);
+router.get("/get_my_job", jobCtr.getMyPosts);
+router.post("/hire_vendor", jobCtr.hireVendor);
 export default router;

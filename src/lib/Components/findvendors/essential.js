@@ -1,4 +1,5 @@
 import { apiUrl } from "@Shared/constants";
+import { async } from "q";
 // Actions
 const FETCH_REQUEST = "FETCH_REQUEST";
 const FETCH_INIT_SUCCESS = "FETCH_INIT_SUCCESS";
@@ -120,4 +121,41 @@ export const fetchFindVendorsData = (payload) => async (dispatch, getState) => {
       dispatch(fetchVendorsSuccess(result.data));
     })
     .catch((err) => dispatch(fetchError(err.message)));
+};
+
+export const fetchMyJob = async () => {
+  return await fetch(apiUrl.GET_MY_POSTS, {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then(async (result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {});
+};
+
+export const hireVendor = async (payload) => {
+  return await fetch(apiUrl.HIRE_VENDOR, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then(async (result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {});
 };

@@ -471,6 +471,7 @@ export default () => {
       vendor: {
         $exists: true,
       },
+      profilePercent: { $gt: 10 },
     })
       .populate({
         path: "vendor",

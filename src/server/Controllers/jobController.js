@@ -2,6 +2,7 @@ import Job from "@Models/job.model";
 import User from "@Models/user.model";
 import Room from "@Models/chatRoom.model";
 import Vendor from "@Models/vendor.model";
+import Proposal from "@Models/proposal.model";
 import Contract from "@Models/contract.model";
 import getEnv, { constants } from "@Config/index";
 import mongoose from "mongoose";
@@ -178,9 +179,6 @@ export default () => {
                   description: req.body.description,
                   email: result[0].email,
                 };
-                // console.log("job email content = ", emailContent);
-                // emailContent.title = title;
-                // emailContent.description = description;
                 await mail.sendVendorJobPostedEmail(
                   emailContent,
                   "VendorForest information!",
@@ -481,6 +479,128 @@ export default () => {
           env.MODE === "development" ? err.message : constants.PROD_COMMONERROR_MSG;
         });
     }
+  };
+  controllers.getMyPosts = async (req, res) => {
+    await Job.find({
+      client: req.user._id,
+      status: constants.JOB_STATUS.PPOSTED,
+    })
+      .populate({
+        path: "proposales",
+        model: "proposal",
+      })
+      .sort({ createdAt: -1 })
+      .then((result) => {
+        return res.status(200).json({
+          status: 200,
+          data: result,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
+  controllers.hireVendor = async (req, res) => {
+    var jobTitle;
+    const newProposal = new Proposal({
+      job: req.body.job,
+      vendor: req.body.vendor,
+      offerBudget: req.body.offerBudget,
+      offerBudgetType: req.body.offerBudgetType,
+      bidType: 0,
+      status: constants.PROPOSAL_STATUS.HIRED,
+    });
+    await newProposal
+      .save()
+      .then(async (result) => {
+        // console.log("saving proposal result = ", result);
+        const newContract = new Contract({
+          job: req.body.job,
+          vendor: req.body.vendor,
+          proposal: result._id,
+          budget: req.body.offerBudget,
+          stDateTime: req.body.stDateTime,
+          endDateTime: req.body.endDateTime,
+          client: req.user._id,
+          totalBudget: req.body.offerBudget,
+        });
+        await newContract
+          .save()
+          .then(async (resul) => {
+            // console.log("saving contract result = ", resul);
+            await Job.findOneAndUpdate(
+              {
+                _id: req.body.job,
+              },
+              {
+                status: constants.JOB_STATUS.HIRED,
+                $push: {
+                  hiredVendors: req.body.vendor,
+                  proposales: result._id,
+                },
+              },
+            )
+              .then((jobResult) => {
+                // console.log("job result = ", jobResult);
+                jobTitle = jobResult.title;
+              })
+              .catch((err) => {
+                console.log("job catch error = ", err);
+              });
+            const vendorId = req.body.vendor;
+            const notificationDescription = `You are hired. Job Title: ${jobTitle}. Message from client: ${req.body.message}`;
+            const vendorPhone = req.body.phone;
+            const vendorTitle = "Vendorforest Information!";
+            const smsDescription = `Title: ${jobTitle} \n You are hired on this job by the clinet ${req.user.username}. \n vendorforest.com`;
+            saveNotification(
+              vendorId,
+              notificationDescription,
+              `/vendor/contract/${resul._id}`,
+            );
+            sendSMS(vendorPhone, vendorTitle, smsDescription);
+            const emailContent = {
+              email: req.body.email,
+              contractId: resul._id,
+              user: req.body.username,
+              client: req.user.username,
+              budget: req.body.offerBudget,
+            };
+            await mail.sendVendorHireByClientEmail(
+              emailContent,
+              "VendorForest information!",
+              (err, msg) => {
+                if (err) {
+                  return err;
+                }
+                return;
+              },
+            );
+
+            return res.status(200).json({
+              status: 200,
+              data: resul,
+            });
+          })
+          .catch((error) => {
+            console.log("error in saving = ", error);
+            return res.status(500).json({
+              status: 500,
+              message:
+                env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+            });
+          });
+      })
+      .catch((error) => {
+        console.log("error in saving last = ", error);
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
   };
 
   controllers.jobCompleted = async (req, res) => {
