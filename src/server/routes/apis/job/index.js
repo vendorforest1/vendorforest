@@ -22,4 +22,6 @@ router.post("/initChat", jobCtr.initChat);
 router.post("/job_completed", jobCtr.jobCompleted);
 router.get("/get_my_job", jobCtr.getMyPosts);
 router.post("/hire_vendor", jobCtr.hireVendor);
+router.post("/ask_question", jobCtr.askQuestion);
+
 export default router;

@@ -35,5 +35,7 @@ router.post(
   vendorCtr.searchVendorInRadius,
 );
 router.post("/find_vendors", vendorCtr.findVendors);
-
+router.post("/get_new_question", vendorCtr.getNewQuestions);
+router.post("/get_answered_question", vendorCtr.getAnsweredQuestions);
+router.post("/insert_answer", vendorCtr.insertAnswer);
 export default router;

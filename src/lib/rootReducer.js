@@ -29,6 +29,7 @@ import vendorDashboardReducer from "@Components/logged_vendor/dashboard/essentia
 import vendorContractDetailsReducer from "@Components/logged_vendor/contractDetails/essential";
 import vendorReviewReducer from "@Components/logged_vendor/givefeedback/essential";
 import clientFindVendorReducer from "@Components/findvendors/essential";
+import questionReducer from "@Components/logged_vendor/question&answer/essential";
 
 import headerNotiReducer from "@Components/inc/essential";
 import notificationReducer from "@Components/notification/essential";
@@ -60,6 +61,7 @@ const reducers = {
   headerNotiReducer,
   notificationReducer,
   disputeReducer,
+  questionReducer,
 };
 const config = {
   key: "primary",

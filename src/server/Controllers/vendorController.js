@@ -1,12 +1,17 @@
 import User from "@Models/user.model";
 import Vendor from "@Models/vendor.model";
 import Portfolio from "@Models/portfolio.model";
+import Question from "@Models/question&answer.model";
 import Team from "../models/team.model";
+import { mail } from "@Config/mail";
+import saveNotification from "@Config/notification";
+import sendSMS from "@Config/sms";
 
 // import Team from "../models/team.model";
 import Company from "@Models/company.model";
 import { calculateDistance } from "@Utils/utils";
 import getEnv, { constants } from "@Config/index";
+import { async } from "q";
 
 const env = getEnv();
 
@@ -570,6 +575,191 @@ export default () => {
         });
       })
       .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
+  controllers.getNewQuestions = async (req, res) => {
+    await Question.find({
+      ...req.body,
+      vendor: req.user._id,
+    })
+      .populate({
+        path: "vendor",
+        model: "user",
+      })
+      .populate({
+        path: "client",
+        model: "user",
+      })
+      .sort({ createdAt: -1 })
+      .then((result) => {
+        if (!result) {
+          return res.status(401).json({
+            status: 401,
+            message:
+              env.MODE === "development"
+                ? `Company ${constants.DEV_EMPTYDOC_MSG}`
+                : constants.PROD_COMMONERROR_MSG,
+          });
+        }
+        return res.status(200).json({
+          status: 200,
+          message: "Success",
+          data: result,
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
+
+  controllers.getAnsweredQuestions = async (req, res) => {
+    if (req.user.accountType === 1) {
+      await Question.find({
+        ...req.body,
+        vendor: req.user._id,
+      })
+        .populate({
+          path: "vendor",
+          model: "user",
+        })
+        .populate({
+          path: "client",
+          model: "user",
+        })
+        .sort({ createdAt: -1 })
+        .then((result) => {
+          if (!result) {
+            return res.status(401).json({
+              status: 401,
+              message:
+                env.MODE === "development"
+                  ? `Company ${constants.DEV_EMPTYDOC_MSG}`
+                  : constants.PROD_COMMONERROR_MSG,
+            });
+          }
+          return res.status(200).json({
+            status: 200,
+            message: "Success",
+            data: result,
+          });
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            status: 500,
+            message:
+              env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          });
+        });
+    } else {
+      await Question.find({
+        ...req.body,
+        client: req.user._id,
+      })
+        .populate({
+          path: "vendor",
+          model: "user",
+        })
+        .populate({
+          path: "client",
+          model: "user",
+        })
+        .sort({ createdAt: -1 })
+        .then((result) => {
+          if (!result) {
+            return res.status(401).json({
+              status: 401,
+              message:
+                env.MODE === "development"
+                  ? `Company ${constants.DEV_EMPTYDOC_MSG}`
+                  : constants.PROD_COMMONERROR_MSG,
+            });
+          }
+          return res.status(200).json({
+            status: 200,
+            message: "Success",
+            data: result,
+          });
+        })
+        .catch((error) => {
+          return res.status(500).json({
+            status: 500,
+            message:
+              env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+          });
+        });
+    }
+  };
+
+  controllers.insertAnswer = async (req, res) => {
+    const query = {
+      status: req.body.status,
+      _id: req.body._id,
+    };
+    const answer = req.body.answer === 0 ? "Yes" : "No";
+    await Question.findOneAndUpdate(
+      {
+        ...query,
+      },
+      {
+        answer: answer,
+        status: 1,
+      },
+      {
+        new: true,
+      },
+    )
+      .populate({
+        path: "vendor",
+        model: "user",
+      })
+      .populate({
+        path: "client",
+        model: "user",
+      })
+      .then(async (result) => {
+        console.log("answer result = ", result);
+        if (!result) {
+          return res.status(401).json({
+            status: 401,
+            message: "No result.",
+          });
+        }
+        const clientId = result.client._id;
+        const notificationDescription = `You received a new answer from vendor.`;
+        const clientPhone = result.client.phone;
+        const vendorTitle = "Vendorforest Information!";
+        const smsDescription = `New answer from vendor. \n ${result.answer}`;
+        saveNotification(clientId, notificationDescription, `/clientquestion&answer`);
+        sendSMS(clientPhone, vendorTitle, smsDescription);
+        const emailContent = {
+          email: result.client.email,
+        };
+        await mail.sendVendorJobPostedEmail(
+          emailContent,
+          "VendorForest information!",
+          (err, msg) => {
+            if (err) {
+              return err;
+            }
+            return;
+          },
+        );
+        return res.status(200).json({
+          status: 200,
+          message: "Your answer has been sent.",
+          data: result,
+        });
+      })
+      .catch((error) => {
+        console.log("insert error = ", error);
         return res.status(500).json({
           status: 500,
           message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,

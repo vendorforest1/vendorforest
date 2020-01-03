@@ -46,6 +46,8 @@ import Privacy from "@Components/privacy";
 
 import Notification from "@Components/notification";
 import Dispute from "@Components/dispute";
+import QuestionAnswer from "@Components/logged_vendor/question&answer";
+import ClientQA from "@Components/logged_client/question&answer";
 
 export default [
   {
@@ -97,6 +99,11 @@ export default [
     path: "/dispute",
     exact: true,
     component: Dispute,
+  },
+  {
+    path: "/clientquestion&answer",
+    exact: true,
+    component: ClientQA,
   },
 
   /*================================== CLIENT LINKS ==========================*/
@@ -225,6 +232,11 @@ export default [
     path: "/vendor",
     exact: true,
     component: VendorDashboard,
+  },
+  {
+    path: "/question&answer",
+    exact: true,
+    component: QuestionAnswer,
   },
   /*================================ SERVICE LINKS ==============================*/
   {

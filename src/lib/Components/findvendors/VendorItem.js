@@ -1,29 +1,65 @@
 import React from "react";
-import { Button, Icon, Avatar, Rate, Modal, Progress, message } from "antd";
+import { Button, Icon, Avatar, Rate, Modal, Progress, message, Input } from "antd";
 import SendInvite from "./SendInvite";
-import { hireVendor } from "./essential";
-
+import { hireVendor, askQuestion } from "./essential";
 import { constants } from "@Shared/constants";
 
+const { TextArea } = Input;
 class VendorItem extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      visible: false,
       isModal: false,
       title: undefined,
       text: undefined,
       check: false,
+      message: undefined,
     };
     this.toggle = this.toggle.bind(this);
     this.selectCallback = this.selectCallback.bind(this);
     this.handleContract = this.handleContract.bind(this);
+    this.toggleAsk = this.toggleAsk.bind(this);
+    this.handleAsk = this.handleAsk.bind(this);
   }
 
   toggle() {
     this.setState({
       isModal: !this.state.isModal,
     });
+  }
+  toggleAsk() {
+    this.setState({
+      visible: !this.state.visible,
+    });
+  }
+  handleAsk() {
+    this.setState({
+      visible: !this.state.visible,
+    });
+    if (this.state.message === undefined) {
+      message.warning("Please input question.");
+      return;
+    } else {
+      if (this.state.message.length > 90) {
+        message.warning("You can't exceed the max length of 90 characters.");
+        return;
+      }
+    }
+    const params = {
+      vendor: this.props.user._id,
+      question: this.state.message,
+      email: this.props.user.email,
+      phone: this.props.user.phone,
+    };
+    askQuestion(params)
+      .then((result) => {
+        message.success(result.message);
+      })
+      .catch((error) => {
+        message.warning(error);
+      });
   }
   handleContract() {
     this.setState({
@@ -158,6 +194,11 @@ class VendorItem extends React.Component {
           <h6 className="vendor-subinfo text-color text-md-right text-center col">
             ${user.vendor.hourlyRate}/hr
           </h6>
+          <div className="col" style={{ marginBottom: "5px" }}>
+            <button className="button-primary" onClick={this.toggleAsk}>
+              Ask to Vendor
+            </button>
+          </div>
           <div className="col">
             <button className="button-primary" onClick={this.toggle}>
               Hire Vendor
@@ -186,6 +227,44 @@ class VendorItem extends React.Component {
             text={this.textCallback}
             check={this.checkCallback}
           />
+        </Modal>
+
+        <Modal
+          title={`Ask a question to ${this.props.user.username}`}
+          visible={this.state.visible}
+          // onOk={this.toggle}
+          onCancel={this.toggleAsk}
+          width={"50%"}
+          footer={
+            <Button
+              key="next"
+              type="primary"
+              onClick={this.handleAsk}
+              style={{ width: "120px" }}
+            >
+              Ask Now
+            </Button>
+          }
+        >
+          <div className="message mb-6">
+            <TextArea
+              value={this.state.message}
+              onChange={(e) => {
+                this.setState({
+                  message: e.target.value,
+                });
+              }}
+              rows={5}
+              placeholder="Message"
+            />
+          </div>
+          <div className="message mb-6" style={{ textAlign: "right" }}>
+            90 Characters
+          </div>
+          <div className="message mb-6" style={{ marginTop: "20px" }}>
+            NOTE: Please undersand that you can only ask questions that the vendor can only
+            answer by YES or NO. For your own safety reasons.
+          </div>
         </Modal>
       </div>
     );

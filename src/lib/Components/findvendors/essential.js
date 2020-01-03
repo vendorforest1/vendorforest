@@ -159,3 +159,22 @@ export const hireVendor = async (payload) => {
     })
     .catch((err) => {});
 };
+
+export const askQuestion = async (payload) => {
+  return await fetch(apiUrl.ASK_QUESTION, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then(async (result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {});
+};

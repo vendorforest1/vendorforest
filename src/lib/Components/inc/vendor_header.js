@@ -105,8 +105,9 @@ class VendorHeader extends React.Component {
           </a>
         </Menu.Item>
         <Menu.Item>
-          <a rel="noopener noreferrer" href="#/">
-            Community and Forums
+          <a rel="noopener noreferrer" href="/question&answer">
+            {/* Community and Forums */}
+            Questions & Answers
           </a>
         </Menu.Item>
         <Menu.Item>

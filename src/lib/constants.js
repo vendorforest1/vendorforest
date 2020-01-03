@@ -131,6 +131,9 @@ export const apiUrl = {
   VENDOR_UPDATE_PROFILE: `${API_URL}/apis/vendor/update`,
   VENDOR_IN_RADIUS: `${API_URL}/apis/vendor/search_inradius`,
   FIND_VENDORS: `${API_URL}/apis/vendor/find_vendors`,
+  GET_NEW_QUESTION: `${API_URL}/apis/vendor/get_new_question`,
+  GET_ANSWERED_QUESTIONS: `${API_URL}/apis/vendor/get_answered_question`,
+  INSERT_ANSWER: `${API_URL}/apis/vendor/insert_answer`,
 
   GET_MYREVIEWS: `${API_URL}/apis/review/get_myreviews`,
   GET_REVIEW: `${API_URL}/apis/review/get`,
@@ -165,6 +168,7 @@ export const apiUrl = {
   SEND_JOB_COMPLETE: `${API_URL}/apis/job/job_completed`,
   GET_MY_POSTS: `${API_URL}/apis/job/get_my_job`,
   HIRE_VENDOR: `${API_URL}/apis/job/hire_vendor`,
+  ASK_QUESTION: `${API_URL}/apis/job/ask_question`,
 
   CREATE_PROPOSAL: `${API_URL}/apis/proposal/create`,
   UPDATE_PROPOSAL: `${API_URL}/apis/proposal/update`,

@@ -4,6 +4,7 @@ import Room from "@Models/chatRoom.model";
 import Vendor from "@Models/vendor.model";
 import Proposal from "@Models/proposal.model";
 import Contract from "@Models/contract.model";
+import QuestionAnswer from "@Models/question&answer.model";
 import getEnv, { constants } from "@Config/index";
 import mongoose from "mongoose";
 import { mail } from "@Config/mail";
@@ -595,7 +596,6 @@ export default () => {
           });
       })
       .catch((error) => {
-        console.log("error in saving last = ", error);
         return res.status(500).json({
           status: 500,
           message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
@@ -603,6 +603,50 @@ export default () => {
       });
   };
 
+  controllers.askQuestion = async (req, res) => {
+    const newQuestion = new QuestionAnswer({
+      vendor: req.body.vendor,
+      question: req.body.question,
+      client: req.user._id,
+      status: 0,
+    });
+    await newQuestion
+      .save()
+      .then(async (result) => {
+        const vendorId = req.body.vendor;
+        const notificationDescription = `You received a new question from the client.`;
+        const vendorPhone = req.body.phone;
+        const vendorTitle = "Vendorforest Information!";
+        const smsDescription = `New question from client. \n ${req.body.question}`;
+        saveNotification(vendorId, notificationDescription, `/question&answer`);
+        sendSMS(vendorPhone, vendorTitle, smsDescription);
+        const emailContent = {
+          email: req.body.email,
+        };
+        await mail.sendVendorJobPostedEmail(
+          emailContent,
+          "VendorForest information!",
+          (err, msg) => {
+            if (err) {
+              return err;
+            }
+            return;
+          },
+        );
+        return res.status(200).json({
+          status: 200,
+          message: "Your question has been sent.",
+          data: result,
+        });
+      })
+      .catch((error) => {
+        console.log("error in saving = ", error);
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
   controllers.jobCompleted = async (req, res) => {
     await Contract.findOne({
       _id: req.body.contractId,
