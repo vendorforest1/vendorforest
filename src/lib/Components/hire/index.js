@@ -185,6 +185,10 @@ class Hire extends React.Component {
   }
   createLesserMilestone() {
     this.props.form.validateFields(["price", "description"], (err, values) => {
+      if (values.price > this.props.hireInfo.budget) {
+        message.warning("You can't exceed the total amount!");
+        return;
+      }
       this.setState({
         description: values.description,
         price: values.price,

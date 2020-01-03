@@ -280,7 +280,7 @@ export const fetchRleaseMilestoneData = (payload) => async (dispatch, getState) 
           if (result.data.length > 0) {
             message.warning("More milestones");
           } else {
-            message.success("yes. no milestone");
+            message.success("All milestones have been released!");
             window.location.href = `/client/givefeedback/${payload.contractId}`;
           }
         })

@@ -11,6 +11,9 @@ import {
   Input,
   Divider,
   InputNumber,
+  Button,
+  Select,
+  Checkbox,
 } from "antd";
 import { connect } from "react-redux";
 import withStyles from "isomorphic-style-loader/withStyles";
@@ -21,6 +24,7 @@ import localStyle from "./index.scss";
 import Milestones from "./Milestones";
 import AttachFiles from "./AttachFiles";
 import Review from "./Review";
+import moment from "moment";
 import { constants, getTimeFromTimezone } from "@Shared/constants";
 import {
   fetchUpdateContractData,
@@ -28,6 +32,7 @@ import {
   fetchGetContractData,
   fetchSavingDispute,
   fetchDispute,
+  fetchRleaseMilestoneData,
 } from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
 import value from "@Components/images/profileplace.png";
@@ -43,6 +48,8 @@ class ClientContractDetails extends React.Component {
       radioStatus: 0,
       show: false,
       btnPending: false,
+      contractModal: false,
+      selectedJob: -1,
     };
     this.clickTab = this.clickTab.bind(this);
     this.createNewMilestone = this.createNewMilestone.bind(this);
@@ -50,6 +57,8 @@ class ClientContractDetails extends React.Component {
     this.handleDispute = this.handleDispute.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handlSubmitDispute = this.handlSubmitDispute.bind(this);
+    this.toggle = this.toggle.bind(this);
+    this.handleContract = this.handleContract.bind(this);
   }
 
   clickTab(key) {
@@ -109,7 +118,11 @@ class ClientContractDetails extends React.Component {
     }
     return false;
   }
-
+  toggle() {
+    this.setState({
+      contractModal: !this.state.contractModal,
+    });
+  }
   handleDispute() {
     this.setState({
       visible: true,
@@ -119,6 +132,18 @@ class ClientContractDetails extends React.Component {
     this.setState({
       visible: false,
     });
+  }
+  handleContract() {
+    if (this.state.selectedJob !== 0) {
+      message.info('Please select "Job Completed" option to close the contract.');
+      return;
+    }
+    if (this.props.match.params.id) {
+      const params = {
+        _id: this.props.match.params.id,
+      };
+      this.EndContractData(params);
+    }
   }
   handlSubmitDispute() {
     this.props.form.validateFields(["price", "description"], (errors, values) => {
@@ -160,12 +185,9 @@ class ClientContractDetails extends React.Component {
 
   endContract() {
     this._button = 1;
-    if (this.props.match.params.id) {
-      const params = {
-        _id: this.props.match.params.id,
-      };
-      this.EndContractData(params);
-    }
+    this.setState({
+      contractModal: !this.state.contractModal,
+    });
   }
 
   info = (queue) => {
@@ -192,11 +214,23 @@ class ClientContractDetails extends React.Component {
     fetchEndContractData(params)
       .then((data) => {
         message.success(data.message);
-        if (this.props.match.params.id) {
-          this.props.fetchGetContractData({
-            _id: this.props.match.params.id,
-          });
+        const milestoneLength = this.props.milestones.length;
+        if (milestoneLength > 0) {
+          for (var i = 0; i < milestoneLength; i++) {
+            this.props.fetchRleaseMilestoneData({
+              _id: this.props.milestones[i]._id,
+              contractId: this.props.contract._id,
+            });
+          }
         }
+        this.setState({
+          contractModal: !this.state.contractModal,
+        });
+        // if (this.props.match.params.id) {
+        //   this.props.fetchGetContractData({
+        //     _id: this.props.match.params.id,
+        //   });
+        // }
       })
       .catch((error) => {
         message.warning(error.message);
@@ -205,6 +239,23 @@ class ClientContractDetails extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const generateMilestone = () => {
+      return this.props.milestones.map((milestone, index) => {
+        // if (milestone.status !== constants.MILESTONE_STATUS.RELEASED) {
+        return (
+          <div key={index} className="row">
+            <div className="col-sm-6">
+              {index + 1}. {milestone.description}
+            </div>
+            <div className="col-sm-6" style={{ textAlign: "right" }}>
+              {this.props.pending && <Icon type="sync" spin className="mr-2 text-success" />}${" "}
+              {milestone.price}
+            </div>
+          </div>
+        );
+        // }
+      });
+    };
     return (
       <div className="contract-details">
         <ClientHeader />
@@ -455,6 +506,50 @@ class ClientContractDetails extends React.Component {
             </div>
           )}
         </Modal>
+        <Modal
+          title="End the contract"
+          visible={this.state.contractModal}
+          // onOk={this.toggle}
+          onCancel={this.toggle}
+          width={"50%"}
+          footer={
+            <Button
+              key="next"
+              type="primary"
+              onClick={this.handleContract}
+              style={{ width: "120px" }}
+            >
+              End Contract
+            </Button>
+          }
+        >
+          <div className="send-invite">
+            <div className="row">
+              <div className="col-md-12">
+                <h5 style={{ margin: "15px 0" }}>Why are you ending the contract?</h5>
+                <div className="mb-6">
+                  <Select
+                    value={String(this.state.selectedJob)}
+                    onChange={(value) => {
+                      this.setState({
+                        selectedJob: Number(value),
+                      });
+                    }}
+                  >
+                    <option value="-1"> -----Select----- </option>
+                    <option value="0"> Job Completed </option>
+                  </Select>
+                </div>
+                <div className="mb-6" style={{ margin: "25px 0px 15px" }}>
+                  Before you end the contract you still have some payment that need to be
+                  realeased. By ending the contract the payments will be released automatically.
+                </div>
+                <h5 style={{ margin: "15px 0" }}>Milestones</h5>
+              </div>
+            </div>
+            {this.props.milestones && generateMilestone()}
+          </div>
+        </Modal>
       </div>
     );
   }
@@ -482,4 +577,5 @@ export default connect(mapStateToProps, {
   fetchUpdateContractData,
   fetchSavingDispute,
   fetchDispute,
+  fetchRleaseMilestoneData,
 })(withStyles(globalStyle, localStyle)(ClientContractDetailsForm));
