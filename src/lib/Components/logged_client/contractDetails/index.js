@@ -217,10 +217,12 @@ class ClientContractDetails extends React.Component {
         const milestoneLength = this.props.milestones.length;
         if (milestoneLength > 0) {
           for (var i = 0; i < milestoneLength; i++) {
-            this.props.fetchRleaseMilestoneData({
-              _id: this.props.milestones[i]._id,
-              contractId: this.props.contract._id,
-            });
+            if (this.props.milestones[i].status === constants.MILESTONE_STATUS.CREATED) {
+              this.props.fetchRleaseMilestoneData({
+                _id: this.props.milestones[i]._id,
+                contractId: this.props.contract._id,
+              });
+            }
           }
         }
         this.setState({
@@ -250,6 +252,12 @@ class ClientContractDetails extends React.Component {
             <div className="col-sm-6" style={{ textAlign: "right" }}>
               {this.props.pending && <Icon type="sync" spin className="mr-2 text-success" />}${" "}
               {milestone.price}
+              {milestone.status === constants.MILESTONE_STATUS.RELEASED && (
+                <span>
+                  <p>{moment(milestone.createdAt).format("YYYY-MM-DD HH:mm A")}</p>
+                  <p>Payment Completed</p>
+                </span>
+              )}
             </div>
           </div>
         );
