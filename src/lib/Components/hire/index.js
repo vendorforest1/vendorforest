@@ -240,7 +240,7 @@ class Hire extends React.Component {
           <div className="container">
             <div className="row">
               <div className="col-md-9">
-                <div className="content-details shadow">
+                <div className="content-details shadow">{console.log("Hire info = ", this.props.hireInfo)}
                   {this.props.hireInfo && (
                     <div>
                       <div className="head d-md-flex d-block justify-content-between align-items-center">
@@ -256,7 +256,7 @@ class Hire extends React.Component {
                               </a>
                             </h6>
                             <p className="text-grey">
-                              {this.props.hireInfo.job.service.name} /{" "}
+                              {this.props.hireInfo.job.service !== null ? this.props.hireInfo.job.service.name : ""} /{" "}
                               {this.props.hireInfo.job.category.name}
                             </p>
                             <p className="text-grey">
