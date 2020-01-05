@@ -240,7 +240,7 @@ class Hire extends React.Component {
           <div className="container">
             <div className="row">
               <div className="col-md-9">
-                <div className="content-details shadow">{console.log("Hire info = ", this.props.hireInfo)}
+                <div className="content-details shadow">
                   {this.props.hireInfo && (
                     <div>
                       <div className="head d-md-flex d-block justify-content-between align-items-center">
