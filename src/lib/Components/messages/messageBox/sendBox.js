@@ -66,9 +66,9 @@ class SendBox extends React.Component {
             className={"textarea"}
             onChange={this.handleChange}
           />
-          <div className="mr-2 mt-1">
+          {/* <div className="mr-2 mt-1">
             <Icon type="smile" theme="filled" style={{ fontSize: "22px", color: "#929292" }} />
-          </div>
+          </div> */}
           <div className="mt-1">
             <Icon type="paper-clip" style={{ fontSize: "22px", color: "#929292" }} />
           </div>

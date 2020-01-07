@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Input } from "antd";
+import { Button, Input, Select } from "antd";
 import moment from "moment";
 import { connect } from "react-redux";
 import { constants } from "@Shared/constants";
@@ -23,6 +23,13 @@ class SidebarSearch extends React.Component {
           onSearch={(value) => process.env.NODE_ENV === "development" && console.log(value)}
           className="w-100"
         />
+        <div style={{padding: "5px 0px"}}></div>
+        <Select defaultValue="0">
+          <option value="0"> All Recent </option>
+          <option value="1"> Unread </option>
+          <option value="2"> Open Contract </option>
+          <option value="3"> Closed Contract </option>
+        </Select>
       </div>
     );
   }

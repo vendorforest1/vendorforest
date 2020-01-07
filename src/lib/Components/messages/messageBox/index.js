@@ -14,7 +14,7 @@ class MessageBox extends React.Component {
   render() {
     return (
       <div className="messagebox">
-        <MessageBoxTopbar />
+        {/* <MessageBoxTopbar /> */}
         <MessageList />
         <SendBox />
       </div>

@@ -7,6 +7,7 @@ import globalStyle from "@Sass/index.scss";
 import localStyle from "./index.scss";
 import { connect } from "react-redux";
 import { fetchContactedUser } from "./essential";
+import ChatRoom from "./chatroom";
 
 class Messages extends React.Component {
   constructor(props) {
@@ -29,11 +30,11 @@ class Messages extends React.Component {
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-12">
+                <ChatRoom />
               </div>
             </div>
           </div>
         </div>
-        <Footer />
       </div>
     );
   }
