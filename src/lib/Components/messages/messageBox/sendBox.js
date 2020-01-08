@@ -16,19 +16,6 @@ class SendBox extends React.Component {
       minRows: 1,
       maxRows: 10,
     };
-    // this.socket = io();
-    // this.sendMessage = (ev) => {
-    //   ev.preventDefault();
-    //   alert(this.props.clientName);
-    //   this.socket.emit("sendMessage", {
-    //     message: this.state.value,
-    //     user: "chen",
-    //   });
-    //   this.setState({ value: "" });
-    //   this.socket.on("resendMsg", (result) => {
-    //     alert(result);
-    //   });
-    // };
   }
 
   handleChange = (event) => {
@@ -66,9 +53,6 @@ class SendBox extends React.Component {
             className={"textarea"}
             onChange={this.handleChange}
           />
-          {/* <div className="mr-2 mt-1">
-            <Icon type="smile" theme="filled" style={{ fontSize: "22px", color: "#929292" }} />
-          </div> */}
           <div className="mt-1">
             <Icon type="paper-clip" style={{ fontSize: "22px", color: "#929292" }} />
           </div>

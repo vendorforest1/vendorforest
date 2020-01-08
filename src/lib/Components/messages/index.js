@@ -17,9 +17,7 @@ class Messages extends React.Component {
     };
   }
 
-  componentDidMount() {
-
-  }
+  componentDidMount() {}
 
   render() {
     return (

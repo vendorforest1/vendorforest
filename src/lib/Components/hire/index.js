@@ -256,8 +256,10 @@ class Hire extends React.Component {
                               </a>
                             </h6>
                             <p className="text-grey">
-                              {this.props.hireInfo.job.service !== null ? this.props.hireInfo.job.service.name : ""} /{" "}
-                              {this.props.hireInfo.job.category.name}
+                              {this.props.hireInfo.job.service !== null
+                                ? this.props.hireInfo.job.service.name
+                                : ""}{" "}
+                              / {this.props.hireInfo.job.category.name}
                             </p>
                             <p className="text-grey">
                               {this.props.hireInfo.vendor.bsLocation

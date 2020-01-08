@@ -14,15 +14,7 @@ class MessageList extends React.Component {
   }
 
   render() {
-    return (
-      <div className="messagelist">
-        <MessageItem />
-        <MessageItem />
-        <MessageItem />
-        <MessageItem />
-        <MessageItem />
-      </div>
-    );
+    return <div className="messagelist"></div>;
   }
 }
 

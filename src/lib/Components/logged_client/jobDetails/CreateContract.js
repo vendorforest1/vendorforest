@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { fetchCreateContract, updateJob, updateProposal } from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
 
+const firebase = require("firebase/app");
 class CreateContract extends React.Component {
   constructor(props) {
     super(props);
@@ -40,42 +41,67 @@ class CreateContract extends React.Component {
     this.create = this.create.bind(this);
   }
 
-  create() {
-    if (
-      this.state.contractStDateTime.toDate().getTime() <
-        moment()
-          .toDate()
-          .getTime() ||
-      this.state.contractEndDateTime.toDate().getTime() <
-        moment()
-          .toDate()
-          .getTime() ||
-      this.state.contractEndDateTime.toDate().getTime() <
-        this.state.contractStDateTime.toDate().getTime()
-    ) {
-      message.warning("Invalid contract time range");
-      return;
-    }
-    const params = {
-      job: this.props.job._id,
-      vendor: this.props.proposal.vendor._id,
-      proposal: this.props.proposal._id,
-      budget: this.state.contractBudget,
-      limitTime:
-        this.props.job.budgetType === constants.BUDGET_TYPE.HOURLY
-          ? this.state.limitTime
-          : undefined,
-      stDateTime: this.state.contractStDateTime.toDate(),
-      endDateTime: this.state.contractEndDateTime.toDate(),
-    };
-    // jqcc.cometchat.launch({uid:params.vendor});
-    this.createContract(params);
-    window.location.href = `/client/hire/${params.job}&${params.vendor}`;
+  async create() {
+    const docKey = [this.props.user.userObj.email, this.props.proposal.vendor.email]
+      .sort()
+      .join(":");
+    await firebase
+      .firestore()
+      .collection("chats")
+      .doc(docKey)
+      .set({
+        messages: [
+          {
+            message: "Hello. How are you",
+            sender: this.props.user.userObj.email,
+            timeStamp: new Date().toISOString(),
+          },
+        ],
+        users: [this.props.user.userObj.email, this.props.proposal.vendor.email],
+        userNames: [this.props.user.userObj.username, this.props.proposal.vendor.username],
+        receiverHadRead: false,
+        contract: 0,
+      })
+      .then((result) => {
+        console.log("firebase result = ", result);
+        if (
+          this.state.contractStDateTime.toDate().getTime() <
+            moment()
+              .toDate()
+              .getTime() ||
+          this.state.contractEndDateTime.toDate().getTime() <
+            moment()
+              .toDate()
+              .getTime() ||
+          this.state.contractEndDateTime.toDate().getTime() <
+            this.state.contractStDateTime.toDate().getTime()
+        ) {
+          message.warning("Invalid contract time range");
+          return;
+        }
+        const params = {
+          job: this.props.job._id,
+          vendor: this.props.proposal.vendor._id,
+          proposal: this.props.proposal._id,
+          budget: this.state.contractBudget,
+          limitTime:
+            this.props.job.budgetType === constants.BUDGET_TYPE.HOURLY
+              ? this.state.limitTime
+              : undefined,
+          stDateTime: this.state.contractStDateTime.toDate(),
+          endDateTime: this.state.contractEndDateTime.toDate(),
+        };
+        this.createContract(params);
+        window.location.href = `/client/hire/${params.job}&${params.vendor}`;
+      })
+      .catch((error) => {
+        console.log("error = ", error);
+      });
   }
 
-  createContract(params) {
+  async createContract(params) {
     this.setState({ pending: true });
-    fetchCreateContract(params)
+    await fetchCreateContract(params)
       .then((data) => {
         this.setState({ pending: false });
         const job = { ...this.props.job };

@@ -23,7 +23,7 @@ class SidebarSearch extends React.Component {
           onSearch={(value) => process.env.NODE_ENV === "development" && console.log(value)}
           className="w-100"
         />
-        <div style={{padding: "5px 0px"}}></div>
+        <div style={{ padding: "5px 0px" }}></div>
         <Select defaultValue="0">
           <option value="0"> All Recent </option>
           <option value="1"> Unread </option>

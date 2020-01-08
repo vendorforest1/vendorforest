@@ -14,9 +14,21 @@ import StyleContext from "isomorphic-style-loader/StyleContext";
 
 import App from "@Shared/App";
 import configureStore from "@Shared/configureStore";
+import * as firebase from "firebase";
 
 const evaluateString = eval;
-
+require("firebase/firestore");
+const firebaseConfig = {
+  apiKey: "AIzaSyAuq6FX-fU9_sY6DX1CL3BpQgeCYyLkDnk",
+  authDomain: "vendorforest-2b23f.firebaseapp.com",
+  databaseURL: "https://vendorforest-2b23f.firebaseio.com",
+  projectId: "vendorforest-2b23f",
+  storageBucket: "vendorforest-2b23f.appspot.com",
+  messagingSenderId: "658525319165",
+  appId: "1:658525319165:web:1e1e13d8a26cfecaa4b394",
+  measurementId: "G-QMSHFCFSDL",
+};
+firebase.initializeApp(firebaseConfig);
 // function deserialize(serializedJavascript) {
 //   return evaluateString("(" + serializedJavascript + ")");
 // }

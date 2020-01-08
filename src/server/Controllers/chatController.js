@@ -5,7 +5,6 @@ import Chat from "@Models/chat.model";
 import express from "express";
 import getEnv, { constants } from "@Config/index";
 import { async } from "q";
-
 const env = getEnv();
 
 const app = express();
