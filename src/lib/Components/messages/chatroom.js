@@ -4,7 +4,9 @@ import { connect } from "react-redux";
 import { constants } from "@Shared/constants";
 import Sidebar from "./sidebar/index";
 import MessageBox from "./messageBox/index";
+import { async } from "q";
 const firebase = require("firebase/app");
+// const storage = firebase.storage();
 
 class ChatRoom extends React.Component {
   constructor(props) {
@@ -40,26 +42,59 @@ class ChatRoom extends React.Component {
     this.messageRead();
   };
 
-  submitMessage = (msg) => {
+  submitMessage = async (msg, fileInfo) => {
     const chatIndex = this.state.selectedChat;
     const docKey = this.buildDocKey(
       this.state.allChats[chatIndex].users.filter((_user) => _user !== this.state.email)[0],
     );
-    console.log("buildDocKey == ", docKey);
-    console.log("chat info == ", this.state.allChats);
-    firebase
-      .firestore()
-      .collection("chats")
-      .doc(docKey)
-      .update({
-        messages: firebase.firestore.FieldValue.arrayUnion({
-          sender: this.state.email,
-          message: msg,
-          timeStamp: new Date().toISOString(),
-        }),
-        receiverHadRead: false,
-      });
-    console.log(this.state);
+    if (fileInfo) {
+      if (!msg) {
+        msg = "attached file";
+      }
+      var filePath = "images/" + fileInfo.uid + "/" + fileInfo.name;
+      await firebase
+        .storage()
+        .ref(filePath)
+        .put(fileInfo)
+        .then(async (fileSnapshot) => {
+          await fileSnapshot.ref
+            .getDownloadURL()
+            .then(async (url) => {
+              await firebase
+                .firestore()
+                .collection("chats")
+                .doc(docKey)
+                .update({
+                  messages: firebase.firestore.FieldValue.arrayUnion({
+                    sender: this.state.email,
+                    message: msg,
+                    timeStamp: new Date().toISOString(),
+                    FileUrl: url,
+                    storageUri: fileSnapshot.metadata.fullPath,
+                    FileName: fileInfo.name,
+                  }),
+                  receiverHadRead: false,
+                })
+                .catch((err) => console.log(err));
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    }
+    if (!fileInfo) {
+      firebase
+        .firestore()
+        .collection("chats")
+        .doc(docKey)
+        .update({
+          messages: firebase.firestore.FieldValue.arrayUnion({
+            sender: this.state.email,
+            message: msg,
+            timeStamp: new Date().toISOString(),
+          }),
+          receiverHadRead: false,
+        });
+    }
   };
 
   messageRead = () => {
@@ -95,6 +130,7 @@ class ChatRoom extends React.Component {
         <MessageBox
           chat={this.state.allChats[this.state.selectedChat]}
           handleSubmit={this.submitMessage}
+          // handleFile={this.handleFile}
           messageRead={this.messageRead}
         />
       </div>

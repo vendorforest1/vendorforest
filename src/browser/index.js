@@ -18,6 +18,7 @@ import * as firebase from "firebase";
 
 const evaluateString = eval;
 require("firebase/firestore");
+require("firebase/storage");
 const firebaseConfig = {
   apiKey: "AIzaSyAuq6FX-fU9_sY6DX1CL3BpQgeCYyLkDnk",
   authDomain: "vendorforest-2b23f.firebaseapp.com",

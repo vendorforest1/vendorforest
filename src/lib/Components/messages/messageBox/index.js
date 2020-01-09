@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import MessageBoxTopbar from "./topbar";
 import MessageList from "./messageList";
 import SendBox from "./sendBox";
-import { Avatar, Icon, Input, message } from "antd";
+import { Avatar, Icon, Input, message, Upload } from "antd";
 
 const { TextArea } = Input;
 class MessageBox extends React.Component {
@@ -11,10 +11,8 @@ class MessageBox extends React.Component {
     super(props);
 
     this.state = {
-      value: "",
-      rows: 1,
-      minRows: 1,
-      maxRows: 10,
+      value: null,
+      fileInfo: null,
     };
   }
 
@@ -42,19 +40,40 @@ class MessageBox extends React.Component {
 
   handleSubmit = () => {
     console.log("message submitted");
-    if (this.messageValid(this.state.value) && this.props.chat) {
-      this.props.handleSubmit(this.state.value);
+    if ((this.messageValid(this.state.value) || this.state.fileInfo) && this.props.chat) {
+      this.props.handleSubmit(this.state.value, this.state.fileInfo);
+      // this.props.handleFile(this.state.fileInfo);
       document.getElementById("chat-text-box").value = "";
+      this.setState({
+        value: null,
+        fileInfo: null,
+      });
     } else {
-      message.info("You haven't connected Users to You.");
+      // message.info("You haven't connected Users to You.");
       document.getElementById("chat-text-box").value = "";
     }
   };
   handleClick = () => this.props.messageRead();
 
+  handleFile = (info) => {
+    if (info.file.status === "removed") {
+      this.setState({
+        fileInfo: null,
+      });
+    } else {
+      this.setState({
+        fileInfo: info.file.originFileObj,
+      });
+    }
+  };
+
   messageValid = (txt) => txt && txt.replace(/\s/g, "").length;
 
   render() {
+    console.log("file = ", this.state.fileInfo);
+    const props = {
+      name: "file",
+    };
     const msgList = () => {
       if (!this.props.chat) {
         return "";
@@ -75,6 +94,17 @@ class MessageBox extends React.Component {
                 {sender}
               </p>
               <p className="msg-text mb-2">{msg.message}</p>
+              {msg.FileName ? (
+                <p style={{ color: "#07b107" }}>
+                  {" "}
+                  attach :{" "}
+                  <a href={msg.FileUrl} download>
+                    {msg.FileName}
+                  </a>{" "}
+                </p>
+              ) : (
+                ""
+              )}
             </div>
             <div className="control">
               <p className="time mb-2">{msg.timeStamp}</p>
@@ -101,10 +131,12 @@ class MessageBox extends React.Component {
               // onFocus={this.handleClick}
               id="chat-text-box"
             ></textarea>
-            <div className="mt-1">
-              <Icon type="paper-clip" style={{ fontSize: "22px", color: "#929292" }} />
-            </div>
           </div>
+          <Upload {...props} onChange={(info) => this.handleFile(info)}>
+            <div className="mt-1">
+              <Icon type="paper-clip" style={{ fontSize: "30px", color: "#929292" }} />
+            </div>
+          </Upload>
           <button className="button-primary" onClick={this.handleSubmit}>
             Send
           </button>
