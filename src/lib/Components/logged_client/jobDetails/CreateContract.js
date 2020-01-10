@@ -52,14 +52,17 @@ class CreateContract extends React.Component {
       .set({
         messages: [
           {
-            message: "Hello. How are you",
+            message: "Hi.",
             sender: this.props.user.userObj.email,
-            timeStamp: new Date().toISOString(),
+            timeStamp: Date.now(),
           },
         ],
         users: [this.props.user.userObj.email, this.props.proposal.vendor.email],
         userNames: [this.props.user.userObj.username, this.props.proposal.vendor.username],
         receiverHadRead: false,
+        jobTitle: this.props.job.title,
+        service: this.props.job.service.name,
+        category: this.props.job.category.name,
         contract: 0,
       })
       .then((result) => {

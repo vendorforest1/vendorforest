@@ -3,7 +3,9 @@ import { Button, Icon, Avatar, Rate, Modal, Progress, message, Input } from "ant
 import SendInvite from "./SendInvite";
 import { hireVendor, askQuestion } from "./essential";
 import { constants } from "@Shared/constants";
-
+import { async } from "q";
+import { connect } from "react-redux";
+const firebase = require("firebase/app");
 const { TextArea } = Input;
 class VendorItem extends React.Component {
   constructor(props) {
@@ -48,10 +50,10 @@ class VendorItem extends React.Component {
       }
     }
     const params = {
-      vendor: this.props.user._id,
+      vendor: this.props.vendor._id,
       question: this.state.message,
-      email: this.props.user.email,
-      phone: this.props.user.phone,
+      email: this.props.vendor.email,
+      phone: this.props.vendor.phone,
     };
     askQuestion(params)
       .then((result) => {
@@ -75,27 +77,47 @@ class VendorItem extends React.Component {
     }
     if (this.state.title.proposales.length > 0) {
       this.state.title.proposales.map((proposal) => {
-        if (proposal.vendor === this.props.user._id) {
+        if (proposal.vendor === this.props.vendor._id) {
           message.warning("This vendor already bidded on this project.");
           return;
         }
       });
     }
-    // console.log(this.state.title);
     const params = {
       job: this.state.title._id,
-      vendor: this.props.user._id,
+      vendor: this.props.vendor._id,
       offerBudget: this.state.title.budget,
       offerBudgetType: this.state.title.budgetType,
       bidType: 0,
       message: this.state.text,
       stDateTime: this.state.title.stDateTime,
       endDateTime: this.state.title.endDateTime,
-      phone: this.props.user.phone,
-      email: this.props.user.email,
-      username: this.props.user.username,
+      phone: this.props.vendor.phone,
+      email: this.props.vendor.email,
+      username: this.props.vendor.username,
     };
-    hireVendor(params).then((result) => {
+    hireVendor(params).then(async (result) => {
+      const docKey = [this.props.user.userObj.email, this.props.vendor.email].sort().join(":");
+      await firebase
+        .firestore()
+        .collection("chats")
+        .doc(docKey)
+        .set({
+          messages: [
+            {
+              message: "Hi.",
+              sender: this.props.user.userObj.email,
+              timeStamp: Date.now(),
+            },
+          ],
+          users: [this.props.user.userObj.email, this.props.vendor.email],
+          userNames: [this.props.user.userObj.username, this.props.vendor.username],
+          receiverHadRead: false,
+          jobTitle: this.state.title.title,
+          service: this.props.vendor.vendor.service.name,
+          category: this.props.vendor.vendor.category.name,
+          contract: 0,
+        });
       window.location.href = `/client/hire/${result.data.job}&${result.data.vendor}`;
     });
   }
@@ -130,42 +152,42 @@ class VendorItem extends React.Component {
   }
 
   render() {
-    const { user } = this.props;
-    // const { vendor } = user;
+    const { vendor } = this.props;
+    // const { vendor } = vendor;
     return (
       <div className="vendor-item d-md-flex d-block justify-content-between">
         <div className="vendor-info d-flex mb-3 mb-md-0">
           <div className="vendor-photo">
-            <Avatar src={`${user.profileImage}`} size={80} style={{ width: "80px" }} />
+            <Avatar src={`${vendor.profileImage}`} size={80} style={{ width: "80px" }} />
           </div>
           <div className="vendor-summary ml-2">
             <h5
               className="vendor-name"
               onClick={() => {
-                window.location.href = "/vendor/profile/" + user.username;
+                window.location.href = "/vendor/profile/" + vendor.username;
               }}
             >
-              {user.username}
+              {vendor.username}
             </h5>
-            {user.vendor.service && user.vendor.category && (
+            {vendor.vendor.service && vendor.vendor.category && (
               <p>
-                {user.vendor.service.name} / {user.vendor.category.name}
+                {vendor.vendor.service.name} / {vendor.vendor.category.name}
               </p>
             )}
             {/* <p>{this.displaySkills()}</p> */}
-            <h6 className="text-blue">{constants.ACCOUNTTYPES[user.accountType]}</h6>
+            <h6 className="text-blue">{constants.ACCOUNTTYPES[vendor.accountType]}</h6>
             <p className="text-grey">
               <Icon type="global" />
-              {user.bsLocation && (
+              {vendor.bsLocation && (
                 <span className="ml-1">
-                  {`${user.bsLocation.city}`}, &nbsp; {`${user.bsLocation.state}`}
+                  {`${vendor.bsLocation.city}`}, &nbsp; {`${vendor.bsLocation.state}`}
                 </span>
               )}
             </p>
             <Progress
               percent={
-                user.vendor.jobs !== 0
-                  ? Number((user.vendor.jobComplatedReate / user.vendor.jobs).toFixed(0))
+                vendor.vendor.jobs !== 0
+                  ? Number((vendor.vendor.jobComplatedReate / vendor.vendor.jobs).toFixed(0))
                   : 0
               }
               size="small"
@@ -174,25 +196,25 @@ class VendorItem extends React.Component {
             />
             <div className="text-grey">
               <span className="mr-2">
-                {user.vendor.reviewCount !== 0
-                  ? (user.vendor.rate / user.vendor.reviewCount).toFixed(1)
+                {vendor.vendor.reviewCount !== 0
+                  ? (vendor.vendor.rate / vendor.vendor.reviewCount).toFixed(1)
                   : 0}
               </span>
               <Rate
                 disabled
                 value={
-                  user.vendor.reviewCount !== 0
-                    ? Number((user.vendor.rate / user.vendor.reviewCount).toFixed(1))
+                  vendor.vendor.reviewCount !== 0
+                    ? Number((vendor.vendor.rate / vendor.vendor.reviewCount).toFixed(1))
                     : 0
                 }
               />
-              <span className="mx-2">{user.vendor.reviewCount} Reviews</span>
+              <span className="mx-2">{vendor.vendor.reviewCount} Reviews</span>
             </div>
           </div>
         </div>
         <div className="vendor-action d-flex flex-md-column flex-row align-items-center">
           <h6 className="vendor-subinfo text-color text-md-right text-center col">
-            ${user.vendor.hourlyRate}/hr
+            ${vendor.vendor.hourlyRate}/hr
           </h6>
           <div className="col" style={{ marginBottom: "5px" }}>
             <button className="button-primary" onClick={this.toggleAsk}>
@@ -206,7 +228,7 @@ class VendorItem extends React.Component {
           </div>
         </div>
         <Modal
-          title={`Hire ${this.props.user.username}`}
+          title={`Hire ${this.props.vendor.username}`}
           visible={this.state.isModal}
           // onOk={this.toggle}
           onCancel={this.toggle}
@@ -230,7 +252,7 @@ class VendorItem extends React.Component {
         </Modal>
 
         <Modal
-          title={`Ask a question to ${this.props.user.username}`}
+          title={`Ask a question to ${this.props.vendor.username}`}
           visible={this.state.visible}
           // onOk={this.toggle}
           onCancel={this.toggleAsk}
@@ -270,5 +292,9 @@ class VendorItem extends React.Component {
     );
   }
 }
+const mapStateToProps = ({ loginReducer }) => {
+  const { user } = loginReducer;
+  return { user };
+};
 
-export default VendorItem;
+export default connect(mapStateToProps, {})(VendorItem);

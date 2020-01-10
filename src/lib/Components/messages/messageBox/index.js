@@ -3,7 +3,8 @@ import { connect } from "react-redux";
 import MessageBoxTopbar from "./topbar";
 import MessageList from "./messageList";
 import SendBox from "./sendBox";
-import { Avatar, Icon, Input, message, Upload } from "antd";
+import { Avatar, Icon, Input, message, Upload, Divider } from "antd";
+import moment from "moment";
 
 const { TextArea } = Input;
 class MessageBox extends React.Component {
@@ -39,7 +40,7 @@ class MessageBox extends React.Component {
   };
 
   handleSubmit = () => {
-    console.log("message submitted");
+    process.env.NODE_ENV === "development" && console.log("message submitted");
     if ((this.messageValid(this.state.value) || this.state.fileInfo) && this.props.chat) {
       this.props.handleSubmit(this.state.value, this.state.fileInfo);
       // this.props.handleFile(this.state.fileInfo);
@@ -70,45 +71,64 @@ class MessageBox extends React.Component {
   messageValid = (txt) => txt && txt.replace(/\s/g, "").length;
 
   render() {
-    console.log("file = ", this.state.fileInfo);
     const props = {
       name: "file",
     };
+    var date = "";
+    var displayDate;
     const msgList = () => {
       if (!this.props.chat) {
         return "";
       }
       return this.props.chat.messages.map((msg, index) => {
         const { user, chat } = this.props;
+        if (moment(msg.timeStamp).format("LL") !== date) {
+          displayDate = true;
+          date = moment(msg.timeStamp).format("LL");
+        } else {
+          displayDate = false;
+          date = moment(msg.timeStamp).format("LL");
+        }
         var sender =
           msg.sender !== user.userObj.email
             ? chat.userNames.filter((_user) => _user !== user.userObj.username)[0]
-            : user.userObj.username;
+            : "Me";
         return (
-          <div key={index} className="messageitem">
-            <Avatar size={50} style={{ backgroundColor: "#07b107", minWidth: "50px" }}>
-              {sender.split("")[0].toUpperCase()}
-            </Avatar>
-            <div className="message-content ml-3">
-              <p className="mb-2" style={{ fontWeight: "bolder" }}>
-                {sender}
-              </p>
-              <p className="msg-text mb-2">{msg.message}</p>
-              {msg.FileName ? (
-                <p style={{ color: "#07b107" }}>
-                  {" "}
-                  attach :{" "}
-                  <a href={msg.FileUrl} download>
-                    {msg.FileName}
-                  </a>{" "}
+          <div>
+            {displayDate === true ? (
+              <div>
+                <hr style={{ marginBottom: "8px" }} />
+                <p style={{ paddingLeft: "20px" }}>{moment(msg.timeStamp).format("LL")}</p>
+                <hr style={{ marginTop: "8px" }} />
+              </div>
+            ) : (
+              ""
+            )}
+            <div key={index} className="messageitem">
+              <Avatar size={50} style={{ backgroundColor: "#07b107", minWidth: "50px" }}>
+                {sender.split("")[0].toUpperCase()}
+              </Avatar>
+              <div className="message-content ml-3">
+                <p className="mb-2" style={{ fontWeight: "bolder" }}>
+                  {sender}
                 </p>
-              ) : (
-                ""
-              )}
-            </div>
-            <div className="control">
-              <p className="time mb-2">{msg.timeStamp}</p>
-              <Icon type="setting" className="setting text-color pointer" />
+                <p className="msg-text mb-2">{msg.message}</p>
+                {msg.FileName ? (
+                  <p style={{ color: "#07b107" }}>
+                    {" "}
+                    attach :{" "}
+                    <a href={msg.FileUrl} download>
+                      {msg.FileName}
+                    </a>{" "}
+                  </p>
+                ) : (
+                  ""
+                )}
+              </div>
+              <div className="control">
+                <p className="time mb-2">{moment(msg.timeStamp).format("LTS")}</p>
+                <Icon type="setting" className="setting text-color pointer" />
+              </div>
             </div>
           </div>
         );
@@ -133,11 +153,15 @@ class MessageBox extends React.Component {
             ></textarea>
           </div>
           <Upload {...props} onChange={(info) => this.handleFile(info)}>
-            <div className="mt-1">
-              <Icon type="paper-clip" style={{ fontSize: "30px", color: "#929292" }} />
+            <div style={{ marginRight: "15px", marginTop: "15px" }}>
+              <Icon type="paper-clip" style={{ fontSize: "30px", color: "#07b107" }} />
             </div>
           </Upload>
-          <button className="button-primary" onClick={this.handleSubmit}>
+          <button
+            className="button-primary"
+            onClick={this.handleSubmit}
+            style={{ marginTop: "1%" }}
+          >
             Send
           </button>
         </div>

@@ -304,7 +304,7 @@ class FindVendors extends React.Component {
                     footer={<div></div>}
                     renderItem={(item, index) => (
                       <List.Item key={index} style={{ cursor: "pointer" }}>
-                        <VendorItem user={item} />
+                        <VendorItem vendor={item} />
                       </List.Item>
                     )}
                   />

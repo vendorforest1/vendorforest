@@ -106,7 +106,7 @@
     "@types/mongodb": "^3.3.11",
     "@zeit/next-sass": "^1.0.1",
     "acorn": "^6.1.1",
-    "antd": "^3.25.2",
+    "antd": "^3.26.6",
     "antd-theme-webpack-plugin": "^1.2.0",
     "async": "^3.0.0",
     "autoprefixer": "^9.5.1",

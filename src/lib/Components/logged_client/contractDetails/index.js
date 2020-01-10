@@ -38,6 +38,7 @@ import defaultProfileImage from "@Components/images/profileplace.png";
 import value from "@Components/images/profileplace.png";
 const { TabPane } = Tabs;
 const { TextArea } = Input;
+const firebase = require("firebase/app");
 class ClientContractDetails extends React.Component {
   _button = -1;
 
@@ -139,6 +140,16 @@ class ClientContractDetails extends React.Component {
       return;
     }
     if (this.props.match.params.id) {
+      const { contract } = this.props;
+      const docKey = [contract.client.email, contract.vendor.email].sort().join(":");
+      console.log("contract end = ", docKey);
+      firebase
+        .firestore()
+        .collection("chats")
+        .doc(docKey)
+        .update({
+          contract: 1,
+        });
       const params = {
         _id: this.props.match.params.id,
       };

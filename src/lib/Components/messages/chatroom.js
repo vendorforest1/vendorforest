@@ -14,6 +14,7 @@ class ChatRoom extends React.Component {
 
     this.state = {
       allChats: [],
+      cookieChats: [],
       selectedChat: 0,
       email: null,
     };
@@ -25,9 +26,9 @@ class ChatRoom extends React.Component {
       .where("users", "array-contains", this.props.user.userObj.email)
       .onSnapshot(async (result) => {
         const chats = result.docs.map((_doc) => _doc.data());
-        console.log("firechat ===== ", chats);
         await this.setState({
           allChats: chats,
+          cookieChats: chats,
           email: this.props.user.userObj.email,
         });
       });
@@ -40,6 +41,45 @@ class ChatRoom extends React.Component {
       selectedChat: chatIndex,
     });
     this.messageRead();
+  };
+
+  selectConditions = async (status, search) => {
+    var searchResult = [];
+    if (status === 0 && search !== "") {
+      this.state.cookieChats.map((chat, index) => {
+        for (var i = 0; i < 2; i++) {
+          if (chat.userNames[i].match(new RegExp("\\b" + search)) !== null) {
+            searchResult.push(chat);
+          }
+        }
+      });
+    }
+    if (status !== 0 && search !== "") {
+      this.state.cookieChats.map((chat, index) => {
+        if (chat.contract === status - 1) {
+          for (var i = 0; i < 2; i++) {
+            if (chat.userNames[i].match(new RegExp("\\b" + search)) !== null) {
+              searchResult.push(chat);
+            }
+          }
+        }
+      });
+    }
+    if (status !== 0 && search === "") {
+      this.state.cookieChats.map((chat, index) => {
+        if (chat.contract === status - 1) {
+          searchResult.push(chat);
+        }
+      });
+    }
+    if (status === 0 && search === "") {
+      this.state.cookieChats.map((chat, index) => {
+        searchResult.push(chat);
+      });
+    }
+    await this.setState({
+      allChats: searchResult,
+    });
   };
 
   submitMessage = async (msg, fileInfo) => {
@@ -68,18 +108,18 @@ class ChatRoom extends React.Component {
                   messages: firebase.firestore.FieldValue.arrayUnion({
                     sender: this.state.email,
                     message: msg,
-                    timeStamp: new Date().toISOString(),
+                    timeStamp: Date.now(),
                     FileUrl: url,
                     storageUri: fileSnapshot.metadata.fullPath,
                     FileName: fileInfo.name,
                   }),
                   receiverHadRead: false,
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => process.env.NODE_ENV === "development" && console.log(err));
             })
-            .catch((err) => console.log(err));
+            .catch((err) => process.env.NODE_ENV === "development" && console.log(err));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => process.env.NODE_ENV === "development" && console.log(err));
     }
     if (!fileInfo) {
       firebase
@@ -90,7 +130,7 @@ class ChatRoom extends React.Component {
           messages: firebase.firestore.FieldValue.arrayUnion({
             sender: this.state.email,
             message: msg,
-            timeStamp: new Date().toISOString(),
+            timeStamp: Date.now(),
           }),
           receiverHadRead: false,
         });
@@ -99,11 +139,9 @@ class ChatRoom extends React.Component {
 
   messageRead = () => {
     const chatIndex = this.state.selectedChat;
-    console.log("index !!!!!=== ", chatIndex);
     const docKey = this.buildDocKey(
       this.state.allChats[chatIndex].users.filter((_user) => _user !== this.state.email)[0],
     );
-    console.log("docKey !!!!!=== ", docKey);
     if (this.clickedChat(chatIndex)) {
       firebase
         .firestore()
@@ -111,7 +149,8 @@ class ChatRoom extends React.Component {
         .doc(docKey)
         .update({ receiverHadRead: true });
     } else {
-      console.log("Clicked message where user is sender");
+      process.env.NODE_ENV === "development" &&
+        console.log("Clicked message where user is sender");
     }
   };
 
@@ -126,6 +165,7 @@ class ChatRoom extends React.Component {
           chats={this.state.allChats}
           selectedChatIndex={this.selectChat}
           selectedChat={this.state.selectedChat}
+          conditions={this.selectConditions}
         />
         <MessageBox
           chat={this.state.allChats[this.state.selectedChat]}

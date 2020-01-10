@@ -26,9 +26,9 @@ class SidebarSearch extends React.Component {
         <div style={{ padding: "5px 0px" }}></div>
         <Select defaultValue="0">
           <option value="0"> All Recent </option>
-          <option value="1"> Unread </option>
-          <option value="2"> Open Contract </option>
-          <option value="3"> Closed Contract </option>
+          {/* <option value="1"> Unread </option> */}
+          <option value="1"> Open Contract </option>
+          <option value="2"> Closed Contract </option>
         </Select>
       </div>
     );

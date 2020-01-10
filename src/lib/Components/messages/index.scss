@@ -94,9 +94,10 @@
                     }
                     .control{
                         flex: 1 1 20%;
-                        max-width: 30%;
+                        max-width: 8%;
                         @media screen and (max-width:920px){
                             flex: 1 1 30px;
+                            max-width: 15%;
                         }
                         .setting{
                             display: none;
