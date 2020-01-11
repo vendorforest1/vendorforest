@@ -14,6 +14,9 @@
 /public/index.js
 /public/vendors~index.js
 
+.idea
+.vscode
+
 # misc
 .env
 .DS_Store
