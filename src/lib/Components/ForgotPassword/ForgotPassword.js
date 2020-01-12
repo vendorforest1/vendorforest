@@ -70,8 +70,6 @@ class PasswordReset extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-
-    console.log("this.props.pending ", this.props.pending, this.state.verify);
     return (
       <div className="resetpass-section">
         <Header />

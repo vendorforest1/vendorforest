@@ -142,7 +142,6 @@ class FindVendors extends React.Component {
           <div className="container">
             <div className="row">
               <div className="col-md-3 mb-4">
-                {/* {console.log("vendors list = ", this.props.vendors)} */}
                 <div
                   className="d-flex justify-content-between shadow bg-white d-block d-md-none mb-1 pointer text-color"
                   style={{ padding: "12px" }}

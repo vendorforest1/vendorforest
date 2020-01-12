@@ -66,7 +66,6 @@ class CreateContract extends React.Component {
         contract: 0,
       })
       .then((result) => {
-        console.log("firebase result = ", result);
         if (
           this.state.contractStDateTime.toDate().getTime() <
             moment()
@@ -98,7 +97,7 @@ class CreateContract extends React.Component {
         window.location.href = `/client/hire/${params.job}&${params.vendor}`;
       })
       .catch((error) => {
-        console.log("error = ", error);
+        process.env.NODE_ENV === "development" && console.log("error = ", error);
       });
   }
 

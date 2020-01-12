@@ -53,7 +53,6 @@ class PendingConstracts extends React.Component {
                     key={index}
                     style={{ cursor: "pointer" }}
                     onClick={() => {
-                      // console.log("id == ", item);
                       window.location.href = `/client/contract/${item._id}`;
                     }}
                   >

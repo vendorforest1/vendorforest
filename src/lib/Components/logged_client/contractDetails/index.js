@@ -142,7 +142,6 @@ class ClientContractDetails extends React.Component {
     if (this.props.match.params.id) {
       const { contract } = this.props;
       const docKey = [contract.client.email, contract.vendor.email].sort().join(":");
-      console.log("contract end = ", docKey);
       firebase
         .firestore()
         .collection("chats")

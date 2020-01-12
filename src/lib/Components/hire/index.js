@@ -80,7 +80,6 @@ class Hire extends React.Component {
       dueDateTime: value,
       dueDateString: dateString,
     });
-    console.log(moment(value), "--========***", dateString);
   }
   onConfirmChange(value) {
     this.setState({
@@ -128,7 +127,6 @@ class Hire extends React.Component {
     // await this.props.fetchPostJob(params)
     comparePW(params)
       .then((data) => {
-        console.log("post job data", data.message);
         this.setState({
           pendingBtn: false,
         });
@@ -168,7 +166,6 @@ class Hire extends React.Component {
             contract: this.props.hireInfo._id,
             job: this.props.hireInfo.job._id,
           };
-          console.log("params", params);
           this.props.updateProposal(params);
         }
         if (err) {

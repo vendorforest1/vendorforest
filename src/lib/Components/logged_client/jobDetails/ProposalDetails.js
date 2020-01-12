@@ -160,7 +160,6 @@ class ProposalDetails extends React.Component {
                   <Icon type="sync" spin />
                 </div>
               )}
-              {/* {console.log("review length = ", this.props.reviews.length)} */}
               {!this.props.pending && this.props.reviews.length > 0 && (
                 <List
                   itemLayout="vertical"

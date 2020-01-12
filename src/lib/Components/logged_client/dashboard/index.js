@@ -24,7 +24,6 @@ class ClientDashboard extends React.Component {
   }
   componentDidMount() {
     this.props.fetchClient();
-    // console.log("user naem isff == ", this.props.clientInfo);
   }
 
   render() {

@@ -38,7 +38,6 @@ class VendorItem extends React.Component {
       _id: this.props.newQuestion._id,
       answer: this.state.answer,
     };
-    // console.log(params);
     fetchRespond(params)
       .then((result) => {
         message.success(result.message);

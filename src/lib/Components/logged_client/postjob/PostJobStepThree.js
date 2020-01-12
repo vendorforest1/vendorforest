@@ -167,7 +167,6 @@ class PostJobStepThree extends React.Component {
           this.setState({
             pending: false,
           });
-          // console.log("post job data", data.data);
           this.props.updateJob(data.data);
           message.success(data.message);
           this.props.history.push("/client");

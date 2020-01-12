@@ -111,7 +111,6 @@ export const fetchFindVendorsData = (payload) => async (dispatch, getState) => {
   })
     .then((response) => response.json())
     .then((result) => {
-      // console.log("vendor result ====== ", result);
       if (result.status >= 400) {
         throw new Error(result.message);
       }

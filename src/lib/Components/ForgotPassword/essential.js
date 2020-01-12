@@ -66,7 +66,6 @@ const clearError = () => ({
 });
 
 export const fetchResetPass = (payload) => async (dispatch, getState) => {
-  console.log("REset");
   dispatch(clearError());
   dispatch(requestVerifyLink());
   return await fetch(`${API_URL}/apis/forgotPassword`, {
@@ -103,7 +102,6 @@ export const verifyLink = (token) => async (dispatch, getState) => {
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      console.log("I get here");
       dispatch(setSuccess("This Link is authenticated!"));
     })
     .catch((err) => dispatch(setError(err.message)));

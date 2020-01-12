@@ -94,7 +94,7 @@ class MessageBox extends React.Component {
             ? chat.userNames.filter((_user) => _user !== user.userObj.username)[0]
             : "Me";
         return (
-          <div>
+          <div key={index}>
             {displayDate === true ? (
               <div>
                 <hr style={{ marginBottom: "8px" }} />

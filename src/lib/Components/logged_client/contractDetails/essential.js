@@ -173,7 +173,6 @@ export const fetchGetMilestonesData = (payload) => async (dispatch, getState) =>
       if (result.status >= 400) {
         throw new Error(result.message);
       }
-      // console.log("returned milestones", result.data);
       dispatch(fetchMilestonesSuccess(result.data));
     })
     .catch((err) => dispatch(fetchError(err.message)));

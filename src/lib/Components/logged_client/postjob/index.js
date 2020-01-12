@@ -153,7 +153,6 @@ class PostJob extends React.Component {
                   this.props.job.service === service._id ? "text-color" : ""
                 }`}
               >
-                {/* {console.log(icons[index])} */}
                 <img
                   src={require(`../../images/NewIcons/${icons[index]}.png`)}
                   style={{ height: "40px" }}
