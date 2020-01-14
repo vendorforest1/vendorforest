@@ -14,6 +14,15 @@ class MessageBox extends React.Component {
     this.state = {
       value: null,
       fileInfo: null,
+      show: false,
+      fileList: [
+        {
+          uid: "-1",
+          name: "xxx.png",
+          status: "done",
+          url: "http://www.baidu.com/xxx.png",
+        },
+      ],
     };
   }
 
@@ -48,7 +57,9 @@ class MessageBox extends React.Component {
       this.setState({
         value: null,
         fileInfo: null,
+        show: false,
       });
+      this.handleRemove();
     } else {
       // message.info("You haven't connected Users to You.");
       document.getElementById("chat-text-box").value = "";
@@ -62,10 +73,16 @@ class MessageBox extends React.Component {
         fileInfo: null,
       });
     } else {
+      let fileList = [...info.fileList];
       this.setState({
         fileInfo: info.file.originFileObj,
+        fileList: fileList.slice(-1),
+        show: true,
       });
     }
+  };
+  handleRemove = () => {
+    return true;
   };
 
   messageValid = (txt) => txt && txt.replace(/\s/g, "").length;
@@ -151,8 +168,15 @@ class MessageBox extends React.Component {
               // onFocus={this.handleClick}
               id="chat-text-box"
             ></textarea>
+            {this.props.pending === true ? <Icon type="sync" spin /> : ""}
           </div>
-          <Upload {...props} onChange={(info) => this.handleFile(info)}>
+          <Upload
+            {...props}
+            onChange={(info) => this.handleFile(info)}
+            showUploadList={this.state.show}
+            onRemove={() => this.handleRemove()}
+            fileList={this.state.fileList}
+          >
             <div style={{ marginRight: "15px", marginTop: "15px" }}>
               <Icon type="paper-clip" style={{ fontSize: "30px", color: "#07b107" }} />
             </div>
