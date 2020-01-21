@@ -69,8 +69,6 @@ class VendorPortfolios extends React.Component {
                       alt="cover"
                       src={portfolio.coverImage.url}
                       style={{
-                        minHeight: "200px",
-                        height: "200px",
                         width: "auto",
                         margin: "0 auto",
                       }}
