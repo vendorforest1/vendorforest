@@ -25,7 +25,7 @@ class PastProposales extends React.Component {
     return (
       <div className="proposales shadow">
         <div className="head">
-          <h4 className="text-grey">Past Proposales</h4>
+          <h4 className="text-grey">Past Proposals</h4>
         </div>
         <div className="proposal-list-content">
           <div className="w-100">

@@ -5,6 +5,9 @@
         @media screen and (max-width:1200px){
             margin-top: 80px 0 30px 0;
         }
+        .active_proposal_li {
+          font-size: 16px;
+        }
         .head{
             background-color: #f8f8f8;
             height: 70px;
@@ -26,7 +29,7 @@
         }
         .proposales{
             .proposal-list-content{
-                padding: 20px; 
+                padding: 20px;
             }
         }
         .pending-contracts{
@@ -52,7 +55,7 @@
                         .button-primary, .button-white{
                             margin-bottom: 10px;
                             @media screen and (max-width: 768px){
-                                width: 100%;    
+                                width: 100%;
                             }
                             width: 150px;
                             height: 35px;
@@ -60,7 +63,7 @@
                             line-height: 35px;
                         }
                     }
-                }                
+                }
             }
         }
         .past-contracts{
@@ -79,7 +82,7 @@
                         .button-primary, .button-white{
                             margin-bottom: 10px;
                             @media screen and (max-width: 768px){
-                                width: 100%;    
+                                width: 100%;
                             }
                             width: 150px;
                             height: 35px;
@@ -87,7 +90,7 @@
                             line-height: 35px;
                         }
                     }
-                }                
+                }
             }
         }
     }

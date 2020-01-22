@@ -26,7 +26,7 @@ class ActiveProposales extends React.Component {
     return (
       <div className="proposales shadow">
         <div className="head">
-          <h4 className="text-grey">Active Proposales</h4>
+          <h4 className="text-grey">Active Proposals</h4>
         </div>
         <div className="proposal-list-content">
           <div className="w-100">
@@ -49,7 +49,7 @@ class ActiveProposales extends React.Component {
                 footer={<div></div>}
                 renderItem={(item, index) => (
                   <List.Item key={index} style={{ cursor: "pointer" }}>
-                    <div className="row">
+                    <div className="row active_proposal_li">
                       <div className="col-md-4">
                         Submitted {moment(item.createdAt).format("MMM DD, YYYY")}
                       </div>

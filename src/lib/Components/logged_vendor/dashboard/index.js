@@ -33,7 +33,7 @@ class VendorDashboard extends React.Component {
             <div className="row">
               <div className="col-md-12">
                 <Tabs defaultActiveKey="1" onChange={this.clickTab}>
-                  <TabPane tab="PROPOSALES" key="1">
+                  <TabPane tab="PROPOSALS" key="1">
                     <div className="row">
                       <div className="col-12 mb-md-4 mb-3">
                         <ActiveProposales />
