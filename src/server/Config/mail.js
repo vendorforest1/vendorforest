@@ -136,6 +136,7 @@ const mailService = () => {
               const client = /{client}/i;
               const budget = /{budget}/i;
               const created = /{created}/i;
+              const teamName = /{teamName}/i;
 
               if (href) {
                 source = source.replace(
@@ -155,6 +156,7 @@ const mailService = () => {
                 source = source.replace(client, user.client);
                 source = source.replace(budget, user.budget);
                 source = source.replace(created, user.created);
+                source = source.replace(teamName, user.teamName);
               }
 
               mailOptions.html = source;
@@ -250,6 +252,15 @@ const mailService = () => {
     console.log("sent email");
   };
   
+  mailObject.sendInvitingEmail = async (invitingEmail, subject, callback) => {
+    const mailOptions = {
+      subject: subject, // Subject line
+      //href: `${env.API_URL}/reset/${user.token}`,
+    };
+
+    sendEmail(invitingEmail, "email_join_team_invite.html", mailOptions, callback);
+    console.log("sent email");
+  };
 
   mailObject.sendCreateMilestoneEmail = async (milestone, subject, callback) => {
     const mailOptions = {

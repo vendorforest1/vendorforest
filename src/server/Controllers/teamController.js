@@ -1,6 +1,10 @@
 import Team from "../models/team.model";
 import getEnv, { constants } from "@Config/index";
 import User from "@Models/user.model";
+import { mail } from "@Config/mail";
+import saveNotification from "@Config/notification";
+import sendSMS from "@Config/sms";
+
 const env = getEnv();
 
 export default () => {
@@ -183,7 +187,35 @@ export default () => {
     await teamDoc
       .save()
       .then(async (team) => {
-        console.log("team info === ", team);
+        await team.members.map((member) => {
+          User.findOne({
+            _id: member,
+          })
+          .then(async (vendorInfo) => {
+            const vendorId = vendorInfo._id;
+            const notificationDescription = `You have been invited to "${req.body.name}" team.`;
+            const vendorPhone = vendorInfo.phone;
+            const vendorTitle = "Vendorforest Info!";
+            const smsDescription = `You have been invited to ${req.body.name} team. \n vendorforest.com`;
+            saveNotification(vendorId, notificationDescription, `/vendor/team/${team._id}`);
+            sendSMS(vendorPhone, vendorTitle, smsDescription);
+            const emailContent = {
+              teamName: req.body.name,
+              username: vendorInfo.username,
+              email: vendorInfo.email,
+            };
+            await mail.sendInvitingEmail(
+              emailContent,
+              "VendorForest information!",
+              (err, msg) => {
+                if (err) {
+                  return err;
+                }
+                return;
+              },
+            );
+          });
+        });
         // User.findOneAndUpdate(
         //   {
         //     _id: req.user._id,
@@ -376,6 +408,30 @@ export default () => {
                 : constants.PROD_COMMONERROR_MSG,
           });
         }
+        await team.invitedUsers.map(async (invitedUser) => {
+          const vendorId = invitedUser._id;
+          const notificationDescription = `You have been invited to "${team.name}" team.`;
+          const vendorPhone = invitedUser.phone;
+          const vendorTitle = "Vendorforest Info!";
+          const smsDescription = `You have been invited to ${team.name} team. \n vendorforest.com`;
+          saveNotification(vendorId, notificationDescription, `/vendor/team/${team._id}`);
+          sendSMS(vendorPhone, vendorTitle, smsDescription);
+          const emailContent = {
+            teamName: team.name,
+            username: invitedUser.username,
+            email: invitedUser.email,
+          };
+          await mail.sendInvitingEmail(
+            emailContent,
+            "VendorForest information!",
+            (err, msg) => {
+              if (err) {
+                return err;
+              }
+              return;
+            },
+          );
+        });
         return res.status(200).json({
           status: 200,
           data: team,
