@@ -64,6 +64,7 @@ class CreateContract extends React.Component {
         service: this.props.job.service.name,
         category: this.props.job.category.name,
         contract: 0,
+        createdAt: Date.now(),
       })
       .then((result) => {
         if (

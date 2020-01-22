@@ -168,13 +168,11 @@ class MessageBox extends React.Component {
               // onFocus={this.handleClick}
               id="chat-text-box"
             ></textarea>
-            {this.props.pending === true ? <Icon type="sync" spin /> : ""}
           </div>
           <Upload
             {...props}
             onChange={(info) => this.handleFile(info)}
             showUploadList={this.state.show}
-            onRemove={() => this.handleRemove()}
             fileList={this.state.fileList}
           >
             <div style={{ marginRight: "15px", marginTop: "15px" }}>

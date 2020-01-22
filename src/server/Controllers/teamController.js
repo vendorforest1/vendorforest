@@ -183,6 +183,7 @@ export default () => {
     await teamDoc
       .save()
       .then(async (team) => {
+        console.log("team info === ", team);
         // User.findOneAndUpdate(
         //   {
         //     _id: req.user._id,

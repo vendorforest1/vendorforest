@@ -226,7 +226,6 @@ class VendorContractDetails extends React.Component {
 }
 
 const mapStateToProps = ({ vendorContractDetailsReducer, loginReducer, persistorReducer }) => {
-  process.env.NODE_ENV === "development" && console.log(persistorReducer, " <---------------");
   const { error, contract, success, pending } = vendorContractDetailsReducer;
 
   const { user } = loginReducer;

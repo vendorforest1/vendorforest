@@ -117,6 +117,7 @@ class VendorItem extends React.Component {
           service: this.props.vendor.vendor.service.name,
           category: this.props.vendor.vendor.category.name,
           contract: 0,
+          createdAt: Date.now(),
         });
       window.location.href = `/client/hire/${result.data.job}&${result.data.vendor}`;
     });

@@ -24,6 +24,7 @@ class ChatRoom extends React.Component {
       .firestore()
       .collection("chats")
       .where("users", "array-contains", this.props.user.userObj.email)
+      .orderBy("createdAt", "desc")
       .onSnapshot(async (result) => {
         const chats = result.docs.map((_doc) => _doc.data());
         await this.setState({
@@ -100,6 +101,9 @@ class ChatRoom extends React.Component {
           await fileSnapshot.ref
             .getDownloadURL()
             .then(async (url) => {
+              this.setState({
+                selectedChat: 0,
+              });
               await firebase
                 .firestore()
                 .collection("chats")
@@ -114,6 +118,7 @@ class ChatRoom extends React.Component {
                     FileName: fileInfo.name,
                   }),
                   receiverHadRead: false,
+                  createdAt: Date.now(),
                 })
                 .catch((err) => process.env.NODE_ENV === "development" && console.log(err));
             })
@@ -133,7 +138,11 @@ class ChatRoom extends React.Component {
             timeStamp: Date.now(),
           }),
           receiverHadRead: false,
+          createdAt: Date.now(),
         });
+      this.setState({
+        selectedChat: 0,
+      });
     }
   };
 
