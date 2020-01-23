@@ -6,6 +6,10 @@ const NotificationSchema = new mongoose.Schema(
     username: {
       type: mongoose.Schema.Types.ObjectId,
     },
+    proposalId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "proposal",
+    },
     notificationMsg: String,
     time: String,
     isRead: {

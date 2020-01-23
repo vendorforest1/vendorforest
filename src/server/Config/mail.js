@@ -241,6 +241,16 @@ const mailService = () => {
     sendEmail(job, "email_new_jobs_arround_area.html", mailOptions, callback);
     console.log("sent email");
   };
+  
+  mailObject.sendTeamWorkingInviteEmail = async (workingInvite, subject, callback) => {
+    const mailOptions = {
+      subject: subject, // Subject line
+      //href: `${env.API_URL}/reset/${user.token}`,
+    };
+
+    sendEmail(workingInvite, "email_team_invite.html", mailOptions, callback);
+    console.log("sent email");
+  };
 
   mailObject.sendJobCompletedEmail = async (jobCompleted, subject, callback) => {
     const mailOptions = {

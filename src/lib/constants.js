@@ -175,6 +175,7 @@ export const apiUrl = {
   DECLINE_PROPOSAL: `${API_URL}/apis/proposal/delete`,
   GET_PROPOSALE: `${API_URL}/apis/proposal/get`,
   GET_PROPOSALES: `${API_URL}/apis/proposal/get_proposales`,
+  ACCEPT_TEAM_OFFER: `${API_URL}/apis/proposal/accept_team_offer`,
 
   GET_OFFERS: `${API_URL}/apis/offer/get_offers`,
   DECLINE_OFFER: `${API_URL}/apis/offer/decline`,

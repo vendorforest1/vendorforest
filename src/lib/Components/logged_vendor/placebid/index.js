@@ -32,6 +32,7 @@ class PlaceBid extends React.Component {
       fee: 25,
       getPaidPrice: undefined,
       teams: [],
+      btnPending: false,
     };
     this.updateTeam = this.updateTeam.bind(this);
     this.proposalSubmit = this.proposalSubmit.bind(this);
@@ -117,13 +118,32 @@ class PlaceBid extends React.Component {
     return this.props.job.budgetType === constants.BUDGET_TYPE.FIXED ? "Fixed Price" : "Hourly";
   }
 
-  updateTeam(newTeam) {
+  async updateTeam(newTeam) {
     const newTeams = [...this.state.teams];
-    const index = newTeams.findIndex((team) => team._id === newTeam._id);
-    newTeams[index] = newTeam;
-    this.setState({
-      teams: newTeams,
+    var offeredBudget =
+      this.state.offerBudget === undefined ? this.props.job.budget : this.state.offerBudget;
+    var totalBidBudget = 0;
+    await newTeams.map((newTeam) => {
+      newTeam.members.map((member) => {
+        totalBidBudget += member.budget;
+      });
     });
+    if (totalBidBudget > offeredBudget) {
+      this.setState({
+        btnPending: true,
+      });
+      message.warning(`Please input valid price. Total Maximum price is $${offeredBudget}.`);
+      return;
+    } else {
+      this.setState({
+        btnPending: false,
+      });
+      const index = newTeams.findIndex((team) => team._id === newTeam._id);
+      newTeams[index] = newTeam;
+      this.setState({
+        teams: newTeams,
+      });
+    }
   }
 
   proposalSubmit = async (e) => {
@@ -193,7 +213,7 @@ class PlaceBid extends React.Component {
     const myTeams = this.props.teams
       ? this.props.teams.filter((team) => team.admin._id === this.props.user.userObj._id)
       : [];
-
+    console.log("state === ", this.state.offerBudget);
     const generateTeams = () => {
       return this.state.teams.map((team, index) => {
         return (
@@ -348,8 +368,10 @@ class PlaceBid extends React.Component {
                                 <InputNumber
                                   onChange={(value) => {
                                     this.setState({
+                                      offerBudget: value,
                                       getPaidPrice: value * 0.75,
                                     });
+                                    // window.offerBudget = value;
                                   }}
                                   style={{ minWidth: "150px" }}
                                   formatter={(value) =>
@@ -435,7 +457,9 @@ class PlaceBid extends React.Component {
                       <div className="d-flex justify-content-end">
                         <button
                           className={`button-primary mb-3 ${
-                            this.props.pending ? "disable" : ""
+                            this.props.pending || this.state.btnPending === true
+                              ? "disable hidden"
+                              : ""
                           }`}
                           type="submit"
                         >

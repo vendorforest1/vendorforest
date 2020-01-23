@@ -190,8 +190,7 @@ export default () => {
         await team.members.map((member) => {
           User.findOne({
             _id: member,
-          })
-          .then(async (vendorInfo) => {
+          }).then(async (vendorInfo) => {
             const vendorId = vendorInfo._id;
             const notificationDescription = `You have been invited to "${req.body.name}" team.`;
             const vendorPhone = vendorInfo.phone;

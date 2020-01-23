@@ -18,5 +18,6 @@ router.post("/update", validator.body(update.body), proposalCtr.update);
 router.post("/delete", validator.body(_delete.body), proposalCtr.delete);
 router.get("/get", validator.query(get.query), proposalCtr.get);
 router.get("/get_proposales", validator.query(getProposales.query), proposalCtr.getProposales);
+router.post("/accept_team_offer", proposalCtr.acceptTeamOffer);
 
 export default router;

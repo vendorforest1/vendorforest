@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Icon, Avatar, Rate, Progress, message } from "antd";
 import { constants } from "@Shared/constants";
-import { DeleteNotification } from "./essential";
+import { DeleteNotification, acceptOffer } from "./essential";
 import { connect } from "react-redux";
 
 class VendorItem extends React.Component {
@@ -10,6 +10,7 @@ class VendorItem extends React.Component {
 
     this.state = {};
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleProposal = this.handleProposal.bind(this);
   }
 
   handleDelete() {
@@ -27,6 +28,20 @@ class VendorItem extends React.Component {
         message.error(error.message);
       });
   }
+
+  handleProposal() {
+    console.log("proposal Id ===", this.props.notification.proposalId);
+    const proposalId = this.props.notification.proposalId;
+    acceptOffer(proposalId)
+      .then((data) => {
+        message.success(data.message);
+        window.location.reload();
+      })
+      .catch((error) => {
+        message.error(error.message);
+      });
+  }
+
   render() {
     return (
       <div className="propposal-item ">
@@ -40,6 +55,16 @@ class VendorItem extends React.Component {
               <a href={this.props.notification.urlId ? this.props.notification.urlId : ""}>
                 <span>{this.props.notification.notificationMsg}</span>
               </a>
+              &nbsp;&nbsp;
+              {this.props.notification.proposalId && (
+                <Button
+                  type="primary"
+                  style={{ height: "20px", fontSize: "12px" }}
+                  onClick={this.handleProposal}
+                >
+                  Accept
+                </Button>
+              )}
             </div>
             <div className="col-lg-3 col-md-4 vendor-rate">{this.props.notification.time}</div>
           </div>

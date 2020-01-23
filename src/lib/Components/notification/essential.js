@@ -196,3 +196,25 @@ export const DeleteNotification = async (payload) => {
       throw err.message;
     });
 };
+
+export const acceptOffer = async (payload) => {
+  process.env.NODE_ENV === "development" && console.log("urlstring", payload);
+  return await fetch(apiUrl.ACCEPT_TEAM_OFFER, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ proposalId: payload }),
+  })
+    .then((response) => response.json())
+    .then((result) => {
+      if (result.status >= 400) {
+        throw new Error(result.message);
+      }
+      return result;
+    })
+    .catch((err) => {
+      throw err.message;
+    });
+};
