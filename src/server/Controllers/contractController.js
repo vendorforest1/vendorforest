@@ -416,6 +416,10 @@ export default () => {
         },
       })
       .populate({
+        path: "proposal",
+        model: "proposal",
+      })
+      .populate({
         path: "reviews",
         model: "review",
         populate: [

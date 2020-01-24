@@ -251,6 +251,7 @@ class ClientContractDetails extends React.Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    console.log("contract detail === ", this.props.contract);
     const generateMilestone = () => {
       return this.props.milestones.map((milestone, index) => {
         // if (milestone.status !== constants.MILESTONE_STATUS.RELEASED) {
@@ -301,6 +302,9 @@ class ClientContractDetails extends React.Component {
                                 {this.props.contract.vendor.username}
                               </a>
                             </h6>
+                            {this.props.contract.proposal.bidType !== 0 && (
+                              <p style={{ color: "red" }}>Team</p>
+                            )}
                             <p className="text-grey">
                               {this.props.contract.vendor.bsLocation
                                 ? `${this.props.contract.vendor.bsLocation.city} / ${this.props.contract.vendor.bsLocation.country}`

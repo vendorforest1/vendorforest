@@ -260,12 +260,27 @@ export default () => {
         .populate({
           path: "contract",
           model: "contract",
-          populate: {
-            path: "vendor",
-            model: "user",
-          },
+          populate: [
+            {
+              path: "vendor",
+              model: "user",
+            },
+            {
+              path: "proposal",
+              model: "proposal",
+              populate: {
+                path: "offers",
+                model: "offer",
+                populate: {
+                  path: "receiver",
+                  model: "user",
+                },
+              },
+            },
+          ],
         })
         .then((milestone) => {
+          console.log("release team === ", milestone[0].contract.proposal.offers);
           if (!milestone) {
             return res.status(401).json({
               status: 401,
@@ -285,9 +300,62 @@ export default () => {
           const totalBudget = milestone[0].contract.totalBudget;
           const contractId = milestone[0].contract._id;
           const rate = price < totalBudget ? ((price / totalBudget) * 100).toFixed(0) : 100;
+          var adminPrice = totalBudget;
+          if (milestone[0].contract.proposal.offers) {
+            milestone[0].contract.proposal.offers.map((member) => {
+              adminPrice -= member.budget;
+            });
+          }
+          var releaseToAdmin = !milestone[0].contract.proposal.offers
+            ? price
+            : (adminPrice / totalBudget) * price;
+
+          if (milestone[0].contract.proposal.offers) {
+            milestone[0].contract.proposal.offers.map(async (member) => {
+              const memberPrice = (member.budget / totalBudget) * price;
+              const transferTarget = member.receiver.connectedAccountId;
+              await stripe.transfers
+                .create({
+                  amount: memberPrice * 100 * 0.75,
+                  currency: "usd",
+                  destination: transferTarget,
+                })
+                .then(async (memberReleaseResult) => {
+                  env.MODE === "development" &&
+                    console.log("team release info ==", memberReleaseResult);
+                  const teamVendorEmail = member.receiver;
+                  const teamVendor = member.receiver._id;
+                  const teamVendorPhone = member.receiver.phone;
+                  const emailTitle = "Vendorforest Info!";
+                  const description = `Vendorforest Info!. Your client released the milestone. Amount is ${memberPrice *
+                    0.75} USD.`;
+                  const phoneDescription = `Milestone has been released.\n Your client released the milestone. Amount is ${memberPrice *
+                    0.75} USD. \n vendorforest.com`;
+                  saveNotification(teamVendor, description, `/notification`);
+                  sendSMS(teamVendorPhone, emailTitle, phoneDescription);
+                  await mail.sendReleaseMilestoneEmail(
+                    teamVendorEmail,
+                    "VendorForest information!",
+                    (err, msg) => {
+                      if (err) {
+                        return err;
+                      }
+                      return;
+                    },
+                  );
+                })
+                .catch((error) => {
+                  env.MODE === "development" && console.log("err ocurred &&&&&", error);
+                  return res.status(500).json({
+                    status: 500,
+                    message: `Errors ${error}`,
+                  });
+                });
+            });
+          }
           stripe.transfers
             .create({
-              amount: price * 100 * 0.75,
+              amount: releaseToAdmin * 100 * 0.75,
               currency: "usd",
               destination: vendorStripeID,
             })
@@ -355,7 +423,7 @@ export default () => {
                       },
                       {
                         $inc: {
-                          totalEarning: price,
+                          totalEarning: releaseToAdmin,
                           jobComplatedReate: rate,
                         },
                       },
@@ -363,19 +431,10 @@ export default () => {
                       console.log("saving vendor info result = ", resul);
                     });
                     const emailTitle = "Milestone has been released.";
-                    const description = `Milestone has been released. Your client released the milestone. Amount is ${milestone.price *
+                    const description = `Milestone has been released. Your client released the milestone. Amount is ${releaseToAdmin *
                       0.75} USD.`;
-                    const phoneDescription = `Milestone has been released.\n Your client released the milestone. Amount is ${milestone.price *
+                    const phoneDescription = `Milestone has been released.\n Your client released the milestone. Amount is ${releaseToAdmin *
                       0.75} USD. \n vendorforest.com`;
-                    console.log(
-                      "=====",
-                      emailTitle,
-                      description,
-                      phoneDescription,
-                      vendorID,
-                      vendorPhone,
-                      "======",
-                    );
                     saveNotification(vendorID, description, `/vendor/contract/${contractId}`);
                     sendSMS(vendorPhone, emailTitle, phoneDescription);
                     await mail.sendReleaseMilestoneEmail(

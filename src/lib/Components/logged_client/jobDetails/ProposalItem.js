@@ -40,7 +40,13 @@ class ProposalItem extends React.Component {
   }
 
   view() {
-    this.toggleProposal();
+    if (this.props.proposal.bidType < 1) {
+      this.toggleProposal();
+    } else {
+      message.warning(
+        "You can accept this bid after all members of this team have been accepted.",
+      );
+    }
   }
 
   delete() {
@@ -78,6 +84,10 @@ class ProposalItem extends React.Component {
               <div className="ml-2">
                 <h6 className="text-dark font-weight-bold">
                   {this.props.proposal.vendor.username}
+                  {this.props.proposal.bidType > 0 ||
+                    (this.props.proposal.bidType === -1 && (
+                      <h6 style={{ color: "red" }}>Team</h6>
+                    ))}
                 </h6>
                 <p>
                   {this.props.proposal.vendor.vendor
