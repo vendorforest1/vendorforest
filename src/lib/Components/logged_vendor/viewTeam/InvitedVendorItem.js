@@ -4,6 +4,7 @@ import { Button, Icon, Avatar, Rate, Divider, Progress, message } from "antd";
 import { constants } from "@Shared/constants";
 import { fetchInviteAccept, fetchInviteDecline, updateTeam } from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
+const firebase = require("firebase/app");
 
 class InvitedVendorItem extends React.Component {
   constructor(props) {
@@ -13,12 +14,34 @@ class InvitedVendorItem extends React.Component {
     this.decline = this.decline.bind(this);
   }
 
-  accept() {
+  async accept() {
+    const myEmail = this.props.user.userObj.email;
     const params = {
       _id: this.props.team._id,
       invitedUser: this.props.member._id,
     };
-    this.props.fetchInviteAccept(params);
+    await firebase
+      .firestore()
+      .collection("chats")
+      .where("teamId", "==", this.props.team._id)
+      .get()
+      .then(function(querySnapshot) {
+        querySnapshot.forEach(async (doc) => {
+          var oldMembers = doc.data();
+          oldMembers.users.push(myEmail);
+          const docKey = oldMembers.users.sort().join(":");
+          await firebase
+            .firestore()
+            .collection("chats")
+            .doc(docKey)
+            .set(oldMembers);
+          await doc.ref.delete();
+        });
+      })
+      .catch(function(error) {
+        console.log("Error getting documents: ", error);
+      });
+    await this.props.fetchInviteAccept(params);
   }
 
   decline() {

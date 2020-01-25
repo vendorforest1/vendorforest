@@ -106,10 +106,11 @@ class MessageBox extends React.Component {
           displayDate = false;
           date = moment(msg.timeStamp).format("LL");
         }
-        var sender =
-          msg.sender !== user.userObj.email
+        var sender = !chat.teamId
+          ? msg.sender !== user.userObj.email
             ? chat.userNames.filter((_user) => _user !== user.userObj.username)[0]
-            : "Me";
+            : "Me"
+          : `"${chat.userNames}" Team`;
         return (
           <div key={index}>
             {displayDate === true ? (
@@ -123,7 +124,7 @@ class MessageBox extends React.Component {
             )}
             <div key={index} className="messageitem">
               <Avatar size={50} style={{ backgroundColor: "#07b107", minWidth: "50px" }}>
-                {sender.split("")[0].toUpperCase()}
+                {!chat.teamId ? sender.split("")[0].toUpperCase() : "TEAM"}
               </Avatar>
               <div className="message-content ml-3">
                 <p className="mb-2" style={{ fontWeight: "bolder" }}>

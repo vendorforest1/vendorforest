@@ -70,35 +70,55 @@ class Sidebar extends React.Component {
                     : undefined
                 }
               >
-                <Avatar>
-                  {member.userNames
-                    .filter((_user) => _user !== user.userObj.username)[0]
-                    .split("")[0]
-                    .toUpperCase()}
-                </Avatar>
+                {!member.teamId && (
+                  <Avatar>
+                    {member.userNames
+                      .filter((_user) => _user !== user.userObj.username)[0]
+                      .split("")[0]
+                      .toUpperCase()}
+                  </Avatar>
+                )}
+                {member.teamId && <Avatar>{"Team".toUpperCase()}</Avatar>}
               </Badge>
             </span>
-            <div className="w-100">
-              <div className="d-flex justify-content-between align-items-center">
-                <p style={{ fontWeight: "bolder" }}>
-                  {" "}
-                  {member.userNames.filter((_user) => _user !== user.userObj.username)[0]}{" "}
+            {!member.teamId && (
+              <div className="w-100">
+                <div className="d-flex justify-content-between align-items-center">
+                  <p style={{ fontWeight: "bolder" }}>
+                    {" "}
+                    {
+                      member.userNames.filter((_user) => _user !== user.userObj.username)[0]
+                    }{" "}
+                  </p>
+                  <small style={{ color: "#9f9c9c" }}>
+                    {moment(member.messages[member.messages.length - 1].timeStamp).fromNow()}
+                  </small>
+                </div>
+                <p>{member.jobTitle.substring(0, 20) + "..."}</p>
+                <p>
+                  {member.service.substring(0, 10) +
+                    "/" +
+                    member.category.substring(0, 20) +
+                    "..."}
                 </p>
-                <small style={{ color: "#9f9c9c" }}>
-                  {moment(member.messages[member.messages.length - 1].timeStamp).fromNow()}
-                </small>
+                <p className="some-text">
+                  {member.messages[member.messages.length - 1].message.substring(0, 20) + "..."}
+                </p>
               </div>
-              <p>{member.jobTitle.substring(0, 20) + "..."}</p>
-              <p>
-                {member.service.substring(0, 10) +
-                  "/" +
-                  member.category.substring(0, 20) +
-                  "..."}
-              </p>
-              <p className="some-text">
-                {member.messages[member.messages.length - 1].message.substring(0, 20) + "..."}
-              </p>
-            </div>
+            )}
+            {member.teamId && (
+              <div className="w-100">
+                <div className="d-flex justify-content-between align-items-center">
+                  <p style={{ fontWeight: "bolder" }}> {member.userNames.substring(0, 10)} </p>
+                  <small style={{ color: "#9f9c9c" }}>
+                    {moment(member.messages[member.messages.length - 1].timeStamp).fromNow()}
+                  </small>
+                </div>
+                <p className="some-text">
+                  {member.messages[member.messages.length - 1].message.substring(0, 20) + "..."}
+                </p>
+              </div>
+            )}
           </div>
         );
       });

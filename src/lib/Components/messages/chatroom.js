@@ -85,9 +85,12 @@ class ChatRoom extends React.Component {
 
   submitMessage = async (msg, fileInfo) => {
     const chatIndex = this.state.selectedChat;
-    const docKey = this.buildDocKey(
-      this.state.allChats[chatIndex].users.filter((_user) => _user !== this.state.email)[0],
-    );
+    const members = this.state.allChats[chatIndex].users.sort().join(":");
+    const docKey = !this.state.allChats[chatIndex].teamId
+      ? this.buildDocKey(
+          this.state.allChats[chatIndex].users.filter((_user) => _user !== this.state.email)[0],
+        )
+      : members;
     if (fileInfo) {
       if (!msg) {
         msg = "attached file";
@@ -148,9 +151,12 @@ class ChatRoom extends React.Component {
 
   messageRead = () => {
     const chatIndex = this.state.selectedChat;
-    const docKey = this.buildDocKey(
-      this.state.allChats[chatIndex].users.filter((_user) => _user !== this.state.email)[0],
-    );
+    const members = this.state.allChats[chatIndex].users.sort().join(":");
+    const docKey = !this.state.allChats[chatIndex].teamId
+      ? this.buildDocKey(
+          this.state.allChats[chatIndex].users.filter((_user) => _user !== this.state.email)[0],
+        )
+      : members;
     if (this.clickedChat(chatIndex)) {
       firebase
         .firestore()

@@ -2,6 +2,7 @@ import React from "react";
 import { Input, Form, Avatar, Select, Button, message, Icon } from "antd";
 import { connect } from "react-redux";
 import { fetchFindUser, fetchCreateTeam, updateTeams } from "../essential";
+const firebase = require("firebase/app");
 const { Option } = Select;
 
 class AddStepTwo extends React.Component {
@@ -72,7 +73,29 @@ class AddStepTwo extends React.Component {
       members: this.state.members.map((member) => member._id),
     };
     fetchCreateTeam(params)
-      .then((data) => {
+      .then(async (data) => {
+        const memberEmail = this.state.members.map((member) => member.email);
+        memberEmail.push(this.props.user.email);
+        const docKey = memberEmail.sort().join(":");
+        await firebase
+          .firestore()
+          .collection("chats")
+          .doc(docKey)
+          .set({
+            messages: [
+              {
+                message: "We are new team.",
+                sender: this.props.user.email,
+                timeStamp: Date.now(),
+              },
+            ],
+            users: memberEmail,
+            userNames: params.name,
+            receiverHadRead: false,
+            contract: 0,
+            createdAt: Date.now(),
+            teamId: data.data._id,
+          });
         this.setState({ pending: false });
         const teams = [...this.props.teams];
         teams.push(data.data);
