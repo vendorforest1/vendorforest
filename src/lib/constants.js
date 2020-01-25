@@ -154,6 +154,7 @@ export const apiUrl = {
   ACCEPT_TEAM_INVITE: `${API_URL}/apis/team/invite_accept`,
   DECLINE_TEAM_INVITE: `${API_URL}/apis/team/invite_decline`,
   DECLINE_TEAM_MEMBER: `${API_URL}/apis/team/member_decline`,
+  GET_TEAM_PENDING_CONTRACT: `${API_URL}/apis/team/pending_contract`,
 
   CREATE_JOB: `${API_URL}/apis/job/create`,
   UPDATE_JOB: `${API_URL}/apis/job/update`,

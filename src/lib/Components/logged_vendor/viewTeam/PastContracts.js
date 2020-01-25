@@ -13,10 +13,20 @@ class PastConstracts extends React.Component {
     this.state = {};
   }
 
+  UNSAFE_componentWillReceiveProps(newProps) {
+    if (this.props.team._id !== newProps.team._id) {
+      this.props.fetchPastContractsData({
+        teamId: newProps.team._id,
+        admin: newProps.team.admin._id,
+        status: constants.CONTRACT_STATUS.END,
+      });
+    }
+  }
   componentDidMount() {
     this.props.user &&
       this.props.fetchPastContractsData({
-        vendor: this.props.user.userObj._id,
+        teamId: this.props.team._id,
+        admin: this.props.team.admin._id,
         status: constants.CONTRACT_STATUS.END,
       });
   }
@@ -66,15 +76,17 @@ class PastConstracts extends React.Component {
   }
 }
 
-const mapStateToProps = ({ vendorDashboardReducer, loginReducer }) => {
-  const { error, success, pending, pastContracts } = vendorDashboardReducer;
+const mapStateToProps = ({ vendorDashboardReducer, loginReducer, vendorViewTeamReducer }) => {
+  const { error, success, pending } = vendorDashboardReducer;
   const { user } = loginReducer;
+  const { team, pastContracts } = vendorViewTeamReducer;
   return {
     error,
     success,
     pending,
     pastContracts,
     user,
+    team,
   };
 };
 

@@ -175,16 +175,13 @@ export const fetchOffersData = (payload) => async (dispatch, getState) => {
 export const fetchPendingContractsData = (payload) => async (dispatch, getState) => {
   dispatch(clearError());
   dispatch(fetchRequest());
-  let urlStr = "";
-  Object.keys(payload).forEach((key, index) => {
-    urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
-  });
-  return await fetch(`${apiUrl.GET_CONTRACTS}${urlStr}`, {
-    method: "GET",
+  return await fetch(apiUrl.GET_TEAM_PENDING_CONTRACT, {
+    method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(payload),
   })
     .then((response) => response.json())
     .then((result) => {
@@ -202,16 +199,13 @@ export const fetchPendingContractsData = (payload) => async (dispatch, getState)
 export const fetchPastContractsData = (payload) => async (dispatch, getState) => {
   dispatch(clearError());
   dispatch(fetchRequest());
-  let urlStr = "";
-  Object.keys(payload).forEach((key, index) => {
-    urlStr += `${index === 0 ? "?" : "&"}${key}=${payload[key]}`;
-  });
-  return await fetch(`${apiUrl.GET_CONTRACTS}${urlStr}`, {
-    method: "GET",
+  return await fetch(apiUrl.GET_TEAM_PENDING_CONTRACT, {
+    method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
+    body: JSON.stringify(payload),
   })
     .then((response) => response.json())
     .then((result) => {

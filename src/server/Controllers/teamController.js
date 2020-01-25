@@ -1,6 +1,7 @@
 import Team from "../models/team.model";
 import getEnv, { constants } from "@Config/index";
 import User from "@Models/user.model";
+import Contract from "@Models/contract.model";
 import { mail } from "@Config/mail";
 import saveNotification from "@Config/notification";
 import sendSMS from "@Config/sms";
@@ -727,5 +728,111 @@ export default () => {
       });
   };
 
+  controllers.getTeamPendingContract = async (req, res) => {
+    await Contract.find({
+      vendor: req.body.admin,
+      status: req.body.status,
+    })
+      .populate({
+        path: "proposal",
+        model: "proposal",
+        populate: {
+          path: "offers",
+          model: "offer",
+        },
+      })
+      .populate({
+        path: "job",
+        model: "job",
+        populate: [
+          {
+            path: "category",
+            model: "category",
+          },
+          {
+            path: "service",
+            model: "service",
+          },
+        ],
+      })
+      .populate({
+        path: "client",
+        model: "user",
+        populate: {
+          path: "client",
+          model: "client",
+          select: {
+            username: 1,
+            bsLocation: 1,
+            profileImage: 1,
+            timeZone: 1,
+          },
+        },
+      })
+      .populate({
+        path: "vendor",
+        model: "user",
+        populate: {
+          path: "vendor",
+          model: "vendor",
+          select: {
+            username: 1,
+            bsLocation: 1,
+            profileImage: 1,
+            timeZone: 1,
+          },
+        },
+      })
+      .populate({
+        path: "reviews",
+        model: "review",
+        populate: [
+          {
+            path: "from",
+            model: "user",
+            select: {
+              username: 1,
+            },
+          },
+          {
+            path: "to",
+            model: "user",
+            select: {
+              username: 1,
+            },
+          },
+        ],
+      })
+      .then(async (teamWorking) => {
+        if (!teamWorking) {
+          return res.status(401).json({
+            status: 401,
+            message:
+              env.MODE === "development"
+                ? `Team ${constants.DEV_EMPTYDOC_MSG}`
+                : constants.PROD_COMMONERROR_MSG,
+          });
+        }
+        let pendingContractResult = [];
+        await teamWorking.map((contractItem) => {
+          if (contractItem.proposal.bidType === -1) {
+            if (String(contractItem.proposal.offers[0].team) === String(req.body.teamId)) {
+              pendingContractResult.push(contractItem);
+            }
+          }
+        });
+        return res.status(200).json({
+          status: 200,
+          data: pendingContractResult,
+          message: "",
+        });
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: 500,
+          message: env.MODE === "development" ? error.message : constants.PROD_COMMONERROR_MSG,
+        });
+      });
+  };
   return controllers;
 };

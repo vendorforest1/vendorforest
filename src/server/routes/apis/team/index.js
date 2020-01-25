@@ -28,6 +28,8 @@ router.post("/invite_users", validator.body(inviteUsers.body), teamCtr.inviteUse
 router.post("/invite_accept", validator.body(inviteAccept.body), teamCtr.inviteAccept);
 router.post("/invite_decline", validator.body(inviteDecline.body), teamCtr.inviteDecline);
 router.post("/member_decline", validator.body(memberDecline.body), teamCtr.memberDecline);
+router.post("/pending_contract", teamCtr.getTeamPendingContract);
+// router.post("/ended_team_contract", teamCtr.getEndedTeamContract);
 //   return router;
 // }
 

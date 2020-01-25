@@ -148,64 +148,64 @@ class VendorOffers extends React.Component {
         key: "budget",
         render: (budget) => <div className="text-center">${budget}</div>,
       },
-      {
-        title: "",
-        key: "action",
-        render: (text, record, index) => (
-          <div>
-            {!this.isAdmin() ? (
-              <span
-                style={{
-                  display: "block",
-                  minWidth: "130px",
-                  textAlign: "right",
-                }}
-              >
-                <a
-                  className="text-color pointer"
-                  onClick={() => {
-                    this.setState({
-                      selectedOffer: record,
-                    });
-                    this.toggle();
-                  }}
-                >
-                  <Icon type="check" className="mr-1" />
-                  Accept
-                </a>
-                <Divider type="vertical" />
-                <a
-                  className="text-red pointer"
-                  onClick={() => {
-                    this.decline(record._id);
-                  }}
-                >
-                  <Icon type="close" className="mr-1 pointer" />
-                  Decline
-                </a>
-              </span>
-            ) : (
-              <span
-                style={{
-                  display: "block",
-                  minWidth: "130px",
-                  textAlign: "right",
-                }}
-              >
-                <a
-                  className="text-red pointer"
-                  onClick={() => {
-                    this.decline(record._id);
-                  }}
-                >
-                  <Icon type="close" className="mr-1" />
-                  Cancel
-                </a>
-              </span>
-            )}
-          </div>
-        ),
-      },
+      // {
+      //   title: "",
+      //   key: "action",
+      //   render: (text, record, index) => (
+      //     <div>
+      //       {!this.isAdmin() ? (
+      //         <span
+      //           style={{
+      //             display: "block",
+      //             minWidth: "130px",
+      //             textAlign: "right",
+      //           }}
+      //         >
+      //           <a
+      //             className="text-color pointer"
+      //             onClick={() => {
+      //               this.setState({
+      //                 selectedOffer: record,
+      //               });
+      //               this.toggle();
+      //             }}
+      //           >
+      //             <Icon type="check" className="mr-1" />
+      //             Accept
+      //           </a>
+      //           <Divider type="vertical" />
+      //           <a
+      //             className="text-red pointer"
+      //             onClick={() => {
+      //               this.decline(record._id);
+      //             }}
+      //           >
+      //             <Icon type="close" className="mr-1 pointer" />
+      //             Decline
+      //           </a>
+      //         </span>
+      //       ) : (
+      //         <span
+      //           style={{
+      //             display: "block",
+      //             minWidth: "130px",
+      //             textAlign: "right",
+      //           }}
+      //         >
+      //           <a
+      //             className="text-red pointer"
+      //             onClick={() => {
+      //               this.decline(record._id);
+      //             }}
+      //           >
+      //             <Icon type="close" className="mr-1" />
+      //             Cancel
+      //           </a>
+      //         </span>
+      //       )}
+      //     </div>
+      //   ),
+      // },
     ];
     return (
       <div>

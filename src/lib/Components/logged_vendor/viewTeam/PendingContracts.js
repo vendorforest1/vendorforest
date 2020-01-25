@@ -21,7 +21,8 @@ class PendingContracts extends React.Component {
   UNSAFE_componentWillReceiveProps(newProps) {
     if (this.props.team._id !== newProps.team._id) {
       this.props.fetchPendingContractsData({
-        vendor: newProps.user.userObj._id,
+        teamId: newProps.team._id,
+        admin: newProps.team.admin._id,
         status: constants.CONTRACT_STATUS.CREATED,
       });
     }
@@ -29,7 +30,8 @@ class PendingContracts extends React.Component {
   componentDidMount() {
     this.props.user &&
       this.props.fetchPendingContractsData({
-        vendor: this.props.user.userObj._id,
+        teamId: this.props.team._id,
+        admin: this.props.team.admin._id,
         status: constants.CONTRACT_STATUS.CREATED,
       });
   }
@@ -81,9 +83,9 @@ class PendingContracts extends React.Component {
 }
 
 const mapStateToProps = ({ vendorViewTeamReducer, vendorDashboardReducer, loginReducer }) => {
-  const { error, success, pending, pendingContracts } = vendorDashboardReducer;
+  const { error, success, pending } = vendorDashboardReducer;
   const { user } = loginReducer;
-  const { team } = vendorViewTeamReducer;
+  const { team, pendingContracts } = vendorViewTeamReducer;
   return {
     error,
     success,
