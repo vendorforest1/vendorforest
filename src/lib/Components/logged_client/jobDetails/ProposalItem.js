@@ -1,14 +1,15 @@
 // @ts-nocheck
 import React from "react";
-import { message, Icon, Avatar, Progress, Rate, Tag, Drawer } from "antd";
+import { message, Icon, Avatar, Progress, Rate, Tag, Drawer, Input, Modal, Button } from "antd";
 import { constants } from "@Shared/constants";
 import { connect } from "react-redux";
 import moment from "moment";
 import CreateContract from "./CreateContract";
 import ProposalDetails from "./ProposalDetails";
-import { fetchDeclineProposal } from "./essential";
+import { fetchDeclineProposal, askQuestion } from "./essential";
 import defaultProfileImage from "@Components/images/profileplace.png";
 
+const { TextArea } = Input;
 class ProposalItem extends React.Component {
   constructor(props) {
     super(props);
@@ -17,12 +18,16 @@ class ProposalItem extends React.Component {
       proposalDrawVisible: false,
       contractDrawVisible: false,
       pending: false,
+      visible: false,
+      message: undefined,
     };
     this.view = this.view.bind(this);
     this.delete = this.delete.bind(this);
     this.chat = this.chat.bind(this);
     this.toggleProposal = this.toggleProposal.bind(this);
     this.toggleContract = this.toggleContract.bind(this);
+    this.toggleAsk = this.toggleAsk.bind(this);
+    this.handleAsk = this.handleAsk.bind(this);
   }
 
   componentDidMount() {}
@@ -31,6 +36,40 @@ class ProposalItem extends React.Component {
     this.setState({
       proposalDrawVisible: !this.state.proposalDrawVisible,
     });
+  }
+
+  toggleAsk() {
+    this.setState({
+      visible: !this.state.visible,
+    });
+  }
+
+  handleAsk() {
+    this.setState({
+      visible: !this.state.visible,
+    });
+    if (this.state.message === undefined) {
+      message.warning("Please input question.");
+      return;
+    } else {
+      if (this.state.message.length > 90) {
+        message.warning("You can't exceed the max length of 90 characters.");
+        return;
+      }
+    }
+    const params = {
+      vendor: this.props.proposal.vendor._id,
+      question: this.state.message,
+      email: this.props.proposal.vendor.email,
+      phone: this.props.proposal.vendor.phone,
+    };
+    askQuestion(params)
+      .then((result) => {
+        message.success(result.message);
+      })
+      .catch((error) => {
+        message.warning(error);
+      });
   }
 
   toggleContract() {
@@ -169,9 +208,9 @@ class ProposalItem extends React.Component {
                   Delete
                   {this.state.pending && <Icon type="sync" spin className="ml-2" />}
                 </p>
-                <p className="text-color pointer" onClick={this.chat}>
+                <p className="text-color pointer" onClick={this.toggleAsk}>
                   <Icon type="wechat" className="mr-2" />
-                  Chat
+                  Ask
                 </p>
               </div>
             )}
@@ -199,6 +238,44 @@ class ProposalItem extends React.Component {
             )}
           </div>
         </div>
+        <Modal
+          title={`Ask a question to ${this.props.proposal.vendor.username}`}
+          visible={this.state.visible}
+          // onOk={this.toggle}
+          onCancel={this.toggleAsk}
+          width={"50%"}
+          footer={
+            <Button
+              key="next"
+              type="primary"
+              onClick={this.handleAsk}
+              style={{ width: "120px" }}
+            >
+              Ask Now
+            </Button>
+          }
+        >
+          <div className="message mb-6">
+            <TextArea
+              value={this.state.message}
+              onChange={(e) => {
+                this.setState({
+                  message: e.target.value,
+                });
+              }}
+              rows={5}
+              placeholder="Message"
+            />
+          </div>
+          <div className="message mb-6" style={{ textAlign: "right" }}>
+            90 Characters
+          </div>
+          <div className="message mb-6" style={{ marginTop: "20px" }}>
+            NOTE: Please undersand that you can only ask questions that the vendor can only
+            answer by YES or NO. For your own safety reasons.
+          </div>
+        </Modal>
+
         <Drawer
           placement="left"
           closable={true}
